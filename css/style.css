@@ -1,0 +1,903 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+  font-size: 16px;
+  scroll-behavior: smooth;
+  font-family: 'Poppins', sans-serif;
+}
+
+/*Hero */
+
+#herobox img {
+  padding-top: 15vh;
+  width: 45vw;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  margin-bottom: 2rem;
+
+}
+
+#herotext {
+  font-size: 2rem;
+  color: rgb(255, 255, 255);
+  align-items: center;
+  max-width: 50vw;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.wavepng {
+  display: block;
+  width: 100vw;
+}
+
+#waveabove {
+  margin-bottom: -0.1rem;
+}
+
+#wavebelow {
+  margin-top: -0.1rem;
+}
+
+.articleboxes {
+  width: 100vw;
+  min-height: auto;
+  background-color: #b0d0d1;
+  display: block;
+}
+
+#herobox {
+  background-color: #b0d0d1;
+}
+
+/* om nuuii + Video */
+#videobox {
+  background: white;
+  display: block;
+}
+
+#videobox h2 {
+  padding-top: 2rem;
+  font-size: 2rem;
+  text-align: center;
+  color: #438c8c;
+  margin-bottom: 2rem;
+}
+
+#videobox p {
+  display: block;
+  font-size: 1.1rem;
+  color: #84abab;
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  width: 60vw;
+  margin-bottom: 5rem;
+
+}
+
+iframe {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 60vw;
+  min-height: 60vh;
+  margin-bottom: 5rem;
+}
+
+/* Hvorfor nuuii?*/
+#whynuuiibox {
+  background-color: #b0d0d1;
+}
+
+#whynuuiibox h2 {
+  font-size: 2rem;
+  color: white;
+  align-items: center;
+  max-width: 50vw;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 1rem;
+  padding-bottom: 2.5rem;
+}
+
+#whynuuiibox p {
+  font-size: 1.1rem;
+  color: white;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50vw;
+
+}
+
+#whynuuiibox img {
+  display: block;
+  width: 45vw;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2rem;
+}
+
+
+
+/* About nuuii */
+#aboutnuuiibox {
+  background-color: #ffffff;
+}
+
+#aboutnuuiibox h2 {
+  color: #438c8c;
+  text-align: center;
+  font-size: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 1vh;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#aboutnuuiibox p {
+  color: #438c8c;
+  text-align: center;
+  font-size: 1rem;
+  padding-bottom: 1vh;
+  width: 50vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+#aboutnuuiibox img {
+  display: block;
+  width: 50vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Why we dont use water */
+#nowaterbox {
+  background-color: #b0d0d1;
+}
+
+#nowaterbox h2 {
+  color: white;
+  text-align: center;
+  padding-top: 2rem;
+  font-size: 2rem;
+  padding-bottom: 2rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#nowaterbox img {
+  width: 45vw;
+  background-color: rgb(255, 255, 255);
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+}
+
+
+#nowaterbox li {
+  width: 45vw;
+  color: white;
+  font-size: 1rem;
+  padding-bottom: 7vh;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+#dosageuppertext {
+  width: 45vw;
+  color: white;
+  font-size: 1.15rem;
+  padding-bottom: 3rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: justify;
+}
+
+
+/* Step by step guide */
+
+#stepguide {
+  background-color: #ffffff;
+  width: 100vw;
+}
+
+
+#stepguide h2 {
+  font-size: 2rem;
+  color: #438c8c;
+  align-items: center;
+  max-width: 50vw;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+}
+
+#stepwrapper {
+  width: 90vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#stepwrapper div {
+  width: 22.5vw;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#stepguide h3 {
+  font-size: 1.3rem;
+  color: #438c8c;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: normal;
+  padding-bottom: 1rem;
+
+}
+
+#stepguide img {
+  display: block;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 2rem;
+}
+
+#stepguide p {
+  font-size: 1.1rem;
+  width: 40vw;
+  color: #438c8c;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 5rem;
+}
+
+/* Newsletter */
+#newsletterbox {
+  margin-right: auto;
+  margin-left: auto;
+  width: 100vw;
+  text-align: center;
+}
+
+.contactcontainer {
+  width: 30vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#newsletterbox h2 {
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 10px;
+  font-size: 2rem;
+  color: white;
+  padding-bottom: 1rem;
+}
+
+#newsletterbox p {
+  width: 30vw;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1rem;
+  color: white;
+  padding-bottom: 2rem;
+}
+
+label {
+  font-size: 1rem;
+  margin-left: 12px;
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+
+.contactcontainer input[type=text],
+input[type=email],
+textarea {
+  background: transparent;
+  width: 100%;
+  padding: 12px;
+  border: 3px solid rgb(255, 255, 255);
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 2rem;
+  resize: vertical;
+  outline: 0;
+  color: white;
+  font-weight: bold;
+}
+
+
+.contactcontainer input[type=text]:focus,
+input[type=email]:focus,
+textarea:focus {
+  border: 3px solid rgb(255, 255, 255);
+  color: white;
+}
+
+/* Send knap */
+.contactcontainer input[type=submit] {
+  background: transparent;
+  margin: 0 auto;
+  outline: 0;
+  color: rgb(255, 255, 255);
+  border: 0;
+  padding: 12px 24px;
+  border: 3px solid white;
+  border-radius: 4px;
+  transition: all ease-in-out 0.3s;
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+
+}
+
+/* placeholders */
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: rgb(255, 255, 255);
+  opacity: 1;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: rgb(255, 255, 255);
+  opacity: 1;
+}
+
+
+.contactcontainer input[type=submit]:focus {
+  color: rgb(255, 255, 255);
+}
+
+
+.contactcontainer input[type=submit]:hover {
+  background: #ffffff;
+  color: black;
+  cursor: pointer;
+}
+
+.contactcontainer .center {
+  text-align: center;
+  padding-top: 1rem;
+  padding-bottom: 3rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+
+/* social media links */
+
+.socialmedialinks {
+  width: 180px;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.socialmedialinks a {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  background-color: #438c8c;
+  border-radius: 30px;
+  color: #ffffff;
+  transition: 0.7s;
+  margin-bottom: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.socialmedialinks i {
+  font-size: 40px;
+  margin-top: 10px;
+}
+
+.socialmedialinks a:hover {
+  background-color: white;
+  color: #438c8c;
+}
+
+
+/* Waves animation */
+
+
+
+/* KEYFRAMES */
+
+@-webkit-keyframes animateBubble {
+  0% {
+    margin-top: 100vh;
+  }
+
+  100% {
+    margin-top: -10vh;
+  }
+}
+
+@-moz-keyframes animateBubble {
+  0% {
+    margin-top: 100vh;
+  }
+
+  100% {
+    margin-top: -10vh;
+  }
+}
+
+@keyframes animateBubble {
+  0% {
+    margin-top: 100vh;
+  }
+
+  100% {
+    margin-top: -10vh;
+  }
+}
+
+@-webkit-keyframes sideWays {
+  0% {
+    margin-left: 0px;
+  }
+
+  100% {
+    margin-left: 40px;
+  }
+}
+
+@-moz-keyframes sideWays {
+  0% {
+    margin-left: 0px;
+  }
+
+  100% {
+    margin-left: 40px;
+  }
+}
+
+@keyframes sideWays {
+  0% {
+    margin-left: 0px;
+  }
+
+  100% {
+    margin-left: 40px;
+  }
+}
+
+/* ANIMATIONS */
+
+.x1 {
+  -webkit-animation: animateBubble 22s linear infinite, sideWays 2s ease-in-out infinite alternate;
+  -moz-animation: animateBubble 22s linear infinite, sideWays 2s ease-in-out infinite alternate;
+  animation: animateBubble 22s linear infinite, sideWays 2s ease-in-out infinite alternate;
+
+  left: -5%;
+  top: 5%;
+
+  -webkit-transform: scale(0.6);
+  -moz-transform: scale(0.6);
+  transform: scale(0.6);
+}
+
+.x2 {
+  -webkit-animation: animateBubble 20s linear infinite, sideWays 4s ease-in-out infinite alternate;
+  -moz-animation: animateBubble 20s linear infinite, sideWays 4s ease-in-out infinite alternate;
+  animation: animateBubble 20s linear infinite, sideWays 4s ease-in-out infinite alternate;
+
+  left: 5%;
+  top: -20%;
+
+  -webkit-transform: scale(0.4);
+  -moz-transform: scale(0.4);
+  transform: scale(0.4);
+}
+
+.x3 {
+  -webkit-animation: animateBubble 28s linear infinite, sideWays 2s ease-in-out infinite alternate;
+  -moz-animation: animateBubble 28s linear infinite, sideWays 2s ease-in-out infinite alternate;
+  animation: animateBubble 28s linear infinite, sideWays 2s ease-in-out infinite alternate;
+
+  left: 10%;
+  top: 0%;
+
+  -webkit-transform: scale(0.7);
+  -moz-transform: scale(0.7);
+  transform: scale(0.7);
+}
+
+.x4 {
+  -webkit-animation: animateBubble 22s linear infinite, sideWays 3s ease-in-out infinite alternate;
+  -moz-animation: animateBubble 22s linear infinite, sideWays 3s ease-in-out infinite alternate;
+  animation: animateBubble 22s linear infinite, sideWays 3s ease-in-out infinite alternate;
+
+  left: 20%;
+  top: 0;
+
+  -webkit-transform: scale(0.3);
+  -moz-transform: scale(0.3);
+  transform: scale(0.3);
+}
+
+.x5 {
+  -webkit-animation: animateBubble 29s linear infinite, sideWays 4s ease-in-out infinite alternate;
+  -moz-animation: animateBubble 29s linear infinite, sideWays 4s ease-in-out infinite alternate;
+  animation: animateBubble 29s linear infinite, sideWays 4s ease-in-out infinite alternate;
+
+  left: 30%;
+  top: -15%;
+
+  -webkit-transform: scale(0.5);
+  -moz-transform: scale(0.5);
+  transform: scale(0.5);
+}
+
+.x6 {
+  -webkit-animation: animateBubble 21s linear infinite, sideWays 2s ease-in-out infinite alternate;
+  -moz-animation: animateBubble 21s linear infinite, sideWays 2s ease-in-out infinite alternate;
+  animation: animateBubble 21s linear infinite, sideWays 2s ease-in-out infinite alternate;
+
+  left: 50%;
+  top: -25%;
+
+  -webkit-transform: scale(0.8);
+  -moz-transform: scale(0.8);
+  transform: scale(0.8);
+}
+
+.x7 {
+  -webkit-animation: animateBubble 20s linear infinite, sideWays 2s ease-in-out infinite alternate;
+  -moz-animation: animateBubble 20s linear infinite, sideWays 2s ease-in-out infinite alternate;
+  animation: animateBubble 20s linear infinite, sideWays 2s ease-in-out infinite alternate;
+
+  left: 65%;
+  top: -10%;
+
+  -webkit-transform: scale(0.4);
+  -moz-transform: scale(0.4);
+  transform: scale(0.4);
+}
+
+.x8 {
+  -webkit-animation: animateBubble 22s linear infinite, sideWays 3s ease-in-out infinite alternate;
+  -moz-animation: animateBubble 22s linear infinite, sideWays 3s ease-in-out infinite alternate;
+  animation: animateBubble 22s linear infinite, sideWays 3s ease-in-out infinite alternate;
+
+  left: 80%;
+  top: -5%;
+
+  -webkit-transform: scale(0.3);
+  -moz-transform: scale(0.3);
+  transform: scale(0.3);
+}
+
+.x9 {
+  -webkit-animation: animateBubble 29s linear infinite, sideWays 4s ease-in-out infinite alternate;
+  -moz-animation: animateBubble 29s linear infinite, sideWays 4s ease-in-out infinite alternate;
+  animation: animateBubble 29s linear infinite, sideWays 4s ease-in-out infinite alternate;
+  left: 90%;
+  top: 10%;
+
+  -webkit-transform: scale(0.6);
+  -moz-transform: scale(0.6);
+  transform: scale(0.6);
+}
+
+.x10 {
+  -webkit-animation: animateBubble 26s linear infinite, sideWays 2s ease-in-out infinite alternate;
+  -moz-animation: animateBubble 26s linear infinite, sideWays 2s ease-in-out infinite alternate;
+  animation: animateBubble 26s linear infinite, sideWays 2s ease-in-out infinite alternate;
+
+
+  left: 80%;
+  top: 20%;
+
+  -webkit-transform: scale(0.3);
+  -moz-transform: scale(0.3);
+  transform: scale(0.3);
+}
+
+
+/* OBJECTS */
+
+.bubble {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+
+  -webkit-box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+  -moz-box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+
+  height: 20vh;
+  position: absolute;
+  width: 20vh;
+  z-index: 1;
+}
+
+.bubble2 {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+
+  -webkit-box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+  -moz-box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+
+  height: 20vh;
+  position: absolute;
+  width: 20vh;
+  z-index: 1;
+}
+
+.bubble:hover {
+  animation-play-state: paused;
+}
+
+/* Popping hover effect on bubbles */
+.bubblepop {
+  animation: pop 0.7s cubic-bezier(0.16, 0.87, 0.48, 0.99) forwards;
+}
+
+
+@keyframes pop {
+  from {
+    opacity: 1;
+    transform: translateZ(0) scale(1, 1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateZ(0) scale(1.75, 1.75);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #438c8c;
+  border-radius: 30px;
+}
+
+/*media q*/
+
+/*MAX 1024pxX*/
+@media screen and (max-width: 1024px) {
+
+  /* Remove bubbles less than 1024px */
+  .bubble {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+
+    -webkit-box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+    -moz-box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2), inset 0px 0px 0px 0px rgba(255, 255, 255, 1);
+
+    height: 0.1vh;
+    position: absolute;
+    width: 0.1vh;
+    z-index: -100000;
+  }
+
+
+  /*Hero */
+  #herobox img {
+    padding-top: 5vh;
+    width: 60vw;
+  }
+
+  #herotext {
+    font-size: 1.7rem;
+    max-width: 80vw;
+  }
+
+  #whynuuiibox img,
+  #aboutnuuiibox img,
+  #nowaterbox img {
+    width: 65vw;
+  }
+
+  #videobox p,
+  #whynuuiibox p,
+  #aboutnuuiibox p,
+  #nowaterbox p,
+  #nowaterbox li,
+  #stepguide p {
+    width: 65vw;
+
+  }
+
+  #whynuuiibox p,
+  #aboutnuuiibox p,
+  #nowaterbox p,
+  #stepguide p {
+    padding-bottom: 3rem;
+  }
+
+  #whynuuiibox h2 {
+    max-width: none;
+    width: 65vw;
+
+  }
+
+  #stepwrapper {
+    width: 90vw;
+  }
+
+  #stepwrapper h3 {
+    font-size: 1.2rem;
+  }
+
+
+  #newsletterbox p {
+    width: 50vw;
+  }
+
+
+  /*END media Q 1024px*/
+}
+
+/*MAX 768px*/
+@media screen and (max-width: 768px) {
+
+  /*Hero */
+  #herobox img {
+    width: 80vw;
+  }
+
+  #herotext {
+    font-size: 1.5rem;
+    padding-top: 3vh;
+    padding-bottom: 5vh;
+    width: 90vw;
+  }
+
+  #videobox iframe {
+    min-width: none;
+    min-height: none;
+    width: 95vw;
+  }
+
+  #videobox h2,
+  #whynuuiibox h2,
+  #aboutnuuiibox h2,
+  #nowaterbox h2,
+  #stepguide h2 {
+    width: 80vw;
+    max-width: none;
+  }
+
+
+  #videobox p,
+  #whynuuiibox p,
+  #aboutnuuiibox p,
+  #nowaterbox p,
+  #nowaterbox li,
+  #stepguide p {
+    text-align: left;
+    width: 80vw;
+    font-size: 1rem;
+  }
+
+  #whynuuiibox img,
+  #aboutnuuiibox img,
+  #nowaterbox img {
+    width: 80vw;
+  }
+
+
+  #stepwrapper {
+    flex-direction: column;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  #stepwrapper div {
+    width: 50vw;
+  }
+
+  #newsletterbox p, h2 {
+    width: 70vw;
+  }
+
+  .contactcontainer {
+    width: 60vw;
+  }
+
+  /*END media Q 768px*/
+}
+
+
+
+/*MAX 480px*/
+@media screen and (max-width: 480px) {
+
+  /*Hero */
+  #herobox img {
+    padding-top: 10vh;
+    width: 95vw;
+  }
+
+  #herotext {
+    width: 95vw;
+  }
+
+  #videobox p,
+  #whynuuiibox p,
+  #aboutnuuiibox p,
+  #nowaterbox p,
+  #stepguide p {
+    width: 95vw;
+  }
+
+  #whynuuiibox img,
+  #aboutnuuiibox img,
+  #nowaterbox img {
+    width: 95vw;
+  }
+
+  #videobox h2,
+  #whynuuiibox h2,
+  #aboutnuuiibox h2,
+  #nowaterbox h2,
+  #stepguide h2 {
+    width: 95vw;
+    max-width: none;
+  }
+
+  #newsletterbox p, h2 {
+    width: 95vw;
+    max-width: none;
+  }
+
+  .contactcontainer {
+    width: 60vw;
+  }
+
+
+  /*END media Q 480px*/
+}
