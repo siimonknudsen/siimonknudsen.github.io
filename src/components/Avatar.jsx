@@ -9,7 +9,7 @@ function Avatar({ name, title, size = 'small' }) {
     <div className={`flex ${layout} ${gap}`}>
       <div className={`${avatarSize} rounded-full overflow-hidden flex-shrink-0 bg-neutral-800`}>
         <img 
-          src="/simon-virtual.png" 
+          src={import.meta.env.PROD ? '/portfolio/simon-virtual.png' : '/simon-virtual.png'} 
           alt={name}
           className="w-full h-full object-cover"
         />

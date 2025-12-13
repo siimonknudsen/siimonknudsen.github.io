@@ -14,38 +14,46 @@
  */
 
 export const projectContent = {
-  // Example: Zliide App
+  // Zliide In-Store Ordering App
   'zliide-app': {
+    challenge: "Zliide is a technology company that seeks to reinvent the fashion industry by making physical retail stores more digital with solutions and features such as assisted-checkout, in-store ordering and informative dashboards. The task was to improve the current user experience of the in-store ordering app.",
+    solution: "The new solution improved user satisfaction by 21.3%. The concept was enhanced through feedback gathered from brand stakeholders, store employees, and store customers. During user testing, the new solution was selected as the preferred choice by 100% of the participants. As a result of the new solution, new Figma design system components and tokens were added, while others were updated.",
     overview: [
-      "The Zliide In-Store Ordering App redesign focused on improving the in-store shopping experience for fashion retailers. The challenge was to create an intuitive interface that would help store associates process orders more efficiently while providing customers with a seamless shopping experience.",
-      "Through extensive user research with store associates and customers, we identified key pain points in the existing ordering process. The new design streamlined the workflow, reducing order processing time by 40% and increasing monthly store revenue significantly."
+      "Designed an in-store ordering app increasing physical fashion stores monthly store revenue up by additional 6% by reducing out-of-stock situations.",
+      "The redesign focused on improving the user experience through comprehensive research with brand stakeholders, store employees, and customers. The solution addressed key pain points in the ordering process while maintaining brand consistency."
     ],
     keyFeatures: [
-      "Streamlined order processing workflow for store associates",
-      "Real-time inventory synchronization across all channels",
-      "Intuitive product browsing and filtering system",
-      "Seamless checkout process with multiple payment options",
-      "Order tracking and status updates for customers"
+      "Reduced out-of-stock situations leading to 6% increase in monthly store revenue",
+      "Improved user satisfaction by 21.3%",
+      "100% user preference in testing sessions",
+      "Enhanced design system with new components and tokens",
+      "Streamlined in-store ordering workflow"
     ],
     images: [
-      "/projects/zliide-app/hero.jpg",  // Hero image (required)
-      "/projects/zliide-app/ordering-flow.jpg",  // Additional images (optional)
+      "/projects/zliide-app/hero.jpg",
+      "/projects/zliide-app/ordering-flow.jpg",
       "/projects/zliide-app/checkout.jpg"
     ],
     designProcess: [
       {
-        title: "Research",
-        description: "Conducted user interviews with store associates and customers to understand pain points in the current ordering system. Analyzed competitor solutions and identified opportunities for improvement."
+        title: "UX Research",
+        description: "Conducted comprehensive research with brand stakeholders, store employees, and store customers to understand pain points in the current in-store ordering experience. Gathered feedback to identify key areas for improvement."
       },
       {
-        title: "Design",
-        description: "Created wireframes and high-fidelity prototypes focusing on reducing cognitive load and streamlining the ordering workflow. Iterated based on feedback from store associates."
+        title: "UX & UI Design",
+        description: "Designed an improved solution that addressed user needs while maintaining brand consistency. Created wireframes and high-fidelity prototypes, iterating based on stakeholder and user feedback throughout the design process."
       },
       {
-        title: "Implementation",
-        description: "Collaborated with the development team to ensure design fidelity and optimal performance. Conducted usability testing throughout the development process."
+        title: "User Testing & Implementation",
+        description: "Conducted user testing where the new solution was selected as the preferred choice by 100% of participants. Updated and expanded the Figma design system with new components and tokens. Performed QA testing to ensure quality implementation."
       }
-    ]
+    ],
+    metadata: {
+      client: "Zliide",
+      year: "2024",
+      type: "App",
+      responsibilities: ["UX Research", "UX Design", "UI Design", "Design System", "User Testing", "QA Testing"]
+    }
   },
 
   // Example: Apple Home App

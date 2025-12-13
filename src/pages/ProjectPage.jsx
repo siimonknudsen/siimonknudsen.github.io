@@ -78,6 +78,39 @@ function ProjectPage() {
             <ScrollAnimation>
               <h1 className="text-5xl font-medium text-text-primary mb-4">{project.title}</h1>
             </ScrollAnimation>
+            
+            {/* Project Metadata */}
+            {content.metadata && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                {content.metadata.client && (
+                  <div>
+                    <p className="text-[14px] text-text-secondary mb-1">Client</p>
+                    <p className="text-[16px] text-text-primary font-medium">{content.metadata.client}</p>
+                  </div>
+                )}
+                {content.metadata.year && (
+                  <div>
+                    <p className="text-[14px] text-text-secondary mb-1">When</p>
+                    <p className="text-[16px] text-text-primary font-medium">{content.metadata.year}</p>
+                  </div>
+                )}
+                {content.metadata.type && (
+                  <div>
+                    <p className="text-[14px] text-text-secondary mb-1">Details</p>
+                    <p className="text-[16px] text-text-primary font-medium">{content.metadata.type}</p>
+                  </div>
+                )}
+                {content.metadata.responsibilities && (
+                  <div>
+                    <p className="text-[14px] text-text-secondary mb-1">Responsibilities</p>
+                    <p className="text-[16px] text-text-primary font-medium">
+                      {content.metadata.responsibilities.join(', ')}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+            
             <div className="flex flex-wrap gap-2 mb-6">
               {project.tags.map((tag, index) => (
                 <ScrollAnimation key={index}>
@@ -122,9 +155,23 @@ function ProjectPage() {
         </div>
       </section>
 
-      {/* Second Section - Filler Content */}
+      {/* Second Section - Content */}
       <section className="w-full p-6 mb-20">
         <div className="max-w-[1920px] mx-auto">
+          {/* Challenge Section */}
+          {content.challenge && (
+            <div className="mb-12">
+              <ScrollAnimation>
+                <h2 className="text-[18px] font-medium text-text-primary mb-4">The Challenge</h2>
+              </ScrollAnimation>
+              <ScrollAnimation>
+                <p className="text-[16px] text-text-secondary font-normal leading-[1.2] max-w-3xl">
+                  {content.challenge}
+                </p>
+              </ScrollAnimation>
+            </div>
+          )}
+          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
             <div>
               <ScrollAnimation>
@@ -140,17 +187,30 @@ function ProjectPage() {
             </div>
             <div>
               <ScrollAnimation>
-                <h2 className="text-[18px] font-medium text-text-primary mb-4">Key Features</h2>
+                <h2 className="text-[18px] font-medium text-text-primary mb-4">The Solution</h2>
               </ScrollAnimation>
-              <ul className="space-y-3">
-                {content.keyFeatures.map((feature, index) => (
-                  <ScrollAnimation key={index}>
-                    <li className="text-[16px] text-text-secondary font-normal leading-[1.2]">
-                      • {feature}
-                    </li>
+              {content.solution ? (
+                <ScrollAnimation>
+                  <p className="text-[16px] text-text-secondary font-normal leading-[1.2]">
+                    {content.solution}
+                  </p>
+                </ScrollAnimation>
+              ) : (
+                <>
+                  <ScrollAnimation>
+                    <h3 className="text-[16px] font-medium text-text-primary mb-3">Key Features</h3>
                   </ScrollAnimation>
-                ))}
-              </ul>
+                  <ul className="space-y-3">
+                    {content.keyFeatures.map((feature, index) => (
+                      <ScrollAnimation key={index}>
+                        <li className="text-[16px] text-text-secondary font-normal leading-[1.2]">
+                          • {feature}
+                        </li>
+                      </ScrollAnimation>
+                    ))}
+                  </ul>
+                </>
+              )}
             </div>
           </div>
 
