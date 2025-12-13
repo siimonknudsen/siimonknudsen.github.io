@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables - Defined at root level for Tailwind to access */
+/* Dark mode (default) */
+:root {
+  --surface-primary: #000000;
+  --surface-secondary: #1a1a1a;
+  --surface-tertiary: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-secondary: #a3a3a3;
+  --text-tertiary: #d4d4d4;
+  --border-primary: #1e1e1e;
+  --border-secondary: #404040;
+  --border-on-primary: #1e1e1e;
+  /* Contrast tokens - use opposite mode colors */
+  --surface-contrast-primary: #ffffff;
+  --surface-contrast-secondary: #f5f5f5;
+  --surface-contrast-tertiary: #e5e5e5;
+  --text-contrast-primary: #000000;
+  --text-contrast-secondary: #525252;
+  --text-contrast-tertiary: #737373;
+}
+
+/* Ensure dark mode variables when .dark class is present */
+html.dark {
+  --surface-primary: #000000;
+  --surface-secondary: #1a1a1a;
+  --surface-tertiary: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-secondary: #a3a3a3;
+  --text-tertiary: #d4d4d4;
+  --border-primary: #1e1e1e;
+  --border-secondary: #404040;
+  --border-on-primary: #1e1e1e;
+  /* Contrast tokens - use light mode colors in dark mode */
+  --surface-contrast-primary: #ffffff;
+  --surface-contrast-secondary: #f5f5f5;
+  --surface-contrast-tertiary: #e5e5e5;
+  --text-contrast-primary: #000000;
+  --text-contrast-secondary: #525252;
+  --text-contrast-tertiary: #737373;
+}
+
+/* Light mode - override when .dark class is NOT present */
+html:not(.dark) {
+  --surface-primary: #ffffff;
+  --surface-secondary: #f5f5f5;
+  --surface-tertiary: #e5e5e5;
+  --text-primary: #000000;
+  --text-secondary: #525252;
+  --text-tertiary: #737373;
+  --border-primary: #1e1e1e;
+  --border-secondary: #d4d4d4;
+  --border-on-primary: #e5e5e5;
+  /* Contrast tokens - use dark mode colors in light mode */
+  --surface-contrast-primary: #000000;
+  --surface-contrast-secondary: #1a1a1a;
+  --surface-contrast-tertiary: #2d2d2d;
+  --text-contrast-primary: #ffffff;
+  --text-contrast-secondary: #a3a3a3;
+  --text-contrast-tertiary: #d4d4d4;
+}
+
+@layer base {
+  * {
+    line-height: 100%;
+  }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--surface-primary);
+    color: var(--text-primary);
+  }
+}
+
+/* Ensure color tokens work correctly */
+@layer utilities {
+  .bg-surface-primary {
+    background-color: var(--surface-primary) !important;
+  }
+  
+  .bg-surface-secondary {
+    background-color: var(--surface-secondary) !important;
+  }
+  
+  .bg-surface-tertiary {
+    background-color: var(--surface-tertiary) !important;
+  }
+  
+  .text-text-primary {
+    color: var(--text-primary) !important;
+  }
+  
+  .text-text-secondary {
+    color: var(--text-secondary) !important;
+  }
+  
+  .text-text-tertiary {
+    color: var(--text-tertiary) !important;
+  }
+
+  .border-border-primary {
+    border-color: var(--border-primary) !important;
+  }
+
+  .border-border-secondary {
+    border-color: var(--border-secondary) !important;
+  }
+
+  .border-border-on-primary {
+    border-color: var(--border-on-primary) !important;
+  }
+
+  .bg-surface-contrast-primary {
+    background-color: var(--surface-contrast-primary) !important;
+  }
+
+  .bg-surface-contrast-secondary {
+    background-color: var(--surface-contrast-secondary) !important;
+  }
+
+  .bg-surface-contrast-tertiary {
+    background-color: var(--surface-contrast-tertiary) !important;
+  }
+
+  .text-text-contrast-primary {
+    color: var(--text-contrast-primary) !important;
+  }
+
+  .text-text-contrast-secondary {
+    color: var(--text-contrast-secondary) !important;
+  }
+
+  .text-text-contrast-tertiary {
+    color: var(--text-contrast-tertiary) !important;
+  }
+}
+
+@layer utilities {
+  .pulse-glow {
+    animation: pulse-glow 4s ease-in-out infinite;
+    box-shadow: 0 0 8px #4ade80, 0 0 12px #4ade80, 0 0 16px #4ade80;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 1;
+      box-shadow: 0 0 8px #4ade80, 0 0 12px #4ade80, 0 0 16px #4ade80;
+    }
+    50% {
+      opacity: 0.7;
+      box-shadow: 0 0 12px #4ade80, 0 0 18px #4ade80, 0 0 24px #4ade80;
+    }
+  }
+
+  /* Project Card Hover Glow */
+  .project-card-image-wrapper {
+    position: relative;
+  }
+
+  .project-card-image-wrapper > div {
+    transition: box-shadow 0.2s ease;
+  }
+
+  /* Dark mode: white glow behind image */
+  .group:hover .project-card-image-wrapper > div {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15), 0 0 40px rgba(255, 255, 255, 0.1);
+  }
+
+  /* Light mode: dark glow/shadow behind image */
+  html:not(.dark) .group:hover .project-card-image-wrapper > div {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2), 0 0 40px rgba(0, 0, 0, 0.15);
+  }
+}
