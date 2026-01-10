@@ -16,7 +16,7 @@ function Heading({
   const Tag = `h${level}`
   
   return (
-    <Tag className={`${sizeClasses[size]} font-medium text-text-primary ${className}`}>
+    <Tag className={`${sizeClasses[size]} font-medium text-color-primary ${className}`}>
       {children}
     </Tag>
   )

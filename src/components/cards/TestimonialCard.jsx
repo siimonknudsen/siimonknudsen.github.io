@@ -3,7 +3,7 @@ import ScrollAnimation from '../animations/ScrollAnimation'
 function TestimonialCard({ logo, recommender, title, company, text }) {
   return (
     <ScrollAnimation>
-      <div className="bg-surface-secondary rounded-lg p-6 flex flex-col h-full">
+      <div className="bg-surface-color-secondary rounded-lg p-6 flex flex-col h-full">
       {/* Logo and Recommender Info */}
       <div className="flex items-start gap-4 mb-6">
         {/* Logo */}
@@ -19,14 +19,14 @@ function TestimonialCard({ logo, recommender, title, company, text }) {
 
         {/* Recommender Info - Vertical Column */}
         <div className="flex flex-col gap-1">
-          <p className="text-text-primary font-medium leading-none text-[18px]">{recommender}</p>
-          <p className="text-text-secondary text-[16px] leading-none">{title}</p>
-          <p className="text-text-secondary text-[16px] leading-none">{company}</p>
+          <p className="text-color-primary font-medium leading-none text-[18px]">{recommender}</p>
+          <p className="text-color-secondary text-[16px] leading-none">{title}</p>
+          <p className="text-color-secondary text-[16px] leading-none">{company}</p>
         </div>
       </div>
 
       {/* Testimonial Text */}
-      <p className="text-text-secondary text-[16px] font-normal leading-[1.6] flex-1">
+      <p className="text-color-secondary text-[16px] font-normal leading-[1.6] flex-1">
         {text}
       </p>
       </div>

@@ -18,7 +18,7 @@ function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-surface-primary text-text-primary">
+    <div className="min-h-screen bg-surface-color-primary text-color-primary">
       <Header />
 
       {/* Hero Section */}
@@ -33,12 +33,12 @@ function Home() {
         </div>
 
         {/* Name */}
-        <h1 className="text-2xl font-medium text-text-primary mb-6 text-center">
+        <h1 className="text-2xl font-medium text-color-primary mb-6 text-center">
           Simon Knudsen
         </h1>
 
         {/* Description */}
-        <p className="text-5xl text-text-secondary text-center max-w-2xl mb-10 leading-none">
+        <p className="text-5xl text-color-primary text-center max-w-2xl mb-10 leading-none">
           Product Designer specialized in creating innovative and human-centered digital experiences
         </p>
 
@@ -62,7 +62,7 @@ function Home() {
       <section className="w-full p-6 mb-20">
         <div className="max-w-[1920px] mx-auto">
           <ScrollAnimation>
-            <h2 className="text-5xl text-text-primary mb-12">Testimonials</h2>
+            <h2 className="text-5xl text-color-primary mb-12">Testimonials</h2>
           </ScrollAnimation>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <TestimonialCard

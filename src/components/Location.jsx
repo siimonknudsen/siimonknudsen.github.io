@@ -20,7 +20,7 @@ function Location({ location = "Aarhus, Denmark" }) {
   };
 
   return (
-    <div className="flex items-center gap-2 text-[13px] text-text-secondary font-normal">
+    <div className="flex items-center gap-2 text-[13px] text-color-secondary font-normal">
       <div className="w-2 h-2 rounded-full bg-green-400 pulse-glow"></div>
       <span>{location} - {formatTime(currentTime)}</span>
     </div>

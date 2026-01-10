@@ -14,10 +14,10 @@ function ProjectCard({ id, title, description, tags = [] }) {
 
       {/* Text Content - Header and body together with 4px gap */}
       <div className="flex flex-col gap-1 mb-4">
-        <h3 className="text-[18px] font-medium text-text-primary leading-none">
+        <h3 className="text-[18px] font-medium text-color-primary leading-none">
           {title}
         </h3>
-        <p className="text-[16px] text-text-secondary font-normal leading-[1.2]">
+        <p className="text-[16px] text-color-secondary font-normal leading-[1.2]">
           {description}
         </p>
       </div>

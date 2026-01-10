@@ -27,5 +27,5 @@ You can name your logos however you like. They will be automatically sorted alph
 
 - All logos will be automatically resized and centered within the grid
 - The component uses `object-contain` to preserve aspect ratios
-- Logos are displayed on a dark background (`bg-surface-secondary`)
+- Logos are displayed on a dark background (`bg-surface-color-secondary`)
 - Add or remove logos anytime - they'll automatically appear/disappear from the page

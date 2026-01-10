@@ -79,7 +79,7 @@ function About() {
   ]
 
   return (
-    <div className="min-h-screen bg-surface-primary text-text-primary">
+    <div className="min-h-screen bg-surface-color-primary text-color-primary">
       <Header />
 
       {/* First Section - Headshot and Introduction */}
@@ -98,7 +98,7 @@ function About() {
 
           {/* Introduction Text */}
           <ScrollAnimation>
-            <p className="text-[16px] text-text-secondary font-normal leading-[1.2] text-center max-w-3xl">
+            <p className="text-[16px] text-color-secondary font-normal leading-[1.2] text-center max-w-3xl">
               I'm a Product Designer who's passionate about human psychology within digital products. I'm experienced in crafting beautiful and user friendly designs that solves real business problems. I'm specialized within UX Design, UI Design & Design Systems.
             </p>
           </ScrollAnimation>
@@ -107,9 +107,9 @@ function About() {
 
       {/* Second Section - Mission Statement */}
       <section className="w-full p-6 mb-20">
-        <div className="max-w-[1920px] mx-auto bg-surface-secondary h-[700px] rounded-lg flex items-center justify-center">
+        <div className="max-w-[1920px] mx-auto bg-surface-color-secondary h-[700px] rounded-lg flex items-center justify-center">
           <ScrollAnimation>
-            <p className="text-5xl font-medium text-text-primary text-center leading-none max-w-[23ch]">
+            <p className="text-5xl font-medium text-color-primary text-center leading-none max-w-[23ch]">
               Making the world of digital products more user friendly, one product at a time.
             </p>
           </ScrollAnimation>
@@ -122,7 +122,7 @@ function About() {
           {/* Companies Section */}
           <div>
             <ScrollAnimation>
-              <h2 className="text-[18px] font-medium text-text-primary mb-8">Companies i've done design for</h2>
+              <h2 className="text-[18px] font-medium text-color-primary mb-8">Companies i've done design for</h2>
             </ScrollAnimation>
             <LogoGrid logos={companies} columns={7} gap="1" />
           </div>
@@ -133,7 +133,7 @@ function About() {
       <section className="w-full p-6 mb-20">
         <div className="max-w-[1920px] mx-auto">
           <ScrollAnimation>
-            <h2 className="text-[18px] font-medium text-text-primary mb-8">Skills</h2>
+            <h2 className="text-[18px] font-medium text-color-primary mb-8">Skills</h2>
           </ScrollAnimation>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
             {skills.map((skill, index) => (
@@ -151,7 +151,7 @@ function About() {
       <section className="w-full p-6 mb-20">
         <div className="max-w-[1920px] mx-auto">
           <ScrollAnimation>
-            <h2 className="text-5xl text-text-primary mb-12">Testimonials</h2>
+            <h2 className="text-5xl text-color-primary mb-12">Testimonials</h2>
           </ScrollAnimation>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <TestimonialCard
@@ -183,7 +183,7 @@ function About() {
       <section className="w-full p-6 mb-20">
         <div className="max-w-[1920px] mx-auto">
           <ScrollAnimation>
-            <h2 className="text-5xl text-text-primary mb-12">A Picture Is Worth a Thousand Words</h2>
+            <h2 className="text-5xl text-color-primary mb-12">A Picture Is Worth a Thousand Words</h2>
           </ScrollAnimation>
           <ImageGrid images={aboutImages} columns={4} gap="1" aspectRatio="9/16" />
         </div>

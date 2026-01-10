@@ -5,8 +5,8 @@ function Button({ children, variant = 'primary', className = "", ...props }) {
   const baseClasses = "px-3 py-2 rounded-lg font-medium text-sm transition-colors"
   
   const variantClasses = {
-    primary: "bg-surface-contrast-primary text-text-contrast-primary hover:bg-surface-contrast-primary hover:text-text-contrast-primary",
-    secondary: "bg-surface-tertiary text-text-primary hover:bg-surface-secondary"
+    primary: "bg-surface-color-contrast-primary text-color-contrast-primary hover:bg-surface-color-contrast-primary hover:text-color-contrast-primary",
+    secondary: "bg-surface-color-tertiary text-color-primary hover:bg-surface-color-secondary"
   }
 
   return (

@@ -48,14 +48,14 @@ const allArchiveProjects = [...allProjects, ...archiveProjects]
 
 function Archive() {
   return (
-    <div className="min-h-screen bg-surface-primary text-text-primary">
+    <div className="min-h-screen bg-surface-color-primary text-color-primary">
       <Header />
 
       {/* Archive Section */}
       <section className="w-full p-6 mb-20">
         <div className="max-w-[1920px] mx-auto">
           <ScrollAnimation>
-            <h1 className="text-5xl font-medium text-text-primary mb-12">Archive</h1>
+            <h1 className="text-5xl font-medium text-color-primary mb-12">Archive</h1>
           </ScrollAnimation>
           {/* 3 Column Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">

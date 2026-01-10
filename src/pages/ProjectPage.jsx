@@ -66,10 +66,10 @@ function ProjectPage() {
 
   if (!project) {
     return (
-      <div className="min-h-screen bg-surface-primary text-text-primary">
+      <div className="min-h-screen bg-surface-color-primary text-color-primary">
         <Header />
         <div className="flex items-center justify-center min-h-[calc(100vh-80px)] p-6">
-          <p className="text-text-secondary">Project not found</p>
+          <p className="text-color-secondary">Project not found</p>
         </div>
         <Footer />
       </div>
@@ -77,7 +77,7 @@ function ProjectPage() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-primary text-text-primary">
+    <div className="min-h-screen bg-surface-color-primary text-color-primary">
       <Header />
 
       {/* Top Section */}
@@ -86,10 +86,10 @@ function ProjectPage() {
           {/* Row 1: Title + Description */}
           <div className="mb-8">
             <ScrollAnimation>
-              <h1 className="text-[48px] font-medium text-text-primary mt-10 mb-2">{content.title || project.title}</h1>
+              <h1 className="text-[48px] font-medium text-color-primary mt-10 mb-2">{content.title || project.title}</h1>
             </ScrollAnimation>
             <ScrollAnimation>
-              <p className="text-[18px] text-text-secondary font-normal max-w-3xl">
+              <p className="text-[18px] text-color-secondary font-normal max-w-3xl">
                 {content.description || project.description}
               </p>
             </ScrollAnimation>
@@ -99,20 +99,20 @@ function ProjectPage() {
           <div className="flex flex-col md:flex-row gap-10 mb-8">
             {content.client && (
               <div>
-                <p className="text-[18px] text-text-primary mb-2">Client</p>
-                <p className="text-[16px] text-text-secondary font-medium">{content.client}</p>
+                <p className="text-[18px] text-color-primary mb-2">Client</p>
+                <p className="text-[16px] text-color-secondary font-medium">{content.client}</p>
               </div>
             )}
             {content.when && (
               <div>
-                <p className="text-[18px] text-text-primary mb-2">When</p>
-                <p className="text-[16px] text-text-secondary font-medium">{content.when}</p>
+                <p className="text-[18px] text-color-primary mb-2">When</p>
+                <p className="text-[16px] text-color-secondary font-medium">{content.when}</p>
               </div>
             )}
             {content.details && (
               <div>
-                <p className="text-[18px] text-text-primary mb-2">Details</p>
-                <p className="text-[16px] text-text-secondary font-medium">{content.details}</p>
+                <p className="text-[18px] text-color-primary mb-2">Details</p>
+                <p className="text-[16px] text-color-secondary font-medium">{content.details}</p>
               </div>
             )}
           </div>
@@ -120,8 +120,8 @@ function ProjectPage() {
           {/* Row 3: Responsibilities */}
           {content.responsibilities && content.responsibilities.length > 0 && (
             <div className="mb-12">
-              <p className="text-[18px] text-text-primary mb-2">Responsibilities</p>
-              <p className="text-[16px] text-text-secondary font-medium">
+              <p className="text-[18px] text-color-primary mb-2">Responsibilities</p>
+              <p className="text-[16px] text-color-secondary font-medium">
                 {content.responsibilities.join(', ')}
               </p>
             </div>
@@ -142,7 +142,7 @@ function ProjectPage() {
                 />
               ) : null}
               <div 
-                className={`w-full h-full flex items-center justify-center text-text-secondary text-lg ${
+                className={`w-full h-full flex items-center justify-center text-color-secondary text-lg ${
                   content.heroImage ? 'hidden' : ''
                 }`}
               >
@@ -160,10 +160,10 @@ function ProjectPage() {
           {content.challenge && (
             <div className="mb-12 grid grid-cols-2">
               <ScrollAnimation>
-                <h2 className="text-[18px] font-medium text-text-primary mb-4">The Challenge</h2>
+                <h2 className="text-[18px] font-medium text-color-primary mb-4">The Challenge</h2>
               </ScrollAnimation>
               <ScrollAnimation>
-                <p className="text-[16px] text-text-secondary font-normal leading-[1.2] max-w-3xl">
+                <p className="text-[16px] text-color-secondary font-normal leading-[1.2] max-w-3xl">
                   {content.challenge}
                 </p>
               </ScrollAnimation>
@@ -174,10 +174,10 @@ function ProjectPage() {
           {content.solution && (
             <div className="mb-12 grid grid-cols-2">
               <ScrollAnimation>
-                <h2 className="text-[18px] font-medium text-text-primary mb-4">The Solution</h2>
+                <h2 className="text-[18px] font-medium text-color-primary mb-4">The Solution</h2>
               </ScrollAnimation>
               <ScrollAnimation>
-                <p className="text-[16px] text-text-secondary font-normal leading-[1.2] max-w-3xl">
+                <p className="text-[16px] text-color-secondary font-normal leading-[1.2] max-w-3xl">
                   {content.solution}
                 </p>
               </ScrollAnimation>
@@ -202,7 +202,7 @@ function ProjectPage() {
                             if (placeholder) placeholder.style.display = 'flex';
                           }}
                         />
-                        <div className="hidden w-full h-full items-center justify-center text-text-secondary text-lg">
+                        <div className="hidden w-full h-full items-center justify-center text-color-secondary text-lg">
                           Project Image {index + 1} Placeholder
                         </div>
                       </div>
@@ -212,7 +212,7 @@ function ProjectPage() {
                   return (
                     <ScrollAnimation key={index}>
                       <div className="max-w-3xl">
-                        <p className="text-[16px] text-text-secondary font-normal leading-[1.2]">
+                        <p className="text-[16px] text-color-secondary font-normal leading-[1.2]">
                           {block.content}
                         </p>
                       </div>
@@ -230,7 +230,7 @@ function ProjectPage() {
       <section className="w-full p-6 mb-20">
         <div className="max-w-[1920px] mx-auto">
           <ScrollAnimation>
-            <h2 className="text-5xl text-text-primary mb-12">More Projects</h2>
+            <h2 className="text-5xl text-color-primary mb-12">More Projects</h2>
           </ScrollAnimation>
           <ProjectGrid excludeProjectId={id} />
         </div>

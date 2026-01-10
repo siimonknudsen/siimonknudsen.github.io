@@ -15,8 +15,8 @@ function Avatar({ name, title, size = 'small' }) {
         />
       </div>
       <div className="flex flex-col gap-0">
-        <span className={`${nameSize} font-normal text-text-primary leading-[1.3] tracking-tight`}>{name}</span>
-        <span className={`${titleSize} font-normal text-text-secondary leading-[1.3] tracking-tight`}>{title}</span>
+        <span className={`${nameSize} font-normal text-color-primary leading-[1.3] tracking-tight`}>{name}</span>
+        <span className={`${titleSize} font-normal text-color-secondary leading-[1.3] tracking-tight`}>{title}</span>
       </div>
     </div>
   )

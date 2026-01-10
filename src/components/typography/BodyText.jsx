@@ -14,9 +14,9 @@ function BodyText({
   }
 
   const colorClasses = {
-    primary: "text-text-primary",
-    secondary: "text-text-secondary",
-    tertiary: "text-text-tertiary"
+    primary: "text-color-primary",
+    secondary: "text-color-secondary",
+    tertiary: "text-color-tertiary"
   }
 
   return (

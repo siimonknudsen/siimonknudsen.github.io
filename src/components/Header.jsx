@@ -33,7 +33,7 @@ function Header() {
 
   return (
     <>
-      <header className="sticky top-0 w-full px-6 py-2 bg-surface-primary z-50 border-b border-border-on-primary" style={{ backdropFilter: 'blur(18px)' }}>
+      <header className="sticky top-0 w-full px-6 py-2 bg-surface-color-primary z-50 border-b border-color-on-primary" style={{ backdropFilter: 'blur(18px)' }}>
         <nav className="flex items-center max-w-[1920px] mx-auto relative">
           {/* Left side - Avatar and name */}
           <Link to="/" className="flex-shrink-0" onClick={closeMobileMenu}>
@@ -46,8 +46,8 @@ function Header() {
               to="/"
               className={`text-sm font-normal px-3 py-1.5 rounded transition-colors ${
                 isActive('/') 
-                  ? 'text-text-primary bg-surface-tertiary' 
-                  : 'text-text-secondary hover:text-text-primary hover:bg-surface-tertiary'
+                  ? 'text-color-primary bg-surface-color-tertiary' 
+                  : 'text-color-secondary hover:text-color-primary hover:bg-surface-color-tertiary'
               }`}
             >
               Projects
@@ -56,8 +56,8 @@ function Header() {
               to="/archive"
               className={`text-sm font-normal px-3 py-1.5 rounded transition-colors ${
                 location.pathname === '/archive'
-                  ? 'text-text-primary bg-surface-tertiary'
-                  : 'text-text-secondary hover:text-text-primary hover:bg-surface-tertiary'
+                  ? 'text-color-primary bg-surface-color-tertiary'
+                  : 'text-color-secondary hover:text-color-primary hover:bg-surface-color-tertiary'
               }`}
             >
               Archive
@@ -66,15 +66,15 @@ function Header() {
               to="/about"
               className={`text-sm font-normal px-3 py-1.5 rounded transition-colors ${
                 location.pathname === '/about'
-                  ? 'text-text-primary bg-surface-tertiary'
-                  : 'text-text-secondary hover:text-text-primary hover:bg-surface-tertiary'
+                  ? 'text-color-primary bg-surface-color-tertiary'
+                  : 'text-color-secondary hover:text-color-primary hover:bg-surface-color-tertiary'
               }`}
             >
               About
             </Link>
             <a 
               href="#contact" 
-              className="text-sm font-normal text-text-secondary hover:text-text-primary hover:bg-surface-tertiary px-3 py-1.5 rounded transition-colors"
+              className="text-sm font-normal text-color-secondary hover:text-color-primary hover:bg-surface-color-tertiary px-3 py-1.5 rounded transition-colors"
             >
               Contact
             </a>
@@ -90,7 +90,7 @@ function Header() {
             {/* Hamburger menu button (visible on mobile/tablet) */}
             <button
               onClick={toggleMobileMenu}
-              className="md:hidden p-2 rounded transition-colors text-text-secondary hover:text-text-primary hover:bg-surface-tertiary"
+              className="md:hidden p-2 rounded transition-colors text-color-secondary hover:text-color-primary hover:bg-surface-color-tertiary"
               aria-label="Toggle menu"
               aria-expanded={isMobileMenuOpen}
             >
@@ -125,7 +125,7 @@ function Header() {
           
           {/* Mobile menu drawer */}
           <div
-            className={`fixed top-[59px] left-0 right-0 bg-surface-primary border-b border-border-on-primary z-40 md:hidden transition-transform duration-300 ease-in-out ${
+            className={`fixed top-[59px] left-0 right-0 bg-surface-color-primary border-b border-color-on-primary z-40 md:hidden transition-transform duration-300 ease-in-out ${
               isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'
             }`}
             style={{ backdropFilter: 'blur(18px)' }}
@@ -136,8 +136,8 @@ function Header() {
                 onClick={closeMobileMenu}
                 className={`text-base font-normal px-3 py-3 rounded transition-colors mb-1 ${
                   isActive('/')
-                    ? 'text-text-primary bg-surface-tertiary'
-                    : 'text-text-secondary hover:text-text-primary hover:bg-surface-tertiary'
+                    ? 'text-color-primary bg-surface-color-tertiary'
+                    : 'text-color-secondary hover:text-color-primary hover:bg-surface-color-tertiary'
                 }`}
               >
                 Projects
@@ -147,8 +147,8 @@ function Header() {
                 onClick={closeMobileMenu}
                 className={`text-base font-normal px-3 py-3 rounded transition-colors mb-1 ${
                   location.pathname === '/archive'
-                    ? 'text-text-primary bg-surface-tertiary'
-                    : 'text-text-secondary hover:text-text-primary hover:bg-surface-tertiary'
+                    ? 'text-color-primary bg-surface-color-tertiary'
+                    : 'text-color-secondary hover:text-color-primary hover:bg-surface-color-tertiary'
                 }`}
               >
                 Archive
@@ -158,21 +158,21 @@ function Header() {
                 onClick={closeMobileMenu}
                 className={`text-base font-normal px-3 py-3 rounded transition-colors mb-1 ${
                   location.pathname === '/about'
-                    ? 'text-text-primary bg-surface-tertiary'
-                    : 'text-text-secondary hover:text-text-primary hover:bg-surface-tertiary'
+                    ? 'text-color-primary bg-surface-color-tertiary'
+                    : 'text-color-secondary hover:text-color-primary hover:bg-surface-color-tertiary'
                 }`}
               >
                 About
               </Link>
               <button
                 onClick={handleContactClick}
-                className="text-base font-normal text-text-secondary hover:text-text-primary hover:bg-surface-tertiary px-3 py-3 rounded transition-colors text-left"
+                className="text-base font-normal text-color-secondary hover:text-color-primary hover:bg-surface-color-tertiary px-3 py-3 rounded transition-colors text-left"
               >
                 Contact
               </button>
               
               {/* Location in mobile menu */}
-              <div className="mt-4 pt-4 border-t border-border-on-primary sm:hidden">
+              <div className="mt-4 pt-4 border-t border-color-on-primary sm:hidden">
                 <Location />
               </div>
             </nav>

@@ -7,7 +7,7 @@ function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="relative w-10 h-10 rounded-lg flex items-center justify-center bg-surface-tertiary hover:bg-neutral-700 transition-colors"
+      className="relative w-10 h-10 rounded-lg flex items-center justify-center bg-surface-color-tertiary hover:bg-neutral-700 transition-colors"
       aria-label="Toggle theme"
     >
       <div className="relative w-5 h-5">
