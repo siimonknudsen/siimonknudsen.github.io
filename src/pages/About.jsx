@@ -89,7 +89,7 @@ function About() {
           <ScrollAnimation>
             <div className="w-[200px] h-[200px] rounded-full overflow-hidden flex-shrink-0 bg-neutral-800 mb-8">
               <img 
-                src={import.meta.env.PROD ? '/portfolio/simon-virtual.png' : '/simon-virtual.png'} 
+                src={`${import.meta.env.BASE_URL}simon-virtual.png`} 
                 alt="Simon Knudsen"
                 className="w-full h-full object-cover"
               />
