@@ -1,0 +1,21 @@
+{
+  "title": "Zliide Website",
+  "description": "Redesigned the company website, enhancing the user experience and improving engagement and conversion rate.",
+  "client": "Zliide",
+  "when": "2024",
+  "details": "Website",
+  "responsibilities": ["UX Design", "UI Design", "Design System", "Frontend Development"],
+  "heroImage": "hero.jpg",
+  "challenge": "The Zliide company website needed a redesign to improve user engagement and conversion rates. The existing site lacked a clear value proposition and had navigation issues that hindered user journeys.",
+  "solution": "Redesigned the website with a focus on clear value proposition and streamlined user journeys. The redesign resulted in a 35% increase in conversion rates and improved user engagement metrics across all key pages.",
+  "content": [
+    {
+      "type": "image",
+      "src": "homepage.jpg"
+    },
+    {
+      "type": "image",
+      "src": "product-page.jpg"
+    }
+  ]
+}

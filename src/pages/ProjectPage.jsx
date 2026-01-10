@@ -1,9 +1,10 @@
 import { useParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import ProjectGrid, { allProjects } from '../components/projects/ProjectGrid'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import ScrollAnimation from '../components/animations/ScrollAnimation'
-import { projectContent, defaultProjectContent } from '../data/projectContent'
+import { loadProjectContent, getDefaultProjectContent } from '../data/projectContentLoader'
 
 // Archive projects (same as in Archive.jsx)
 const archiveProjects = [
@@ -50,9 +51,18 @@ const allArchiveProjects = [...allProjects, ...archiveProjects]
 function ProjectPage() {
   const { id } = useParams()
   const project = allArchiveProjects.find(p => p.id === id)
-  
-  // Get project-specific content or use default
-  const content = projectContent[id] || defaultProjectContent
+  const [content, setContent] = useState(getDefaultProjectContent(id))
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadContent() {
+      setLoading(true)
+      const loadedContent = await loadProjectContent(id)
+      setContent(loadedContent)
+      setLoading(false)
+    }
+    loadContent()
+  }, [id])
 
   if (!project) {
     return (
@@ -73,69 +83,57 @@ function ProjectPage() {
       {/* Top Section */}
       <section className="w-full p-6 mb-20">
         <div className="max-w-[1920px] mx-auto">
-          {/* Project Header */}
-          <div className="mb-12">
+          {/* Row 1: Title + Description */}
+          <div className="mb-8">
             <ScrollAnimation>
-              <h1 className="text-5xl font-medium text-text-primary mb-4">{project.title}</h1>
+              <h1 className="text-[48px] font-medium text-text-primary mt-10 mb-2">{content.title || project.title}</h1>
             </ScrollAnimation>
-            
-            {/* Project Metadata */}
-            {content.metadata && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                {content.metadata.client && (
-                  <div>
-                    <p className="text-[14px] text-text-secondary mb-1">Client</p>
-                    <p className="text-[16px] text-text-primary font-medium">{content.metadata.client}</p>
-                  </div>
-                )}
-                {content.metadata.year && (
-                  <div>
-                    <p className="text-[14px] text-text-secondary mb-1">When</p>
-                    <p className="text-[16px] text-text-primary font-medium">{content.metadata.year}</p>
-                  </div>
-                )}
-                {content.metadata.type && (
-                  <div>
-                    <p className="text-[14px] text-text-secondary mb-1">Details</p>
-                    <p className="text-[16px] text-text-primary font-medium">{content.metadata.type}</p>
-                  </div>
-                )}
-                {content.metadata.responsibilities && (
-                  <div>
-                    <p className="text-[14px] text-text-secondary mb-1">Responsibilities</p>
-                    <p className="text-[16px] text-text-primary font-medium">
-                      {content.metadata.responsibilities.join(', ')}
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-            
-            <div className="flex flex-wrap gap-2 mb-6">
-              {project.tags.map((tag, index) => (
-                <ScrollAnimation key={index}>
-                  <span 
-                    className="text-[13px] py-2 px-2 bg-surface-tertiary text-text-secondary rounded-md font-normal"
-                  >
-                    {tag}
-                  </span>
-                </ScrollAnimation>
-              ))}
-            </div>
             <ScrollAnimation>
-              <p className="text-[16px] text-text-secondary font-normal leading-[1.2] max-w-3xl">
-                {project.description}
+              <p className="text-[18px] text-text-secondary font-normal max-w-3xl">
+                {content.description || project.description}
               </p>
             </ScrollAnimation>
           </div>
 
-          {/* Hero Image */}
+          {/* Row 2: Client, When, Details */}
+          <div className="flex flex-col md:flex-row gap-10 mb-8">
+            {content.client && (
+              <div>
+                <p className="text-[18px] text-text-primary mb-2">Client</p>
+                <p className="text-[16px] text-text-secondary font-medium">{content.client}</p>
+              </div>
+            )}
+            {content.when && (
+              <div>
+                <p className="text-[18px] text-text-primary mb-2">When</p>
+                <p className="text-[16px] text-text-secondary font-medium">{content.when}</p>
+              </div>
+            )}
+            {content.details && (
+              <div>
+                <p className="text-[18px] text-text-primary mb-2">Details</p>
+                <p className="text-[16px] text-text-secondary font-medium">{content.details}</p>
+              </div>
+            )}
+          </div>
+
+          {/* Row 3: Responsibilities */}
+          {content.responsibilities && content.responsibilities.length > 0 && (
+            <div className="mb-12">
+              <p className="text-[18px] text-text-primary mb-2">Responsibilities</p>
+              <p className="text-[16px] text-text-secondary font-medium">
+                {content.responsibilities.join(', ')}
+              </p>
+            </div>
+          )}
+
+          {/* Large project image */}
           <ScrollAnimation>
-            <div className="w-full aspect-video overflow-hidden rounded-lg bg-neutral-700">
-              {content.images && content.images[0] ? (
+            <div className="w-full aspect-video overflow-hidden rounded-lg bg-neutral-700 mb-20">
+              {content.heroImage ? (
                 <img 
-                  src={content.images[0]} 
-                  alt={project.title}
+                  src={content.heroImage} 
+                  alt={content.title || project.title}
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     e.target.style.display = 'none';
@@ -145,7 +143,7 @@ function ProjectPage() {
               ) : null}
               <div 
                 className={`w-full h-full flex items-center justify-center text-text-secondary text-lg ${
-                  content.images && content.images[0] ? 'hidden' : ''
+                  content.heroImage ? 'hidden' : ''
                 }`}
               >
                 Project Hero Image Placeholder
@@ -155,12 +153,12 @@ function ProjectPage() {
         </div>
       </section>
 
-      {/* Second Section - Content */}
+      {/* Second Section - Challenge, Solution, and Content */}
       <section className="w-full p-6 mb-20">
         <div className="max-w-[1920px] mx-auto">
-          {/* Challenge Section */}
+          {/* The challenge row */}
           {content.challenge && (
-            <div className="mb-12">
+            <div className="mb-12 grid grid-cols-2">
               <ScrollAnimation>
                 <h2 className="text-[18px] font-medium text-text-primary mb-4">The Challenge</h2>
               </ScrollAnimation>
@@ -171,92 +169,60 @@ function ProjectPage() {
               </ScrollAnimation>
             </div>
           )}
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
-            <div>
-              <ScrollAnimation>
-                <h2 className="text-[18px] font-medium text-text-primary mb-4">Overview</h2>
-              </ScrollAnimation>
-              {content.overview.map((paragraph, index) => (
-                <ScrollAnimation key={index}>
-                  <p className={`text-[16px] text-text-secondary font-normal leading-[1.2] ${index < content.overview.length - 1 ? 'mb-6' : ''}`}>
-                    {paragraph}
-                  </p>
-                </ScrollAnimation>
-              ))}
-            </div>
-            <div>
+
+          {/* The solution row */}
+          {content.solution && (
+            <div className="mb-12 grid grid-cols-2">
               <ScrollAnimation>
                 <h2 className="text-[18px] font-medium text-text-primary mb-4">The Solution</h2>
               </ScrollAnimation>
-              {content.solution ? (
-                <ScrollAnimation>
-                  <p className="text-[16px] text-text-secondary font-normal leading-[1.2]">
-                    {content.solution}
-                  </p>
-                </ScrollAnimation>
-              ) : (
-                <>
-                  <ScrollAnimation>
-                    <h3 className="text-[16px] font-medium text-text-primary mb-3">Key Features</h3>
-                  </ScrollAnimation>
-                  <ul className="space-y-3">
-                    {content.keyFeatures.map((feature, index) => (
-                      <ScrollAnimation key={index}>
-                        <li className="text-[16px] text-text-secondary font-normal leading-[1.2]">
-                          • {feature}
-                        </li>
-                      </ScrollAnimation>
-                    ))}
-                  </ul>
-                </>
-              )}
-            </div>
-          </div>
-
-          {/* Additional Images */}
-          {content.images && content.images.length > 1 && (
-            <div className="space-y-6 mb-12">
-              {content.images.slice(1).map((image, index) => (
-                <ScrollAnimation key={index}>
-                  <div className="w-full aspect-video overflow-hidden rounded-lg bg-neutral-700">
-                    <img 
-                      src={image} 
-                      alt={`${project.title} - Image ${index + 2}`}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        const placeholder = e.target.nextElementSibling;
-                        if (placeholder) placeholder.style.display = 'flex';
-                      }}
-                    />
-                    <div className="hidden w-full h-full items-center justify-center text-text-secondary text-lg">
-                      Project Image {index + 2} Placeholder
-                    </div>
-                  </div>
-                </ScrollAnimation>
-              ))}
+              <ScrollAnimation>
+                <p className="text-[16px] text-text-secondary font-normal leading-[1.2] max-w-3xl">
+                  {content.solution}
+                </p>
+              </ScrollAnimation>
             </div>
           )}
 
-          {/* Process Section */}
-          <div>
-            <ScrollAnimation>
-              <h2 className="text-[18px] font-medium text-text-primary mb-6">Design Process</h2>
-            </ScrollAnimation>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {content.designProcess.map((step, index) => (
-                <ScrollAnimation key={index}>
-                  <div>
-                    <h3 className="text-[16px] font-medium text-text-primary mb-3">{step.title}</h3>
-                    <p className="text-[16px] text-text-secondary font-normal leading-[1.2]">
-                      {step.description}
-                    </p>
-                  </div>
-                </ScrollAnimation>
-              ))}
+          {/* Content (Images + text) - ordered blocks */}
+          {content.content && content.content.length > 0 && (
+            <div className="space-y-6">
+              {content.content.map((block, index) => {
+                if (block.type === 'image') {
+                  return (
+                    <ScrollAnimation key={index}>
+                      <div className="w-full aspect-video overflow-hidden rounded-lg bg-neutral-700">
+                        <img 
+                          src={block.src} 
+                          alt={`${content.title || project.title} - Image ${index + 1}`}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            const placeholder = e.target.nextElementSibling;
+                            if (placeholder) placeholder.style.display = 'flex';
+                          }}
+                        />
+                        <div className="hidden w-full h-full items-center justify-center text-text-secondary text-lg">
+                          Project Image {index + 1} Placeholder
+                        </div>
+                      </div>
+                    </ScrollAnimation>
+                  )
+                } else if (block.type === 'text') {
+                  return (
+                    <ScrollAnimation key={index}>
+                      <div className="max-w-3xl">
+                        <p className="text-[16px] text-text-secondary font-normal leading-[1.2]">
+                          {block.content}
+                        </p>
+                      </div>
+                    </ScrollAnimation>
+                  )
+                }
+                return null
+              })}
             </div>
-          </div>
+          )}
         </div>
       </section>
 

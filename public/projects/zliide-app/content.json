@@ -1,0 +1,21 @@
+{
+  "title": "Zliide In-Store Ordering App",
+  "description": "Designed an in-store ordering app increasing physical fashion stores monthly store revenue up by additional 6% by reducing out-of-stock situations.",
+  "client": "Zliide",
+  "when": "2024",
+  "details": "App",
+  "responsibilities": ["UX Research", "UX Design", "UI Design", "Design System", "User Testing", "QA Testing"],
+  "heroImage": "hero.jpg",
+  "challenge": "Zliide is a technology company that seeks to reinvent the fashion industry by making physical retail stores more digital with solutions and features such as assisted-checkout, in-store ordering and informative dashboards. The task was to improve the current user experience of the in-store ordering app.",
+  "solution": "The new solution improved user satisfaction by 21.3%. The concept was enhanced through feedback gathered from brand stakeholders, store employees, and store customers. During user testing, the new solution was selected as the preferred choice by 100% of the participants. As a result of the new solution, new Figma design system components and tokens were added, while others were updated.",
+  "content": [
+    {
+      "type": "image",
+      "src": "ordering-flow.jpg"
+    },
+    {
+      "type": "image",
+      "src": "checkout.jpg"
+    }
+  ]
+}

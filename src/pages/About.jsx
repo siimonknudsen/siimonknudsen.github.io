@@ -7,12 +7,41 @@ import ImageGrid from '../components/grids/ImageGrid'
 import SkillCard from '../components/cards/SkillCard'
 
 function About() {
-  const companies = [
-    'Telia', 'Ekstra Bladet', 'AARSTIDERNE', 'talkmore', 'Velkommen.', 'DET FAGLIGE HUS',
-    'Jyllands-Posten', 'TELMORE', 'Oister', 'DAGENS DK', 'Ad service', 'energy',
-    'ApoPro.dk', 'DNA', 'elisa', 'prestalo', 'Crezu', 'Periodista Digital',
-    'Lendo', 'TFBank'
-  ]
+  // Automatically load all logos from src/assets/logos/ folder
+  // Just add your logo files to that folder - no need to update this code!
+  // Supports: .png, .jpg, .jpeg, .svg, .webp
+  const logoModules = import.meta.glob('../assets/logos/*.{png,jpg,jpeg,svg,webp}', { 
+    eager: true,
+    import: 'default'
+  })
+  
+  // Convert imported modules to an array of logo URLs, sorted by filename
+  const companies = Object.entries(logoModules)
+    .map(([path, url]) => ({
+      path,
+      url,
+      filename: path.split('/').pop()
+    }))
+    .sort((a, b) => a.filename.localeCompare(b.filename))
+    .map(item => item.url)
+
+  // Automatically load all images from src/assets/about-images/ folder
+  // Just add your images to that folder - no need to update this code!
+  // Supports: .jpg, .jpeg, .png, .webp, .gif
+  const imageModules = import.meta.glob('../assets/about-images/*.{jpg,jpeg,png,webp,gif}', { 
+    eager: true,
+    import: 'default'
+  })
+  
+  // Convert imported modules to an array of image URLs, sorted by filename
+  const aboutImages = Object.entries(imageModules)
+    .map(([path, url]) => ({
+      path,
+      url,
+      filename: path.split('/').pop()
+    }))
+    .sort((a, b) => a.filename.localeCompare(b.filename))
+    .map(item => item.url)
 
   const skills = [
     {
@@ -78,7 +107,7 @@ function About() {
 
       {/* Second Section - Mission Statement */}
       <section className="w-full p-6 mb-20">
-        <div className="max-w-[1920px] mx-auto bg-surface-secondary h-[700px] flex items-center justify-center">
+        <div className="max-w-[1920px] mx-auto bg-surface-secondary h-[700px] rounded-lg flex items-center justify-center">
           <ScrollAnimation>
             <p className="text-5xl font-medium text-text-primary text-center leading-none max-w-[23ch]">
               Making the world of digital products more user friendly, one product at a time.
@@ -95,7 +124,7 @@ function About() {
             <ScrollAnimation>
               <h2 className="text-[18px] font-medium text-text-primary mb-8">Companies i've done design for</h2>
             </ScrollAnimation>
-            <LogoGrid logos={companies} columns={6} gap="1" />
+            <LogoGrid logos={companies} columns={7} gap="1" />
           </div>
         </div>
       </section>
@@ -106,7 +135,7 @@ function About() {
           <ScrollAnimation>
             <h2 className="text-[18px] font-medium text-text-primary mb-8">Skills</h2>
           </ScrollAnimation>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
             {skills.map((skill, index) => (
               <SkillCard
                 key={index}
@@ -156,7 +185,7 @@ function About() {
           <ScrollAnimation>
             <h2 className="text-5xl text-text-primary mb-12">A Picture Is Worth a Thousand Words</h2>
           </ScrollAnimation>
-          <ImageGrid images={Array(20).fill(null)} columns={4} gap="1" aspectRatio="9/16" />
+          <ImageGrid images={aboutImages} columns={4} gap="1" aspectRatio="9/16" />
         </div>
       </section>
 

@@ -5,7 +5,7 @@ import ScrollAnimation from '../animations/ScrollAnimation'
 function ProjectCard({ id, title, description, tags = [] }) {
   return (
     <ScrollAnimation>
-      <Link to={`/project/${id}`} className="flex flex-col cursor-pointer group">
+      <Link to={`/project/${id}`} className="flex flex-col cursor-pointer">
       {/* Image Container with Glowing Border */}
       <div className="relative w-full aspect-video mb-4 rounded-lg project-card-image-wrapper">
         {/* Image - 16:9 aspect ratio - Grey background */}

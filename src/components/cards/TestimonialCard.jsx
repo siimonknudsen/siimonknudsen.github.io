@@ -18,7 +18,7 @@ function TestimonialCard({ logo, recommender, title, company, text }) {
         </div>
 
         {/* Recommender Info - Vertical Column */}
-        <div className="flex flex-col gap-0">
+        <div className="flex flex-col gap-1">
           <p className="text-text-primary font-medium leading-none text-[18px]">{recommender}</p>
           <p className="text-text-secondary text-[16px] leading-none">{title}</p>
           <p className="text-text-secondary text-[16px] leading-none">{company}</p>

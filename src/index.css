@@ -155,22 +155,8 @@ html:not(.dark) {
     }
   }
 
-  /* Project Card Hover Glow */
+  /* Project Card Image Wrapper */
   .project-card-image-wrapper {
     position: relative;
-  }
-
-  .project-card-image-wrapper > div {
-    transition: box-shadow 0.2s ease;
-  }
-
-  /* Dark mode: white glow behind image */
-  .group:hover .project-card-image-wrapper > div {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15), 0 0 40px rgba(255, 255, 255, 0.1);
-  }
-
-  /* Light mode: dark glow/shadow behind image */
-  html:not(.dark) .group:hover .project-card-image-wrapper > div {
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2), 0 0 40px rgba(0, 0, 0, 0.15);
   }
 }

@@ -1,0 +1,21 @@
+{
+  "title": "Adservice Website",
+  "description": "Redesigned the company website, enhancing the user experience and improving engagement and conversion rate.",
+  "client": "Adservice",
+  "when": "2024",
+  "details": "Website",
+  "responsibilities": ["UX Design", "UI Design", "Design System", "Frontend Development"],
+  "heroImage": "hero.jpg",
+  "challenge": "The Adservice website needed a complete redesign to modernize the brand and improve user experience. The existing site had inconsistent design patterns, slow load times, and poor mobile responsiveness.",
+  "solution": "Complete redesign with a new design system that created consistency across all pages while improving load times and mobile responsiveness. The modern, clean design improved content hierarchy and streamlined contact forms.",
+  "content": [
+    {
+      "type": "image",
+      "src": "services.jpg"
+    },
+    {
+      "type": "image",
+      "src": "contact.jpg"
+    }
+  ]
+}

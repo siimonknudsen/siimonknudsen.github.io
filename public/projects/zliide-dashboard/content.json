@@ -1,0 +1,21 @@
+{
+  "title": "Zliide Dashboard",
+  "description": "Designed a dashboard interface providing fashion brand stakeholders with important data statistics.",
+  "client": "Zliide",
+  "when": "2024",
+  "details": "Dashboard",
+  "responsibilities": ["UX Design", "UI Design", "Design System"],
+  "heroImage": "hero.jpg",
+  "challenge": "Fashion brand stakeholders needed a dashboard interface to access important data statistics. The existing solution lacked clarity and didn't effectively present key metrics.",
+  "solution": "Designed a dashboard interface that provides fashion brand stakeholders with clear, actionable data statistics through intuitive visualizations and organized information architecture.",
+  "content": [
+    {
+      "type": "image",
+      "src": "statistics.jpg"
+    },
+    {
+      "type": "image",
+      "src": "analytics.jpg"
+    }
+  ]
+}
