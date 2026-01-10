@@ -5,17 +5,31 @@
   "when": "2022",
   "details": "App",
   "responsibilities": ["UX Design", "UI Design", "User Research"],
-  "heroImage": "hero.jpg",
+  "heroImage": "images/hero.jpg",
   "challenge": "One of the most well-liked smart home apps is Apple Home. Comparatively speaking, they still have a lot of room for improvement. I was required to develop a digital concept for which I had no limitations. This allowed me to focus on sustainability in combination with smart home apps. The challenge was possible because of the conceptual idea that normal home appliance products were provided with technology that allowed users to track their consumption of each home appliance product.",
   "solution": "The new app solution addresses user friction points that are currently present in the Apple Home app. For example, the room-changing flow and animations have been improved, and new default backgrounds have been added for each room to improve accessibility, readability, and contrast. The new consumption feature gives users a quick overview of their home's water, heat, and electricity usage. Additional user testing is necessary to verify the app’s viability and the current user experience of the features in the app.",
   "content": [
-    {
-      "type": "image",
-      "src": "consumption.jpg"
-    },
-    {
-      "type": "image",
-      "src": "insights.jpg"
-    }
+    { "type": "image", "src": "images/image1.jpg" },
+    { "type": "image", "src": "images/image2.jpg" },
+    { "type": "image", "src": "images/image3.jpg" },
+    { "type": "image", "src": "images/image4.jpg" },
+    { "type": "image", "src": "images/image5.jpg" },
+    { "type": "image", "src": "images/image6.jpg" },
+    { "type": "image", "src": "images/image7.jpg" },
+    { "type": "image", "src": "images/image8.jpg" },
+    { "type": "image", "src": "images/image9.jpg" },
+    { "type": "image", "src": "images/image10.jpg" }
+  ],
+  "appScreens": [
+    { "src": "images/app1.jpg" },
+    { "src": "images/app2.jpg" },
+    { "src": "images/app3.jpg" },
+    { "src": "images/app4.jpg" },
+    { "src": "images/app5.jpg" },
+    { "src": "images/app6.jpg" },
+    { "src": "images/app7.jpg" },
+    { "src": "images/app8.jpg" },
+    { "src": "images/app9.jpg" },
+    { "src": "images/app10.jpg" }
   ]
 }

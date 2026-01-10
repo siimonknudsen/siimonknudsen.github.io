@@ -45,7 +45,12 @@ export async function loadProjectContent(projectId) {
           }
         }
         return block
-      })
+      }),
+      // App screens for app projects (iPhone mockups)
+      appScreens: (jsonData.appScreens || []).map(screen => ({
+        ...screen,
+        src: `${projectBasePath}${screen.src}`
+      }))
     }
   } catch (error) {
     console.warn(`Failed to load content for project ${projectId}:`, error)

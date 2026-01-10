@@ -1,15 +1,45 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ProjectTag from './ProjectTag'
 import ScrollAnimation from '../animations/ScrollAnimation'
 
+// Supported image formats to try (in order of preference)
+const IMAGE_FORMATS = ['.jpg', '.jpeg', '.png', '.webp']
+
 function ProjectCard({ id, title, description, tags = [] }) {
+  const [formatIndex, setFormatIndex] = useState(0)
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const [allFailed, setAllFailed] = useState(false)
+
+  // Construct hero image path from project ID
+  const heroBasePath = `/projects/${id}/images/hero`
+  const currentSrc = `${heroBasePath}${IMAGE_FORMATS[formatIndex]}`
+
+  const handleImageError = () => {
+    if (formatIndex < IMAGE_FORMATS.length - 1) {
+      setFormatIndex(formatIndex + 1)
+    } else {
+      setAllFailed(true)
+    }
+  }
+
   return (
     <ScrollAnimation>
       <Link to={`/project/${id}`} className="flex flex-col cursor-pointer">
       {/* Image Container with Glowing Border */}
-      <div className="relative w-full aspect-video mb-4 rounded-lg project-card-image-wrapper">
-        {/* Image - 16:9 aspect ratio - Grey background */}
-        <div className="w-full h-full rounded-lg bg-neutral-700"></div>
+      <div className="relative w-full aspect-video mb-4 rounded-lg project-card-image-wrapper overflow-hidden">
+        {/* Image - 16:9 aspect ratio */}
+        <div className="w-full h-full rounded-lg bg-neutral-700">
+          {!allFailed && (
+            <img 
+              src={currentSrc}
+              alt={title}
+              className={`w-full h-full object-cover rounded-lg transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              onLoad={() => setImageLoaded(true)}
+              onError={handleImageError}
+            />
+          )}
+        </div>
       </div>
 
       {/* Text Content - Header and body together with 4px gap */}

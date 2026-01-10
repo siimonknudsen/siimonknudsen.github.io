@@ -5,17 +5,31 @@
   "when": "2024",
   "details": "App",
   "responsibilities": ["UX Research", "UX Design", "UI Design", "Design System", "User Testing", "QA Testing"],
-  "heroImage": "hero.jpg",
+  "heroImage": "images/hero.jpg",
   "challenge": "Zliide is a technology company that seeks to reinvent the fashion industry by making physical retail stores more digital with solutions and features such as assisted-checkout, in-store ordering and informative dashboards. The task was to improve the current user experience of the in-store ordering app.",
   "solution": "The new solution improved user satisfaction by 21.3%. The concept was enhanced through feedback gathered from brand stakeholders, store employees, and store customers. During user testing, the new solution was selected as the preferred choice by 100% of the participants. As a result of the new solution, new Figma design system components and tokens were added, while others were updated.",
   "content": [
-    {
-      "type": "image",
-      "src": "ordering-flow.jpg"
-    },
-    {
-      "type": "image",
-      "src": "checkout.jpg"
-    }
+    { "type": "image", "src": "images/image1.jpg" },
+    { "type": "image", "src": "images/image2.jpg" },
+    { "type": "image", "src": "images/image3.jpg" },
+    { "type": "image", "src": "images/image4.jpg" },
+    { "type": "image", "src": "images/image5.jpg" },
+    { "type": "image", "src": "images/image6.jpg" },
+    { "type": "image", "src": "images/image7.jpg" },
+    { "type": "image", "src": "images/image8.jpg" },
+    { "type": "image", "src": "images/image9.jpg" },
+    { "type": "image", "src": "images/image10.jpg" }
+  ],
+  "appScreens": [
+    { "src": "images/app1.jpg" },
+    { "src": "images/app2.jpg" },
+    { "src": "images/app3.jpg" },
+    { "src": "images/app4.jpg" },
+    { "src": "images/app5.jpg" },
+    { "src": "images/app6.jpg" },
+    { "src": "images/app7.jpg" },
+    { "src": "images/app8.jpg" },
+    { "src": "images/app9.jpg" },
+    { "src": "images/app10.jpg" }
   ]
 }

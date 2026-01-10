@@ -6,6 +6,145 @@ import Footer from '../components/Footer'
 import ScrollAnimation from '../components/animations/ScrollAnimation'
 import { loadProjectContent, getDefaultProjectContent } from '../data/projectContentLoader'
 
+// Supported image formats to try (in order of preference)
+const IMAGE_FORMATS = ['.jpg', '.jpeg', '.png', '.webp']
+
+// Component that tries multiple image formats and hides if none exist
+function ContentImage({ src, alt }) {
+  const [loaded, setLoaded] = useState(false)
+  const [formatIndex, setFormatIndex] = useState(0)
+  const [allFailed, setAllFailed] = useState(false)
+
+  // Remove any existing extension and try formats in order
+  const baseSrc = src.replace(/\.(jpg|jpeg|png|webp)$/i, '')
+  const currentSrc = `${baseSrc}${IMAGE_FORMATS[formatIndex]}`
+
+  const handleError = () => {
+    if (formatIndex < IMAGE_FORMATS.length - 1) {
+      setFormatIndex(formatIndex + 1)
+    } else {
+      setAllFailed(true)
+    }
+  }
+
+  if (allFailed) return null
+
+  return (
+    <ScrollAnimation>
+      <div className={`w-full aspect-video overflow-hidden rounded-lg bg-neutral-700 ${!loaded ? 'hidden' : ''}`}>
+        <img 
+          src={currentSrc} 
+          alt={alt}
+          className="w-full h-full object-cover"
+          onLoad={() => setLoaded(true)}
+          onError={handleError}
+        />
+      </div>
+    </ScrollAnimation>
+  )
+}
+
+// Hero image component with format fallback
+function HeroImage({ src, alt }) {
+  const [loaded, setLoaded] = useState(false)
+  const [formatIndex, setFormatIndex] = useState(0)
+  const [allFailed, setAllFailed] = useState(false)
+
+  const baseSrc = src.replace(/\.(jpg|jpeg|png|webp)$/i, '')
+  const currentSrc = `${baseSrc}${IMAGE_FORMATS[formatIndex]}`
+
+  const handleError = () => {
+    if (formatIndex < IMAGE_FORMATS.length - 1) {
+      setFormatIndex(formatIndex + 1)
+    } else {
+      setAllFailed(true)
+    }
+  }
+
+  return (
+    <div className="w-full aspect-video overflow-hidden rounded-lg bg-neutral-700 mb-20">
+      {!allFailed && (
+        <img 
+          src={currentSrc} 
+          alt={alt}
+          className={`w-full h-full object-cover ${!loaded ? 'opacity-0' : 'opacity-100'}`}
+          onLoad={() => setLoaded(true)}
+          onError={handleError}
+        />
+      )}
+      {allFailed && (
+        <div className="w-full h-full flex items-center justify-center text-color-secondary text-lg">
+          Project Hero Image Placeholder
+        </div>
+      )}
+    </div>
+  )
+}
+
+// App screen image component with format fallback
+function AppScreenImage({ src, alt, onLoadSuccess }) {
+  const [loaded, setLoaded] = useState(false)
+  const [formatIndex, setFormatIndex] = useState(0)
+  const [allFailed, setAllFailed] = useState(false)
+
+  const baseSrc = src.replace(/\.(jpg|jpeg|png|webp)$/i, '')
+  const currentSrc = `${baseSrc}${IMAGE_FORMATS[formatIndex]}`
+
+  const handleError = () => {
+    if (formatIndex < IMAGE_FORMATS.length - 1) {
+      setFormatIndex(formatIndex + 1)
+    } else {
+      setAllFailed(true)
+    }
+  }
+
+  const handleLoad = () => {
+    setLoaded(true)
+    if (onLoadSuccess) onLoadSuccess()
+  }
+
+  if (allFailed) return null
+
+  return (
+    <div className={`flex justify-center ${!loaded ? 'hidden' : ''}`}>
+      <img 
+        src={currentSrc} 
+        alt={alt}
+        className="max-w-[492px] w-full h-auto"
+        onLoad={handleLoad}
+        onError={handleError}
+      />
+    </div>
+  )
+}
+
+// App Screens Section - displays a grid of app screen images
+function AppScreensSection({ appScreens, projectTitle }) {
+  const [hasAnyScreens, setHasAnyScreens] = useState(false)
+
+  if (!appScreens || appScreens.length === 0) return null
+
+  return (
+    <div className={`mt-20 ${!hasAnyScreens ? 'hidden' : ''}`}>
+      <ScrollAnimation>
+        <h2 className="text-[18px] font-medium text-color-primary mb-8">App Screens</h2>
+      </ScrollAnimation>
+      <ScrollAnimation>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+          {appScreens.map((screen, index) => (
+            <AppScreenImage 
+              key={index}
+              src={screen.src} 
+              alt={`${projectTitle} - App Screen ${index + 1}`}
+              onLoadSuccess={() => setHasAnyScreens(true)}
+            />
+          ))}
+        </div>
+      </ScrollAnimation>
+    </div>
+  )
+}
+
 // Archive projects (same as in Archive.jsx)
 const archiveProjects = [
   {
@@ -129,26 +268,16 @@ function ProjectPage() {
 
           {/* Large project image */}
           <ScrollAnimation>
-            <div className="w-full aspect-video overflow-hidden rounded-lg bg-neutral-700 mb-20">
-              {content.heroImage ? (
-                <img 
-                  src={content.heroImage} 
-                  alt={content.title || project.title}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextElementSibling.style.display = 'flex';
-                  }}
-                />
-              ) : null}
-              <div 
-                className={`w-full h-full flex items-center justify-center text-color-secondary text-lg ${
-                  content.heroImage ? 'hidden' : ''
-                }`}
-              >
+            {content.heroImage ? (
+              <HeroImage 
+                src={content.heroImage} 
+                alt={content.title || project.title}
+              />
+            ) : (
+              <div className="w-full aspect-video overflow-hidden rounded-lg bg-neutral-700 mb-20 flex items-center justify-center text-color-secondary text-lg">
                 Project Hero Image Placeholder
               </div>
-            </div>
+            )}
           </ScrollAnimation>
         </div>
       </section>
@@ -190,23 +319,11 @@ function ProjectPage() {
               {content.content.map((block, index) => {
                 if (block.type === 'image') {
                   return (
-                    <ScrollAnimation key={index}>
-                      <div className="w-full aspect-video overflow-hidden rounded-lg bg-neutral-700">
-                        <img 
-                          src={block.src} 
-                          alt={`${content.title || project.title} - Image ${index + 1}`}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                            const placeholder = e.target.nextElementSibling;
-                            if (placeholder) placeholder.style.display = 'flex';
-                          }}
-                        />
-                        <div className="hidden w-full h-full items-center justify-center text-color-secondary text-lg">
-                          Project Image {index + 1} Placeholder
-                        </div>
-                      </div>
-                    </ScrollAnimation>
+                    <ContentImage 
+                      key={index}
+                      src={block.src} 
+                      alt={`${content.title || project.title} - Image ${index + 1}`}
+                    />
                   )
                 } else if (block.type === 'text') {
                   return (
@@ -223,6 +340,12 @@ function ProjectPage() {
               })}
             </div>
           )}
+
+          {/* App Screens Section - for app projects */}
+          <AppScreensSection 
+            appScreens={content.appScreens} 
+            projectTitle={content.title || project.title}
+          />
         </div>
       </section>
 
