@@ -90,7 +90,7 @@ function Footer() {
         {/* Bottom Section */}
         <div className="border-t border-color-on-primary pt-6">
           <p className="text-xs text-color-secondary font-normal text-center">
-            © 2021-2024 Simon Knudsen. All rights reserved.
+            © 2021-{new Date().getFullYear()} Simon Knudsen. All rights reserved.
           </p>
         </div>
       </div>

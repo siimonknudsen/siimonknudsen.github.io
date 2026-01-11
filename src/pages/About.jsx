@@ -5,6 +5,7 @@ import ScrollAnimation from '../components/animations/ScrollAnimation'
 import LogoGrid from '../components/grids/LogoGrid'
 import ImageGrid from '../components/grids/ImageGrid'
 import SkillCard from '../components/cards/SkillCard'
+import ExperienceTimeline from '../components/experience/ExperienceTimeline'
 
 function About() {
   // Automatically load all logos from src/assets/logos/ folder
@@ -126,6 +127,13 @@ function About() {
             </ScrollAnimation>
             <LogoGrid logos={companies} columns={7} gap="1" />
           </div>
+        </div>
+      </section>
+
+      {/* Experience Section */}
+      <section id="experience" className="w-full p-6 mb-20 scroll-mt-24">
+        <div className="max-w-[900px] mx-auto">
+          <ExperienceTimeline />
         </div>
       </section>
 
