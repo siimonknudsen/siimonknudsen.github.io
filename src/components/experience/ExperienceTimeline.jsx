@@ -178,14 +178,7 @@ function ExperienceCard({ experience, index }) {
             `}
             onClick={() => setIsExpanded(!isExpanded)}
           >
-            {/* Badge */}
-            {experience.badge && (
-              <div className="absolute top-4 right-14">
-                <span className="text-[11px] font-medium text-green-400 bg-green-400/10 px-2.5 py-1 rounded-full">
-                  {experience.badge}
-                </span>
-              </div>
-            )}
+            
 
             {/* Header Row: Logo, Company info column, Expand Button */}
             <div className="flex items-center gap-4 mb-5">
@@ -214,9 +207,20 @@ function ExperienceCard({ experience, index }) {
 
               {/* Company info column */}
               <div className="flex-grow min-w-0">
+                <div className="flex items-center gap-2">
                 <h3 className="text-[16px] font-semibold text-color-primary leading-tight">
                   {experience.company}
                 </h3>
+                {/* Badge */}
+                {experience.badge && (
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-medium text-green-400 bg-green-400/10 px-1.5 py-0.5 rounded-full">
+                  {experience.badge}
+                  </span>
+                </div>
+            )}
+                </div>
+                
                 <div className="flex items-center gap-2 text-[13px] text-color-secondary mt-0.5">
                   <span>{companyStartDate} – {companyEndDate}</span>
                   <span className="text-color-secondary/40">·</span>
