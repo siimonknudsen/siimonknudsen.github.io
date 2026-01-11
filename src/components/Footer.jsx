@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Avatar from './Avatar'
 import Location from './Location'
+import { allProjects } from './projects/ProjectGrid'
 
 function Footer() {
 
@@ -33,24 +34,15 @@ function Footer() {
           <div className="flex flex-col">
             <h3 className="text-sm font-normal text-color-primary mb-4 leading-none">Projects</h3>
             <div className="flex flex-col gap-2">
-              <a href="#zliide-app" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
-                Zliide App
-              </a>
-              <a href="#apple-home-app" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
-                Apple Home App
-              </a>
-              <a href="#zliide-website" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
-                Zliide Website
-              </a>
-              <a href="#adservice-website" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
-                Adservice Website
-              </a>
-              <a href="#leadplatform-website" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
-                LeadPlatform Website
-              </a>
-              <a href="#zliide-dashboard" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
-                Zliide Dashboard
-              </a>
+              {allProjects.map((project) => (
+                <Link 
+                  key={project.id}
+                  to={`/project/${project.id}`} 
+                  className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors"
+                >
+                  {project.title}
+                </Link>
+              ))}
             </div>
           </div>
 
@@ -58,21 +50,21 @@ function Footer() {
           <div className="flex flex-col">
             <h3 className="text-sm font-normal text-color-primary mb-4 leading-none">About</h3>
             <div className="flex flex-col gap-2">
-              <a href="#about-me" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
+              <Link to="/about#about-me" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
                 About me
-              </a>
-              <a href="#skills" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
+              </Link>
+              <Link to="/about#companies" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
+                Companies
+              </Link>
+              <Link to="/about#skills" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
                 Skills
-              </a>
-              <a href="#testimonials" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
+              </Link>
+              <Link to="/about#testimonials" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
                 Testimonials
-              </a>
-              <a href="#design-tech-stack" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
-                Design & Tech Stack
-              </a>
-              <a href="#pictures" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
+              </Link>
+              <Link to="/about#pictures" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
                 Pictures
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -83,7 +75,12 @@ function Footer() {
               <a href="mailto:simonoverlund@hotmail.com" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
                 simonoverlund@hotmail.com
               </a>
-              <a href="#linkedin" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
+              <a 
+                href="https://www.linkedin.com/in/simon-knudsen/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors"
+              >
                 LinkedIn
               </a>
             </div>

@@ -83,7 +83,7 @@ function About() {
       <Header />
 
       {/* First Section - Headshot and Introduction */}
-      <section className="w-full p-6 mb-20">
+      <section id="about-me" className="w-full p-6 mb-20 scroll-mt-24">
         <div className="max-w-[1920px] mx-auto flex flex-col items-center">
           {/* Headshot */}
           <ScrollAnimation>
@@ -117,7 +117,7 @@ function About() {
       </section>
 
       {/* Third Section - Companies */}
-      <section className="w-full p-6 mb-20">
+      <section id="companies" className="w-full p-6 mb-20 scroll-mt-24">
         <div className="max-w-[1920px] mx-auto">
           {/* Companies Section */}
           <div>
@@ -130,7 +130,7 @@ function About() {
       </section>
 
       {/* Fourth Section - Detailed Skills */}
-      <section className="w-full p-6 mb-20">
+      <section id="skills" className="w-full p-6 mb-20 scroll-mt-24">
         <div className="max-w-[1920px] mx-auto">
           <ScrollAnimation>
             <h2 className="text-[18px] font-medium text-color-primary mb-8">Skills</h2>
@@ -148,7 +148,7 @@ function About() {
       </section>
 
       {/* Fifth Section - Testimonials */}
-      <section className="w-full p-6 mb-20">
+      <section id="testimonials" className="w-full p-6 mb-20 scroll-mt-24">
         <div className="max-w-[1920px] mx-auto">
           <ScrollAnimation>
             <h2 className="text-5xl text-color-primary mb-12">Testimonials</h2>
@@ -180,7 +180,7 @@ function About() {
       </section>
 
       {/* Sixth Section - Pictures */}
-      <section className="w-full p-6 mb-20">
+      <section id="pictures" className="w-full p-6 mb-20 scroll-mt-24">
         <div className="max-w-[1920px] mx-auto">
           <ScrollAnimation>
             <h2 className="text-5xl text-color-primary mb-12">A Picture Is Worth a Thousand Words</h2>
