@@ -236,27 +236,34 @@ function ProjectPage() {
 
           {/* Row 2: Client, When, Details */}
           <div className="flex flex-col md:flex-row gap-10 mb-8">
+          <ScrollAnimation>
             {content.client && (
               <div>
-                <p className="text-[18px] text-color-primary mb-2">Client</p>
-                <p className="text-[16px] text-color-secondary font-medium">{content.client}</p>
-              </div>
-            )}
+                  <p className="text-[18px] text-color-primary mb-2">Client</p>
+                  <p className="text-[16px] text-color-secondary font-medium">{content.client}</p>
+                </div>
+              )}
+            </ScrollAnimation>
+            <ScrollAnimation>
             {content.when && (
               <div>
                 <p className="text-[18px] text-color-primary mb-2">When</p>
                 <p className="text-[16px] text-color-secondary font-medium">{content.when}</p>
               </div>
             )}
+            </ScrollAnimation>
+            <ScrollAnimation>
             {content.details && (
               <div>
                 <p className="text-[18px] text-color-primary mb-2">Details</p>
                 <p className="text-[16px] text-color-secondary font-medium">{content.details}</p>
               </div>
             )}
+            </ScrollAnimation>
           </div>
 
           {/* Row 3: Responsibilities */}
+          <ScrollAnimation>
           {content.responsibilities && content.responsibilities.length > 0 && (
             <div className="mb-12">
               <p className="text-[18px] text-color-primary mb-2">Responsibilities</p>
@@ -265,6 +272,7 @@ function ProjectPage() {
               </p>
             </div>
           )}
+          </ScrollAnimation>
 
           {/* Large project image */}
           <ScrollAnimation>
