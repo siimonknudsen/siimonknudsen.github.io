@@ -31,7 +31,7 @@ function ContentImage({ src, alt }) {
 
   return (
     <ScrollAnimation>
-      <div className={`w-full aspect-video overflow-hidden rounded-lg bg-neutral-700 ${!loaded ? 'hidden' : ''}`}>
+      <div className={`w-full overflow-hidden rounded-lg ${!loaded ? 'hidden' : ''}`}>
         <img 
           src={currentSrc} 
           alt={alt}
@@ -62,7 +62,7 @@ function HeroImage({ src, alt }) {
   }
 
   return (
-    <div className="w-full aspect-video overflow-hidden rounded-lg bg-neutral-700 mb-20">
+    <div className="w-full overflow-hidden rounded-lg mb-20">
       {!allFailed && (
         <img 
           src={currentSrc} 
@@ -274,7 +274,7 @@ function ProjectPage() {
                 alt={content.title || project.title}
               />
             ) : (
-              <div className="w-full aspect-video overflow-hidden rounded-lg bg-neutral-700 mb-20 flex items-center justify-center text-color-secondary text-lg">
+              <div className="w-full overflow-hidden rounded-lg mb-20 flex items-center justify-center text-color-secondary text-lg">
                 Project Hero Image Placeholder
               </div>
             )}
