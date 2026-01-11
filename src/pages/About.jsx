@@ -132,7 +132,7 @@ function About() {
 
       {/* Experience Section */}
       <section id="experience" className="w-full p-6 mb-20 scroll-mt-24">
-        <div className="max-w-[900px] mx-auto">
+        <div className="max-w-[1920px] mx-auto">
           <ExperienceTimeline />
         </div>
       </section>

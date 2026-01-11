@@ -307,16 +307,6 @@ function ExperienceTimeline() {
           />
         ))}
       </div>
-
-      {/* End of timeline indicator */}
-      <ScrollAnimation>
-        <div className="flex items-center gap-4 pl-[5px] opacity-40">
-          <div className="w-1.5 h-1.5 rounded-full bg-surface-color-tertiary" />
-          <span className="text-[13px] text-color-secondary">
-            The journey continues...
-          </span>
-        </div>
-      </ScrollAnimation>
     </div>
   )
 }
