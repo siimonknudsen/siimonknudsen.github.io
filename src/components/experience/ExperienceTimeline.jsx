@@ -1,5 +1,39 @@
-import { useState } from 'react'
 import ScrollAnimation from '../animations/ScrollAnimation'
+
+// Helper function to calculate duration between two dates
+function calculateDuration(startDateStr, endDateStr) {
+  const months = {
+    'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+    'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+  }
+  
+  const parseDate = (dateStr) => {
+    if (dateStr === 'Present') {
+      return new Date()
+    }
+    const [month, year] = dateStr.split(' ')
+    return new Date(parseInt(year), months[month])
+  }
+  
+  const start = parseDate(startDateStr)
+  const end = parseDate(endDateStr)
+  
+  // Calculate total months difference
+  let totalMonths = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth())
+  // Add 1 to include both start and end months
+  totalMonths += 1
+  
+  const years = Math.floor(totalMonths / 12)
+  const remainingMonths = totalMonths % 12
+  
+  if (years === 0) {
+    return `${remainingMonths} month${remainingMonths !== 1 ? 's' : ''}`
+  } else if (remainingMonths === 0) {
+    return `${years} year${years !== 1 ? 's' : ''}`
+  } else {
+    return `${years} year${years !== 1 ? 's' : ''} ${remainingMonths} month${remainingMonths !== 1 ? 's' : ''}`
+  }
+}
 
 // Company logos - using initials/colors as fallback for reliable display
 // You can replace these with actual imported logos from your assets folder
@@ -92,13 +126,6 @@ const experiences = [
         startDate: 'May 2023',
         endDate: 'Feb 2024',
         current: false
-      },
-      {
-        title: 'Product Design Intern',
-        type: 'Internship',
-        startDate: 'Aug 2023',
-        endDate: 'Oct 2023',
-        current: false
       }
     ],
     description: 'Led end-to-end design tasks from user research to design, user testing, developer hand-off, and quality assurance. Designed and implemented Zliide.com, significantly enhancing SEO, engagement, and conversion rates. Designed an in-store ordering app for mobile and tablet, increasing monthly store revenue by 6%.',
@@ -116,13 +143,6 @@ const experiences = [
         startDate: 'Jul 2021',
         endDate: 'Apr 2023',
         current: false
-      },
-      {
-        title: 'Product Design Intern',
-        type: 'Internship',
-        startDate: 'Jan 2022',
-        endDate: 'Mar 2022',
-        current: false
       }
     ],
     description: 'Led end-to-end design tasks from user research to design, user testing, developer hand-off, and quality assurance. Designed and implemented Adservice.com, significantly enhancing SEO, engagement, and conversion rates. Designed a self-service interface for affiliate advertisers and gamification contest sites for telecom campaigns.',
@@ -131,19 +151,35 @@ const experiences = [
   }
 ]
 
-function ExperienceCard({ experience, index }) {
-  const [isExpanded, setIsExpanded] = useState(false)
+// Helper function to extract year from date string
+function getYearFromDate(dateStr) {
+  if (dateStr === 'Present') {
+    return new Date().getFullYear()
+  }
+  const [, year] = dateStr.split(' ')
+  return parseInt(year)
+}
+
+function ExperienceCard({ experience, index, yearLabel }) {
   const isLast = index === experiences.length - 1
 
   // Get the overall date range for the company
-  const allDates = experience.roles.flatMap(r => [r.startDate, r.endDate])
   const companyStartDate = experience.roles[experience.roles.length - 1].startDate
   const companyEndDate = experience.roles[0].endDate
 
   return (
-    <div className="relative flex gap-6 md:gap-10">
-      {/* Timeline line and dot */}
-      <div className="relative flex flex-col items-center">
+    <div className="relative grid grid-cols-[minmax(40px,50px)_auto_1fr_1fr_1fr] md:grid-cols-[60px_auto_1fr_1fr_1fr] gap-x-0">
+      {/* Column 1: Year label */}
+      <div className="pt-2 pr-3 md:pr-4 text-right">
+        {yearLabel && (
+          <span className="text-[13px] font-medium text-color-secondary">
+            {yearLabel}
+          </span>
+        )}
+      </div>
+
+      {/* Column 2: Timeline dot and line */}
+      <div className="relative flex flex-col items-center px-2">
         {/* Dot with glow effect for current role */}
         <div className={`
           relative z-10 w-3 h-3 rounded-full mt-2 flex-shrink-0
@@ -157,30 +193,23 @@ function ExperienceCard({ experience, index }) {
           )}
         </div>
         
-        {/* Connecting line - solid opacity */}
+        {/* Connecting line */}
         {!isLast && (
           <div className="w-[1px] flex-grow bg-[var(--border-color-secondary)] mt-3 mb-0" />
         )}
       </div>
 
-      {/* Content card */}
-      <div className="flex-grow pb-8">
+      {/* Columns 3-5: Content card (spans 3 columns) */}
+      <div className="col-span-3 pb-8 pl-3 md:pl-5">
         <ScrollAnimation>
           <div 
-            className={`
-              group relative overflow-hidden
+            className="
+              relative overflow-hidden
               bg-surface-color-secondary rounded-xl p-6
               border border-transparent
-              transition-all duration-500 ease-out
-              hover:bg-surface-color-tertiary
-              hover:border-color-secondary
-              cursor-pointer
-            `}
-            onClick={() => setIsExpanded(!isExpanded)}
+            "
           >
-            
-
-            {/* Header Row: Logo, Company info column, Expand Button */}
+            {/* Header Row: Logo, Company info column */}
             <div className="flex items-center gap-4 mb-5">
               {/* Logo */}
               <div className={`
@@ -190,7 +219,6 @@ function ExperienceCard({ experience, index }) {
                   ? 'bg-white' 
                   : `bg-gradient-to-br ${companyColors[experience.colorKey] || 'from-neutral-600 to-neutral-800'}`
                 }
-                transition-transform duration-300 group-hover:scale-105
               `}>
                 {experience.logo ? (
                   <img 
@@ -208,17 +236,15 @@ function ExperienceCard({ experience, index }) {
               {/* Company info column */}
               <div className="flex-grow min-w-0">
                 <div className="flex items-center gap-2">
-                <h3 className="text-[16px] font-semibold text-color-primary leading-tight">
-                  {experience.company}
-                </h3>
-                {/* Badge */}
-                {experience.badge && (
-                <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-medium text-green-400 bg-green-400/10 px-1.5 py-0.5 rounded-full">
-                  {experience.badge}
-                  </span>
-                </div>
-            )}
+                  <h3 className="text-[16px] font-semibold text-color-primary leading-tight">
+                    {experience.company}
+                  </h3>
+                  {/* Badge */}
+                  {experience.badge && (
+                    <span className="text-[11px] font-medium text-green-400 bg-green-400/10 px-1.5 py-0.5 rounded-full">
+                      {experience.badge}
+                    </span>
+                  )}
                 </div>
                 
                 <div className="flex items-center gap-2 text-[13px] text-color-secondary mt-0.5">
@@ -226,24 +252,6 @@ function ExperienceCard({ experience, index }) {
                   <span className="text-color-secondary/40">·</span>
                   <span>{experience.totalDuration}</span>
                 </div>
-              </div>
-
-              {/* Expand indicator */}
-              <div className={`
-                w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0
-                bg-surface-color-tertiary/50
-                transition-all duration-300
-                group-hover:bg-surface-color-tertiary
-                ${isExpanded ? 'rotate-180' : ''}
-              `}>
-                <svg 
-                  className="w-4 h-4 text-color-secondary transition-colors group-hover:text-color-primary" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
               </div>
             </div>
 
@@ -267,22 +275,10 @@ function ExperienceCard({ experience, index }) {
                   <div className="flex items-center gap-2 text-[13px] text-color-secondary">
                     <span>{role.startDate} – {role.endDate}</span>
                     <span className="text-color-secondary/40">·</span>
-                    <span>{role.type}</span>
+                    <span>{calculateDuration(role.startDate, role.endDate)}</span>
                   </div>
                 </div>
               ))}
-            </div>
-
-            {/* Expandable description */}
-            <div className={`
-              overflow-hidden transition-all duration-500 ease-out
-              ${isExpanded ? 'max-h-96 opacity-100 mt-5' : 'max-h-0 opacity-0 mt-0'}
-            `}>
-              <div className="pt-4 border-t border-color-secondary/20">
-                <p className="text-[14px] text-color-secondary leading-[1.6]">
-                  {experience.description}
-                </p>
-              </div>
             </div>
           </div>
         </ScrollAnimation>
@@ -292,6 +288,36 @@ function ExperienceCard({ experience, index }) {
 }
 
 function ExperienceTimeline() {
+  // Track which labels have been shown
+  const shownLabels = new Set()
+  
+  // Calculate year label for each experience
+  const experiencesWithYears = experiences.map((experience) => {
+    // Check if this experience has a current role
+    const isCurrent = experience.roles[0].current
+    
+    // Get the start year of the earliest role
+    const startDate = experience.roles[experience.roles.length - 1].startDate
+    const startYear = getYearFromDate(startDate)
+    
+    let yearLabel = null
+    
+    if (isCurrent && !shownLabels.has('Today')) {
+      // Show "Today" for current roles
+      yearLabel = 'Today'
+      shownLabels.add('Today')
+    } else {
+      // For past experiences, show the year they started (minimum 2021)
+      const displayYear = Math.max(startYear, 2021)
+      if (!shownLabels.has(displayYear)) {
+        yearLabel = displayYear.toString()
+        shownLabels.add(displayYear)
+      }
+    }
+    
+    return { ...experience, yearLabel }
+  })
+
   return (
     <div className="relative">
       {/* Section header */}
@@ -303,11 +329,12 @@ function ExperienceTimeline() {
 
       {/* Timeline */}
       <div className="relative pl-0">
-        {experiences.map((experience, index) => (
+        {experiencesWithYears.map((experience, index) => (
           <ExperienceCard 
             key={experience.id} 
             experience={experience} 
             index={index}
+            yearLabel={experience.yearLabel}
           />
         ))}
       </div>

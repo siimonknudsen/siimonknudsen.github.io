@@ -84,7 +84,7 @@ function About() {
       <Header />
 
       {/* First Section - Headshot and Introduction */}
-      <section id="about-me" className="w-full p-6 mb-20 scroll-mt-24">
+      <section id="about-me" className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] max-h-[900px] p-6 mb-20 scroll-mt-24">
         <div className="max-w-[1920px] mx-auto flex flex-col items-center">
           {/* Headshot */}
           <ScrollAnimation>

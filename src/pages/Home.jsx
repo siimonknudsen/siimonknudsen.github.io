@@ -22,7 +22,7 @@ function Home() {
       <Header />
 
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] p-6 mb-20">
+      <section className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] max-h-[900px] p-6 mb-20">
         {/* Large Avatar */}
         <div className="w-[148px] h-[148px] rounded-full overflow-hidden flex-shrink-0 bg-neutral-800 mb-6">
           <img 
