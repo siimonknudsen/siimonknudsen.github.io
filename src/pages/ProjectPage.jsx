@@ -148,40 +148,46 @@ function AppScreensSection({ appScreens, projectTitle }) {
 // Archive projects (same as in Archive.jsx)
 const archiveProjects = [
   {
-    id: 'archive-project-1',
-    title: "E-Commerce Platform Redesign",
-    description: "Redesigned a comprehensive e-commerce platform focusing on improving conversion rates and user experience.",
-    tags: ["UX Design", "UI Design", "Prototyping"]
-  },
-  {
-    id: 'archive-project-2',
-    title: "Mobile Banking App",
-    description: "Created a secure and intuitive mobile banking application with advanced transaction tracking.",
+    id: 'adservice-dashboard',
+    title: "Adservice Dashboard",
+    description: "Designed interfaces for affiliate advertisers, publishers and staff at the Affiliate Network Adservice",
     tags: ["UX Design", "UI Design", "Design System"]
   },
   {
-    id: 'archive-project-3',
-    title: "Social Media Dashboard",
-    description: "Designed a comprehensive dashboard for managing social media campaigns and analytics.",
-    tags: ["UX Design", "UI Design", "Data Visualization"]
+    id: 'ekstrabladet-comparison',
+    title: "Ekstra Bladet Comparison Website",
+    description: "Designed the comparison website and campaign material for Ekstra Bladet at Adservice.",
+    tags: ["UX Design", "UI Design", "Design System", "Marketing Design", "Frontend Development"]
   },
   {
-    id: 'archive-project-4',
-    title: "Fitness Tracking App",
-    description: "Developed an all-in-one fitness companion app with workout tracking and progress monitoring.",
-    tags: ["UX Design", "UI Design", "User Research"]
+    id: 'telia-campaign',
+    title: "Telia Campaign",
+    description: "Designed the campaign website and campaign material for Telia's affiliate campaign at Adservice.",
+    tags: ["UX Design", "UI Design", "Design System", "Marketing Design"]
   },
   {
-    id: 'archive-project-5',
-    title: "Travel Booking Platform",
-    description: "Designed an intuitive travel booking platform with personalized recommendations.",
-    tags: ["UX Design", "UI Design", "Prototyping"]
+    id: 'talkmore-campaign',
+    title: "Talkmore Campaign",
+    description: "Designed the campaign website and campaign material for Talkmore's affiliate campaign at Adservice.",
+    tags: ["UX Design", "UI Design", "Design System", "Marketing Design"]
   },
   {
-    id: 'archive-project-6',
-    title: "Food Delivery Service",
-    description: "Created a comprehensive food delivery platform connecting users with local restaurants.",
-    tags: ["UX Design", "UI Design", "Design System"]
+    id: 'jyllandsposten-comparison',
+    title: "Jyllands-Posten Comparison Website",
+    description: "Designed the comparison website and campaign material for Jyllands-Posten at Adservice.",
+    tags: ["UX Design", "UI Design", "Design System", "Marketing Design"]
+  },
+  {
+    id: 'benergy-campaign',
+    title: "b.energy Campaign",
+    description: "Designed the campaign website and campaign material for b.energy's affiliate campaign at Adservice.",
+    tags: ["UX Design", "UI Design", "Design System", "Marketing Design"]
+  },
+  {
+    id: 'aarstiderne-campaign',
+    title: "Aarstiderne Campaign",
+    description: "Designed the campaign website and campaign material for Aarstiderne affiliate campaign at Adservice.",
+    tags: ["UX Design", "UI Design", "Design System", "Marketing Design"]
   },
 ]
 
