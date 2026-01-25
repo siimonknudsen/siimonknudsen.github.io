@@ -27,9 +27,9 @@ function ProjectCard({ id, title, description, tags = [] }) {
     <ScrollAnimation>
       <Link to={`/project/${id}`} className="group flex flex-col cursor-pointer">
       {/* Image Container with Glowing Border */}
-      <div className="relative w-full aspect-video mb-4 project-card-image-wrapper overflow-hidden">
+      <div className="relative w-full aspect-video mb-4 project-card-image-wrapper overflow-hidden rounded">
         {/* Image - 16:9 aspect ratio */}
-        <div className="w-full h-full bg-neutral-700">
+        <div className="w-full h-full bg-neutral-700 rounded">
           {!allFailed && (
             <img 
               src={currentSrc}
