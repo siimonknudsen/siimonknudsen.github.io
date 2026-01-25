@@ -31,9 +31,9 @@ function ImageGrid({
     <div className={`grid ${gridCols[columns]} ${gapClasses[gap]}`}>
       {images.map((image, index) => (
         <ScrollAnimation key={index}>
-          <div className={`w-full ${aspectClasses[aspectRatio]} bg-neutral-700 rounded-lg overflow-hidden`}>
+          <div className={`w-full ${aspectClasses[aspectRatio]} bg-neutral-700 overflow-hidden`}>
             {image ? (
-              <img src={image} alt={`Image ${index + 1}`} className="w-full h-full object-cover" />
+              <img src={image} alt={`Image ${index + 1}`} className="w-full h-full object-cover rounded" />
             ) : (
               <div className="w-full h-full"></div>
             )}

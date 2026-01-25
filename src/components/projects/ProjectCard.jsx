@@ -27,14 +27,14 @@ function ProjectCard({ id, title, description, tags = [] }) {
     <ScrollAnimation>
       <Link to={`/project/${id}`} className="group flex flex-col cursor-pointer">
       {/* Image Container with Glowing Border */}
-      <div className="relative w-full aspect-video mb-4 rounded-lg project-card-image-wrapper overflow-hidden">
+      <div className="relative w-full aspect-video mb-4 project-card-image-wrapper overflow-hidden">
         {/* Image - 16:9 aspect ratio */}
-        <div className="w-full h-full rounded-lg bg-neutral-700">
+        <div className="w-full h-full bg-neutral-700">
           {!allFailed && (
             <img 
               src={currentSrc}
               alt={title}
-              className={`w-full h-full object-cover rounded-lg transition-all duration-200 ease-out group-hover:brightness-[0.8] ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              className={`w-full h-full object-cover rounded transition-all duration-200 ease-out group-hover:brightness-[0.8] ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
               onLoad={() => setImageLoaded(true)}
               onError={handleImageError}
             />

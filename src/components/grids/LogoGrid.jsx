@@ -26,9 +26,9 @@ function LogoGrid({ logos = [], columns = 6, gap = "1" }) {
         const logoName = logo ? logo.split('/').pop().replace('.png', '').replace(/-/g, ' ') : ''
         return (
           <ScrollAnimation key={index}>
-            <div className="w-full aspect-square rounded overflow-hidden">
+            <div className="w-full aspect-square overflow-hidden">
               {logo ? (
-                <img src={logo} alt={logoName || `Company logo ${index + 1}`} className="w-full h-full object-contain" />
+                <img src={logo} alt={logoName || `Company logo ${index + 1}`} className="w-full h-full object-contain rounded" />
               ) : (
                 <div className="w-full h-full bg-neutral-700 rounded"></div>
               )}

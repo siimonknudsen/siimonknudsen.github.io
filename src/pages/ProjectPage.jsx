@@ -31,11 +31,11 @@ function ContentImage({ src, alt }) {
 
   return (
     <ScrollAnimation>
-      <div className={`w-full overflow-hidden rounded-lg ${!loaded ? 'hidden' : ''}`}>
+      <div className={`w-full overflow-hidden ${!loaded ? 'hidden' : ''}`}>
         <img 
           src={currentSrc} 
           alt={alt}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover rounded"
           onLoad={() => setLoaded(true)}
           onError={handleError}
         />
@@ -62,12 +62,12 @@ function HeroImage({ src, alt }) {
   }
 
   return (
-    <div className="w-full overflow-hidden rounded-lg mb-20">
+    <div className="w-full overflow-hidden mb-20">
       {!allFailed && (
         <img 
           src={currentSrc} 
           alt={alt}
-          className={`w-full h-full object-cover ${!loaded ? 'opacity-0' : 'opacity-100'}`}
+          className={`w-full h-full object-cover rounded ${!loaded ? 'opacity-0' : 'opacity-100'}`}
           onLoad={() => setLoaded(true)}
           onError={handleError}
         />
@@ -110,7 +110,7 @@ function AppScreenImage({ src, alt, onLoadSuccess }) {
       <img 
         src={currentSrc} 
         alt={alt}
-        className="max-w-[492px] w-full h-auto"
+        className="max-w-[492px] w-full h-auto rounded"
         onLoad={handleLoad}
         onError={handleError}
       />
@@ -288,7 +288,7 @@ function ProjectPage() {
                 alt={content.title || project.title}
               />
             ) : (
-              <div className="w-full overflow-hidden rounded-lg mb-20 flex items-center justify-center text-color-secondary text-lg">
+              <div className="w-full overflow-hidden mb-20 flex items-center justify-center text-color-secondary text-lg">
                 Project Hero Image Placeholder
               </div>
             )}
