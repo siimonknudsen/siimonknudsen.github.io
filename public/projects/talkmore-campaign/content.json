@@ -1,0 +1,14 @@
+{
+  "title": "Talkmore Campaign",
+  "description": "Designed the campaign website and campaign material for Talkmore's affiliate campaign at Adservice.",
+  "client": "Talkmore",
+  "when": "2022",
+  "details": "Campaign",
+  "responsibilities": ["UX Design", "UI Design", "Design System", "Marketing Design"],
+  "heroImage": "images/hero.jpg",
+  "challenge": "Adservice is an affiliate company that connects advertisers and publishers. Talkmore was one of our advertisers which wanted to generate more leads through our gamification concept \"LeadPlatform\".",
+  "solution": "A campaign website and campaign material were designed resulting in 15.000+ visitiors and and a 18%+ conversion rate.",
+  "content": [
+    { "type": "image", "src": "images/image1.jpg" }
+  ]
+}

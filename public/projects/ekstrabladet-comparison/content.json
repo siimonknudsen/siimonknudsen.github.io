@@ -1,0 +1,14 @@
+{
+  "title": "Ekstra Bladet Comparison Website",
+  "description": "Designed the comparison website and campaign material for Ekstra Bladet at Adservice.",
+  "client": "Ekstra Bladet",
+  "when": "2022",
+  "details": "Comparison Website",
+  "responsibilities": ["UX Design", "UI Design", "Design System", "Marketing Design", "Frontend Development"],
+  "heroImage": "images/hero.jpg",
+  "challenge": "Adservice is an affiliate company that connects advertisers and publishers. Ekstra Bladet was one of our publishers which wanted to generate revenue with their large traffic, through a comparison solution.",
+  "solution": "A comparison website and campaign material were designed resulting in several subpages of different popular services such as internet, eletricity, telephone subscriptions and streaming services.",
+  "content": [
+    { "type": "image", "src": "images/image1.jpg" }
+  ]
+}
