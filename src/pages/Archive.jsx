@@ -7,12 +7,6 @@ import ProjectCard from '../components/projects/ProjectCard'
 // Additional archive projects
 const archiveProjects = [
   {
-    id: 'adservice-dashboard',
-    title: "Adservice Dashboard",
-    description: "Designed interfaces for affiliate advertisers, publishers and staff at the Affiliate Network Adservice",
-    tags: ["UX Design", "UI Design", "Design System"]
-  },
-  {
     id: 'ekstrabladet-comparison',
     title: "Ekstra Bladet Comparison Website",
     description: "Designed the comparison website and campaign material for Ekstra Bladet at Adservice.",
@@ -28,12 +22,6 @@ const archiveProjects = [
     id: 'talkmore-campaign',
     title: "Talkmore Campaign",
     description: "Designed the campaign website and campaign material for Talkmore's affiliate campaign at Adservice.",
-    tags: ["UX Design", "UI Design", "Design System", "Marketing Design"]
-  },
-  {
-    id: 'jyllandsposten-comparison',
-    title: "Jyllands-Posten Comparison Website",
-    description: "Designed the comparison website and campaign material for Jyllands-Posten at Adservice.",
     tags: ["UX Design", "UI Design", "Design System", "Marketing Design"]
   },
   {
