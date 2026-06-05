@@ -6,11 +6,11 @@ import ScrollAnimation from '../animations/ScrollAnimation'
 function SkillCard({ title, description }) {
   return (
     <ScrollAnimation>
-      <div className="bg-surface-color-secondary rounded-md p-5 flex flex-col h-full">
-        <h3 className="text-[18px] font-medium text-color-primary mb-4 leading-none">
+      <div className="glass-panel rounded-2xl p-5 flex flex-col h-full transition-transform duration-fast ease-standard hover:-translate-y-1">
+        <h3 className="type-subtitle text-color-primary mb-4">
           {title}
         </h3>
-        <p className="text-[16px] text-color-secondary font-normal leading-[1.4]">
+        <p className="type-body text-color-secondary">
           {description}
         </p>
       </div>

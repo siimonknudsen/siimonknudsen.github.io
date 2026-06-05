@@ -1,5 +1,3 @@
-import Header from '../components/Header'
-import Footer from '../components/Footer'
 import TestimonialCard from '../components/cards/TestimonialCard'
 import ScrollAnimation from '../components/animations/ScrollAnimation'
 import LogoGrid from '../components/grids/LogoGrid'
@@ -79,15 +77,13 @@ function About() {
   ]
 
   return (
-    <div className="min-h-screen bg-surface-color-primary text-color-primary">
-      <Header />
-
+    <>
       {/* First Section - Headshot and Introduction */}
       <section id="about-me" className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] max-h-[900px] p-6 mb-20 scroll-mt-24">
         <div className="max-w-[1920px] mx-auto flex flex-col items-center">
           {/* Headshot */}
           <ScrollAnimation>
-            <div className="w-[200px] h-[200px] rounded-full overflow-hidden flex-shrink-0 bg-neutral-800 mb-8">
+            <div className="w-[200px] h-[200px] rounded-full overflow-hidden flex-shrink-0 bg-surface-color-tertiary mb-8">
               <img 
                 src={`${import.meta.env.BASE_URL}simon-virtual.png`} 
                 alt="Simon Knudsen"
@@ -98,7 +94,7 @@ function About() {
 
           {/* Introduction Text */}
           <ScrollAnimation>
-            <p className="text-[16px] text-color-secondary font-normal leading-[1.2] text-center max-w-3xl">
+            <p className="type-body-lg text-color-secondary text-center max-w-3xl">
               I'm a Product Designer who's passionate about human psychology within digital products. I'm experienced in crafting beautiful and user friendly designs that solves real business problems. I'm specialized within UX Design, UI Design & Design Systems.
             </p>
           </ScrollAnimation>
@@ -109,7 +105,7 @@ function About() {
       <section className="w-full p-6 mb-20">
         <div className="max-w-[1920px] mx-auto bg-surface-color-secondary h-[700px] rounded-lg flex items-center justify-center">
           <ScrollAnimation>
-            <p className="text-5xl font-medium text-color-primary text-center leading-none max-w-[23ch]">
+            <p className="type-display text-color-primary text-center max-w-[23ch]">
               Making the world of digital products more user friendly, one product at a time.
             </p>
           </ScrollAnimation>
@@ -122,7 +118,7 @@ function About() {
           {/* Companies Section */}
           <div>
             <ScrollAnimation>
-              <h2 className="text-[18px] font-medium text-color-primary mb-8">Companies i've done design for</h2>
+              <h2 className="type-subtitle text-color-primary mb-8">Companies i've done design for</h2>
             </ScrollAnimation>
             <LogoGrid logos={companies} columns={7} gap="1" />
           </div>
@@ -151,7 +147,7 @@ function About() {
       <section id="testimonials" className="w-full p-6 mb-20 scroll-mt-24">
         <div className="max-w-[1920px] mx-auto">
           <ScrollAnimation>
-            <h2 className="text-5xl text-color-primary mb-12">Testimonials</h2>
+            <h2 className="type-display font-normal text-color-primary mb-12">Testimonials</h2>
           </ScrollAnimation>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <TestimonialCard
@@ -183,14 +179,12 @@ function About() {
       <section id="pictures" className="w-full p-6 mb-20 scroll-mt-24">
         <div className="max-w-[1920px] mx-auto">
           <ScrollAnimation>
-            <h2 className="text-5xl text-color-primary mb-12">A Picture Is Worth a Thousand Words</h2>
+            <h2 className="type-display font-normal text-color-primary mb-12">A Picture Is Worth a Thousand Words</h2>
           </ScrollAnimation>
           <ImageGrid images={aboutImages} columns={4} gap="1" aspectRatio="9/16" />
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </>
   )
 }
 

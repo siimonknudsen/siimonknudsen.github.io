@@ -28,9 +28,14 @@ function LogoGrid({ logos = [], columns = 6, gap = "1" }) {
           <ScrollAnimation key={index}>
             <div className="w-full aspect-square overflow-hidden">
               {logo ? (
-                <img src={logo} alt={logoName || `Company logo ${index + 1}`} className="w-full h-full object-contain rounded" />
+                <img
+                  src={logo}
+                  alt={logoName || `Company logo ${index + 1}`}
+                  loading="lazy"
+                  className="w-full h-full object-contain rounded opacity-70 hover:opacity-100 transition-opacity duration-fast ease-standard"
+                />
               ) : (
-                <div className="w-full h-full bg-neutral-700 rounded"></div>
+                <div className="w-full h-full bg-surface-color-tertiary rounded"></div>
               )}
             </div>
           </ScrollAnimation>

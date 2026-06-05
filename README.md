@@ -34,3 +34,14 @@ npm run dev
 ```bash
 npm run build
 ```
+
+## Documentation
+
+The design language is documented in a small set of canonical files (and rendered
+live at `/design-system`):
+
+- **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** — single source of truth: token
+  architecture, colour, typography, spacing, radius, elevation, motion, components.
+- **[VISION.md](VISION.md)** — the design vision and principles.
+- **[DECISIONS.md](DECISIONS.md)** — decision log (what we chose and why).
+- **[GLASS_DESIGN_SYSTEM.md](GLASS_DESIGN_SYSTEM.md)** — frosted-glass material spec.

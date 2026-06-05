@@ -20,9 +20,16 @@ function Location({ location = "Aarhus, Denmark" }) {
   };
 
   return (
-    <div className="flex items-center gap-2 text-[13px] text-color-secondary font-normal">
-      <div className="w-2 h-2 rounded-full bg-green-400 pulse-glow"></div>
-      <span>{location} - {formatTime(currentTime)}</span>
+    <div
+      className="flex items-center gap-2 type-caption text-color-secondary"
+      title="Available for new work"
+    >
+      <span className="w-2 h-2 rounded-full bg-accent pulse-glow" aria-hidden="true" />
+      <span className="flex items-center gap-1.5">
+        <span>{location}</span>
+        <span aria-hidden="true" className="opacity-40">·</span>
+        <span className="tabular-nums">{formatTime(currentTime)}</span>
+      </span>
     </div>
   )
 }

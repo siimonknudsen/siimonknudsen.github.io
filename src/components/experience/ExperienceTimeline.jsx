@@ -45,15 +45,6 @@ const companyLogos = {
   adtraction: null  // Will use gradient with initial
 }
 
-// Brand colors for company initials
-const companyColors = {
-  lenus: 'from-emerald-500 to-teal-600',
-  beefit: 'from-orange-500 to-red-500',
-  freelance: 'from-violet-500 to-purple-600',
-  zliide: 'from-blue-500 to-indigo-600',
-  adtraction: 'from-rose-500 to-pink-600'
-}
-
 const experiences = [
   {
     id: 1,
@@ -183,13 +174,13 @@ function ExperienceCard({ experience, index, yearLabel }) {
         {/* Dot with glow effect for current role */}
         <div className={`
           relative z-10 w-3 h-3 rounded-full mt-2 flex-shrink-0
-          ${experience.roles[0].current 
-            ? 'bg-green-400 pulse-glow' 
+          ${experience.roles[0].current
+            ? 'bg-accent pulse-glow'
             : 'bg-surface-color-tertiary border-2 border-color-secondary'
           }
         `}>
           {experience.roles[0].current && (
-            <div className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-30" />
+            <div className="absolute inset-0 rounded-full bg-accent animate-ping opacity-30" />
           )}
         </div>
         
@@ -215,19 +206,16 @@ function ExperienceCard({ experience, index, yearLabel }) {
               <div className={`
                 w-11 h-11 rounded-xl flex-shrink-0 overflow-hidden
                 flex items-center justify-center
-                ${experience.logo 
-                  ? 'bg-white' 
-                  : `bg-gradient-to-br ${companyColors[experience.colorKey] || 'from-neutral-600 to-neutral-800'}`
-                }
+                ${experience.logo ? 'bg-white' : 'bg-surface-color-tertiary'}
               `}>
                 {experience.logo ? (
-                  <img 
-                    src={experience.logo} 
+                  <img
+                    src={experience.logo}
                     alt={experience.company}
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <span className="text-base font-semibold text-white drop-shadow-sm">
+                  <span className="text-base font-semibold text-color-primary">
                     {experience.company.charAt(0)}
                   </span>
                 )}
@@ -241,7 +229,7 @@ function ExperienceCard({ experience, index, yearLabel }) {
                   </h3>
                   {/* Badge */}
                   {experience.badge && (
-                    <span className="text-[11px] font-medium text-green-400 bg-green-400/10 px-1.5 py-0.5 rounded-full">
+                    <span className="type-caption font-medium text-accent bg-accent-soft px-1.5 py-0.5 rounded-full">
                       {experience.badge}
                     </span>
                   )}
@@ -265,8 +253,8 @@ function ExperienceCard({ experience, index, yearLabel }) {
                       {role.title}
                     </span>
                     {role.current && (
-                      <span className="flex items-center gap-1.5 text-[11px] font-medium text-green-400">
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                      <span className="flex items-center gap-1.5 type-caption font-medium text-accent">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent" />
                         Current
                       </span>
                     )}

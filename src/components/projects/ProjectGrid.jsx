@@ -40,6 +40,43 @@ export const allProjects = [
   },
 ]
 
+// Additional archive-only projects (campaigns) — shown on the Archive page and
+// in the nav's Archive dropdown.
+export const archiveProjects = [
+  {
+    id: 'ekstrabladet-comparison',
+    title: "Ekstra Bladet Comparison Website",
+    description: "Designed the comparison website and campaign material for Ekstra Bladet at Adservice.",
+    tags: ["UX Design", "UI Design", "Design System", "Marketing Design", "Frontend Development"]
+  },
+  {
+    id: 'telia-campaign',
+    title: "Telia Campaign",
+    description: "Designed the campaign website and campaign material for Telia's affiliate campaign at Adservice.",
+    tags: ["UX Design", "UI Design", "Design System", "Marketing Design"]
+  },
+  {
+    id: 'talkmore-campaign',
+    title: "Talkmore Campaign",
+    description: "Designed the campaign website and campaign material for Talkmore's affiliate campaign at Adservice.",
+    tags: ["UX Design", "UI Design", "Design System", "Marketing Design"]
+  },
+  {
+    id: 'benergy-campaign',
+    title: "b.energy Campaign",
+    description: "Designed the campaign website and campaign material for b.energy's affiliate campaign at Adservice.",
+    tags: ["UX Design", "UI Design", "Design System", "Marketing Design"]
+  },
+  {
+    id: 'aarstiderne-campaign',
+    title: "Aarstiderne Campaign",
+    description: "Designed the campaign website and campaign material for Aarstiderne affiliate campaign at Adservice.",
+    tags: ["UX Design", "UI Design", "Design System", "Marketing Design"]
+  },
+]
+
+export const allArchiveProjects = [...allProjects, ...archiveProjects]
+
 function ProjectGrid({ excludeProjectId = null }) {
   const projects = excludeProjectId 
     ? allProjects.filter(project => project.id !== excludeProjectId)

@@ -1,6 +1,6 @@
 function ProjectTag({ children }) {
   return (
-    <span className="text-[13px] py-2 px-2 bg-surface-color-tertiary text-color-secondary rounded-md font-normal">
+    <span className="type-caption py-1.5 px-2.5 bg-surface-color-tertiary text-color-secondary rounded-lg">
       {children}
     </span>
   )

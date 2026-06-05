@@ -1,32 +1,81 @@
 /**
- * Button component with primary and secondary variants
+ * Button — the design-system action. Pill-shaped, tokenised.
+ *
+ * variant: primary | secondary | accent | glass | ghost   (default primary)
+ * size:    sm | md | lg                                    (default md)
+ * Extras:  iconLeft, iconRight, loading, fullWidth, and `as` (polymorphic —
+ *          e.g. as={Link} to="/..." or as="a" href="...").
  */
-function Button({ children, variant = 'primary', className = "", ...props }) {
-  const baseClasses = "px-3 py-2 rounded-lg font-medium text-sm transition-colors"
-  
-  const variantClasses = {
-    primary: "bg-surface-color-contrast-primary text-color-contrast-primary hover:bg-surface-color-contrast-primary hover:text-color-contrast-primary",
-    secondary: "bg-surface-color-tertiary text-color-primary hover:bg-surface-color-secondary"
-  }
 
+function Spinner() {
   return (
-    <button 
-      className={`${baseClasses} ${variantClasses[variant]} ${className}`}
-      {...props}
-    >
-      {children}
-    </button>
+    <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
+      <path className="opacity-90" d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+    </svg>
   )
 }
 
-// Export named components for backward compatibility
+const sizeClasses = {
+  sm: 'h-8 px-3.5',
+  md: 'h-10 px-5',
+  lg: 'h-12 px-6',
+}
+
+const variantClasses = {
+  primary: 'bg-surface-color-contrast-primary text-color-contrast-primary hover:opacity-90',
+  secondary: 'bg-surface-color-tertiary text-color-primary hover:bg-surface-color-secondary',
+  accent: 'bg-accent text-[color:var(--accent-contrast)] hover:opacity-90',
+  glass: 'glass glass-item text-color-primary',
+  ghost: 'glass-item text-color-secondary hover:text-color-primary',
+}
+
+const base =
+  'inline-flex items-center justify-center gap-2 rounded-lg type-label whitespace-nowrap select-none ' +
+  'transition-[background-color,color,transform,opacity] duration-fast ease-standard active:scale-[0.98] ' +
+  'disabled:opacity-50 disabled:pointer-events-none ' +
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)] ' +
+  'focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--surface-color-primary)]'
+
+function Button({
+  children,
+  variant = 'primary',
+  size = 'md',
+  className = '',
+  as: Comp = 'button',
+  iconLeft,
+  iconRight,
+  loading = false,
+  fullWidth = false,
+  ...props
+}) {
+  return (
+    <Comp
+      className={`${base} ${sizeClasses[size] || sizeClasses.md} ${
+        variantClasses[variant] || variantClasses.primary
+      } ${fullWidth ? 'w-full' : ''} ${className}`}
+      aria-busy={loading || undefined}
+      {...props}
+    >
+      {loading && <Spinner />}
+      {!loading && iconLeft}
+      {children}
+      {!loading && iconRight}
+    </Comp>
+  )
+}
+
+// Backwards-compatible named exports
 export const PrimaryButton = ({ children, ...props }) => (
-  <Button variant="primary" {...props}>{children}</Button>
+  <Button variant="primary" {...props}>
+    {children}
+  </Button>
 )
 
 export const SecondaryButton = ({ children, ...props }) => (
-  <Button variant="secondary" {...props}>{children}</Button>
+  <Button variant="secondary" {...props}>
+    {children}
+  </Button>
 )
 
 export default Button
-

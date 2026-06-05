@@ -2,8 +2,7 @@ import { useEffect } from 'react'
 import ProjectGrid from '../components/projects/ProjectGrid'
 import { PrimaryButton, SecondaryButton } from '../components/buttons/Button'
 import TestimonialCard from '../components/cards/TestimonialCard'
-import Footer from '../components/Footer'
-import Header from '../components/Header'
+import HeroBackground from '../components/HeroBackground'
 import ScrollAnimation from '../components/animations/ScrollAnimation'
 
 function Home() {
@@ -18,13 +17,13 @@ function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-surface-color-primary text-color-primary">
-      <Header />
-
+    <>
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] max-h-[900px] p-6 mb-20">
+      <section className="relative overflow-hidden flex flex-col items-center justify-center min-h-[calc(100vh-80px)] max-h-[900px] p-6 mb-20">
+        <HeroBackground />
+        <div className="relative z-10 flex flex-col items-center">
         {/* Large Avatar */}
-        <div className="w-[148px] h-[148px] rounded-full overflow-hidden flex-shrink-0 bg-neutral-800 mb-6">
+        <div className="w-[148px] h-[148px] rounded-full overflow-hidden flex-shrink-0 bg-surface-color-tertiary mb-6">
           <img 
             src={`${import.meta.env.BASE_URL}simon-virtual.png`} 
             alt="Simon Knudsen"
@@ -33,12 +32,12 @@ function Home() {
         </div>
 
         {/* Name */}
-        <h1 className="text-2xl font-medium text-color-primary mb-6 text-center">
+        <h1 className="type-heading-sm text-color-primary mb-6 text-center">
           Simon Knudsen
         </h1>
 
         {/* Description */}
-        <p className="text-5xl text-color-primary text-center max-w-2xl mb-10 leading-none">
+        <p className="type-display font-normal text-color-primary text-center max-w-2xl mb-10">
           Product Designer specialized in creating innovative and human-centered digital experiences
         </p>
 
@@ -51,6 +50,7 @@ function Home() {
             Contact
           </SecondaryButton>
         </div>
+        </div>
       </section>
 
       {/* Projects Section */}
@@ -62,7 +62,7 @@ function Home() {
       <section className="w-full p-6 mb-20">
         <div className="max-w-[1920px] mx-auto">
           <ScrollAnimation>
-            <h2 className="text-5xl text-color-primary mb-12">Testimonials</h2>
+            <h2 className="type-display font-normal text-color-primary mb-12">Testimonials</h2>
           </ScrollAnimation>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <TestimonialCard
@@ -89,10 +89,7 @@ function Home() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <Footer />
-    </div>
+    </>
   )
 }
 

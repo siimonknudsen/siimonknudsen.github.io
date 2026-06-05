@@ -1,30 +1,26 @@
 /**
- * Reusable BodyText component with consistent typography
+ * BodyText — thin wrapper over the semantic body type roles (see index.css).
+ * size: lg → type-body-lg · base → type-body · sm → type-body-sm · xs → type-caption
  */
-function BodyText({ 
-  children, 
-  className = "",
-  size = "base", // base (16px), sm (14px), xs (13px)
-  color = "secondary" // primary, secondary, tertiary
-}) {
-  const sizeClasses = {
-    base: "text-[16px]",
-    sm: "text-[14px]",
-    xs: "text-[13px]"
+function BodyText({ children, className = '', size = 'base', color = 'secondary' }) {
+  const roleClasses = {
+    lg: 'type-body-lg',
+    base: 'type-body',
+    sm: 'type-body-sm',
+    xs: 'type-caption',
   }
 
   const colorClasses = {
-    primary: "text-color-primary",
-    secondary: "text-color-secondary",
-    tertiary: "text-color-tertiary"
+    primary: 'text-color-primary',
+    secondary: 'text-color-secondary',
+    tertiary: 'text-color-tertiary',
   }
 
   return (
-    <p className={`${sizeClasses[size]} ${colorClasses[color]} font-normal leading-[1.2] ${className}`}>
+    <p className={`${roleClasses[size] || roleClasses.base} ${colorClasses[color] || colorClasses.secondary} ${className}`}>
       {children}
     </p>
   )
 }
 
 export default BodyText
-

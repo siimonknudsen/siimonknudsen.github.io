@@ -21,24 +21,24 @@ function Footer() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <Link to="/archive" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
+              <Link to="/archive" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors">
                 Archive
               </Link>
-              <Link to="/style-guide" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
-                Style Guide
+              <Link to="/design-system" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors">
+                Design system
               </Link>
             </div>
           </div>
 
           {/* Column 2: Projects */}
           <div className="flex flex-col">
-            <h3 className="text-sm font-normal text-color-primary mb-4 leading-none">Projects</h3>
+            <h3 className="type-label text-color-primary mb-4">Projects</h3>
             <div className="flex flex-col gap-2">
               {allProjects.map((project) => (
                 <Link 
                   key={project.id}
                   to={`/project/${project.id}`} 
-                  className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors"
+                  className="type-body-sm text-color-secondary hover:text-color-primary transition-colors"
                 >
                   {project.title}
                 </Link>
@@ -48,21 +48,21 @@ function Footer() {
 
           {/* Column 3: About */}
           <div className="flex flex-col">
-            <h3 className="text-sm font-normal text-color-primary mb-4 leading-none">About</h3>
+            <h3 className="type-label text-color-primary mb-4">About</h3>
             <div className="flex flex-col gap-2">
-              <Link to="/about#about-me" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
+              <Link to="/about#about-me" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors">
                 About me
               </Link>
-              <Link to="/about#companies" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
+              <Link to="/about#companies" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors">
                 Companies
               </Link>
-              <Link to="/about#skills" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
+              <Link to="/about#skills" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors">
                 Skills
               </Link>
-              <Link to="/about#testimonials" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
+              <Link to="/about#testimonials" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors">
                 Testimonials
               </Link>
-              <Link to="/about#pictures" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
+              <Link to="/about#pictures" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors">
                 Pictures
               </Link>
             </div>
@@ -70,16 +70,16 @@ function Footer() {
 
           {/* Column 4: Contact */}
           <div className="flex flex-col">
-            <h3 className="text-sm font-normal text-color-primary mb-4 leading-none">Contact</h3>
+            <h3 className="type-label text-color-primary mb-4">Contact</h3>
             <div className="flex flex-col gap-2">
-              <a href="mailto:simonoverlund@hotmail.com" className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors">
+              <a href="mailto:simonoverlund@hotmail.com" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors">
                 simonoverlund@hotmail.com
               </a>
               <a 
                 href="https://www.linkedin.com/in/simon-knudsen/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-sm text-color-secondary font-normal hover:text-color-primary transition-colors"
+                className="type-body-sm text-color-secondary hover:text-color-primary transition-colors"
               >
                 LinkedIn
               </a>
@@ -89,7 +89,7 @@ function Footer() {
 
         {/* Bottom Section */}
         <div className="border-t border-color-on-primary pt-6">
-          <p className="text-xs text-color-secondary font-normal text-center">
+          <p className="type-caption text-color-secondary text-center">
             © 2021-{new Date().getFullYear()} Simon Knudsen. All rights reserved.
           </p>
         </div>
