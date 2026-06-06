@@ -2,7 +2,7 @@ import ProjectGrid from '../components/projects/ProjectGrid'
 import { PrimaryButton, SecondaryButton } from '../components/buttons/Button'
 import TestimonialCard from '../components/cards/TestimonialCard'
 import HeroBackground from '../components/HeroBackground'
-import StatBand from '../components/home/StatBand'
+import WorkedAt from '../components/home/WorkedAt'
 import WordReveal from '../components/home/WordReveal'
 import FeaturedQuote from '../components/home/FeaturedQuote'
 import LogoWall from '../components/home/LogoWall'
@@ -76,10 +76,8 @@ function Home() {
         </div>
       </section>
 
-      {/* Stats Band */}
-      <section className={styles.statsSection}>
-        <StatBand />
-      </section>
+      {/* Worked at — trust row of past companies */}
+      <WorkedAt />
 
       {/* Projects Section — full-width cards that stack on scroll */}
       <section id="projects" className={styles.projectsSection}>

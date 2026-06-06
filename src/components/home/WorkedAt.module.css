@@ -1,0 +1,63 @@
+.section {
+  width: 100%;
+  padding: var(--space-16) var(--page-gutter) 0;
+  margin-bottom: var(--space-64);
+}
+
+.inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-24);
+}
+
+.label {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-24) var(--space-48);
+}
+
+/* Text wordmark placeholder — muted, lifts to full colour on hover */
+.wordmark {
+  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.02em;
+  color: var(--text-color-tertiary);
+  opacity: 0.85;
+  transition: color var(--dur-base) var(--ease-standard),
+    opacity var(--dur-base) var(--ease-standard);
+}
+
+.wordmark:hover {
+  color: var(--text-color-primary);
+  opacity: 1;
+}
+
+/* Real logo (when provided) */
+.logoImg {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.7;
+  transition: opacity var(--dur-base) var(--ease-standard);
+}
+
+.logoImg:hover {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wordmark,
+  .logoImg {
+    transition: none;
+  }
+}
