@@ -32,42 +32,82 @@
   max-width: 52ch;
 }
 
-/* Frosted email card */
-.card {
-  display: inline-flex;
+/* Glass form */
+.form {
+  display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-12);
+  gap: var(--space-16);
+  width: 100%;
+  max-width: 34rem;
   margin-top: var(--space-16);
   padding: var(--space-32);
   border-radius: var(--radius-2xl);
-  max-width: 100%;
 }
 
-.cardLabel {
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.label {
+  color: var(--text-color-secondary);
+}
+
+.input {
+  width: 100%;
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-md);
+  background-color: var(--surface-color-secondary);
+  border: 1px solid var(--border-color-secondary);
+  color: var(--text-color-primary);
+  font: inherit;
+  font-size: var(--text-base);
+  letter-spacing: var(--tracking-snug);
+  transition: border-color var(--dur-fast) var(--ease-standard),
+    box-shadow var(--dur-fast) var(--ease-standard);
+}
+.input::placeholder {
+  color: var(--text-color-tertiary);
+}
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 30%, transparent);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.5;
+}
+
+.submit {
+  align-self: flex-start;
+  margin-top: var(--space-4);
+}
+
+.formNote {
   margin: 0;
 }
 
-/* Big, clickable email — the page's focal action */
-.email {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
-  font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-tight);
-  line-height: 1.1;
-  color: var(--text-color-primary);
-  text-decoration: none;
-  word-break: break-word;
-  transition: color var(--dur-fast) var(--ease-standard);
+/* Direct contact below the form */
+.direct {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-12);
+  margin-top: var(--space-24);
 }
-.email:hover {
-  color: var(--accent);
+.directLabel {
+  margin: 0;
 }
 
 .links {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-24);
-  margin-top: var(--space-4);
 }
 
 .link {
@@ -82,5 +122,5 @@
 }
 
 .meta {
-  margin-top: var(--space-8);
+  margin-top: var(--space-4);
 }
