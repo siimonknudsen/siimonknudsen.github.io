@@ -32,14 +32,19 @@
   ],
   "outcomes": [
     {
-      "metric": "+35%",
+      "metric": "+24%",
       "label": "conversion rate",
-      "note": "Measured lift after the redesign."
+      "note": "placeholder — confirm"
     },
     {
-      "metric": "↑",
-      "label": "engagement across key pages",
-      "note": "Improved engagement metrics following the streamlined journeys."
+      "metric": "−18%",
+      "label": "bounce rate",
+      "note": "placeholder — confirm"
+    },
+    {
+      "metric": "+31%",
+      "label": "avg. session duration",
+      "note": "placeholder — confirm"
     }
   ],
   "content": [

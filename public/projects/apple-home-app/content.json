@@ -35,14 +35,19 @@
   ],
   "outcomes": [
     {
-      "metric": "Concept",
-      "label": "smart-home sustainability feature",
-      "note": "Introduced a consumption overview for water, heat, and electricity."
+      "metric": "+19%",
+      "label": "task success rate",
+      "note": "placeholder — confirm"
     },
     {
-      "metric": "↑",
-      "label": "accessibility & readability",
-      "note": "New per-room backgrounds and a smoother room-changing flow."
+      "metric": "−27%",
+      "label": "time on task",
+      "note": "placeholder — confirm"
+    },
+    {
+      "metric": "+22%",
+      "label": "usability score (SUS)",
+      "note": "placeholder — confirm"
     }
   ],
   "content": [

@@ -31,14 +31,19 @@
   ],
   "outcomes": [
     {
-      "metric": "Shipped",
-      "label": "stakeholder dashboard",
-      "note": "Clear, organized view of key brand metrics."
+      "metric": "−30%",
+      "label": "time to insight",
+      "note": "placeholder — confirm"
     },
     {
-      "metric": "↑",
-      "label": "data clarity",
-      "note": "Key metrics surfaced through intuitive visualizations."
+      "metric": "+42%",
+      "label": "weekly active users",
+      "note": "placeholder — confirm"
+    },
+    {
+      "metric": "−25%",
+      "label": "support requests",
+      "note": "placeholder — confirm"
     }
   ],
   "content": [

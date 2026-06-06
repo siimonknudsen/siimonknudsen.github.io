@@ -28,6 +28,11 @@
   max-width: 14ch;
 }
 
+.sub {
+  margin-top: var(--space-4);
+  letter-spacing: 0.02em;
+}
+
 @media (min-width: 768px) {
   .band {
     grid-template-columns: repeat(4, minmax(0, 1fr));

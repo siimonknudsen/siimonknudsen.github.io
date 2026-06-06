@@ -5,7 +5,30 @@ import LogoGrid from '../components/grids/LogoGrid'
 import ImageGrid from '../components/grids/ImageGrid'
 import SkillCard from '../components/cards/SkillCard'
 import PrinciplesList from '../components/about/PrinciplesList'
+import RecognitionStrip from '../components/about/RecognitionStrip'
+import Button from '../components/buttons/Button'
 import styles from './About.module.css'
+
+// Inline download icon for the intro CTA — currentColor, no external deps.
+function DownloadIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M12 3v12" />
+      <path d="m7 10 5 5 5-5" />
+      <path d="M5 21h14" />
+    </svg>
+  )
+}
 
 function About() {
   // Automatically load all logos from src/assets/logos/ folder
@@ -107,6 +130,20 @@ function About() {
               I'm a Product Designer who's passionate about human psychology within digital products. I'm experienced in crafting beautiful and user friendly designs that solves real business problems. I'm specialized within UX Design, UI Design & Design Systems.
             </p>
           </ScrollAnimation>
+
+          <Reveal>
+            <div className={styles.introCta}>
+              <Button
+                as="a"
+                href={`${import.meta.env.BASE_URL}simon-knudsen-cv.pdf`}
+                download
+                variant="secondary"
+                iconLeft={<DownloadIcon />}
+              >
+                Download CV (PDF)
+              </Button>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -214,12 +251,27 @@ function About() {
         </div>
       </section>
 
-      {/* Sixth Section - Pictures */}
+      {/* Sixth Section - Recognition */}
+      <section id="recognition" className={styles.anchorSection}>
+        <div className={styles.inner}>
+          <Reveal>
+            <p className={`type-overline font-mono text-color-tertiary ${styles.overline}`}>
+              06 — Recognition
+            </p>
+          </Reveal>
+          <ScrollAnimation>
+            <h2 className={`type-display text-color-primary ${styles.heading12}`}>Awards, features & speaking</h2>
+          </ScrollAnimation>
+          <RecognitionStrip />
+        </div>
+      </section>
+
+      {/* Seventh Section - Pictures */}
       <section id="pictures" className={styles.anchorSection}>
         <div className={styles.inner}>
           <Reveal>
             <p className={`type-overline font-mono text-color-tertiary ${styles.overline}`}>
-              06 — Pictures
+              07 — Pictures
             </p>
           </Reveal>
           <ScrollAnimation>

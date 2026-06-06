@@ -94,6 +94,13 @@
   margin-bottom: var(--space-80);
 }
 
+/* Selected work — showreel placeholder */
+.showreelSection {
+  width: 100%;
+  padding: 0 var(--space-24);
+  margin-bottom: var(--space-80);
+}
+
 /* Projects Section */
 .projectsSection {
   width: 100%;

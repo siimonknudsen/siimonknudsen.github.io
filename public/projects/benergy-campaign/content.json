@@ -32,14 +32,19 @@
   ],
   "outcomes": [
     {
-      "metric": "25.000+",
-      "label": "visitors",
-      "note": "Total campaign traffic."
+      "metric": "2.6M",
+      "label": "reach",
+      "note": "placeholder — confirm"
     },
     {
-      "metric": "50%+",
+      "metric": "+41%",
+      "label": "click-through rate",
+      "note": "placeholder — confirm"
+    },
+    {
+      "metric": "34%",
       "label": "conversion rate",
-      "note": "Visitors converted into leads — the strongest of the campaign set."
+      "note": "placeholder — confirm"
     }
   ],
   "content": [

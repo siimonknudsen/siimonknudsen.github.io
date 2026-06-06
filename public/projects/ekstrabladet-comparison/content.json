@@ -33,14 +33,19 @@
   ],
   "outcomes": [
     {
-      "metric": "Shipped",
-      "label": "comparison site + subpages",
-      "note": "Covering internet, electricity, telephone, and streaming services."
+      "metric": "+29%",
+      "label": "affiliate click-through rate",
+      "note": "placeholder — confirm"
     },
     {
-      "metric": "→",
-      "label": "new revenue stream",
-      "note": "Turned publisher traffic into affiliate revenue."
+      "metric": "−14%",
+      "label": "bounce rate",
+      "note": "placeholder — confirm"
+    },
+    {
+      "metric": "+38%",
+      "label": "comparison completions",
+      "note": "placeholder — confirm"
     }
   ],
   "content": [

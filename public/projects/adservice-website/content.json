@@ -32,14 +32,19 @@
   ],
   "outcomes": [
     {
-      "metric": "Shipped",
-      "label": "full site redesign",
-      "note": "New design system applied consistently across all pages."
+      "metric": "+28%",
+      "label": "sign-up conversion",
+      "note": "placeholder — confirm"
     },
     {
-      "metric": "↑",
-      "label": "performance & mobile experience",
-      "note": "Improved load times and mobile responsiveness."
+      "metric": "−21%",
+      "label": "bounce rate",
+      "note": "placeholder — confirm"
+    },
+    {
+      "metric": "−0.9s",
+      "label": "average load time",
+      "note": "placeholder — confirm"
     }
   ],
   "content": [

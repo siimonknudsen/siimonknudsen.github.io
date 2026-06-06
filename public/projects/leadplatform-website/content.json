@@ -31,14 +31,19 @@
   ],
   "outcomes": [
     {
-      "metric": "↑",
-      "label": "conversion rate",
-      "note": "Higher conversion through clearer messaging and engaging visuals."
+      "metric": "+33%",
+      "label": "demo request conversion",
+      "note": "placeholder — confirm"
     },
     {
-      "metric": "Shipped",
-      "label": "marketing site",
-      "note": "Designed and built end to end."
+      "metric": "−16%",
+      "label": "bounce rate",
+      "note": "placeholder — confirm"
+    },
+    {
+      "metric": "+26%",
+      "label": "qualified leads",
+      "note": "placeholder — confirm"
     }
   ],
   "content": [

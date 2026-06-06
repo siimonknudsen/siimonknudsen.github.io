@@ -42,6 +42,12 @@
   max-width: 768px;
 }
 
+.introCta {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-32);
+}
+
 /* Section: Mission Statement */
 .fullSection {
   width: 100%;

@@ -1,0 +1,58 @@
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: var(--space-8);
+}
+
+@media (min-width: 640px) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-24);
+  border-radius: var(--radius-xl);
+  height: 100%;
+}
+
+/* Muted treatment so it reads clearly as a placeholder until real entries land. */
+.placeholder {
+  opacity: 0.6;
+  border-style: dashed;
+}
+
+.title {
+  margin: 0;
+}
+
+.meta {
+  margin: 0;
+}
+
+.note {
+  margin-top: var(--space-4);
+  align-self: flex-start;
+  padding: var(--space-2) var(--space-8);
+  border-radius: var(--radius-pill);
+}
+
+/* CTA cell spans the full row and centers the Download button. */
+.cta {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-8);
+}
