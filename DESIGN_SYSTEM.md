@@ -43,10 +43,16 @@ Sources: [M3 tokens](https://m3.material.io/foundations/design-tokens) ·
 
 ## 2. Colour
 
-### Primitives — neutral ramp + accent
-`--neutral-0 #fff · 50 #fafafa · 100 #f5f5f5 · 200 #e5e5e5 · 300 #d4d4d4 ·
-400 #a3a3a3 · 500 #737373 · 600 #525252 · 700 #404040 · 800 #2d2d2d ·
-850 #1e1e1e · 900 #1a1a1a · 1000 #000` · `--accent-green #4ade80`.
+### Primitives — colour ramps
+- **Greyscale** `--neutral-0 #fff · 50 · 100 · 200 · 300 · 400 · 500 · 600 · 700 ·
+  800 · 850 · 900 · 1000 #000`.
+- **Brand (orange)** `--brand-50 … 900` (base `--brand-500 #f26a2e`). The single
+  owned brand colour — see [DECISIONS](DECISIONS.md) for why orange.
+- **Status hue ramps** `--green/amber/red/blue-{50,100,300,400,500,600,700,900}`
+  (success / warning / error / info).
+- **Transparent ramps** `--transparent-light-{2…80}` (white α) and
+  `--transparent-dark-{2…80}` (black α) — the formal basis for glass borders,
+  hover overlays and scrims.
 
 ### Semantic roles (theme-aware)
 
@@ -64,12 +70,14 @@ Sources: [M3 tokens](https://m3.material.io/foundations/design-tokens) ·
 Plus a `*-contrast-*` set (opposite-mode surfaces/text) and the glass set (see §6).
 Usage: `bg-surface-color-secondary`, `text-color-secondary`, `border-color-on-primary`.
 
-**Accent** — the single owned brand colour (green; status & highlight only):
-`--accent` (`#4ADE80`), `--accent-soft` (12% tint for badges), `--accent-contrast`.
+**Accent** — the single owned brand colour, **themed**: `--accent` = `brand-500`
+(dark) / `brand-600` (light) for contrast, with `--accent-soft` (tint) and
+`--accent-contrast` (near-black text on the orange fill, keeping labels ≥4.5:1).
 Use `bg-accent`, `text-accent`, `bg-accent-soft`, `border-accent`. **All colour beyond
-this comes from project imagery** — the chrome stays monochrome + accent.
+this comes from project imagery** — the chrome stays monochrome + accent. (Switching
+the brand to teal is a one-line change of the `--accent` stops.)
 
-> **No raw framework colours in components.** No `neutral-*`, `green-*`, `bg-white`*,
+> **No raw framework colours in components.** No `neutral-*`, `brand-*`, `bg-white`*,
 > or ad-hoc gradients — every colour is a token. (*logo backplates may use white as
 > the `--neutral-0` primitive.) This keeps the palette 100% our own.
 
@@ -83,12 +91,13 @@ deeper hue on light UI for contrast, plus a soft tinted surface.
 |---|---|---|---|
 | `--feedback-success` | `#059669` | `#34d399` | `text-success`, `bg-success-soft`, `border-success` |
 | `--feedback-warning` | `#d97706` | `#fbbf24` | `text-warning`, `bg-warning-soft`, `border-warning` |
-| `--feedback-danger` | `#dc2626` | `#f87171` | `text-danger`, `bg-danger-soft`, `border-danger` |
+| `--feedback-error` | `#dc2626` | `#f87171` | `text-error`, `bg-error-soft`, `border-error` |
 | `--feedback-info` | `#2563eb` | `#60a5fa` | `text-info`, `bg-info-soft`, `border-info` |
 
-Backed by raw hue primitives `--green/amber/red/blue-400/600`. Also available as
-Tailwind `success`/`warning`/`danger`/`info` colours (`.DEFAULT` + `.soft`).
-`--overlay-scrim` provides the modal/lightbox backdrop (theme-aware).
+`error` aliases `danger` (both utilities work). Backed by the full status hue ramps.
+Also available as Tailwind `success`/`warning`/`danger`/`info` colours (`.DEFAULT` +
+`.soft`). `--overlay-scrim` provides the modal/lightbox backdrop (theme-aware,
+via the transparent-dark ramp).
 
 ---
 
@@ -120,8 +129,14 @@ fine-tune with `leading-*` only when needed.
 weights regular 400 / medium 500 / semibold 600 / bold 700 (`--weight-*`, Tailwind
 `font-regular/medium/semibold/bold`); the size scale **10 → 48**
 (`--text-2xs … --text-5xl`, also Tailwind `text-2xs … text-5xl` for rare one-offs);
-line-heights `--leading-none/tight/snug/normal`; tracking
-`--tracking-tight/normal/wide/label`.
+line-heights `--leading-none/tight/snug/normal`.
+
+**Letter-spacing (tracking)** is negative across the scale for a modern, tight feel —
+**graduated** because tight tracking helps large display but hurts legibility at small
+sizes: display `--tracking-tighter -4%` → headings `-3%` → titles/body `--tracking-snug
+-2%` → small text `--tracking-base -1%`. The uppercase **overline keeps positive
+tracking** (`--tracking-label +0.08em`) since all-caps needs it. (See DECISIONS for the
+flat-vs-graduated rationale.)
 
 > Components consume the role classes; the raw `text-*` scale remains as a primitive
 > for exceptions. The `Heading` / `BodyText` React components are thin wrappers over

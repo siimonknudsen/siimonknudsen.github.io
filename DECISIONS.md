@@ -7,6 +7,66 @@ detail). Format is lightweight ADR (Architecture Decision Record).
 
 ---
 
+## ❓ Open questions (awaiting Simon's decision)
+
+1. **Brand colour.** I went with **warm orange** (`#f26a2e`) as the recommended default
+   and rebuilt the system + hero shader around it. The alternative you floated was a
+   **green-blue / teal**. Keep orange, or switch to teal? (One-line swap either way.) If
+   orange: happy with this exact hue, or want it warmer/cooler / more or less saturated?
+2. **Tracking aggressiveness.** I applied *graduated* negative tracking (−4% display →
+   −1% small text) rather than a flat −2–4% everywhere, to protect small-text legibility.
+   Want it tighter on body/caption too (toward a uniform −2–4%), or is graduated right?
+3. **Publish.** The brand rebrand is **local-only**, unlike the bug fixes (shipped). Want
+   me to publish the orange rebrand live, or hold until you've seen it in your browser?
+4. **Component beautification.** I held deeper component restyling pending the brand
+   decision. Once confirmed, want a polish pass (buttons, cards, tags, form inputs) on the
+   final brand?
+
+---
+
+## 2026-06 — Brand colour, full primitive ramps & negative tracking
+*Reasoned as a senior product designer.*
+
+**Brand colour → warm orange (`--brand-500 #f26a2e`). Recommended, implemented, but
+flagged for your sign-off.**
+- *Why orange over the old green.* Green (`#4ade80`) is the single most over-used SaaS/
+  tech accent — it reads generic and, worse, it **collided with "success"** (same hue
+  doing brand *and* status is a system smell). Orange is warmer, more human, and far more
+  ownable for a designer's personal brand — it aligns with the "human-centered"
+  positioning and creates a confident warm/cool tension against the dark, glassy,
+  cool-neutral UI (a premium, intentional look). It also frees green to mean **only**
+  success.
+- *Why this specific orange.* A slightly coral-leaning orange (not construction-cone). At
+  `brand-500` on dark and `brand-600` on light it stays vivid yet controlled; with
+  near-black contrast text, button labels clear **≥4.5:1**. Themed per mode like the
+  status colours.
+- *Reversibility.* Brand lives in one ramp; `--accent` points at it in two theme blocks.
+  Switching to the teal/green-blue alternative is a ~2-line change. So this is a strong
+  default, not a lock-in. **Open question below.**
+- *Shader.* Retinted the hero to warm "ember" tones so the whole hero reads as one
+  intentional system rather than orange-accent-on-green-field.
+
+**Primitive ramps added (greyscale already existed).**
+- *Brand 50–900, status 50–900 (success/warning/error/info), transparent-light &
+  transparent-dark alpha ramps.* Top-tier systems (Material, Radix, Polaris, Primer)
+  ship exactly these. The **transparent ramps** formalise what the glass system was doing
+  ad-hoc — glass borders, hover overlays and scrims now reference `--transparent-*`, so
+  translucency is a documented scale, not magic rgba values.
+- *Naming.* Kept hue-named primitives (`--green-500`) → semantic aliases
+  (`--feedback-success`). Added **`error`** as the user-facing name (aliases the existing
+  `danger`, so both utilities work — no breakage).
+
+**Negative letter-spacing across all type — but graduated, not flat.**
+- You asked for −2 to −4% on all type. I applied it as a **graduated** scale (display
+  −4% → headings −3% → titles/body −2% → small text −1%; uppercase overline stays
+  *positive*). *Why not a flat −2–4% on everything:* it's an established type rule that
+  tight tracking flatters large display but **degrades legibility at body/caption sizes**
+  (and breaks all-caps, which needs positive tracking). A 20-yr designer's instinct is to
+  honour the intent (a tighter, more modern voice) while protecting readability. **Open
+  question below** if you want it more aggressive.
+
+---
+
 ## 2026-06 — Design knowledge base
 
 **Decision.** Add [DESIGN_KNOWLEDGE.md](DESIGN_KNOWLEDGE.md) — a durable, source-verified

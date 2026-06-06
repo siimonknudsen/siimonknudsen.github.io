@@ -1,5 +1,5 @@
 /**
- * Button — the design-system action. Pill-shaped, tokenised.
+ * Button — the design-system action. 8px radius (rounded-lg), tokenised.
  *
  * variant: primary | secondary | accent | glass | ghost   (default primary)
  * size:    sm | md | lg                                    (default md)
@@ -23,16 +23,20 @@ const sizeClasses = {
 }
 
 const variantClasses = {
-  primary: 'bg-surface-color-contrast-primary text-color-contrast-primary hover:opacity-90',
-  secondary: 'bg-surface-color-tertiary text-color-primary hover:bg-surface-color-secondary',
-  accent: 'bg-accent text-[color:var(--accent-contrast)] hover:opacity-90',
-  glass: 'glass glass-item text-color-primary',
+  primary:
+    'bg-surface-color-contrast-primary text-color-contrast-primary shadow-sm hover:shadow-md hover:-translate-y-px',
+  secondary:
+    'bg-surface-color-tertiary text-color-primary shadow-xs hover:bg-surface-color-secondary hover:-translate-y-px',
+  accent:
+    'bg-accent text-[color:var(--accent-contrast)] shadow-sm hover:shadow-md hover:-translate-y-px',
+  glass: 'glass glass-item text-color-primary hover:-translate-y-px',
   ghost: 'glass-item text-color-secondary hover:text-color-primary',
 }
 
 const base =
   'inline-flex items-center justify-center gap-2 rounded-lg type-label whitespace-nowrap select-none ' +
-  'transition-[background-color,color,transform,opacity] duration-fast ease-standard active:scale-[0.98] ' +
+  'transition-[background-color,color,transform,opacity,box-shadow] duration-fast ease-standard ' +
+  'active:scale-[0.98] active:translate-y-0 ' +
   'disabled:opacity-50 disabled:pointer-events-none ' +
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)] ' +
   'focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--surface-color-primary)]'

@@ -3,9 +3,11 @@ import { useTheme } from '../contexts/ThemeContext'
 
 // Mesh "gradient-grid" — four corner points [top-left, top-right, bottom-left,
 // bottom-right]. Diagonal green→teal blooms over dark (light: soft mint over white).
+// Warm "ember" blooms that harmonize with the orange brand accent.
+// [top-left, top-right, bottom-left, bottom-right]
 const PALETTE = {
-  dark: ['#1f7a52', '#0a0a0b', '#0d1411', '#1b8a86'],
-  light: ['#c7ecd9', '#ffffff', '#f4f8f6', '#aadcd7'],
+  dark: ['#d8602b', '#09090a', '#160d09', '#7c3618'],
+  light: ['#ffe1cf', '#ffffff', '#fbf3ee', '#ffd2b2'],
 }
 
 /**

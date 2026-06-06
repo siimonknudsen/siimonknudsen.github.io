@@ -5,6 +5,7 @@ import Media from '../components/Media'
 import ShaderBackground from '../components/shader/ShaderBackground'
 import ProjectCard from '../components/projects/ProjectCard'
 import ProjectTag from '../components/projects/ProjectTag'
+import Input from '../components/forms/Input'
 import TestimonialCard from '../components/cards/TestimonialCard'
 import SkillCard from '../components/cards/SkillCard'
 import Avatar from '../components/Avatar'
@@ -111,11 +112,20 @@ const radiusScale = [
   { name: 'pill · icons only', val: 'full', cls: 'rounded-full' },
 ]
 
+// Brand ramp (orange) — the owned brand colour
+const brandRamp = [
+  ['50', '#FFF4EE'], ['100', '#FFE6D6'], ['200', '#FECCAE'], ['300', '#FCAB7C'], ['400', '#F98A4D'],
+  ['500', '#F26A2E'], ['600', '#DB5320'], ['700', '#B43F1B'], ['800', '#8C331A'], ['900', '#5F2614'],
+]
+
+// Transparent alpha ramps (light = white α, dark = black α)
+const transparentSteps = ['2', '4', '8', '12', '16', '24', '40', '60', '80']
+
 // Feedback / status colours (theme-aware semantics)
 const feedback = [
   { title: 'Success', token: '--feedback-success', text: 'text-success', soft: 'bg-success-soft', border: 'border-success', light: '#059669', dark: '#34D399' },
   { title: 'Warning', token: '--feedback-warning', text: 'text-warning', soft: 'bg-warning-soft', border: 'border-warning', light: '#D97706', dark: '#FBBF24' },
-  { title: 'Danger', token: '--feedback-danger', text: 'text-danger', soft: 'bg-danger-soft', border: 'border-danger', light: '#DC2626', dark: '#F87171' },
+  { title: 'Error', token: '--feedback-error', text: 'text-error', soft: 'bg-error-soft', border: 'border-error', light: '#DC2626', dark: '#F87171' },
   { title: 'Info', token: '--feedback-info', text: 'text-info', soft: 'bg-info-soft', border: 'border-info', light: '#2563EB', dark: '#60A5FA' },
 ]
 
@@ -341,10 +351,54 @@ function StyleGuide() {
                       </div>
                     ))}
                   </div>
+                </div>
+              </ScrollAnimation>
+
+              {/* Primitives — brand ramp */}
+              <ScrollAnimation>
+                <div>
+                  <Overline>Primitives · brand ramp (orange)</Overline>
+                  <div className="grid gap-2 mt-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))' }}>
+                    {brandRamp.map(([step, hex]) => (
+                      <div key={step} className="flex flex-col gap-1.5">
+                        <div className="h-14 rounded-xl border border-color-secondary" style={{ backgroundColor: `var(--brand-${step})` }} />
+                        <span className="font-mono text-[10px] text-color-primary leading-none">{step}</span>
+                        <span className="font-mono text-[10px] text-color-tertiary leading-none">{hex}</span>
+                      </div>
+                    ))}
+                  </div>
                   <div className="mt-4 flex items-center gap-2.5">
                     <span className="w-6 h-6 rounded-lg bg-accent" />
                     <span className="font-mono text-[11px] text-color-primary">accent</span>
-                    <span className="font-mono text-[11px] text-color-tertiary">#4ADE80</span>
+                    <span className="font-mono text-[11px] text-color-tertiary">brand-500 / 600 (themed)</span>
+                  </div>
+                </div>
+              </ScrollAnimation>
+
+              {/* Primitives — transparent ramps */}
+              <ScrollAnimation>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div>
+                    <Overline>Primitives · transparent light</Overline>
+                    <div className="mt-4 rounded-xl overflow-hidden border border-color-secondary" style={{ background: 'repeating-conic-gradient(var(--neutral-700) 0% 25%, var(--neutral-900) 0% 50%) 50% / 16px 16px' }}>
+                      <div className="grid grid-cols-9">
+                        {transparentSteps.map((s) => (
+                          <div key={s} className="h-12" style={{ backgroundColor: `var(--transparent-light-${s})` }} title={`light-${s}`} />
+                        ))}
+                      </div>
+                    </div>
+                    <MonoMeta className="mt-2 block">white α · 2–80%</MonoMeta>
+                  </div>
+                  <div>
+                    <Overline>Primitives · transparent dark</Overline>
+                    <div className="mt-4 rounded-xl overflow-hidden border border-color-secondary" style={{ background: 'repeating-conic-gradient(var(--neutral-100) 0% 25%, var(--neutral-0) 0% 50%) 50% / 16px 16px' }}>
+                      <div className="grid grid-cols-9">
+                        {transparentSteps.map((s) => (
+                          <div key={s} className="h-12" style={{ backgroundColor: `var(--transparent-dark-${s})` }} title={`dark-${s}`} />
+                        ))}
+                      </div>
+                    </div>
+                    <MonoMeta className="mt-2 block">black α · 2–80%</MonoMeta>
                   </div>
                 </div>
               </ScrollAnimation>
@@ -405,10 +459,10 @@ function StyleGuide() {
                       </div>
                       <div className="flex flex-col gap-0.5">
                         <span className="text-[14px] font-medium text-color-primary leading-tight">
-                          Status · Green
+                          Brand · Orange
                         </span>
                         <MonoMeta>bg-accent</MonoMeta>
-                        <MonoMeta className="text-color-secondary">#4ADE80</MonoMeta>
+                        <MonoMeta className="text-color-secondary">brand-500 · #F26A2E</MonoMeta>
                       </div>
                     </div>
                   </div>
@@ -741,6 +795,12 @@ function StyleGuide() {
                     <ProjectTag>Design System</ProjectTag>
                   </div>
                 </Tile>
+                <Tile label="Form input" className="sm:col-span-2">
+                  <div className="w-full flex flex-col gap-4">
+                    <Input label="Email" type="email" placeholder="you@example.com" hint="We'll never share it." />
+                    <Input label="Message" multiline placeholder="Tell me about your project…" error="This field is required." />
+                  </div>
+                </Tile>
                 <Tile label="Theme toggle">
                   <ThemeToggle />
                 </Tile>
@@ -756,7 +816,7 @@ function StyleGuide() {
                 <Tile label="Hero background · shader" className="sm:col-span-2 lg:col-span-3">
                   <div className="relative w-full h-36 rounded-xl overflow-hidden">
                     <ShaderBackground
-                      colors={['#1f7a52', '#0a0a0b', '#0d1411', '#1b8a86']}
+                      colors={['#d8602b', '#09090a', '#160d09', '#7c3618']}
                       speed={0.05}
                       className="w-full h-full"
                     />
