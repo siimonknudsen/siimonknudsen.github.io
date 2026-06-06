@@ -79,12 +79,14 @@
   background: #000;
   opacity: var(--dim, 0);
   pointer-events: none;
-  transition: opacity 90ms linear;
+  /* No transition — opacity is driven per frame from scroll (rAF), so a
+     transition only adds lag/jank. */
 }
 
 .stackLink {
   position: relative;
   display: block;
+  height: 100%;
   text-decoration: none;
 }
 

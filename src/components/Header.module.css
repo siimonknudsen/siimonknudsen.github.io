@@ -460,9 +460,12 @@
   top: 100%;
   transform: translateX(-50%);
   z-index: 50;
-  max-width: calc(100vw - 2rem);
-  /* `left` + `width` transition so the panel glides between triggers (Projects
-     → Archive → …) and resizes smoothly instead of closing/reopening. */
+  /* Width fits the widest row of the current menu (no fixed px), capped so it
+     never runs off-screen on small viewports. */
+  width: max-content;
+  max-width: min(92vw, 560px);
+  /* `left` transition so the panel glides between triggers (Projects → Archive
+     → …); width adapts to content instead of closing/reopening. */
   transition: opacity 220ms ease-out, transform 220ms ease-out,
     left 420ms var(--ease-emphasized), width 420ms var(--ease-emphasized);
 }
@@ -515,8 +518,13 @@
   }
 }
 
-/* Stagger the repeated rows of each menu (project previews, about links,
-   contact rows). They appear in sequence for a considered, premium feel. */
+/* Stagger the WHOLE dropdown top→bottom: the header label, then each list row,
+   then the footer — every piece joins the one-by-one reveal.
+
+   The three top-level blocks of every menu body (header → list container →
+   footer) animate via `.menuContent > *`; the list container is kept "flat"
+   (its own slide is suppressed below) so only its individual rows stagger. */
+.menuContent > *,
 .workGrid > *,
 .aboutList > *,
 .contactList > * {
@@ -534,69 +542,89 @@
   }
 }
 
+/* HEADER (first top-level block) reveals first. */
+.menuContent > *:nth-child(1) {
+  animation-delay: 40ms;
+}
+
+/* The list container itself shouldn't slide as a block — its rows handle the
+   stagger. Keep it visible immediately so its children animate on their own. */
+.menuContent > *:nth-child(2) {
+  animation: none;
+}
+
+/* List rows stagger one-by-one, picking up after the header. */
 .workGrid > *:nth-child(1),
 .aboutList > *:nth-child(1),
 .contactList > *:nth-child(1) {
-  animation-delay: 60ms;
+  animation-delay: 120ms;
 }
 .workGrid > *:nth-child(2),
 .aboutList > *:nth-child(2),
 .contactList > *:nth-child(2) {
-  animation-delay: 140ms;
+  animation-delay: 200ms;
 }
 .workGrid > *:nth-child(3),
 .aboutList > *:nth-child(3),
 .contactList > *:nth-child(3) {
-  animation-delay: 220ms;
+  animation-delay: 280ms;
 }
 .workGrid > *:nth-child(4),
 .aboutList > *:nth-child(4),
 .contactList > *:nth-child(4) {
-  animation-delay: 300ms;
+  animation-delay: 360ms;
 }
 .workGrid > *:nth-child(5),
 .aboutList > *:nth-child(5),
 .contactList > *:nth-child(5) {
-  animation-delay: 380ms;
+  animation-delay: 440ms;
 }
 .workGrid > *:nth-child(6),
 .aboutList > *:nth-child(6),
 .contactList > *:nth-child(6) {
-  animation-delay: 460ms;
+  animation-delay: 520ms;
 }
 .workGrid > *:nth-child(7),
 .aboutList > *:nth-child(7),
 .contactList > *:nth-child(7) {
-  animation-delay: 540ms;
+  animation-delay: 600ms;
 }
 .workGrid > *:nth-child(8),
 .aboutList > *:nth-child(8),
 .contactList > *:nth-child(8) {
-  animation-delay: 620ms;
+  animation-delay: 680ms;
 }
 .workGrid > *:nth-child(9),
 .aboutList > *:nth-child(9),
 .contactList > *:nth-child(9) {
-  animation-delay: 700ms;
+  animation-delay: 760ms;
 }
 .workGrid > *:nth-child(10),
 .aboutList > *:nth-child(10),
 .contactList > *:nth-child(10) {
-  animation-delay: 780ms;
+  animation-delay: 840ms;
 }
 .workGrid > *:nth-child(11),
 .aboutList > *:nth-child(11),
 .contactList > *:nth-child(11) {
-  animation-delay: 860ms;
+  animation-delay: 920ms;
 }
 .workGrid > *:nth-child(12),
 .aboutList > *:nth-child(12),
 .contactList > *:nth-child(12) {
-  animation-delay: 940ms;
+  animation-delay: 1000ms;
+}
+
+/* FOOTER (last top-level block) reveals after the list rows. The short menus
+   (Contact = 2 rows, About = 5 rows) finish well before this, and the longest
+   list still resolves under it, so the footer reliably reads last. */
+.menuContent > *:nth-child(3) {
+  animation-delay: 520ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .menuContent,
+  .menuContent > *,
   .workGrid > *,
   .aboutList > *,
   .contactList > * {

@@ -19,9 +19,6 @@ const aboutSections = [
   { label: 'Pictures', to: '/about#pictures' },
 ]
 
-// Width (px) each dropdown opens to — used for layout and edge-clamping
-const MENU_WIDTH = { projects: 620, archive: 560, about: 360, contact: 340 }
-
 /* ── Small building blocks ──────────────────────────────────────── */
 
 function ProjectThumb({ id, alt }) {
@@ -196,6 +193,17 @@ function AboutMenu({ onNavigate }) {
 }
 
 function ContactMenu({ onNavigate }) {
+  // Live local time, matching the header Location component ("HH:MM", 24h).
+  const [now, setNow] = useState(new Date())
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000)
+    return () => clearInterval(timer)
+  }, [])
+  const time = now.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  })
   return (
     <>
       <div className={styles.contactHead}>
@@ -244,7 +252,7 @@ function ContactMenu({ onNavigate }) {
       </div>
       <div className={`border-t border-glass text-color-secondary ${styles.contactStatus}`}>
         <span className={styles.statusDot} />
-        Available · Aarhus, Denmark
+        Aarhus, Denmark · {time}
       </div>
     </>
   )
@@ -274,11 +282,16 @@ function Header() {
   const navRef = useRef(null)
   const triggerRefs = useRef({})
   const closeTimer = useRef(null)
+  // Measures the (content-sized) panel so we can clamp it on-screen after open.
+  const panelRef = useRef(null)
 
   const isActive = (path) => location.pathname === path
   const closeMobileMenu = () => setIsMobileMenuOpen(false)
 
-  // Position the (shared) panel centred under its trigger, clamped on-screen
+  // Position the (shared) panel centred under its trigger, clamped on-screen.
+  // The panel now sizes to its content (width: max-content), so we measure its
+  // actual rendered width via panelRef when available; before the first render
+  // we fall back to the raw trigger centre (the CSS max-width keeps it on-screen).
   const positionFor = (key) => {
     const wrap = wrapperRef.current
     const trig = triggerRefs.current[key]
@@ -286,10 +299,13 @@ function Header() {
     const wb = wrap.getBoundingClientRect()
     const tb = trig.getBoundingClientRect()
     const center = tb.left - wb.left + tb.width / 2
-    const w = MENU_WIDTH[key]
+    const w = panelRef.current ? panelRef.current.offsetWidth : 0
+    if (!w) return Math.round(center)
     const pad = 8
     const min = w / 2 + pad
     const max = wb.width - w / 2 - pad
+    // When the wrapper is narrower than the panel, just centre it.
+    if (min > max) return Math.round(wb.width / 2)
     return Math.round(Math.max(Math.min(center, max), min))
   }
 
@@ -314,6 +330,15 @@ function Header() {
     if (closeTimer.current) clearTimeout(closeTimer.current)
     setOpen(false)
   }
+
+  // Re-clamp once the panel has rendered its (content-sized) width for this
+  // menu, so the on-screen clamping uses the real measured width.
+  useLayoutEffect(() => {
+    if (open && menuKey) {
+      const left = positionFor(menuKey)
+      if (left != null) setPanelLeft(left)
+    }
+  }, [open, menuKey])
 
   // Keep the panel anchored if the window resizes while open
   useEffect(() => {
@@ -395,10 +420,11 @@ function Header() {
     { key: 'contact', label: 'Contact', to: '#contact', active: false, onClick: handleContactClick },
   ]
 
-  // The sliding pill now supplies the highlight background, so the trigger only
-  // controls its TEXT colour (active/open → primary, otherwise secondary).
+  // The sliding pill is the ONLY background highlight — the trigger itself has
+  // no hover/active background box (no `glass-item`), it only changes its TEXT
+  // colour (active/open → primary, otherwise secondary).
   const triggerClass = (active, isOpen) =>
-    `glass-item ${styles.trigger} ${
+    `${styles.trigger} ${
       active || isOpen
         ? 'text-color-primary'
         : 'text-color-secondary hover:text-color-primary'
@@ -523,11 +549,12 @@ function Header() {
           {/* Shared dropdown panel — a sibling of the bar (NOT nested inside a
               blurred element) so its own backdrop-filter blurs the page behind it. */}
           <div
+            ref={panelRef}
             onMouseEnter={cancelClose}
             onMouseLeave={scheduleClose}
             onFocus={cancelClose}
             onBlur={scheduleClose}
-            style={{ left: `${panelLeft}px`, width: menuKey ? `${MENU_WIDTH[menuKey]}px` : undefined }}
+            style={{ left: `${panelLeft}px` }}
             className={`${styles.panel} ${open ? styles.panelOpen : styles.panelClosed}`}
           >
             <div className={styles.panelInner}>
