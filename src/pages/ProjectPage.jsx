@@ -34,7 +34,7 @@ function ProjectPage() {
     <>
       {/* Top Section */}
       <section className="w-full p-6 mb-20">
-        <div className="max-w-[1920px] mx-auto">
+        <div className="max-w-page mx-auto">
           {/* Row 1: Title + Description */}
           <div className="mb-8">
             <ScrollAnimation>
@@ -100,9 +100,9 @@ function ProjectPage() {
 
       {/* Second Section - Challenge, Solution, and Content */}
       <section className="w-full p-6 mb-20">
-        <div className="max-w-[1920px] mx-auto">
+        <div className="max-w-page mx-auto">
           {content.challenge && (
-            <div className="mb-12 grid grid-cols-2">
+            <div className="mb-12 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-8">
               <ScrollAnimation>
                 <h2 className="type-subtitle text-color-primary mb-4">The Challenge</h2>
               </ScrollAnimation>
@@ -113,7 +113,7 @@ function ProjectPage() {
           )}
 
           {content.solution && (
-            <div className="mb-12 grid grid-cols-2">
+            <div className="mb-12 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-8">
               <ScrollAnimation>
                 <h2 className="type-subtitle text-color-primary mb-4">The Solution</h2>
               </ScrollAnimation>
@@ -177,7 +177,7 @@ function ProjectPage() {
 
       {/* Related Projects */}
       <section className="w-full p-6 mb-20">
-        <div className="max-w-[1920px] mx-auto">
+        <div className="max-w-page mx-auto">
           <ScrollAnimation>
             <h2 className="type-display font-normal text-color-primary mb-12">More Projects</h2>
           </ScrollAnimation>

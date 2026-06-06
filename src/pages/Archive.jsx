@@ -7,7 +7,7 @@ function Archive() {
     <>
       {/* Archive Section */}
       <section className="w-full p-6 mb-20">
-        <div className="max-w-[1920px] mx-auto">
+        <div className="max-w-page mx-auto">
           <ScrollAnimation>
             <h1 className="type-display text-color-primary mb-12">Archive</h1>
           </ScrollAnimation>

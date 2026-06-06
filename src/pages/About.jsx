@@ -80,7 +80,7 @@ function About() {
     <>
       {/* First Section - Headshot and Introduction */}
       <section id="about-me" className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] max-h-[900px] p-6 mb-20 scroll-mt-24">
-        <div className="max-w-[1920px] mx-auto flex flex-col items-center">
+        <div className="max-w-page mx-auto flex flex-col items-center">
           {/* Headshot */}
           <ScrollAnimation>
             <div className="w-[200px] h-[200px] rounded-full overflow-hidden flex-shrink-0 bg-surface-color-tertiary mb-8">
@@ -103,7 +103,7 @@ function About() {
 
       {/* Second Section - Mission Statement */}
       <section className="w-full p-6 mb-20">
-        <div className="max-w-[1920px] mx-auto bg-surface-color-secondary h-[700px] rounded-lg flex items-center justify-center">
+        <div className="max-w-page mx-auto bg-surface-color-secondary h-[700px] rounded-lg flex items-center justify-center">
           <ScrollAnimation>
             <p className="type-display text-color-primary text-center max-w-[23ch]">
               Making the world of digital products more user friendly, one product at a time.
@@ -114,7 +114,7 @@ function About() {
 
       {/* Third Section - Companies */}
       <section id="companies" className="w-full p-6 mb-20 scroll-mt-24">
-        <div className="max-w-[1920px] mx-auto">
+        <div className="max-w-page mx-auto">
           {/* Companies Section */}
           <div>
             <ScrollAnimation>
@@ -127,7 +127,7 @@ function About() {
 
       {/* Fourth Section - Detailed Skills */}
       <section id="skills" className="w-full p-6 mb-20 scroll-mt-24">
-        <div className="max-w-[1920px] mx-auto">
+        <div className="max-w-page mx-auto">
           <ScrollAnimation>
             <h2 className="text-[18px] font-medium text-color-primary mb-8">Skills</h2>
           </ScrollAnimation>
@@ -145,7 +145,7 @@ function About() {
 
       {/* Fifth Section - Testimonials */}
       <section id="testimonials" className="w-full p-6 mb-20 scroll-mt-24">
-        <div className="max-w-[1920px] mx-auto">
+        <div className="max-w-page mx-auto">
           <ScrollAnimation>
             <h2 className="type-display font-normal text-color-primary mb-12">Testimonials</h2>
           </ScrollAnimation>
@@ -177,7 +177,7 @@ function About() {
 
       {/* Sixth Section - Pictures */}
       <section id="pictures" className="w-full p-6 mb-20 scroll-mt-24">
-        <div className="max-w-[1920px] mx-auto">
+        <div className="max-w-page mx-auto">
           <ScrollAnimation>
             <h2 className="type-display font-normal text-color-primary mb-12">A Picture Is Worth a Thousand Words</h2>
           </ScrollAnimation>

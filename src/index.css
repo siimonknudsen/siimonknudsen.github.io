@@ -118,6 +118,9 @@
   --space-80: 80px;
   --space-128: 128px;
 
+  /* — Layout — */
+  --container-max: 1920px; /* page content max width */
+
   /* — Radius (4 · 8 · 12 · 16 max; pill = icon buttons only) — */
   --radius-sm: 4px;
   --radius-md: 8px;
@@ -620,6 +623,9 @@ html:not(.dark) {
 
 /* Monospace helper (tabular data, code, specimen labels) */
 .font-mono { font-family: var(--font-mono); }
+
+/* Modal/overlay scrim backdrop (theme-aware token) */
+.bg-scrim { background-color: var(--overlay-scrim) !important; }
 
 /* Standard keyboard focus ring — apply to any interactive element */
 .focus-ring:focus-visible {

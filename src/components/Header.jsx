@@ -371,7 +371,7 @@ function Header() {
         className="sticky top-0 z-50 w-full px-4 sm:px-6 pt-4 pb-2"
         onKeyDown={(e) => e.key === 'Escape' && closeNow()}
       >
-        <div ref={wrapperRef} className="relative max-w-[1920px] mx-auto">
+        <div ref={wrapperRef} className="relative max-w-page mx-auto">
           {/* The single glass bar */}
           <div className="glass rounded-2xl flex items-center gap-2 p-2 relative">
             {/* Left — brand (non-interactive) */}
@@ -481,7 +481,7 @@ function Header() {
       {/* Mobile menu */}
       {isMobileMenuOpen && (
         <>
-          <div className="fixed inset-0 bg-black/40 z-40 md:hidden" onClick={closeMobileMenu} />
+          <div className="fixed inset-0 bg-scrim z-40 md:hidden" onClick={closeMobileMenu} />
           <div className="fixed top-[84px] left-4 right-4 z-40 md:hidden glass-panel rounded-2xl p-2">
             <nav className="flex flex-col">
               <Link

@@ -73,6 +73,9 @@ export default {
         disabled: 'var(--opacity-disabled)',
         muted: 'var(--opacity-muted)',
       },
+      maxWidth: {
+        page: 'var(--container-max)',
+      },
       colors: {
         surface: {
           primary: 'var(--surface-color-primary)',

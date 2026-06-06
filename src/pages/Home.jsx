@@ -60,7 +60,7 @@ function Home() {
 
       {/* Testimonials Section */}
       <section className="w-full p-6 mb-20">
-        <div className="max-w-[1920px] mx-auto">
+        <div className="max-w-page mx-auto">
           <ScrollAnimation>
             <h2 className="type-display font-normal text-color-primary mb-12">Testimonials</h2>
           </ScrollAnimation>

@@ -4,7 +4,7 @@
 function Section({ children, className = "" }) {
   return (
     <section className={`w-full p-6 mb-20 ${className}`}>
-      <div className="max-w-[1920px] mx-auto">
+      <div className="max-w-page mx-auto">
         {children}
       </div>
     </section>
