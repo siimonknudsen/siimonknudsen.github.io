@@ -66,19 +66,33 @@
   opacity: 1;
 }
 
+/* Company chip = logo + its hover/focus tooltip. */
+.companyChip {
+  position: relative;
+  display: inline-flex;
+}
+
 /* Inline logo (theme-aware via currentColor) */
 .logoWrap {
   display: inline-flex;
   align-items: center;
   color: var(--text-color-tertiary);
   opacity: 0.85;
+  cursor: default;
   transition: color var(--dur-base) var(--ease-standard),
     opacity var(--dur-base) var(--ease-standard);
 }
 
-.logoWrap:hover {
+.companyChip:hover .logoWrap,
+.companyChip:focus-within .logoWrap {
   color: var(--text-color-primary);
   opacity: 1;
+}
+
+.logoWrap:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+  border-radius: var(--radius-sm);
 }
 
 .logoSvg {
@@ -87,9 +101,79 @@
   width: auto;
 }
 
+/* ── Tooltip card ───────────────────────────────────────────────────────── */
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + var(--space-12));
+  left: 50%;
+  z-index: var(--z-tooltip);
+  width: max-content;
+  max-width: 240px;
+  padding: var(--space-16) var(--space-20);
+  border-radius: var(--radius-lg);
+  text-align: left;
+  /* hidden until hover/focus */
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 6px);
+  transition: opacity var(--dur-base) var(--ease-decelerate),
+    transform var(--dur-base) var(--ease-decelerate),
+    visibility 0s linear var(--dur-base);
+}
+
+.companyChip:hover .tooltip,
+.companyChip:focus-within .tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition: opacity var(--dur-base) var(--ease-decelerate),
+    transform var(--dur-base) var(--ease-decelerate);
+}
+
+.ttName {
+  margin: 0 0 var(--space-12);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-snug);
+  color: var(--text-color-primary);
+}
+
+.ttList {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.ttRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-16);
+}
+
+.ttRow dt {
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-base);
+  color: var(--text-color-tertiary);
+}
+
+.ttRow dd {
+  margin: 0;
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-base);
+  color: var(--text-color-secondary);
+  text-align: right;
+  white-space: nowrap;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .wordmark,
   .logoWrap {
     transition: none;
+  }
+  .tooltip {
+    transition: visibility 0s;
+    transform: translate(-50%, 0);
   }
 }

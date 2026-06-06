@@ -69,8 +69,8 @@
      (set per frame in JS) so the covered card shrinks back behind the foremost
      one. Anchored top-centre so it recedes "into" the stack. No shadow (it
      looked harsh haloing over the photos when cards piled up). */
-  /* Final size = per-card base scale (alternating, set inline) × scroll recede. */
-  transform: scale(calc(var(--base, 1) * var(--scale)));
+  /* Full-width to start; only the scroll-driven recede scales it down. */
+  transform: scale(var(--scale));
   transform-origin: top center;
   will-change: transform;
 }
@@ -159,6 +159,19 @@
   width: 100%;
   max-width: 620px;
   padding: var(--space-32);
+}
+
+/* Company logo on the card — small, white, sits above the impact chip. */
+.stackLogo {
+  display: inline-flex;
+  color: #fff;
+  opacity: 0.92;
+  margin-bottom: var(--space-4);
+}
+.stackLogo svg {
+  display: block;
+  height: 20px;
+  width: auto;
 }
 
 .stackImpact {

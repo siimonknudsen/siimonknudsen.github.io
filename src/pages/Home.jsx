@@ -84,6 +84,13 @@ function Home() {
 
       {/* Projects Section — full-width cards that stack on scroll */}
       <section id="projects" className={styles.projectsSection}>
+        <div className={styles.container}>
+          <Reveal as="header" className={styles.projectsHeader}>
+            <h2 className={`type-display text-color-primary ${styles.projectsHeading}`}>
+              Selected projects
+            </h2>
+          </Reveal>
+        </div>
         <ProjectGrid variant="stack" />
       </section>
 

@@ -2,7 +2,27 @@ import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import ProjectCard from './ProjectCard'
 import Media from '../Media'
+import { ZliideLogo, AdtractionLogo, LenusLogo } from '../home/WorkedAtLogos'
 import styles from './ProjectGrid.module.css'
+
+// Which company each project was done at → its logo. (Best-effort mapping —
+// Zliide projects → Zliide; Adservice-era work + campaigns → Adtraction.
+// apple-home-app is a concept piece, so it carries no company logo.)
+const COMPANY_LOGO = { zliide: ZliideLogo, adtraction: AdtractionLogo, lenus: LenusLogo }
+const COMPANY_NAME = { zliide: 'Zliide', adtraction: 'Adtraction', lenus: 'Lenus' }
+const PROJECT_COMPANY = {
+  'zliide-app': 'zliide',
+  'zliide-website': 'zliide',
+  'zliide-dashboard': 'zliide',
+  'apple-home-app': null,
+  'adservice-website': 'adtraction',
+  'leadplatform-website': 'adtraction',
+  'ekstrabladet-comparison': 'adtraction',
+  'telia-campaign': 'adtraction',
+  'talkmore-campaign': 'adtraction',
+  'benergy-campaign': 'adtraction',
+  'aarstiderne-campaign': 'adtraction',
+}
 
 // `impact` (optional): a one-line outcome shown as a chip on the card.
 // Scaffolded — fill in real numbers per project as they're confirmed.
@@ -143,13 +163,9 @@ function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
             key={project.id}
             ref={(el) => (cardRefs.current[index] = el)}
             className={styles.stackCard}
-            // Progressive base size: each card a touch larger than the previous
-            // (first = smallest, last/front = full size), so the stack grows as
-            // you scroll. Combined (×) with the scroll-driven recede scale.
-            style={{
-              '--i': index,
-              '--base': (1 - (projects.length - 1 - index) * 0.025).toFixed(3),
-            }}
+            // Every card STARTS at full available width; the only size change is
+            // the scroll-driven recede (it shrinks 5% as the next card covers it).
+            style={{ '--i': index }}
           >
             <Link to={`/project/${project.id}`} className={styles.stackLink}>
               <div className={styles.stackMedia}>
@@ -175,12 +191,25 @@ function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
               <div className={styles.stackScrim} aria-hidden="true" />
               <div className={styles.stackDim} aria-hidden="true" />
               <div className={styles.stackInfo}>
+                {(() => {
+                  const key = PROJECT_COMPANY[project.id]
+                  const Logo = key && COMPANY_LOGO[key]
+                  return Logo ? (
+                    <span
+                      className={styles.stackLogo}
+                      role="img"
+                      aria-label={`${COMPANY_NAME[key]} project`}
+                    >
+                      <Logo />
+                    </span>
+                  ) : null
+                })()}
                 {project.impact && (
                   <span className={styles.stackImpact}>
                     <strong>{project.impact.value}</strong> {project.impact.label}
                   </span>
                 )}
-                <h3 className={`type-heading-sm ${styles.stackTitle}`}>
+                <h3 className={`type-display-sm ${styles.stackTitle}`}>
                   {project.title}
                 </h3>
                 <p className={`type-body-lg ${styles.stackDesc}`}>

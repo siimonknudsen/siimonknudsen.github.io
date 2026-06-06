@@ -79,6 +79,14 @@
   scroll-margin-top: var(--header-height);
 }
 
+.projectsHeader {
+  margin-bottom: var(--space-40);
+}
+
+.projectsHeading {
+  font-weight: var(--weight-regular);
+}
+
 /* Testimonials Section */
 .testimonialsSection {
   width: 100%;

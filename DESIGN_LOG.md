@@ -36,6 +36,7 @@ A categorized log of design **decisions** and **changes** — grouped by page �
 - **Zliide centered** under the "Worked at" label via a `1fr auto 1fr` grid.
 - **Removed** the old 4-box stat band.
 - **Balanced gaps**: margin-top −64px / margin-bottom 128px tuned so the gap *above* "Worked at" (from the hero content) ≈ the gap *below* (to projects) — ~128px each at desktop. (Top gap floats slightly with viewport height since the hero centres its content.)
+- **Hover/focus tooltip on each company** (`.companyChip` + glass-panel `.tooltip`): shows Role · Industry · (Period) · Team size; fades + rises in, keyboard-accessible (`tabindex`/`aria-describedby`/`focus-within`), reduced-motion safe. Sizes confirmed (Lenus 300+ / Zliide 10+ / Adtraction 30+); **industry/role are best-effort and `period` is left blank pending Simon's real dates** (we don't invent employment dates).
 
 ## 4. Home — Projects (stacking) (`src/components/projects/ProjectGrid.*`)
 - **Full-width cards that stack on scroll** (sticky), each a full-bleed image with **content overlaid bottom-left** over a scrim; **removed the "View project" CTA** (whole card is the link).
@@ -47,7 +48,10 @@ A categorized log of design **decisions** and **changes** — grouped by page �
 - **Frosted text zone via a blurred IMAGE copy (not `backdrop-filter`).** First tried a live `backdrop-filter: blur()` scrim — but blurring 6 full-bleed cards *every scroll frame while they scale* made the stack janky (the "don't animate backdrop-filter" trap). Fix: `.stackBlur` is a **duplicate of the card image with a static `filter: blur(20px)`**, masked to the lower text zone and over-scaled 1.08 so the soft edges stay clipped. A static filter rasterises **once** and is then just composited/scaled by the GPU → no per-frame re-blur → smooth, and the premium frosted look is kept alongside the `scale` depth. Chips/tags use plain translucent bg (no blur). Hidden under `prefers-reduced-transparency`. Plus a dark gradient `.stackScrim` over it for AA legibility.
 - **Stack depth scale** reduced to **5%** (1 → 0.95) · flow **gap 160px** (iterated 600 → 300 → 240 → 160, tighter cadence) · stacked **peek 10px** per card (was 12).
 - **Blur as a 0→8px gradient**: `.stackBlur` is `blur(8px)` (toned down from 20) with a linear mask `to top, #000 0%, transparent 58%` so the blur ramps from full at the bottom to sharp by ~58% up — a "blur gradient" from one cached layer (no costly stacked-blur passes).
-- **Per-card progressive base size**: each card's base scale steps up **2.5% per index** (first card 0.875 → front/last card 1.0), set inline as `--base` and multiplied with the scroll recede (`scale(calc(var(--base) * var(--scale)))`). *Gives the stack size-rhythm — first smallest, front-most largest/closest.*
+- **All cards start full available width** (tried a progressive per-card base scale, but reverted — Simon wants every card full-width to begin; the only size change is the scroll recede as a card gets covered).
+- **Card header enlarged** to `type-display-sm` (~40px desktop, was `type-heading-sm` 24px) for more presence on the big cards.
+- **Section header "Selected projects"** added above the stack (`type-display`, matches the testimonials header pattern).
+- **Company logo on each card** (`PROJECT_COMPANY` map → logo, white, above the impact chip): Zliide projects → Zliide; Adservice-era + campaigns → Adtraction; Apple Home (concept) → none. *Best-effort mapping — confirm.*
 - **`variant`**: `stack` (home), `grid` (3-col, used on case-study "More Projects"), `bento` (legacy).
 
 ## 5. Home — Testimonials (`src/pages/Home.jsx`, `TestimonialCard.*`)
@@ -87,7 +91,7 @@ A categorized log of design **decisions** and **changes** — grouped by page �
 - **Reduced-motion** safety net throughout.
 
 ## 12. Components (cross-cutting)
-- **Button**: removed the magnetic-pull effect (*no novelty motion*). Hover = background-colour change (no lift/shadow/sweep) **plus a text-roll**: on hover the label slides up and out while a duplicate rises from below into place (`.roll` overflow-clip + two `.rollText` copies, the 2nd absolutely positioned one line below, both `translateY(-100%)` on hover). Reduced-motion disables the roll. (Focus-visible ring kept for a11y.)
+- **Button**: removed the magnetic-pull effect (*no novelty motion*). Hover = background-colour change (no lift/shadow/sweep) **plus a text-roll**: on hover the label slides up and out while a duplicate rises from below into place (`.roll` overflow-clip + two `.rollText` copies, the 2nd absolutely positioned one line below, both `translateY(-100%)` on hover). Timing matched to the popular GSAP/Framer rolling-text components: **0.55s `cubic-bezier(0.76,0,0.24,1)`** (easeInOutQuart / `power4.inOut`) for a smooth glide. Reduced-motion disables the roll. (Focus-visible ring kept for a11y.)
 - **Media**: added **`fill`** aspect mode (cover a flexible parent); **removed the grey placeholder background**; 8px radius; positive preload margin (no dark gaps).
 - **ProjectCard**: tag-overflow `+N`; image frame 8px.
 - **TestimonialCard**: vertical layout with a logo slot (image or inline component).
