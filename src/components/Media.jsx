@@ -19,7 +19,7 @@ import { useState, useRef, useEffect } from 'react'
  */
 
 const IMAGE_FORMATS = ['.jpg', '.jpeg', '.png', '.webp']
-const hasExtension = (s) => /\.(jpg|jpeg|png|webp|gif|avif|svg)$/i.test(s || '')
+const EXT_RE = /\.(jpg|jpeg|png|webp|gif|avif|svg)$/i
 
 function Media({
   src,
@@ -35,8 +35,10 @@ function Media({
 }) {
   const wrapRef = useRef(null)
   const videoRef = useRef(null)
+  const imgRef = useRef(null)
   const [inView, setInView] = useState(priority)
   const [loaded, setLoaded] = useState(false)
+  const [revealed, setRevealed] = useState(priority)
   const [fmt, setFmt] = useState(0)
   const [failed, setFailed] = useState(false)
 
@@ -81,13 +83,35 @@ function Media({
         ].filter(Boolean)
       : []
 
-  const imgSrc =
-    !isVideo && src ? (hasExtension(src) ? src : `${src}${IMAGE_FORMATS[fmt]}`) : null
+  // Extension-aware format fallback: strip any extension and try the given one
+  // FIRST (no wasted request when correct), then the rest. This self-heals data
+  // that points at the wrong extension (e.g. app1.jpg when the file is app1.png).
+  const baseSrc = src ? src.replace(EXT_RE, '') : null
+  const givenExt = src ? src.match(EXT_RE)?.[0]?.toLowerCase() ?? null : null
+  const formatList = givenExt
+    ? [givenExt, ...IMAGE_FORMATS.filter((e) => e !== givenExt)]
+    : IMAGE_FORMATS
+  const imgSrc = !isVideo && baseSrc ? `${baseSrc}${formatList[fmt]}` : null
 
   const handleImgError = () => {
-    if (!hasExtension(src) && fmt < IMAGE_FORMATS.length - 1) setFmt(fmt + 1)
+    if (fmt < formatList.length - 1) setFmt(fmt + 1)
     else setFailed(true)
   }
+
+  // Catch images that finish loading BEFORE React attaches onLoad (cached /
+  // fast navigation) — otherwise the reveal stays stuck at opacity-0 and the
+  // image is invisible while still reserving height (blank gaps, esp. mobile).
+  // Placed after imgSrc is defined so the dependency isn't read in its TDZ.
+  useEffect(() => {
+    if (isVideo) return
+    const img = imgRef.current
+    if (img && img.complete && img.naturalWidth > 0) setLoaded(true)
+  }, [imgSrc, isVideo])
+
+  // Latch the reveal once the media has loaded or entered the viewport.
+  useEffect(() => {
+    if (loaded || inView) setRevealed(true)
+  }, [loaded, inView])
 
   // 'auto' (or '') → image drives its own height (natural ratio); otherwise a
   // fixed aspect frame with object-cover (uniform thumbnails).
@@ -95,10 +119,18 @@ function Media({
   const fit = isAuto ? 'w-full h-auto block' : 'w-full h-full object-cover'
 
   // Reveal: fade + subtle scale (collapses to instant under reduced motion via
-  // the global safety net in index.css).
+  // the global safety net in index.css). Latches `revealed` true once the image
+  // has loaded OR scrolled into view — so an on-screen image can never stay
+  // stuck invisible if onLoad is missed (cached / fast-nav), which caused blank
+  // gaps on mobile; and it never re-hides when scrolled past.
   const reveal = `transition-[opacity,transform] duration-slower ease-decelerate ${
-    loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-[1.03]'
+    revealed ? 'opacity-100 scale-100' : 'opacity-0 scale-[1.03]'
   }`
+
+  // A natural-ratio image that exhausted every format has no sensible
+  // placeholder size — render nothing so a missing file can't leave a blank
+  // gap in a gallery/grid. (Fixed-aspect uses keep their tokenised placeholder.)
+  if (failed && isAuto) return null
 
   return (
     <div
@@ -126,6 +158,7 @@ function Media({
         !failed &&
         imgSrc && (
           <img
+            ref={imgRef}
             src={imgSrc}
             alt={alt}
             loading={priority ? 'eager' : 'lazy'}
