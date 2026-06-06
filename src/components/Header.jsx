@@ -499,13 +499,21 @@ function Header() {
                   'aria-expanded': isOpenItem,
                   'aria-current': item.active ? 'page' : undefined,
                 }
+                const rollLabel = (
+                  <span className={styles.roll}>
+                    <span className={styles.rollText}>{item.label}</span>
+                    <span className={styles.rollText} aria-hidden="true">
+                      {item.label}
+                    </span>
+                  </span>
+                )
                 return item.onClick ? (
                   <a key={item.key} href={item.to} onClick={item.onClick} {...shared}>
-                    {item.label}
+                    {rollLabel}
                   </a>
                 ) : (
                   <Link key={item.key} to={item.to} {...shared}>
-                    {item.label}
+                    {rollLabel}
                   </Link>
                 )
               })}

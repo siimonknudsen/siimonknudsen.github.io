@@ -61,7 +61,7 @@
   --dim: 0;
   --scale: 1;
   position: sticky;
-  top: calc(var(--header-height) + var(--space-16) + var(--i, 0) * 10px);
+  top: calc(var(--header-height) + var(--space-16) + var(--i, 0) * 4px);
   height: clamp(440px, 78vh, 860px);
   border-radius: var(--radius-md);
   overflow: hidden;
@@ -161,12 +161,16 @@
   padding: var(--space-32);
 }
 
-/* Company logo on the card — small, white, sits above the impact chip. */
+/* Company logo — pinned to the card's top-left corner. */
 .stackLogo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
   display: inline-flex;
+  padding: var(--space-32);
   color: #fff;
   opacity: 0.92;
-  margin-bottom: var(--space-4);
 }
 .stackLogo svg {
   display: block;
@@ -221,6 +225,9 @@
   .stackInfo {
     padding: var(--space-48);
     gap: var(--space-16);
+  }
+  .stackLogo {
+    padding: var(--space-48);
   }
 }
 

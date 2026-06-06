@@ -899,6 +899,10 @@ html:not(.dark) .grain {
 .fx-reveal.is-visible {
   opacity: 1;
   transform: none;
+  /* Release the promotion once revealed. Keeping `will-change: transform` here
+     leaves a containing block that breaks `backdrop-filter` on descendants
+     (e.g. the Worked-at tooltip) — and it's a perf best-practice to drop it. */
+  will-change: auto;
 }
 
 /* Stagger: a parent sets each child's --i index; <Stagger> injects it. */

@@ -378,6 +378,39 @@
   z-index: 1;
 }
 
+/* Text-roll on hover — same effect/timing as the buttons (easeInOutQuart /
+   GSAP power4.inOut): label rolls up, a duplicate rises from below. */
+.roll {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+.rollText {
+  display: block;
+  transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
+  will-change: transform;
+}
+.rollText:nth-child(2) {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+}
+.trigger:hover .rollText {
+  transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rollText {
+    transition: none;
+  }
+  .trigger:hover .rollText {
+    transform: none;
+  }
+}
+
 /* Single pill that travels between triggers on hover and rests on the
    active-route trigger. Positioned via inline transform/width from JS. */
 .navPill {

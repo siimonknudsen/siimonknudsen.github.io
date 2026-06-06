@@ -126,14 +126,18 @@ function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
       // make the animation jitter. offsetHeight breaks that loop.
       const tops = cards.map((c) => c.getBoundingClientRect().top)
       const heights = cards.map((c) => c.offsetHeight)
+      const n = cards.length
+      const MAX_RECEDE = 0.16 // how much the FIRST card shrinks when fully covered
       const vals = cards.map((_, i) => {
-        if (i === cards.length - 1) return [0, 1] // foremost card: full size, undimmed
+        if (i === n - 1) return [0, 1] // foremost card: full size, undimmed
         const h = heights[i] || 1
         // How far the next card has risen over this one (0 → 1).
         const prog = Math.max(0, Math.min(1, (tops[i] + h - tops[i + 1]) / h))
-        // Darken AND shrink as it's covered, so it recedes behind the foremost
-        // card (top card reads largest/closest; cards below get smaller).
-        return [prog * 0.6, 1 - prog * 0.05]
+        // Graduated depth: every card STARTS full width, but the first card
+        // recedes the most and each later card a little less — so when stacked
+        // they read as progressively larger toward the front (true depth).
+        const recede = MAX_RECEDE * (1 - i / (n - 1))
+        return [prog * 0.6, 1 - prog * recede]
       })
       // ── WRITE phase ──
       for (let i = 0; i < cards.length; i++) {
@@ -190,20 +194,20 @@ function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
               </div>
               <div className={styles.stackScrim} aria-hidden="true" />
               <div className={styles.stackDim} aria-hidden="true" />
+              {(() => {
+                const key = PROJECT_COMPANY[project.id]
+                const Logo = key && COMPANY_LOGO[key]
+                return Logo ? (
+                  <span
+                    className={styles.stackLogo}
+                    role="img"
+                    aria-label={`${COMPANY_NAME[key]} project`}
+                  >
+                    <Logo />
+                  </span>
+                ) : null
+              })()}
               <div className={styles.stackInfo}>
-                {(() => {
-                  const key = PROJECT_COMPANY[project.id]
-                  const Logo = key && COMPANY_LOGO[key]
-                  return Logo ? (
-                    <span
-                      className={styles.stackLogo}
-                      role="img"
-                      aria-label={`${COMPANY_NAME[key]} project`}
-                    >
-                      <Logo />
-                    </span>
-                  ) : null
-                })()}
                 {project.impact && (
                   <span className={styles.stackImpact}>
                     <strong>{project.impact.value}</strong> {project.impact.label}

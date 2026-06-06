@@ -16,24 +16,27 @@ const COMPANIES = [
     name: 'Lenus',
     Logo: LenusLogo,
     industry: 'Health & fitness software',
-    role: 'Product Designer',
     size: '300+',
+    website: 'lenus.io',
+    logoScale: 1, // per-logo optical balance (these logos differ in proportion)
     period: '', // e.g. '2023 — Present'
   },
   {
     name: 'Zliide',
     Logo: ZliideLogo,
     industry: 'Retail technology',
-    role: 'Product Designer',
     size: '10+',
+    website: '', // Zliide no longer exists
+    logoScale: 0.7,
     period: '',
   },
   {
     name: 'Adtraction',
     Logo: AdtractionLogo,
     industry: 'Affiliate marketing',
-    role: 'Designer',
     size: '30+',
+    website: 'adtraction.com',
+    logoScale: 0.9,
     period: '',
   },
 ]
@@ -51,7 +54,11 @@ function WorkedAt({ companies = COMPANIES }) {
           {companies.map((company) => {
             const id = `worked-at-${company.name.toLowerCase()}`
             return (
-              <div key={company.name} className={styles.companyChip}>
+              <div
+                key={company.name}
+                className={styles.companyChip}
+                style={{ '--logo-scale': company.logoScale ?? 1 }}
+              >
                 <span
                   className={styles.logoWrap}
                   role="img"
@@ -68,18 +75,33 @@ function WorkedAt({ companies = COMPANIES }) {
 
                 {/* Hover / focus card */}
                 <div id={id} role="tooltip" className={`glass-panel ${styles.tooltip}`}>
-                  <p className={styles.ttName}>{company.name}</p>
+                  {company.Logo ? (
+                    <span className={styles.ttLogo} aria-hidden="true">
+                      <company.Logo />
+                    </span>
+                  ) : (
+                    <p className={styles.ttName}>{company.name}</p>
+                  )}
                   <dl className={styles.ttList}>
-                    {company.role && (
-                      <div className={styles.ttRow}>
-                        <dt>Role</dt>
-                        <dd>{company.role}</dd>
-                      </div>
-                    )}
                     {company.industry && (
                       <div className={styles.ttRow}>
                         <dt>Industry</dt>
                         <dd>{company.industry}</dd>
+                      </div>
+                    )}
+                    {company.website && (
+                      <div className={styles.ttRow}>
+                        <dt>Website</dt>
+                        <dd>
+                          <a
+                            className={styles.ttLink}
+                            href={`https://${company.website}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {company.website}
+                          </a>
+                        </dd>
                       </div>
                     )}
                     {company.period && (

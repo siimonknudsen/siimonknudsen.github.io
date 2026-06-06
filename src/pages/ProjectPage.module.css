@@ -50,36 +50,25 @@
   padding: var(--space-64) var(--page-gutter);
 }
 
+/* Single column for the WHOLE case study — meta header on top, content below.
+   No separate left rail. Capped to a readable measure, left-aligned. */
 .layout {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-48);
+  max-width: 56rem;
 }
 
-@media (min-width: 1024px) {
-  .layout {
-    grid-template-columns: minmax(0, 3fr) minmax(0, 7fr);
-    gap: var(--space-64);
-    align-items: start;
-  }
-}
-
-/* Meta rail */
 .rail {
   min-width: 0;
 }
 
-@media (min-width: 1024px) {
-  .railInner {
-    position: sticky;
-    top: var(--space-80);
-  }
-}
-
+/* Meta becomes a horizontal header row (Role · Client · Team · Timeline · Outcome). */
 .railMeta {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-20);
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-24) var(--space-48);
 }
 
 .railRow {
@@ -101,8 +90,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  padding-top: var(--space-16);
-  border-top: 1px solid var(--border-color-primary);
 }
 
 .railMetric {
@@ -115,12 +102,9 @@
   max-width: 28ch;
 }
 
+/* TOC sidebar removed in the single-column layout. */
 .railNav {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
-  padding-top: var(--space-16);
-  border-top: 1px solid var(--border-color-primary);
+  display: none;
 }
 
 .railLink {
@@ -278,8 +262,8 @@
 .relatedSection {
   width: 100%;
   padding: var(--space-24) var(--page-gutter);
-  margin-top: var(--space-80);
-  margin-bottom: var(--space-80);
+  margin-top: var(--space-128);
+  margin-bottom: var(--space-128);
 }
 
 .moreHeading {

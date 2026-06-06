@@ -97,20 +97,23 @@
 
 .logoSvg {
   display: block;
-  height: 24px;
+  /* Per-logo optical scale so Lenus / Zliide / Adtraction read at a balanced
+     visual size despite their different proportions. */
+  height: calc(24px * var(--logo-scale, 1));
   width: auto;
 }
 
 /* ── Tooltip card ───────────────────────────────────────────────────────── */
 .tooltip {
   position: absolute;
-  bottom: calc(100% + var(--space-12));
+  /* Below the logos so it never covers the "Worked at" label above. */
+  top: calc(100% + var(--space-12));
   left: 50%;
   z-index: var(--z-tooltip);
   width: max-content;
-  max-width: 240px;
-  padding: var(--space-16) var(--space-20);
-  border-radius: var(--radius-lg);
+  max-width: 260px;
+  padding: var(--space-8);
+  border-radius: var(--radius-xl);
   text-align: left;
   /* hidden until hover/focus */
   opacity: 0;
@@ -130,8 +133,31 @@
     transform var(--dur-base) var(--ease-decelerate);
 }
 
+/* Brand logo at the top of the card (replaces the text name) */
+.ttLogo {
+  display: block;
+  margin-bottom: var(--space-8);
+  color: var(--text-color-primary);
+}
+.ttLogo svg {
+  display: block;
+  height: calc(18px * var(--logo-scale, 1));
+  width: auto;
+}
+
+/* Website link inside the tooltip */
+.ttLink {
+  color: var(--text-color-primary);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in oklch, currentColor 35%, transparent);
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+.ttLink:hover {
+  color: var(--accent);
+}
+
 .ttName {
-  margin: 0 0 var(--space-12);
+  margin: 0 0 var(--space-8);
   font-size: var(--text-base);
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-snug);
@@ -142,17 +168,18 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-4);
 }
 
+/* Label + value row (a real box so it can stagger in). */
 .ttRow {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-16);
+  gap: var(--space-8);
 }
 
 .ttRow dt {
+  min-width: 64px; /* aligns the values across rows */
   font-size: var(--text-xs);
   letter-spacing: var(--tracking-base);
   color: var(--text-color-tertiary);
@@ -162,9 +189,48 @@
   margin: 0;
   font-size: var(--text-xs);
   letter-spacing: var(--tracking-base);
-  color: var(--text-color-secondary);
-  text-align: right;
+  color: var(--text-color-primary);
   white-space: nowrap;
+}
+
+/* ── Staggered content reveal — each item rises + fades in one by one when the
+   card opens (slow, relaxing). ───────────────────────────────────────────── */
+.ttLogo,
+.ttRow {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.45s var(--ease-decelerate),
+    transform 0.45s var(--ease-decelerate);
+}
+.companyChip:hover .ttLogo,
+.companyChip:focus-within .ttLogo {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.08s;
+}
+.companyChip:hover .ttRow:nth-of-type(1),
+.companyChip:focus-within .ttRow:nth-of-type(1) {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.16s;
+}
+.companyChip:hover .ttRow:nth-of-type(2),
+.companyChip:focus-within .ttRow:nth-of-type(2) {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.24s;
+}
+.companyChip:hover .ttRow:nth-of-type(3),
+.companyChip:focus-within .ttRow:nth-of-type(3) {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.32s;
+}
+.companyChip:hover .ttRow:nth-of-type(4),
+.companyChip:focus-within .ttRow:nth-of-type(4) {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.4s;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -175,5 +241,12 @@
   .tooltip {
     transition: visibility 0s;
     transform: translate(-50%, 0);
+  }
+  /* No staggered rise under reduced motion — show content immediately. */
+  .ttLogo,
+  .ttRow {
+    transition: none;
+    opacity: 1;
+    transform: none;
   }
 }
