@@ -104,30 +104,43 @@ function About() {
 
   return (
     <>
-      {/* First Section - Headshot and Introduction */}
+      {/* First Section — editorial headline + portrait with floating skill chips */}
       <section id="about-me" className={styles.heroSection}>
         <div className={styles.heroInner}>
           <Reveal>
-            <p className={`type-overline font-mono text-color-tertiary ${styles.overline}`}>
-              01 — About me
-            </p>
+            <h1 className={`text-color-primary ${styles.aboutHeadline}`}>
+              Product designer &amp; systems thinker
+            </h1>
           </Reveal>
 
-          {/* Headshot */}
-          <ScrollAnimation>
-            <div className={`bg-surface-color-tertiary ${styles.headshot}`}>
-              <img
-                src={`${import.meta.env.BASE_URL}simon-virtual.png`}
-                alt="Simon Knudsen"
-                className={styles.headshotImg}
-              />
+          {/* Portrait stage — avatar placeholder (swap a real photo later) with
+              skill chips floating around it on desktop, stacked on mobile. */}
+          <div className={styles.portraitStage}>
+            <div className={styles.portraitGlow} aria-hidden="true" />
+            <ScrollAnimation>
+              <div className={`bg-surface-color-tertiary ${styles.portrait}`}>
+                <img
+                  src={`${import.meta.env.BASE_URL}simon-virtual.png`}
+                  alt="Simon Knudsen"
+                  className={styles.portraitImg}
+                />
+              </div>
+            </ScrollAnimation>
+
+            <div className={styles.chips}>
+              <span className={`glass ${styles.chip} ${styles.chipA}`}>Figma</span>
+              <span className={`glass ${styles.chip} ${styles.chipB}`}>UX Design</span>
+              <span className={`glass ${styles.chip} ${styles.chipC}`}>UI Design</span>
+              <span className={`glass ${styles.chip} ${styles.chipD}`}>Design Systems</span>
+              <span className={`glass ${styles.chip} ${styles.chipE}`}>Frontend</span>
+              <span className={`glass ${styles.chip} ${styles.chipF}`}>Prototyping</span>
             </div>
-          </ScrollAnimation>
+          </div>
 
           {/* Introduction Text */}
           <ScrollAnimation>
             <p className={`type-body-lg text-color-secondary ${styles.intro}`}>
-              I'm a Product Designer who's passionate about human psychology within digital products. I'm experienced in crafting beautiful and user friendly designs that solves real business problems. I'm specialized within UX Design, UI Design & Design Systems.
+              I'm a Product Designer who's passionate about human psychology within digital products. I'm experienced in crafting beautiful and user friendly designs that solves real business problems. I'm specialized within UX Design, UI Design &amp; Design Systems.
             </p>
           </ScrollAnimation>
 
@@ -162,11 +175,6 @@ function About() {
       <section id="principles" className={styles.anchorSection}>
         <div className={styles.inner}>
           <Reveal>
-            <p className={`type-overline font-mono text-color-tertiary ${styles.overline}`}>
-              02 — How I work
-            </p>
-          </Reveal>
-          <Reveal>
             <h2 className={`type-display text-color-primary ${styles.heading12}`}>Principles I design by</h2>
           </Reveal>
           <PrinciplesList />
@@ -178,13 +186,8 @@ function About() {
         <div className={styles.inner}>
           {/* Companies Section */}
           <div>
-            <Reveal>
-              <p className={`type-overline font-mono text-color-tertiary ${styles.overline}`}>
-                03 — Companies
-              </p>
-            </Reveal>
             <ScrollAnimation>
-              <h2 className={`type-subtitle text-color-primary ${styles.heading8}`}>Companies i've done design for</h2>
+              <h2 className={`type-subtitle text-color-primary ${styles.heading8}`}>Companies I've designed for</h2>
             </ScrollAnimation>
             <LogoGrid logos={companies} columns={7} gap="1" />
           </div>
@@ -194,11 +197,6 @@ function About() {
       {/* Fourth Section - Detailed Skills */}
       <section id="skills" className={styles.anchorSection}>
         <div className={styles.inner}>
-          <Reveal>
-            <p className={`type-overline font-mono text-color-tertiary ${styles.overline}`}>
-              04 — Skills
-            </p>
-          </Reveal>
           <ScrollAnimation>
             <h2 className={`text-color-primary ${styles.skillsHeading}`}>Skills</h2>
           </ScrollAnimation>
@@ -217,11 +215,6 @@ function About() {
       {/* Fifth Section - Testimonials */}
       <section id="testimonials" className={styles.anchorSection}>
         <div className={styles.inner}>
-          <Reveal>
-            <p className={`type-overline font-mono text-color-tertiary ${styles.overline}`}>
-              05 — Testimonials
-            </p>
-          </Reveal>
           <ScrollAnimation>
             <h2 className={`type-display text-color-primary ${styles.heading12}`}>Testimonials</h2>
           </ScrollAnimation>
@@ -254,11 +247,6 @@ function About() {
       {/* Sixth Section - Recognition */}
       <section id="recognition" className={styles.anchorSection}>
         <div className={styles.inner}>
-          <Reveal>
-            <p className={`type-overline font-mono text-color-tertiary ${styles.overline}`}>
-              06 — Recognition
-            </p>
-          </Reveal>
           <ScrollAnimation>
             <h2 className={`type-display text-color-primary ${styles.heading12}`}>Awards, features & speaking</h2>
           </ScrollAnimation>
@@ -269,11 +257,6 @@ function About() {
       {/* Seventh Section - Pictures */}
       <section id="pictures" className={styles.anchorSection}>
         <div className={styles.inner}>
-          <Reveal>
-            <p className={`type-overline font-mono text-color-tertiary ${styles.overline}`}>
-              07 — Pictures
-            </p>
-          </Reveal>
           <ScrollAnimation>
             <h2 className={`type-display text-color-primary ${styles.heading12}`}>A Picture Is Worth a Thousand Words</h2>
           </ScrollAnimation>

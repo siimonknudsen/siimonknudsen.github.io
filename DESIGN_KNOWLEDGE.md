@@ -293,26 +293,31 @@ Quick map from principle → our implementation (keeps the knowledge actionable)
 > The more concrete (with URLs/timestamps), the better I can match the intent.
 
 ### 6.1 Overall vibe & inspirations
-- Reference sites: _e.g._ seed.com, meetcleo.com — _add more + what you like about each_
-- Mood / adjectives: _(e.g. calm, premium, editorial, confident, warm…)_
-- Anti-patterns to avoid: _(what you dislike)_
+- Reference sites:
+  - **seed.com** — frosted glass + light, calm/premium (original north star)
+  - **marckuiper.com** — full-bleed animated shader hero, large confident statement type set *directly on the background* (no card), minimal nav; dark and atmospheric
+  - **nekohealth.com** — minimal **intro loading screen**: centered wordmark on a plain neutral background with a thin horizontal line that fills as the page loads, then reveals the site. Quiet, premium, branded. ✅ Adapted as a "Simon Knudsen" intro loader.
+  - **ultrahuman.com/blood-vision** — premium **bento grids** + cards with **beautiful visuals as backgrounds** (gradient/photo), and a strong **imagery style**: a blue-lit silhouette with annotated callouts ([01] Metabolic, [02] Cardiovascular…), and crisp, moody **product photography** (red-light panel, ring on hand). Confident, science-meets-lifestyle.
+  - **volander.studio/project/peaq** — gold standard for **case-study presentation**: a project's palette shown as a proportional, labelled colour-block bento; a whole brand captured in one angled 3D collage of guideline pages; animated type specimens; a quiet sticky section nav (Project · Challenge · Outcome · Credits). Editorial, art-directed, confident.
+- Mood / adjectives: confident, atmospheric, premium, editorial — big type, lots of room, gradients used as light rather than decoration
+- Anti-patterns to avoid: anything that reads as "AI-generated / templated" (e.g. numbered `01 — Section` eyebrows — removed), boxed-in hero cards when the content can stand on the background
 
 ### 6.2 Per-section references
 | Section | Reference (link) | What to borrow | Notes |
 |---|---|---|---|
-| Hero | | | |
-| Nav / header | | | |
-| Project card / grid | | | |
-| Project case study | | | |
-| About | | | |
-| Footer / contact | | | |
+| Hero | [marckuiper.com](https://www.marckuiper.com/) | Full-bleed shader, big centred headline + 2 buttons directly on the background, no card; "Currently working for [logo]" footnote | ✅ Implemented — card removed, headline ~80px over the shader. Open: add a "Currently working for…" footnote? |
+| Nav / header | [marckuiper.com](https://www.marckuiper.com/) | Transparent nav over the hero background | ✅ Shader now rises behind our nav |
+| Project card / grid | [ultrahuman.com/us/blood-vision/buy](https://www.ultrahuman.com/us/blood-vision/buy/) | (1) Cards that use **beautiful full-bleed visuals as the card background**. (2,3) **Bento grid** with rich imagery — mixed cell sizes, gradient + photo backgrounds | ⏳ Planned — explore for project cards / a "how I work" or "what's included" style section |
+| Project case study | [volander.studio/project/peaq](https://volander.studio/project/peaq) | (1) **Colour presentation** as a bento of proportional colour blocks, each labelled (Neutral 900, Dark Purple 500, Beige 500…) — the palette *is* the layout. (2) **Brand-in-one-image**: an angled/3D perspective collage of guideline pages to show a whole identity in a single hero shot. (Video) **Type styling presented with animation**. (3) **Big type interleaved with a scattered photo grid** — headline words ("Crypto by people") woven *between* offset team portraits, type and image sharing one composition. (4) **Design-system spec sheets as artefacts** — Foundation pages (Typography / Iconography / Dimensions) shown as real framed spec sheets with live specimens + tables (font sizes, spacing scale bars, icon sets). Also: right-side sticky section nav (Project · Challenge · Outcome · Credits) | ⏳ Strong reference for the case-study template |
+| About | [marckuiper.com/framer-designer-developer](https://www.marckuiper.com/framer-designer-developer) | **Top section**: huge centred headline ("Designer & no-code developer") with a B&W cut-out photo of himself below + small floating tool-icon chips. Personal, confident, editorial | ⏳ Inspiration for the About page top section |
+| Footer / contact | [marckuiper.com/services](https://www.marckuiper.com/services) (footer) | Subtle gradient wash on the footer background | ⏳ Planned |
 
 ### 6.3 Component-level examples
 | Component | Reference | Detail to emulate |
 |---|---|---|
 | Buttons | | |
 | Glass surfaces | | |
-| Cards | | |
+| Cards | [marckuiper.com/services](https://www.marckuiper.com/services) · [ultrahuman blood-vision](https://www.ultrahuman.com/us/blood-vision/buy/) | Dark cards with a soft directional **gradient glow** in a corner (blue → black) + pill tags (Marc); **full-bleed visual/photo backgrounds** & **bento grid** of mixed cell sizes (Ultrahuman) | ⏳ Planned for service/feature cards |
 | Forms | | |
 
 ### 6.4 Motion & animation references
@@ -320,12 +325,52 @@ Quick map from principle → our implementation (keeps the knowledge actionable)
 
 | What | Link | Feeling | Where it applies |
 |---|---|---|---|
-| | | | |
+| Animated type-styling reveal | [volander.studio/project/peaq](https://volander.studio/project/peaq) (video) | Considered, editorial — type/specimens animating in to *present* a project's typography | Case-study typography section · style guide specimens |
 
 ### 6.5 Type, color & imagery direction
 - Typeface direction: _(current: Inter — alternatives you like?)_
 - Color/mood: _(accent feeling, light vs dark emphasis)_
-- Imagery/video style: _(grading, framing, motion)_
+- Imagery/video style:
+  - **Concept imagery** like [ultrahuman blood-vision hero](https://www.ultrahuman.com/us/) — a blue-lit silhouette with annotated callout chips ([01] Metabolic, [02] Cardiovascular…). Loves the *visual style concept*.
+  - **Product/lifestyle photography** like Ultrahuman's Photon panel & ring-on-hand — crisp, moody, high-contrast, premium grading.
+  - **Editorial portrait + product** like Ultrahuman "Track Glucose with M1" — dramatic dark lighting, subject against near-black, text overlaid low. Cinematic.
+  - **3D glass / translucent icons** floating on a soft blue gradient ("Explore PowerPlugs") — frosted-glass 3D objects, light and premium.
+  - **Full-bleed lifestyle/product cards** like "UltrahumanX Membership" (metallic card on black) + "Women's Health" (warm portrait) — image fills the card, headline + button bottom-left.
+  - B&W cut-out portrait treatment like [marckuiper about](https://www.marckuiper.com/framer-designer-developer) for the About page.
+
+### 6.6 Why these work — taste analysis (the *why*, not just the *what*)
+> The point of this section: so I apply the **underlying principles** to Simon's site, not copy surface details.
+> If a new idea violates the shared DNA below, it's probably wrong; if it honours it, it'll likely fit.
+
+#### The shared DNA (what every reference above has in common)
+1. **One idea per view.** Each screen has a single, obvious focal point (a headline, a product shot, a wordmark). Everything else is demoted. The eye never has to choose where to look first. This is why they feel *calm* and *expensive* rather than busy.
+2. **Type is the primary graphic.** Big, confident, tightly-tracked headlines carry the page — not decoration. Size + weight contrast (huge headline vs small quiet label) does the hierarchy work, so they need very few other elements.
+3. **Generous negative space.** Lots of emptiness around the focal point. Space signals confidence ("this content is important enough to stand alone") and is the cheapest way to look premium. Cramped = cheap.
+4. **Restraint / limited palette.** Mostly one neutral (near-black or off-white) + one accent, and 2 type weights. Constraints make everything feel intentional and systematic. Premium brands *subtract*.
+5. **Depth through light, not borders.** Separation comes from frosted glass, gradient glows, soft shadows and layering — not hard 1px boxes everywhere. Light/shadow reads as physical and high-end; outlines read as utilitarian/templated.
+6. **Color as light, not paint.** Gradients and accents behave like a light source (a glow blooming from a corner, a shader behind glass) rather than flat fills. That's what gives the 2024–26 "atmospheric" feel.
+7. **Imagery does the emotional work; the UI stays quiet around it.** When a beautiful photo/3D render is present, the surrounding chrome goes minimal so the image is the hero. They never compete.
+8. **Motion is subtle, eased, purposeful.** Slow reveals, parallax, a line that fills — decelerated easing, nothing bouncy or springy or attention-grabbing. Motion supports the content; it's never the point.
+
+#### Per-reference breakdown
+- **seed.com** — *Calm, light, frosted-glass premium.* Works because of soft contrast (off-white surfaces, gentle shadows), translucency that creates depth without harsh lines, and lots of air. Lesson: in light mode, depth comes from subtle layering + blur, not heavy borders.
+- **marckuiper.com (hero)** — *Statement type on a living background.* Works because the giant headline + tiny nav is pure hierarchy: nothing competes with the message. The animated shader adds life/depth but stays low-contrast behind the text so legibility holds. No card needed because the type is strong enough to own the space. Lesson: if the type is big and confident, it doesn't need a container.
+- **marckuiper.com/about** — *Personal, editorial.* Huge centred headline establishes voice; the B&W cut-out portrait (no background) keeps it graphic and on-brand, and floating tool-icon chips add personality + tell you *what he does* without a paragraph. Works because it's confident and human at once. Lesson: a portrait can be a design element if it's treated (cut-out / graded), not a snapshot.
+- **marckuiper.com/services (cards)** — *Depth via gradient glow.* Dark cards with a directional blue→black glow read as lit objects, not boxes; pill tags chunk info scannably; tons of internal padding. Works because the glow gives hierarchy/depth with zero borders. Lesson: a corner gradient glow + big internal padding = premium card with almost no ornament.
+- **nekohealth.com (intro loader)** — *Branded restraint.* A wordmark + a single filling line on a plain field. Works because it does exactly one thing, slowly and precisely; the emptiness + the one moving element feels deliberate and luxurious. Lesson: restraint *is* the design — one element, done precisely, beats a busy spinner.
+- **ultrahuman.com/blood-vision (bento + data cards)** — *Rich grid with real substance.* The bento mixes cell sizes so the grid has rhythm (big hero cell + smaller supporting cells), each cell carries a beautiful visual or real data, and dark cards with subtle inner gradients give depth. The biomarker chips/data tables make it feel *credible*, not just pretty. Lesson: vary cell size for rhythm; let real content (data, product) be the texture.
+- **volander.studio/project/peaq (case study)** — *The deliverable becomes the design.* Works because it doesn't *describe* the work, it *shows* it: the colour palette is presented as proportional labelled blocks (so the palette itself is the visual), and the whole identity is one art-directed 3D collage rather than a dull grid of flat screenshots. Animated type specimens make the typography feel alive. The sticky side-nav (Project/Challenge/Outcome/Credits) gives a long page a quiet spine. Lesson: present project artefacts *as* designed objects (proportional colour blocks, perspective collages, animated specimens, framed spec sheets) — don't just drop flat screenshots in a column. Two more devices worth stealing: **interleaving big headline type with a scattered photo grid** so type and image share one composition (works for an About/team or hero), and **showing a design system as its own foundation spec sheets** (type scale, icon set, spacing bars) — which fits Simon perfectly since the site already *has* a real token system to put on display.
+- **ultrahuman.com (imagery)** — *Cinematic, premium, varied but coherent.* The blue-silhouette concept shot (annotated callouts) turns information into an image; the editorial M1 portrait uses dramatic dark lighting + low-placed text; the 3D frosted-glass icons feel tactile and modern; full-bleed lifestyle cards let the photo fill the frame with text bottom-left. They differ in subject but share **dark moody grading, high contrast, and a single subject per frame** — that consistency is what makes a varied gallery feel like one brand. Lesson: pick a grading/lighting signature and apply it across every image so variety still reads as one voice.
+
+#### What makes design look cheap / "AI-generated" (the inverse — avoid)
+- Many competing focal points; no clear first-read.
+- Lots of small-to-medium text at similar sizes (weak hierarchy).
+- Everything boxed in 1px borders; depth faked with flat grey fills.
+- Default/elementary spacing — things touching edges, cramped padding.
+- Decorative gradients/colors with no light logic; rainbow accents.
+- Generic stock imagery with no consistent grade, dropped in without treatment.
+- Templated tells: numbered `01 — Section` eyebrows, centered everything, bouncy/springy hover gimmicks.
+- Motion that draws attention to itself instead of the content.
 
 ---
 

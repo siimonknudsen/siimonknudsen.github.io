@@ -41,3 +41,110 @@
 .cell .fx-reveal {
   transition-delay: calc(var(--i, 0) * var(--stagger-1));
 }
+
+/* ── Stacking variant — full-width cards that pile up on scroll ───────── */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+.stackCard {
+  /* Sticky so each card sticks under the header and the next scrolls over it.
+     The per-card --i adds a small extra offset so the tops peek like a deck. */
+  position: sticky;
+  top: calc(var(--header-height) + var(--space-16) + var(--i, 0) * 12px);
+  height: 90vh;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  background: var(--surface-color-secondary);
+  box-shadow: var(--glass-shadow-lg);
+}
+
+.stackLink {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+}
+
+.stackMedia {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+}
+
+.stackInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-16);
+  padding: var(--space-32);
+  flex: 0 0 auto;
+}
+
+.stackImpact {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-6);
+  padding: var(--space-4) var(--space-12);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-base);
+}
+.stackImpact strong {
+  font-weight: var(--weight-semibold);
+}
+
+.stackTitle {
+  margin: 0;
+}
+
+.stackDesc {
+  margin: 0;
+  max-width: 52ch;
+}
+
+.stackTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+}
+
+.stackTag {
+  padding: var(--space-4) var(--space-12);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+}
+
+.stackCta {
+  margin-top: var(--space-4);
+  font-weight: var(--weight-medium);
+}
+
+/* Desktop: image + info side-by-side, info vertically centred */
+@media (min-width: 1024px) {
+  .stackLink {
+    flex-direction: row;
+  }
+  .stackMedia {
+    flex: 1 1 58%;
+    height: 100%;
+  }
+  .stackInfo {
+    flex: 1 1 42%;
+    justify-content: center;
+    padding: var(--space-48);
+    gap: var(--space-20);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stackCard {
+    transition: none;
+  }
+}

@@ -24,11 +24,13 @@ const EXT_RE = /\.(jpg|jpeg|png|webp|gif|avif|svg)$/i
 
 // Map the legacy class-string props to real CSS values (no Tailwind).
 const ASPECT = { 'aspect-video': '16 / 9', 'aspect-square': '1 / 1', 'aspect-[9/16]': '9 / 16' }
+// All content imagery shares one corner radius (8px) for a consistent look
+// across every component. `rounded-full` is the only opt-out (circular media).
 const RADIUS = {
-  rounded: 'var(--radius-sm)',
+  rounded: 'var(--radius-md)',
   'rounded-lg': 'var(--radius-md)',
-  'rounded-xl': 'var(--radius-lg)',
-  'rounded-2xl': 'var(--radius-xl)',
+  'rounded-xl': 'var(--radius-md)',
+  'rounded-2xl': 'var(--radius-md)',
   'rounded-full': 'var(--radius-pill)',
 }
 
@@ -62,7 +64,10 @@ function Media({
     if (!el) return
     const io = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
-      { rootMargin: '0px 0px -10% 0px' }
+      // Positive preload margin: start loading/revealing ~300px before the
+      // media scrolls into view so there are no dark gaps at the viewport edge.
+      // (Reveal is latched separately via `revealed`, so it never re-hides.)
+      { rootMargin: '300px 0px 300px 0px' }
     )
     io.observe(el)
     return () => io.disconnect()
@@ -124,9 +129,11 @@ function Media({
     if (loaded || inView) setRevealed(true)
   }, [loaded, inView])
 
-  // 'auto' (or '') → image drives its own height (natural ratio); otherwise a
-  // fixed aspect frame with object-cover (uniform thumbnails).
+  // 'auto' (or '') → image drives its own height (natural ratio).
+  // 'fill'        → image covers the parent's height (for flexible-size cards).
+  // otherwise     → a fixed aspect frame with object-cover (uniform thumbnails).
   const isAuto = !aspect || aspect === 'auto'
+  const isFill = aspect === 'fill'
   const fit = isAuto ? styles.fitAuto : styles.fitCover
 
   // Reveal: fade + subtle scale (collapses to instant under reduced motion via
@@ -150,7 +157,8 @@ function Media({
       onMouseLeave={handleLeave}
       className={`${styles.wrap} bg-surface-color-tertiary ${className}`}
       style={{
-        aspectRatio: !isAuto ? ASPECT[aspect] : undefined,
+        aspectRatio: !isAuto && !isFill ? ASPECT[aspect] : undefined,
+        height: isFill ? '100%' : undefined,
         borderRadius: RADIUS[rounded],
       }}
     >

@@ -3,28 +3,28 @@ import styles from './PrinciplesList.module.css'
 
 const PRINCIPLES = [
   {
-    title: 'Work first',
-    body: 'The work is the hero — the interface stays quiet so the craft and the outcomes lead.',
+    title: 'Let the work speak',
+    body: 'The design should never show off. I keep things calm and simple so what really matters stands out.',
   },
   {
-    title: 'Clarity over cleverness',
-    body: 'Every choice should aid comprehension; if an effect fights the user, it goes.',
+    title: 'Clear beats clever',
+    body: 'If something looks cool but makes people stop and think, it goes. Easy to understand wins every time.',
   },
   {
-    title: 'Craft in the details',
-    body: 'Hover states, easing, optical alignment — the last 1% is what separates good from done.',
+    title: 'The small stuff matters',
+    body: 'The way things move, line up and respond to a click — getting those tiny details right is what makes a product feel good to use.',
   },
   {
-    title: 'Accessible by default',
-    body: 'Contrast, keyboard support and reduced-motion are baseline requirements, not extras.',
+    title: 'Works for everyone',
+    body: 'Good design should work for everyone — readable text, works with a keyboard, and comfortable for people sensitive to motion. Never an afterthought.',
   },
   {
-    title: 'Systems, not one-offs',
-    body: 'I design reusable patterns and tokens so the whole product moves together over time.',
+    title: 'Build it to reuse',
+    body: 'Instead of designing every screen from scratch, I build a kit of reusable pieces so the whole product stays consistent and easy to grow.',
   },
   {
-    title: 'Outcomes over output',
-    body: 'Success is a metric that moved for the business and the user, not the number of screens shipped.',
+    title: 'Results over screens',
+    body: 'A project is a success when it actually moves the needle for the business and the people using it — not just because it shipped.',
   },
 ]
 

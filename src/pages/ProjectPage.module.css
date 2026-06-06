@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   min-height: calc(100vh - 80px);
-  padding: var(--space-24);
+  padding: var(--space-24) var(--page-gutter);
 }
 
 .container {
@@ -15,7 +15,7 @@
 /* ── Hero ───────────────────────────────────────────────────────────── */
 .heroSection {
   width: 100%;
-  padding: var(--space-24);
+  padding: var(--space-24) var(--page-gutter);
 }
 
 .titleRow {
@@ -47,7 +47,7 @@
 /* ── Body: sticky rail + content ────────────────────────────────────── */
 .bodySection {
   width: 100%;
-  padding: var(--space-64) var(--space-24);
+  padding: var(--space-64) var(--page-gutter);
 }
 
 .layout {
@@ -189,7 +189,7 @@
 }
 
 .breakoutMedia {
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-xl);
   overflow: hidden;
 }
@@ -271,7 +271,7 @@
 /* ── Next project tile ──────────────────────────────────────────────── */
 .nextSection {
   width: 100%;
-  padding: var(--space-24);
+  padding: var(--space-24) var(--page-gutter);
   margin-top: var(--space-40);
 }
 
@@ -311,7 +311,7 @@
 /* ── Related projects ───────────────────────────────────────────────── */
 .relatedSection {
   width: 100%;
-  padding: var(--space-24);
+  padding: var(--space-24) var(--page-gutter);
   margin-top: var(--space-80);
   margin-bottom: var(--space-80);
 }

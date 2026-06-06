@@ -1,0 +1,69 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-intro);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-color-primary);
+  transition: opacity 450ms var(--ease-standard);
+}
+
+/* Fade the whole overlay out to reveal the site */
+.fade {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-20);
+}
+
+.word {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-tight);
+}
+
+/* Thin progress line that fills left → right */
+.track {
+  position: relative;
+  width: 200px;
+  height: 1px;
+  overflow: hidden;
+  background: var(--glass-border);
+}
+
+.fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--text-color-primary);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: introFill 1300ms var(--ease-standard) forwards;
+}
+
+@keyframes introFill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Safety: under reduced motion the component unmounts immediately, but in case
+   it ever renders, show the filled state without animating. */
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    transition: none;
+  }
+  .fill {
+    animation: none;
+    transform: scaleX(1);
+  }
+}

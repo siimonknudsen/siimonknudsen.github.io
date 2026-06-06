@@ -3,8 +3,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: var(--space-24);
-  padding-right: var(--space-24);
+  padding-left: var(--page-gutter);
+  padding-right: var(--page-gutter);
   padding-top: 96px;
   padding-bottom: 96px;
 }

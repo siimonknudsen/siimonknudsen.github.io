@@ -8,6 +8,33 @@
   width: var(--space-8);
   height: var(--space-8);
   border-radius: var(--radius-pill);
+  /* Success-green availability dot with a soft green pulse (mirrors the hero
+     availability pill, recoloured off the orange brand halo). */
+  background-color: var(--feedback-success);
+  box-shadow:
+    0 0 0 0 var(--feedback-success),
+    0 0 6px var(--feedback-success);
+  animation: locationDotPulse 2.4s var(--ease-standard) infinite;
+}
+
+@keyframes locationDotPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 var(--feedback-success),
+      0 0 6px var(--feedback-success);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px var(--feedback-success-soft),
+      0 0 10px var(--feedback-success);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    animation: none;
+  }
 }
 
 .group {

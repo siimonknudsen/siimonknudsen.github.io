@@ -19,8 +19,8 @@ function Archive() {
                 key={project.id}
                 id={project.id}
                 title={project.title}
-                description=""
-                tags={[]}
+                description={project.description}
+                tags={project.tags}
               />
             ))}
           </div>

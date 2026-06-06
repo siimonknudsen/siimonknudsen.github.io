@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import Media from '../Media'
 import styles from './ImageGrid.module.css'
 
@@ -58,25 +59,23 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
         )}
       </div>
 
-      {openSrc && (
-        <div
-          className={styles.lightbox}
-          style={{
-            backgroundColor: 'var(--overlay-scrim)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-          }}
-          onClick={() => setOpenSrc(null)}
-          role="dialog"
-          aria-modal="true"
-        >
-          <img
-            src={openSrc}
-            alt=""
-            className={styles.lightboxImg}
-          />
-        </div>
-      )}
+      {openSrc &&
+        createPortal(
+          <div
+            className={styles.lightbox}
+            style={{
+              backgroundColor: 'var(--overlay-scrim)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+            }}
+            onClick={() => setOpenSrc(null)}
+            role="dialog"
+            aria-modal="true"
+          >
+            <img src={openSrc} alt="" className={styles.lightboxImg} />
+          </div>,
+          document.body
+        )}
     </>
   )
 }

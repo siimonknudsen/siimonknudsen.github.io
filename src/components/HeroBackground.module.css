@@ -9,6 +9,25 @@
   height: 100%;
 }
 
+/* Subtle technical grid over the shader. Theme-aware line colour; the radial
+   mask fades the grid out toward the edges so it reads as texture, not a table. */
+.grid {
+  --grid-line: var(--transparent-light-8);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 45%, #000 35%, transparent 100%);
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 45%, #000 35%, transparent 100%);
+}
+
+:global(html:not(.dark)) .grid {
+  --grid-line: var(--transparent-dark-8);
+}
+
 .fade {
   position: absolute;
   inset: 0;

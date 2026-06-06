@@ -37,7 +37,6 @@ function Playground() {
                 />
               </div>
               <div className={styles.cardBody}>
-                <p className="type-overline text-color-tertiary">01 — WebGL</p>
                 <h2 className="type-title text-color-primary">Cursor-reactive shader</h2>
                 <p className="type-body-sm text-color-secondary">
                   A dependency-free fragment shader. Move your cursor across the
@@ -50,7 +49,6 @@ function Playground() {
             {/* (b) Motion demo */}
             <Reveal preset="fade-up" className={`glass-panel ${styles.card}`}>
               <div className={styles.cardBody}>
-                <p className="type-overline text-color-tertiary">02 — Motion</p>
                 <h2 className="type-title text-color-primary">Staggered reveals</h2>
                 <p className="type-body-sm text-color-secondary">
                   The owned motion layer — CSS presets driven by a tiny hook. Each
@@ -75,7 +73,6 @@ function Playground() {
             {/* (c) Glass lab */}
             <Reveal preset="fade-up" className={`glass-panel ${styles.card}`}>
               <div className={styles.cardBody}>
-                <p className="type-overline text-color-tertiary">03 — Surfaces</p>
                 <h2 className="type-title text-color-primary">Glass lab</h2>
                 <p className="type-body-sm text-color-secondary">
                   Two frosted recipes over the same gradient — see how
@@ -98,7 +95,6 @@ function Playground() {
             <Reveal preset="fade-up" className={styles.card}>
               <Link to="/design-system" className={`glass-panel ${styles.linkCard} focus-ring`}>
                 <div className={styles.cardBody}>
-                  <p className="type-overline text-color-tertiary">04 — Reference</p>
                   <h2 className="type-title text-color-primary">The full system</h2>
                   <p className="type-body-sm text-color-secondary">
                     Tokens, type roles, colour ramps, glass, motion presets and

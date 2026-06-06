@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom'
 import ProjectCard from './ProjectCard'
+import Media from '../Media'
 import styles from './ProjectGrid.module.css'
 
 // `impact` (optional): a one-line outcome shown as a chip on the card.
@@ -80,10 +82,62 @@ export const archiveProjects = [
 
 export const allArchiveProjects = [...allProjects, ...archiveProjects]
 
-function ProjectGrid({ excludeProjectId = null }) {
+function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
   const projects = excludeProjectId
     ? allProjects.filter((project) => project.id !== excludeProjectId)
     : allProjects
+
+  // Full-width cards that stack on top of each other as you scroll (sticky),
+  // each filling ~90vh. Used on the home page.
+  if (variant === 'stack') {
+    return (
+      <div className={styles.stack}>
+        {projects.map((project, index) => (
+          <article
+            key={project.id}
+            className={styles.stackCard}
+            style={{ '--i': index }}
+          >
+            <Link to={`/project/${project.id}`} className={styles.stackLink}>
+              <div className={styles.stackMedia}>
+                <Media
+                  src={`/projects/${project.id}/images/hero`}
+                  alt={project.title}
+                  aspect="fill"
+                  rounded="none"
+                />
+              </div>
+              <div className={styles.stackInfo}>
+                {project.impact && (
+                  <span className={`bg-accent-soft text-accent ${styles.stackImpact}`}>
+                    <strong>{project.impact.value}</strong> {project.impact.label}
+                  </span>
+                )}
+                <h3 className={`type-heading-sm text-color-primary ${styles.stackTitle}`}>
+                  {project.title}
+                </h3>
+                <p className={`type-body-lg text-color-secondary ${styles.stackDesc}`}>
+                  {project.description}
+                </p>
+                {project.tags?.length > 0 && (
+                  <div className={styles.stackTags}>
+                    {project.tags.map((tag) => (
+                      <span key={tag} className={`glass-item text-color-secondary ${styles.stackTag}`}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <span className={`text-color-primary ${styles.stackCta}`}>
+                  View project →
+                </span>
+              </div>
+            </Link>
+          </article>
+        ))}
+      </div>
+    )
+  }
 
   const [featured, ...rest] = projects
 

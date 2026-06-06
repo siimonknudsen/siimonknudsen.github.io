@@ -137,29 +137,6 @@
   color: var(--text-color-primary) !important;
 }
 
-/*
- * Magnetic pull — reserved for primary + accent CTAs (gated in JS).
- * Button.jsx writes --mxn/--myn (a few px) on pointer move and resets them to
- * 0 on leave; the longer transition on leave eases the button back to center.
- * The translate property composes with the hover/active transform layer, so
- * the existing lift and press are preserved.
- */
-.magnetic {
-  --mxn: 0px;
-  --myn: 0px;
-  translate: var(--mxn) var(--myn);
-  transition-property: background-color, color, transform, translate, opacity,
-    box-shadow;
-  transition-duration: var(--dur-fast);
-  transition-timing-function: var(--ease-standard);
-}
-
-/* While the pointer is over the button, follow it instantly; reset eases back. */
-.magnetic:hover {
-  transition-duration: var(--dur-instant), var(--dur-instant),
-    var(--dur-fast), var(--dur-instant), var(--dur-fast), var(--dur-fast);
-}
-
 /* full width */
 .fullWidth {
   width: 100%;
@@ -182,10 +159,5 @@
   .glass:hover {
     transform: none;
     transition-duration: var(--dur-instant);
-  }
-
-  /* No magnetic pull when reduced (also gated in JS as a belt-and-braces). */
-  .magnetic {
-    translate: none;
   }
 }

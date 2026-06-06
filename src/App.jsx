@@ -9,6 +9,7 @@ import Playground from './pages/Playground'
 import NotFound from './pages/NotFound'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import IntroLoader from './components/IntroLoader'
 import ScrollToTop from './components/animations/ScrollToTop'
 import styles from './App.module.css'
 
@@ -70,6 +71,8 @@ function App() {
       </div>
       {/* Global film-grain — filmic depth over the flat-digital surfaces */}
       <div className="grain" aria-hidden="true" />
+      {/* First-load intro loader — wordmark + filling line, once per session */}
+      <IntroLoader />
     </Router>
   )
 }

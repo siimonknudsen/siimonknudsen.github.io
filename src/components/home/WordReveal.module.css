@@ -5,6 +5,13 @@
   overflow: hidden;
   vertical-align: top;
   margin-right: 0.26em;
+  /* Expand the clip box so ascenders/descenders aren't shaved off at rest
+     (the overflow:hidden masks the rising inner span). Negative margins keep
+     the layout position unchanged. */
+  padding-top: 0.1em;
+  padding-bottom: 0.22em;
+  margin-top: -0.1em;
+  margin-bottom: -0.22em;
 }
 .word:last-of-type {
   margin-right: 0;

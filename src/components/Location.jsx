@@ -25,7 +25,7 @@ function Location({ location = "Aarhus, Denmark" }) {
       className={`type-caption text-color-secondary ${styles.root}`}
       title="Available for new work"
     >
-      <span className={`bg-accent pulse-glow ${styles.dot}`} aria-hidden="true" />
+      <span className={styles.dot} aria-hidden="true" />
       <span className={styles.group}>
         <span>{location}</span>
         <span aria-hidden="true" className={styles.sep}>·</span>

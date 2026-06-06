@@ -2,12 +2,10 @@ import ProjectGrid from '../components/projects/ProjectGrid'
 import { PrimaryButton, SecondaryButton } from '../components/buttons/Button'
 import TestimonialCard from '../components/cards/TestimonialCard'
 import HeroBackground from '../components/HeroBackground'
-import AvailabilityPill from '../components/home/AvailabilityPill'
 import StatBand from '../components/home/StatBand'
 import WordReveal from '../components/home/WordReveal'
 import FeaturedQuote from '../components/home/FeaturedQuote'
 import LogoWall from '../components/home/LogoWall'
-import ShowreelTile from '../components/home/ShowreelTile'
 import { Reveal, useReducedMotion } from '../components/motion'
 import styles from './Home.module.css'
 
@@ -52,46 +50,28 @@ function Home() {
       <section className={styles.hero}>
         <HeroBackground />
 
+        {/* Content sits directly over the shader — no card, left-aligned. */}
         <div className={styles.heroContent}>
-          <div className={`glass-panel ${styles.heroCard}`}>
-            {/* Availability pill */}
-            <AvailabilityPill label="Available for work" />
+          {/* Faded name kicker */}
+          <p className={`type-body-lg text-color-tertiary ${styles.kicker}`}>
+            Simon Knudsen
+          </p>
 
-            {/* Large Avatar */}
-            <div className={`bg-surface-color-tertiary ${styles.avatar}`}>
-              <img
-                src={`${import.meta.env.BASE_URL}simon-virtual.png`}
-                alt="Simon Knudsen"
-                className={styles.avatarImg}
-              />
-            </div>
+          {/* Headline — word-by-word reveal, set large over the shader */}
+          <WordReveal
+            as="h1"
+            text="Product designer turning complex problems into clear, human experiences"
+            className={`text-color-primary ${styles.headline}`}
+          />
 
-            {/* Eyebrow */}
-            <p className={`type-overline text-color-tertiary ${styles.eyebrow}`}>
-              Product Designer · Aarhus · Available
-            </p>
-
-            {/* Name */}
-            <h1 className={`type-heading-sm text-color-primary ${styles.name}`}>
-              Simon Knudsen
-            </h1>
-
-            {/* Description — word-by-word reveal */}
-            <WordReveal
-              as="p"
-              text="Product designer turning complex problems into clear, human experiences"
-              className={`type-display text-color-primary ${styles.description}`}
-            />
-
-            {/* Call-to-Action Buttons */}
-            <div className={styles.ctaRow}>
-              <PrimaryButton className={styles.cta} as="a" href="#projects">
-                View projects
-              </PrimaryButton>
-              <SecondaryButton className={styles.cta} onClick={scrollToContact}>
-                Contact
-              </SecondaryButton>
-            </div>
+          {/* Call-to-Action Buttons */}
+          <div className={styles.ctaRow}>
+            <PrimaryButton className={styles.cta} as="a" href="#projects">
+              View projects
+            </PrimaryButton>
+            <SecondaryButton className={styles.cta} onClick={scrollToContact}>
+              Contact
+            </SecondaryButton>
           </div>
         </div>
       </section>
@@ -101,23 +81,15 @@ function Home() {
         <StatBand />
       </section>
 
-      {/* Selected work — showreel placeholder (swap in a video later) */}
-      <section className={styles.showreelSection}>
-        <ShowreelTile />
-      </section>
-
-      {/* Projects Section */}
+      {/* Projects Section — full-width cards that stack on scroll */}
       <section id="projects" className={styles.projectsSection}>
-        <ProjectGrid />
+        <ProjectGrid variant="stack" />
       </section>
 
       {/* Testimonials Section */}
       <section className={styles.testimonialsSection}>
         <div className={styles.container}>
           <Reveal as="header" className={styles.testimonialsHeader}>
-            <p className={`type-overline font-mono text-color-tertiary ${styles.testimonialsOverline}`}>
-              Testimonials
-            </p>
             <h2 className={`type-display text-color-primary ${styles.testimonialsHeading}`}>
               What people say
             </h2>

@@ -7,14 +7,7 @@
  *          e.g. as={Link} to="/..." or as="a" href="...").
  */
 
-import { useCallback, useRef } from 'react'
-import { useReducedMotion } from '../motion'
 import styles from './Button.module.css'
-
-// Variants that get the magnetic pull — reserved for the CTAs.
-const MAGNETIC_VARIANTS = new Set(['primary', 'accent'])
-// Max travel toward the cursor, in px. Kept subtle.
-const MAGNET_STRENGTH = 5
 
 function Spinner() {
   return (
@@ -53,42 +46,12 @@ function Button({
   fullWidth = false,
   ...props
 }) {
-  const ref = useRef(null)
-  const reduced = useReducedMotion()
-  const magnetic = MAGNETIC_VARIANTS.has(variant) && !reduced
-
-  const handlePointerMove = useCallback(
-    (e) => {
-      // Only fine pointers (mouse/trackpad) — skip touch/coarse input.
-      if (!magnetic || e.pointerType !== 'mouse') return
-      const el = ref.current
-      if (!el) return
-      const rect = el.getBoundingClientRect()
-      // Offset from button center, normalised to [-0.5, 0.5].
-      const nx = (e.clientX - rect.left) / rect.width - 0.5
-      const ny = (e.clientY - rect.top) / rect.height - 0.5
-      el.style.setProperty('--mxn', `${(nx * 2 * MAGNET_STRENGTH).toFixed(2)}px`)
-      el.style.setProperty('--myn', `${(ny * 2 * MAGNET_STRENGTH).toFixed(2)}px`)
-    },
-    [magnetic],
-  )
-
-  const handlePointerLeave = useCallback(() => {
-    const el = ref.current
-    if (!el) return
-    el.style.setProperty('--mxn', '0px')
-    el.style.setProperty('--myn', '0px')
-  }, [])
-
   return (
     <Comp
-      ref={ref}
       className={`${base} ${sizeClasses[size] || sizeClasses.md} ${
         variantClasses[variant] || variantClasses.primary
-      } ${magnetic ? styles.magnetic : ''} ${fullWidth ? styles.fullWidth : ''} ${className}`}
+      } ${fullWidth ? styles.fullWidth : ''} ${className}`}
       aria-busy={loading || undefined}
-      onPointerMove={magnetic ? handlePointerMove : undefined}
-      onPointerLeave={magnetic ? handlePointerLeave : undefined}
       {...props}
     >
       {loading && <Spinner />}

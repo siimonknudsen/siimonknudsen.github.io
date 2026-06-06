@@ -22,6 +22,7 @@ function HeroBackground() {
   return (
     <div className={styles.root} aria-hidden="true">
       <ShaderBackground colors={colors} speed={0.05} className={styles.shader} />
+      <div className={styles.grid} />
       <div className={styles.fade} />
     </div>
   )
