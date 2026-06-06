@@ -97,7 +97,11 @@ function TagRow({ tags }) {
   return (
     <div className={styles.tags} ref={containerRef}>
       {tags.map((tag, index) => (
-        <span key={index} ref={(el) => (chipRefs.current[index] = el)}>
+        <span
+          key={index}
+          ref={(el) => (chipRefs.current[index] = el)}
+          className={styles.tagSlot}
+        >
           <ProjectTag>{tag}</ProjectTag>
         </span>
       ))}

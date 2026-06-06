@@ -29,7 +29,7 @@
   font-size: clamp(2.25rem, 5vw, 4rem);
   line-height: 1.08;
   letter-spacing: -0.035em;
-  max-width: 16ch;
+  max-width: min(16ch, 100%);
   margin: 0 0 var(--space-40);
 }
 
@@ -38,6 +38,7 @@
   position: relative;
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-bottom: var(--space-40);

@@ -53,7 +53,7 @@ function AnimatedRoutes() {
       {playWipe && (
         <div key={location.pathname} className={styles.wipe} aria-hidden="true" />
       )}
-      <div key={location.pathname} className="page-enter">
+      <div key={location.pathname} className={playWipe ? 'page-enter-nav' : 'page-enter'}>
       <Routes location={location}>
         <Route path="/" element={<Home />} />
         <Route path="/archive" element={<Archive />} />

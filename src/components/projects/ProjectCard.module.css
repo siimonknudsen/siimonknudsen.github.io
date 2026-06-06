@@ -98,11 +98,18 @@
   display: none;
 }
 
+/* Every tag wrapper (regular + "+N") shares the same box so the chips align
+   identically on the row (the +N was mis-aligned when only it was inline-flex). */
+.tagSlot,
+.plusTag {
+  display: inline-flex;
+  align-items: center;
+}
+
 /* The trailing "+N" overflow chip — slightly muted so it reads as a counter.
    Combined with .hiddenChip in JSX so it starts hidden (no +1 flash); the
    measuring effect reveals it only when there are overflowing tags. */
 .plusTag {
-  display: inline-flex;
   cursor: default;
   opacity: 0.75;
 }

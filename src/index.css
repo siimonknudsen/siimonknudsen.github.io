@@ -121,7 +121,7 @@
 
   /* — Layout — */
   --container-max: 1920px; /* page content max width */
-  --page-gutter: var(--space-64); /* horizontal breathing room on every page section + header + footer (64px) */
+  --page-gutter: var(--space-24); /* horizontal breathing room — responsive: 24 mobile → 40 → 64 desktop (overrides below) */
   --header-height: 88px; /* sticky header footprint — used to slide the hero shader up behind the nav (slight overshoot guarantees full coverage) */
 
   /* — Radius (4 · 8 · 12 · 16; 2xl/3xl for big frosted panels & hero/case) — */
@@ -850,12 +850,29 @@ html:not(.dark) .grain {
 .page-enter {
   animation: page-enter var(--dur-quick) var(--ease-decelerate) both;
 }
+/* During a curtain-wipe navigation: hold the new page hidden until the curtain
+   has covered (~480ms), then fade + rise it in as the curtain lifts — so it
+   reveals cleanly instead of flashing before/under the wipe. */
+.page-enter-nav {
+  animation: page-enter-nav 620ms var(--ease-decelerate) both;
+  animation-delay: 480ms;
+}
 @keyframes page-enter {
   from {
     opacity: 0;
   }
   to {
     opacity: 1;
+  }
+}
+@keyframes page-enter-nav {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -909,5 +926,18 @@ html:not(.dark) .grain {
   .fx-reveal {
     opacity: 1 !important;
     transform: none !important;
+  }
+}
+
+/* Responsive page gutter — tight on mobile, generous on desktop. (64px on a
+   375px phone left too little room and caused horizontal overflow.) */
+@media (min-width: 640px) {
+  :root {
+    --page-gutter: var(--space-40);
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --page-gutter: var(--space-64);
   }
 }
