@@ -1,5 +1,6 @@
 import ProjectCard from './ProjectCard'
 import ScrollAnimation from '../animations/ScrollAnimation'
+import styles from './ProjectGrid.module.css'
 
 export const allProjects = [
   {
@@ -83,7 +84,7 @@ function ProjectGrid({ excludeProjectId = null }) {
     : allProjects
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-12">
+    <div className={styles.grid}>
       {projects.map((project) => (
         <ScrollAnimation key={project.id}>
           <ProjectCard

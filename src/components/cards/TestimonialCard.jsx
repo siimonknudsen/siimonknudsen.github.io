@@ -1,32 +1,33 @@
 import ScrollAnimation from '../animations/ScrollAnimation'
+import styles from './TestimonialCard.module.css'
 
 function TestimonialCard({ logo, recommender, title, company, text }) {
   return (
     <ScrollAnimation>
-      <div className="glass-panel rounded-2xl p-6 flex flex-col h-full transition-transform duration-fast ease-standard hover:-translate-y-1">
+      <div className={`glass-panel ${styles.card}`}>
       {/* Logo and Recommender Info */}
-      <div className="flex items-start gap-4 mb-6">
+      <div className={styles.header}>
         {/* Logo */}
-        <div className="flex-shrink-0">
-          <div className="w-16 h-16 bg-white rounded flex items-center justify-center">
+        <div className={styles.logoWrap}>
+          <div className={styles.logo}>
             {logo ? (
-              <img src={logo} alt={company} className="w-full h-full object-contain p-2" />
+              <img src={logo} alt={company} className={styles.logoImg} />
             ) : (
-              <div className="w-full h-full bg-surface-color-tertiary rounded"></div>
+              <div className={`bg-surface-color-tertiary ${styles.logoPlaceholder}`}></div>
             )}
           </div>
         </div>
 
         {/* Recommender Info - Vertical Column */}
-        <div className="flex flex-col gap-1">
-          <p className="type-subtitle text-color-primary leading-none">{recommender}</p>
-          <p className="type-body text-color-secondary leading-none">{title}</p>
-          <p className="type-body text-color-secondary leading-none">{company}</p>
+        <div className={styles.info}>
+          <p className={`type-subtitle text-color-primary ${styles.name}`}>{recommender}</p>
+          <p className={`type-body text-color-secondary ${styles.meta}`}>{title}</p>
+          <p className={`type-body text-color-secondary ${styles.meta}`}>{company}</p>
         </div>
       </div>
 
       {/* Testimonial Text */}
-      <p className="type-body text-color-secondary flex-1">
+      <p className={`type-body text-color-secondary ${styles.text}`}>
         {text}
       </p>
       </div>

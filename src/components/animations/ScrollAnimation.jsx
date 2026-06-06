@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import styles from './ScrollAnimation.module.css'
 
 function ScrollAnimation({ children, className = '' }) {
   const [isVisible, setIsVisible] = useState(false)
@@ -31,10 +32,8 @@ function ScrollAnimation({ children, className = '' }) {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-slower ease-decelerate ${
-        isVisible
-          ? 'opacity-100 translate-y-0'
-          : 'opacity-0 translate-y-4'
+      className={`${styles.root} ${
+        isVisible ? styles.visible : styles.hidden
       } ${className}`}
     >
       {children}

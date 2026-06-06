@@ -7,6 +7,30 @@ detail). Format is lightweight ADR (Architecture Decision Record).
 
 ---
 
+## 2026-06 — Removed Tailwind entirely → CSS Modules
+
+**Decision (Simon's call).** Remove the Tailwind framework completely; express all
+component styling as real CSS in co-located **CSS Modules**, using the design tokens.
+
+**How.** Kept the token foundation and global semantic classes (`.type-*`, `.glass`,
+colour utilities — these were always our own CSS, not Tailwind). Migrated all ~27
+components/pages to `*.module.css` (layout/spacing/responsive/hover written as CSS via
+`var(--space-*)`, media queries, pseudo-classes) — run as a parallel multi-agent
+workflow, one agent per file. Added a base **reset** to replace Tailwind's Preflight.
+Refactored `Media` so its `aspect`/`rounded` props resolve to inline CSS (no utility
+classes). Then removed the `@tailwind` directives, `tailwind.config.js`, the PostCSS
+plugin, and uninstalled `tailwindcss`.
+
+**Result.** Zero Tailwind in the codebase; CSS shrank ~66KB→57KB; verified on the
+production build across desktop / mobile / project pages (responsive, glass, themes all
+intact). Note: a headless dev-server quirk showed blank after the dep uninstall — the
+built output (what deploys) renders correctly; `npm run dev` in a normal terminal is fine.
+
+**Trade-off acknowledged.** This is more CSS to maintain than utility classes, but it's
+what was asked for and the tokens keep it consistent.
+
+---
+
 ## ❓ Open questions (awaiting Simon's decision)
 
 1. **Brand colour.** I went with **warm orange** (`#f26a2e`) as the recommended default

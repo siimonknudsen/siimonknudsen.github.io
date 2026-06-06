@@ -10,6 +10,12 @@ UI/a11y/motion best practices + taste references) in
 [`tailwind.config.js`](tailwind.config.js). A live reference renders at
 **`/design-system`**.
 
+> **No Tailwind (2026-06).** Tailwind was removed entirely; components are styled with
+> co-located **CSS Modules** (`*.module.css`) that consume the tokens below. The global
+> semantic classes (`.type-*`, `.glass`, colour utilities) live in `src/index.css`.
+> Token names/tables here are unchanged — only the delivery mechanism changed.
+> (Some text below still says "Tailwind utility" — read that as "token/utility class".)
+
 ---
 
 ## 1. Token architecture — primitives → semantics

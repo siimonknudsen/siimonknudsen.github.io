@@ -1,41 +1,42 @@
 import ScrollAnimation from '../animations/ScrollAnimation'
+import styles from './LogoGrid.module.css'
 
 /**
  * Reusable LogoGrid component for displaying company logos
  */
 function LogoGrid({ logos = [], columns = 6, gap = "1" }) {
   const gridCols = {
-    2: "grid-cols-2",
-    3: "grid-cols-3",
-    4: "grid-cols-4",
-    5: "grid-cols-5",
-    6: "md:grid-cols-3 lg:grid-cols-6",
-    7: "grid-cols-3 xs:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(7,minmax(0,1fr))]"
+    2: styles.cols2,
+    3: styles.cols3,
+    4: styles.cols4,
+    5: styles.cols5,
+    6: styles.cols6,
+    7: styles.cols7
   }
 
   const gapClasses = {
-    "1": "gap-1",
-    "2": "gap-2",
-    "4": "gap-4"
+    "1": styles.gap1,
+    "2": styles.gap2,
+    "4": styles.gap4
   }
 
   return (
-    <div className={`grid ${gridCols[columns] || gridCols[7]} ${gapClasses[gap]}`}>
+    <div className={`${styles.grid} ${gridCols[columns] || gridCols[7]} ${gapClasses[gap]}`}>
       {logos.map((logo, index) => {
         // Extract company name from logo path for better alt text
         const logoName = logo ? logo.split('/').pop().replace('.png', '').replace(/-/g, ' ') : ''
         return (
           <ScrollAnimation key={index}>
-            <div className="w-full aspect-square overflow-hidden">
+            <div className={styles.cell}>
               {logo ? (
                 <img
                   src={logo}
                   alt={logoName || `Company logo ${index + 1}`}
                   loading="lazy"
-                  className="w-full h-full object-contain rounded opacity-70 hover:opacity-100 transition-opacity duration-fast ease-standard"
+                  className={styles.logo}
                 />
               ) : (
-                <div className="w-full h-full bg-surface-color-tertiary rounded"></div>
+                <div className={`bg-surface-color-tertiary ${styles.placeholder}`}></div>
               )}
             </div>
           </ScrollAnimation>

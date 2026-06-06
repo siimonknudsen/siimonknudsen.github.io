@@ -1,5 +1,6 @@
 import ShaderBackground from './shader/ShaderBackground'
 import { useTheme } from '../contexts/ThemeContext'
+import styles from './HeroBackground.module.css'
 
 // Mesh "gradient-grid" — four corner points [top-left, top-right, bottom-left,
 // bottom-right]. Diagonal green→teal blooms over dark (light: soft mint over white).
@@ -19,9 +20,9 @@ function HeroBackground() {
   const colors = PALETTE[theme] || PALETTE.dark
 
   return (
-    <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-      <ShaderBackground colors={colors} speed={0.05} className="w-full h-full" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[color:var(--surface-color-primary)]" />
+    <div className={styles.root} aria-hidden="true">
+      <ShaderBackground colors={colors} speed={0.05} className={styles.shader} />
+      <div className={styles.fade} />
     </div>
   )
 }

@@ -3,6 +3,7 @@ import ScrollAnimation from '../components/animations/ScrollAnimation'
 import LogoGrid from '../components/grids/LogoGrid'
 import ImageGrid from '../components/grids/ImageGrid'
 import SkillCard from '../components/cards/SkillCard'
+import styles from './About.module.css'
 
 function About() {
   // Automatically load all logos from src/assets/logos/ folder
@@ -79,22 +80,22 @@ function About() {
   return (
     <>
       {/* First Section - Headshot and Introduction */}
-      <section id="about-me" className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] max-h-[900px] p-6 mb-20 scroll-mt-24">
-        <div className="max-w-page mx-auto flex flex-col items-center">
+      <section id="about-me" className={styles.heroSection}>
+        <div className={styles.heroInner}>
           {/* Headshot */}
           <ScrollAnimation>
-            <div className="w-[200px] h-[200px] rounded-full overflow-hidden flex-shrink-0 bg-surface-color-tertiary mb-8">
-              <img 
-                src={`${import.meta.env.BASE_URL}simon-virtual.png`} 
+            <div className={`bg-surface-color-tertiary ${styles.headshot}`}>
+              <img
+                src={`${import.meta.env.BASE_URL}simon-virtual.png`}
                 alt="Simon Knudsen"
-                className="w-full h-full object-cover"
+                className={styles.headshotImg}
               />
             </div>
           </ScrollAnimation>
 
           {/* Introduction Text */}
           <ScrollAnimation>
-            <p className="type-body-lg text-color-secondary text-center max-w-3xl">
+            <p className={`type-body-lg text-color-secondary ${styles.intro}`}>
               I'm a Product Designer who's passionate about human psychology within digital products. I'm experienced in crafting beautiful and user friendly designs that solves real business problems. I'm specialized within UX Design, UI Design & Design Systems.
             </p>
           </ScrollAnimation>
@@ -102,10 +103,10 @@ function About() {
       </section>
 
       {/* Second Section - Mission Statement */}
-      <section className="w-full p-6 mb-20">
-        <div className="max-w-page mx-auto bg-surface-color-secondary h-[700px] rounded-lg flex items-center justify-center">
+      <section className={styles.fullSection}>
+        <div className={`bg-surface-color-secondary ${styles.missionPanel}`}>
           <ScrollAnimation>
-            <p className="type-display text-color-primary text-center max-w-[23ch]">
+            <p className={`type-display text-color-primary ${styles.missionText}`}>
               Making the world of digital products more user friendly, one product at a time.
             </p>
           </ScrollAnimation>
@@ -113,12 +114,12 @@ function About() {
       </section>
 
       {/* Third Section - Companies */}
-      <section id="companies" className="w-full p-6 mb-20 scroll-mt-24">
-        <div className="max-w-page mx-auto">
+      <section id="companies" className={styles.anchorSection}>
+        <div className={styles.inner}>
           {/* Companies Section */}
           <div>
             <ScrollAnimation>
-              <h2 className="type-subtitle text-color-primary mb-8">Companies i've done design for</h2>
+              <h2 className={`type-subtitle text-color-primary ${styles.heading8}`}>Companies i've done design for</h2>
             </ScrollAnimation>
             <LogoGrid logos={companies} columns={7} gap="1" />
           </div>
@@ -126,12 +127,12 @@ function About() {
       </section>
 
       {/* Fourth Section - Detailed Skills */}
-      <section id="skills" className="w-full p-6 mb-20 scroll-mt-24">
-        <div className="max-w-page mx-auto">
+      <section id="skills" className={styles.anchorSection}>
+        <div className={styles.inner}>
           <ScrollAnimation>
-            <h2 className="text-[18px] font-medium text-color-primary mb-8">Skills</h2>
+            <h2 className={`text-color-primary ${styles.skillsHeading}`}>Skills</h2>
           </ScrollAnimation>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+          <div className={styles.skillsGrid}>
             {skills.map((skill, index) => (
               <SkillCard
                 key={index}
@@ -144,12 +145,12 @@ function About() {
       </section>
 
       {/* Fifth Section - Testimonials */}
-      <section id="testimonials" className="w-full p-6 mb-20 scroll-mt-24">
-        <div className="max-w-page mx-auto">
+      <section id="testimonials" className={styles.anchorSection}>
+        <div className={styles.inner}>
           <ScrollAnimation>
-            <h2 className="type-display font-normal text-color-primary mb-12">Testimonials</h2>
+            <h2 className={`type-display text-color-primary ${styles.heading12}`}>Testimonials</h2>
           </ScrollAnimation>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className={styles.testimonialsGrid}>
             <TestimonialCard
               logo={null}
               recommender="Morten Møgelmose"
@@ -176,10 +177,10 @@ function About() {
       </section>
 
       {/* Sixth Section - Pictures */}
-      <section id="pictures" className="w-full p-6 mb-20 scroll-mt-24">
-        <div className="max-w-page mx-auto">
+      <section id="pictures" className={styles.anchorSection}>
+        <div className={styles.inner}>
           <ScrollAnimation>
-            <h2 className="type-display font-normal text-color-primary mb-12">A Picture Is Worth a Thousand Words</h2>
+            <h2 className={`type-display text-color-primary ${styles.heading12}`}>A Picture Is Worth a Thousand Words</h2>
           </ScrollAnimation>
           <ImageGrid images={aboutImages} columns={4} gap="1" aspectRatio="9/16" />
         </div>

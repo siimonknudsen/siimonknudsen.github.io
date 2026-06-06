@@ -1,0 +1,4 @@
+.tag {
+  padding: var(--space-6) 10px;
+  border-radius: var(--radius-md);
+}

@@ -1,4 +1,5 @@
 import ScrollAnimation from '../animations/ScrollAnimation'
+import styles from './SkillCard.module.css'
 
 /**
  * Reusable SkillCard component for displaying skills with descriptions
@@ -6,8 +7,8 @@ import ScrollAnimation from '../animations/ScrollAnimation'
 function SkillCard({ title, description }) {
   return (
     <ScrollAnimation>
-      <div className="glass-panel rounded-2xl p-5 flex flex-col h-full transition-transform duration-fast ease-standard hover:-translate-y-1">
-        <h3 className="type-subtitle text-color-primary mb-4">
+      <div className={`glass-panel ${styles.card}`}>
+        <h3 className={`type-subtitle text-color-primary ${styles.title}`}>
           {title}
         </h3>
         <p className="type-body text-color-secondary">

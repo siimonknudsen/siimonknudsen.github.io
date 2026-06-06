@@ -1,0 +1,44 @@
+.icon {
+  width: var(--space-16);
+  height: var(--space-16);
+}
+
+.group {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  padding: var(--space-4);
+  border: 1px solid var(--glass-border);
+  background-color: var(--glass-item-hover);
+}
+
+.thumb {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  height: var(--space-28);
+  width: var(--space-28);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.22);
+  transition-property: transform;
+  transition-duration: 300ms;
+  transition-timing-function: ease-out;
+}
+
+.btn {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  height: var(--space-28);
+  width: var(--space-28);
+  border-radius: var(--radius-pill);
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.btnHover:hover {
+  color: var(--text-color-primary) !important;
+}

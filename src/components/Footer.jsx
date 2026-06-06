@@ -2,43 +2,44 @@ import { Link } from 'react-router-dom'
 import Avatar from './Avatar'
 import Location from './Location'
 import { allProjects } from './projects/ProjectGrid'
+import styles from './Footer.module.css'
 
 function Footer() {
 
   return (
-    <footer className="w-full bg-surface-color-primary text-color-primary p-6 border-t border-color-on-primary">
-      <div className="max-w-7xl mx-auto">
+    <footer className={`bg-surface-color-primary text-color-primary border-color-on-primary ${styles.footer}`}>
+      <div className={styles.container}>
         {/* Four Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div className={styles.columns}>
           {/* Column 1: Simon Knudsen */}
-          <div className="flex flex-col">
-            <div className="mb-4">
+          <div className={styles.column}>
+            <div className={styles.avatarWrap}>
               <Avatar name="Simon Knudsen" title="Product Designer" size="small" />
             </div>
-            
-            <div className="mb-6">
+
+            <div className={styles.locationWrap}>
               <Location />
             </div>
 
-            <div className="flex flex-col gap-0.5">
-              <Link to="/archive" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring">
+            <div className={styles.linkList}>
+              <Link to="/archive" className={`type-body-sm text-color-secondary focus-ring ${styles.link}`}>
                 Archive
               </Link>
-              <Link to="/design-system" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring">
+              <Link to="/design-system" className={`type-body-sm text-color-secondary focus-ring ${styles.link}`}>
                 Design system
               </Link>
             </div>
           </div>
 
           {/* Column 2: Projects */}
-          <div className="flex flex-col">
-            <h3 className="type-label text-color-primary mb-4">Projects</h3>
-            <div className="flex flex-col gap-0.5">
+          <div className={styles.column}>
+            <h3 className={`type-label text-color-primary ${styles.heading}`}>Projects</h3>
+            <div className={styles.linkList}>
               {allProjects.map((project) => (
-                <Link 
+                <Link
                   key={project.id}
-                  to={`/project/${project.id}`} 
-                  className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring"
+                  to={`/project/${project.id}`}
+                  className={`type-body-sm text-color-secondary focus-ring ${styles.link}`}
                 >
                   {project.title}
                 </Link>
@@ -47,39 +48,39 @@ function Footer() {
           </div>
 
           {/* Column 3: About */}
-          <div className="flex flex-col">
-            <h3 className="type-label text-color-primary mb-4">About</h3>
-            <div className="flex flex-col gap-0.5">
-              <Link to="/about#about-me" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring">
+          <div className={styles.column}>
+            <h3 className={`type-label text-color-primary ${styles.heading}`}>About</h3>
+            <div className={styles.linkList}>
+              <Link to="/about#about-me" className={`type-body-sm text-color-secondary focus-ring ${styles.link}`}>
                 About me
               </Link>
-              <Link to="/about#companies" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring">
+              <Link to="/about#companies" className={`type-body-sm text-color-secondary focus-ring ${styles.link}`}>
                 Companies
               </Link>
-              <Link to="/about#skills" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring">
+              <Link to="/about#skills" className={`type-body-sm text-color-secondary focus-ring ${styles.link}`}>
                 Skills
               </Link>
-              <Link to="/about#testimonials" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring">
+              <Link to="/about#testimonials" className={`type-body-sm text-color-secondary focus-ring ${styles.link}`}>
                 Testimonials
               </Link>
-              <Link to="/about#pictures" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring">
+              <Link to="/about#pictures" className={`type-body-sm text-color-secondary focus-ring ${styles.link}`}>
                 Pictures
               </Link>
             </div>
           </div>
 
           {/* Column 4: Contact */}
-          <div className="flex flex-col">
-            <h3 className="type-label text-color-primary mb-4">Contact</h3>
-            <div className="flex flex-col gap-0.5">
-              <a href="mailto:simonoverlund@hotmail.com" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring">
+          <div className={styles.column}>
+            <h3 className={`type-label text-color-primary ${styles.heading}`}>Contact</h3>
+            <div className={styles.linkList}>
+              <a href="mailto:simonoverlund@hotmail.com" className={`type-body-sm text-color-secondary focus-ring ${styles.link}`}>
                 simonoverlund@hotmail.com
               </a>
-              <a 
-                href="https://www.linkedin.com/in/simon-knudsen/" 
-                target="_blank" 
+              <a
+                href="https://www.linkedin.com/in/simon-knudsen/"
+                target="_blank"
                 rel="noopener noreferrer"
-                className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring"
+                className={`type-body-sm text-color-secondary focus-ring ${styles.link}`}
               >
                 LinkedIn
               </a>
@@ -88,8 +89,8 @@ function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-color-on-primary pt-6">
-          <p className="type-caption text-color-secondary text-center">
+        <div className={`border-color-on-primary ${styles.bottom}`}>
+          <p className={`type-caption text-color-secondary ${styles.copyright}`}>
             © 2021-{new Date().getFullYear()} Simon Knudsen. All rights reserved.
           </p>
         </div>
@@ -99,4 +100,3 @@ function Footer() {
 }
 
 export default Footer
-

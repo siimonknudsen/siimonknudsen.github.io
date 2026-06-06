@@ -1,0 +1,13 @@
+.root {
+  transition: all var(--dur-slower) var(--ease-decelerate);
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateY(var(--space-16));
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

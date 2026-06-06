@@ -1,4 +1,5 @@
 import ScrollAnimation from '../animations/ScrollAnimation'
+import styles from './ExperienceTimeline.module.css'
 
 // Helper function to calculate duration between two dates
 function calculateDuration(startDateStr, endDateStr) {
@@ -159,110 +160,103 @@ function ExperienceCard({ experience, index, yearLabel }) {
   const companyEndDate = experience.roles[0].endDate
 
   return (
-    <div className="relative grid grid-cols-[minmax(40px,50px)_auto_1fr_1fr_1fr] md:grid-cols-[60px_auto_1fr_1fr_1fr] gap-x-0">
+    <div className={styles.row}>
       {/* Column 1: Year label */}
-      <div className="pt-2 pr-3 md:pr-4 text-right">
+      <div className={styles.yearCol}>
         {yearLabel && (
-          <span className="text-[13px] font-medium text-color-secondary">
+          <span className={`text-color-secondary ${styles.yearLabel}`}>
             {yearLabel}
           </span>
         )}
       </div>
 
       {/* Column 2: Timeline dot and line */}
-      <div className="relative flex flex-col items-center px-2">
+      <div className={styles.timelineCol}>
         {/* Dot with glow effect for current role */}
         <div className={`
-          relative z-10 w-3 h-3 rounded-full mt-2 flex-shrink-0
+          ${styles.dot}
           ${experience.roles[0].current
-            ? 'bg-accent pulse-glow'
-            : 'bg-surface-color-tertiary border-2 border-color-secondary'
+            ? `bg-accent pulse-glow ${styles.dotCurrent}`
+            : `bg-surface-color-tertiary border-color-secondary ${styles.dotPast}`
           }
         `}>
           {experience.roles[0].current && (
-            <div className="absolute inset-0 rounded-full bg-accent animate-ping opacity-30" />
+            <div className={`bg-accent ${styles.ping}`} />
           )}
         </div>
-        
+
         {/* Connecting line */}
         {!isLast && (
-          <div className="w-[1px] flex-grow bg-[var(--border-color-secondary)] mt-3 mb-0" />
+          <div className={styles.line} />
         )}
       </div>
 
       {/* Columns 3-5: Content card (spans 3 columns) */}
-      <div className="col-span-3 pb-8 pl-3 md:pl-5">
+      <div className={styles.contentCol}>
         <ScrollAnimation>
-          <div 
-            className="
-              relative overflow-hidden
-              bg-surface-color-secondary rounded-xl p-6
-              border border-transparent
-            "
-          >
+          <div className={`bg-surface-color-secondary ${styles.card}`}>
             {/* Header Row: Logo, Company info column */}
-            <div className="flex items-center gap-4 mb-5">
+            <div className={styles.header}>
               {/* Logo */}
               <div className={`
-                w-11 h-11 rounded-xl flex-shrink-0 overflow-hidden
-                flex items-center justify-center
-                ${experience.logo ? 'bg-white' : 'bg-surface-color-tertiary'}
+                ${styles.logo}
+                ${experience.logo ? styles.logoBackplate : 'bg-surface-color-tertiary'}
               `}>
                 {experience.logo ? (
                   <img
                     src={experience.logo}
                     alt={experience.company}
-                    className="w-full h-full object-cover"
+                    className={styles.logoImg}
                   />
                 ) : (
-                  <span className="text-base font-semibold text-color-primary">
+                  <span className={`text-color-primary ${styles.logoInitial}`}>
                     {experience.company.charAt(0)}
                   </span>
                 )}
               </div>
 
               {/* Company info column */}
-              <div className="flex-grow min-w-0">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-[16px] font-semibold text-color-primary leading-tight">
+              <div className={styles.companyInfo}>
+                <div className={styles.companyNameRow}>
+                  <h3 className={`text-color-primary ${styles.companyName}`}>
                     {experience.company}
                   </h3>
                   {/* Badge */}
                   {experience.badge && (
-                    <span className="type-caption font-medium text-accent bg-accent-soft px-1.5 py-0.5 rounded-full">
+                    <span className={`type-caption text-accent bg-accent-soft ${styles.badge}`}>
                       {experience.badge}
                     </span>
                   )}
                 </div>
-                
-                <div className="flex items-center gap-2 text-[13px] text-color-secondary mt-0.5">
+
+                <div className={`text-color-secondary ${styles.companyMeta}`}>
                   <span>{companyStartDate} – {companyEndDate}</span>
-                  <span className="text-color-secondary/40">·</span>
+                  <span className={`text-color-secondary ${styles.metaDivider}`}>·</span>
                   <span>{experience.totalDuration}</span>
                 </div>
               </div>
             </div>
 
             {/* Roles */}
-            <div className="space-y-4">
+            <div className={styles.roles}>
               {experience.roles.map((role, roleIndex) => (
-                <div key={roleIndex} className="flex flex-col gap-1">
+                <div key={roleIndex} className={styles.role}>
                   {/* Role title */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-[15px] font-medium text-color-primary">
+                  <div className={styles.roleTitleRow}>
+                    <span className={`text-color-primary ${styles.roleTitle}`}>
                       {role.title}
                     </span>
                     {role.current && (
-                      <span className="flex items-center gap-1.5 type-caption font-medium text-accent">
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                      <span className={`type-caption text-accent ${styles.currentBadge}`}>
+                        <span className={`bg-accent ${styles.currentDot}`} />
                         Current
                       </span>
                     )}
                   </div>
                   {/* Role dates and duration */}
-                  <div className="flex items-center gap-2 text-[13px] text-color-secondary">
+                  <div className={`text-color-secondary ${styles.roleMeta}`}>
                     <span>{role.startDate} – {role.endDate}</span>
-                    <span className="text-color-secondary/40">·</span>
+                    <span className={`text-color-secondary ${styles.metaDivider}`}>·</span>
                     <span>{calculateDuration(role.startDate, role.endDate)}</span>
                   </div>
                 </div>
@@ -307,16 +301,16 @@ function ExperienceTimeline() {
   })
 
   return (
-    <div className="relative">
+    <div className={styles.section}>
       {/* Section header */}
       <ScrollAnimation>
-        <h2 className="text-[18px] font-medium text-color-primary mb-10">
+        <h2 className={`text-color-primary ${styles.sectionTitle}`}>
           Experience
         </h2>
       </ScrollAnimation>
 
       {/* Timeline */}
-      <div className="relative pl-0">
+      <div className={styles.timeline}>
         {experiencesWithYears.map((experience, index) => (
           <ExperienceCard 
             key={experience.id} 

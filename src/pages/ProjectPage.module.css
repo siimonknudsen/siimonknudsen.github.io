@@ -1,0 +1,148 @@
+.notFound {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 80px);
+  padding: var(--space-24);
+}
+
+.section {
+  width: 100%;
+  padding: var(--space-24);
+  margin-bottom: var(--space-80);
+}
+
+.container {
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Row 1: Title + Description */
+.titleRow {
+  margin-bottom: var(--space-32);
+}
+
+.title {
+  margin-top: var(--space-40);
+  margin-bottom: var(--space-8);
+}
+
+.description {
+  max-width: 48rem;
+}
+
+/* Row 2: Client, When, Details */
+.metaRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-40);
+  margin-bottom: var(--space-32);
+}
+
+@media (min-width: 768px) {
+  .metaRow {
+    flex-direction: row;
+  }
+}
+
+.metaLabel {
+  margin-bottom: var(--space-8);
+}
+
+.metaValue {
+  font-weight: var(--weight-medium);
+}
+
+/* Row 3: Responsibilities */
+.responsibilities {
+  margin-bottom: var(--space-48);
+}
+
+/* Hero image */
+.hero {
+  margin-bottom: var(--space-80);
+}
+
+.heroPlaceholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-80);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Challenge / Solution two-column */
+.twoCol {
+  margin-bottom: var(--space-48);
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: var(--space-12);
+}
+
+@media (min-width: 768px) {
+  .twoCol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-32);
+  }
+}
+
+.colHeading {
+  margin-bottom: var(--space-16);
+}
+
+.prose {
+  max-width: 48rem;
+}
+
+/* Ordered content blocks */
+.contentBlocks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+}
+
+.textBlock {
+  max-width: 48rem;
+}
+
+/* App screens */
+.appScreens {
+  margin-top: var(--space-80);
+}
+
+.appScreensHeading {
+  margin-bottom: var(--space-32);
+}
+
+.appScreensGrid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: var(--space-32);
+  justify-items: center;
+}
+
+@media (min-width: 768px) {
+  .appScreensGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .appScreensGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.appScreen {
+  max-width: 492px;
+  width: 100%;
+}
+
+/* Related projects */
+.moreHeading {
+  font-weight: var(--weight-regular);
+  margin-bottom: var(--space-48);
+}

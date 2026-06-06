@@ -1,0 +1,25 @@
+.root {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.dot {
+  width: var(--space-8);
+  height: var(--space-8);
+  border-radius: var(--radius-pill);
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.sep {
+  opacity: 0.4;
+}
+
+.time {
+  font-variant-numeric: tabular-nums;
+}

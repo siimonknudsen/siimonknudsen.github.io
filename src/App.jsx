@@ -9,6 +9,7 @@ import NotFound from './pages/NotFound'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollToTop from './components/animations/ScrollToTop'
+import styles from './App.module.css'
 
 // Document titles for the static routes (project pages set their own).
 const ROUTE_TITLES = {
@@ -57,9 +58,9 @@ function App() {
       {/* Single app shell: persistent chrome (Header/Footer) wraps the routed
           content. The nav no longer re-mounts on navigation, and there is one
           real <main> landmark + skip-link target for the whole site. */}
-      <div className="min-h-screen flex flex-col bg-surface-color-primary text-color-primary">
+      <div className={`${styles.shell} bg-surface-color-primary text-color-primary`}>
         <Header />
-        <main id="main-content" tabIndex={-1} className="flex-1 outline-none">
+        <main id="main-content" tabIndex={-1} className={styles.main}>
           <AnimatedRoutes />
         </main>
         <Footer />

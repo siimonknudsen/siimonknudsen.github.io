@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import Location from './Location'
 import ThemeToggle from './ThemeToggle'
 import { allProjects, allArchiveProjects } from './projects/ProjectGrid'
+import styles from './Header.module.css'
 
 /* ── Content powering the dropdowns ─────────────────────────────── */
 
@@ -27,13 +28,13 @@ function ProjectThumb({ id, alt }) {
   const [formatIndex, setFormatIndex] = useState(0)
   const [failed, setFailed] = useState(false)
   return (
-    <span className="w-[92px] h-[60px] rounded-xl overflow-hidden bg-surface-color-tertiary flex-shrink-0 block">
+    <span className={`bg-surface-color-tertiary ${styles.thumb}`}>
       {!failed && (
         <img
           src={`/projects/${id}/images/hero${IMAGE_FORMATS[formatIndex]}`}
           alt={alt}
           loading="lazy"
-          className="w-full h-full object-cover"
+          className={styles.thumbImg}
           onError={() =>
             formatIndex < IMAGE_FORMATS.length - 1
               ? setFormatIndex(formatIndex + 1)
@@ -47,7 +48,7 @@ function ProjectThumb({ id, alt }) {
 
 function MenuLabel({ children }) {
   return (
-    <div className="px-3 pt-1 pb-2.5 text-[11px] uppercase tracking-[0.14em] text-color-secondary">
+    <div className={`text-color-secondary ${styles.menuLabel}`}>
       {children}
     </div>
   )
@@ -58,14 +59,14 @@ function WorkRow({ id, title, subtitle, onNavigate }) {
     <Link
       to={`/project/${id}`}
       onClick={onNavigate}
-      className="glass-item rounded-2xl p-2 flex items-center gap-3"
+      className={`glass-item ${styles.workRow}`}
     >
       <ProjectThumb id={id} alt={title} />
-      <span className="flex flex-col gap-1 min-w-0">
-        <span className="text-[14px] font-medium text-color-primary leading-snug line-clamp-2">
+      <span className={styles.workMeta}>
+        <span className={`text-color-primary ${styles.workTitle}`}>
           {title}
         </span>
-        <span className="text-[12px] text-color-secondary leading-snug">{subtitle}</span>
+        <span className={`text-color-secondary ${styles.workSubtitle}`}>{subtitle}</span>
       </span>
     </Link>
   )
@@ -91,7 +92,7 @@ function ProjectsMenu({ onNavigate }) {
   return (
     <>
       <MenuLabel>Featured work</MenuLabel>
-      <div className="grid grid-cols-2 gap-1.5">
+      <div className={styles.workGrid}>
         {featuredProjects.map((p) => (
           <WorkRow
             key={p.id}
@@ -102,18 +103,18 @@ function ProjectsMenu({ onNavigate }) {
           />
         ))}
       </div>
-      <div className="mt-2 pt-2.5 px-3 flex items-center justify-between border-t border-glass">
+      <div className={`border-t border-glass ${styles.menuFooter}`}>
         <Link
           to="/"
           onClick={onNavigate}
-          className="text-[13px] font-medium text-color-primary inline-flex items-center gap-1 hover:opacity-70 transition-opacity"
+          className={`text-color-primary ${styles.footerLink}`}
         >
           View all projects <span aria-hidden="true">→</span>
         </Link>
         <Link
           to="/archive"
           onClick={onNavigate}
-          className="text-[13px] text-color-secondary hover:text-color-primary transition-colors"
+          className={`text-color-secondary hover:text-color-primary ${styles.footerLinkSecondary}`}
         >
           Archive
         </Link>
@@ -126,7 +127,7 @@ function ArchiveMenu({ onNavigate }) {
   return (
     <>
       <MenuLabel>From the archive</MenuLabel>
-      <div className="grid grid-cols-2 gap-1.5">
+      <div className={styles.workGrid}>
         {allArchiveProjects.map((p) => (
           <WorkRow
             key={p.id}
@@ -137,11 +138,11 @@ function ArchiveMenu({ onNavigate }) {
           />
         ))}
       </div>
-      <div className="mt-2 pt-2.5 px-3 flex items-center justify-between border-t border-glass">
+      <div className={`border-t border-glass ${styles.menuFooter}`}>
         <Link
           to="/archive"
           onClick={onNavigate}
-          className="text-[13px] font-medium text-color-primary inline-flex items-center gap-1 hover:opacity-70 transition-opacity"
+          className={`text-color-primary ${styles.footerLink}`}
         >
           View full archive <span aria-hidden="true">→</span>
         </Link>
@@ -153,39 +154,39 @@ function ArchiveMenu({ onNavigate }) {
 function AboutMenu({ onNavigate }) {
   return (
     <>
-      <div className="flex items-center gap-3 px-2 pt-1 pb-3">
-        <span className="w-11 h-11 rounded-full overflow-hidden bg-surface-color-tertiary flex-shrink-0 block">
+      <div className={styles.aboutHeader}>
+        <span className={`bg-surface-color-tertiary ${styles.aboutAvatar}`}>
           <img
             src={`${import.meta.env.BASE_URL}simon-virtual.png`}
             alt="Simon Knudsen"
-            className="w-full h-full object-cover"
+            className={styles.avatarImg}
           />
         </span>
-        <span className="flex flex-col">
-          <span className="text-[14px] font-medium text-color-primary leading-tight">Simon Knudsen</span>
-          <span className="text-[12px] text-color-secondary leading-tight">
+        <span className={styles.aboutName}>
+          <span className={`text-color-primary ${styles.aboutNameTitle}`}>Simon Knudsen</span>
+          <span className={`text-color-secondary ${styles.aboutNameSub}`}>
             Product Designer · Aarhus
           </span>
         </span>
       </div>
-      <div className="flex flex-col border-t border-glass pt-2">
+      <div className={`border-t border-glass ${styles.aboutList}`}>
         {aboutSections.map((s) => (
           <Link
             key={s.to}
             to={s.to}
             onClick={onNavigate}
-            className="glass-item rounded-xl px-3 py-2 flex items-center justify-between text-[14px] text-color-secondary hover:text-color-primary"
+            className={`glass-item text-color-secondary hover:text-color-primary ${styles.aboutItem}`}
           >
             {s.label}
-            <Chevron className="w-3 h-3 -rotate-90 opacity-50" />
+            <Chevron className={styles.aboutChevron} />
           </Link>
         ))}
       </div>
-      <div className="mt-2 pt-2.5 px-3 border-t border-glass">
+      <div className={`border-t border-glass ${styles.menuFooterSingle}`}>
         <Link
           to="/about"
           onClick={onNavigate}
-          className="text-[13px] font-medium text-color-primary inline-flex items-center gap-1 hover:opacity-70 transition-opacity"
+          className={`text-color-primary ${styles.footerLink}`}
         >
           Read full story <span aria-hidden="true">→</span>
         </Link>
@@ -197,29 +198,29 @@ function AboutMenu({ onNavigate }) {
 function ContactMenu({ onNavigate }) {
   return (
     <>
-      <div className="px-3 pt-1 pb-3">
-        <div className="text-[15px] font-medium text-color-primary leading-snug">
+      <div className={styles.contactHead}>
+        <div className={`text-color-primary ${styles.contactTitle}`}>
           Let&apos;s work together
         </div>
-        <div className="text-[13px] text-color-secondary leading-snug mt-1">
+        <div className={`text-color-secondary ${styles.contactSub}`}>
           Open to new projects and roles.
         </div>
       </div>
-      <div className="flex flex-col border-t border-glass pt-2">
+      <div className={`border-t border-glass ${styles.contactList}`}>
         <a
           href="mailto:simonoverlund@hotmail.com"
           onClick={onNavigate}
-          className="glass-item rounded-xl px-3 py-2 flex items-center gap-3"
+          className={`glass-item ${styles.contactItem}`}
         >
-          <span className="w-8 h-8 rounded-lg bg-surface-color-tertiary flex items-center justify-center flex-shrink-0">
-            <svg className="w-4 h-4 text-color-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <span className={`bg-surface-color-tertiary ${styles.contactIcon}`}>
+            <svg className={`text-color-primary ${styles.contactIconSvg}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <rect x="3" y="5" width="18" height="14" rx="2" />
               <path d="m3 7 9 6 9-6" />
             </svg>
           </span>
-          <span className="flex flex-col min-w-0">
-            <span className="text-[13px] font-medium text-color-primary leading-tight">Email me</span>
-            <span className="text-[12px] text-color-secondary leading-tight truncate">
+          <span className={styles.contactMeta}>
+            <span className={`text-color-primary ${styles.contactMetaTitle}`}>Email me</span>
+            <span className={`text-color-secondary ${styles.contactMetaSub}`}>
               simonoverlund@hotmail.com
             </span>
           </span>
@@ -229,23 +230,23 @@ function ContactMenu({ onNavigate }) {
           target="_blank"
           rel="noopener noreferrer"
           onClick={onNavigate}
-          className="glass-item rounded-xl px-3 py-2 flex items-center gap-3"
+          className={`glass-item ${styles.contactItem}`}
         >
-          <span className="w-8 h-8 rounded-lg bg-surface-color-tertiary flex items-center justify-center flex-shrink-0">
-            <svg className="w-4 h-4 text-color-primary" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <span className={`bg-surface-color-tertiary ${styles.contactIcon}`}>
+            <svg className={`text-color-primary ${styles.contactIconSvg}`} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21H9z" />
             </svg>
           </span>
-          <span className="flex flex-col min-w-0">
-            <span className="text-[13px] font-medium text-color-primary leading-tight">LinkedIn</span>
-            <span className="text-[12px] text-color-secondary leading-tight truncate">
+          <span className={styles.contactMeta}>
+            <span className={`text-color-primary ${styles.contactMetaTitle}`}>LinkedIn</span>
+            <span className={`text-color-secondary ${styles.contactMetaSub}`}>
               in/simon-knudsen
             </span>
           </span>
         </a>
       </div>
-      <div className="mt-2 pt-2.5 px-3 border-t border-glass flex items-center gap-2 text-[12px] text-color-secondary">
-        <span className="w-2 h-2 rounded-full bg-accent pulse-glow" />
+      <div className={`border-t border-glass text-color-secondary ${styles.contactStatus}`}>
+        <span className={`bg-accent pulse-glow ${styles.statusDot}`} />
         Available · Aarhus, Denmark
       </div>
     </>
@@ -357,7 +358,7 @@ function Header() {
   ]
 
   const triggerClass = (active, isOpen) =>
-    `glass-item text-sm font-normal px-4 py-2 rounded-lg whitespace-nowrap ${
+    `glass-item ${styles.trigger} ${
       active || isOpen
         ? 'text-color-primary glass-item-active'
         : 'text-color-secondary hover:text-color-primary'
@@ -368,33 +369,33 @@ function Header() {
   return (
     <>
       <header
-        className="sticky top-0 z-50 w-full px-4 sm:px-6 pt-4 pb-2"
+        className={styles.header}
         onKeyDown={(e) => e.key === 'Escape' && closeNow()}
       >
-        <div ref={wrapperRef} className="relative max-w-page mx-auto">
+        <div ref={wrapperRef} className={styles.wrapper}>
           {/* The single glass bar */}
-          <div className="glass rounded-2xl flex items-center gap-2 p-2 relative">
+          <div className={`glass ${styles.bar}`}>
             {/* Left — brand (non-interactive) */}
-            <div className="rounded-full pl-1 pr-3 py-1 flex items-center gap-2.5 flex-shrink-0 select-none">
-              <span className="w-9 h-9 rounded-full overflow-hidden bg-surface-color-tertiary flex-shrink-0 block">
+            <div className={styles.brand}>
+              <span className={`bg-surface-color-tertiary ${styles.brandAvatar}`}>
                 <img
                   src={`${import.meta.env.BASE_URL}simon-virtual.png`}
                   alt="Simon Knudsen"
-                  className="w-full h-full object-cover"
+                  className={styles.avatarImg}
                 />
               </span>
-              <span className="hidden lg:flex flex-col">
-                <span className="text-[14px] font-medium text-color-primary leading-[1.25] tracking-tight">
+              <span className={styles.brandText}>
+                <span className={`text-color-primary ${styles.brandName}`}>
                   Simon Knudsen
                 </span>
-                <span className="text-[12px] text-color-secondary leading-[1.25] tracking-tight">
+                <span className={`text-color-secondary ${styles.brandRole}`}>
                   Product Designer
                 </span>
               </span>
             </div>
 
             {/* Center — nav triggers (absolutely centred in the bar) */}
-            <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-1">
+            <div className={styles.nav}>
               {navItems.map((item) => {
                 const isOpenItem = open && menuKey === item.key
                 const shared = {
@@ -421,23 +422,23 @@ function Header() {
             </div>
 
             {/* Right — utilities */}
-            <div className="flex items-center gap-3 ml-auto flex-shrink-0">
-              <div className="hidden lg:flex items-center">
+            <div className={styles.utils}>
+              <div className={styles.locationDesktop}>
                 <Location />
               </div>
               <span
-                className="hidden lg:block h-5 w-px bg-[color:var(--glass-border)]"
+                className={styles.divider}
                 aria-hidden="true"
               />
               <ThemeToggle />
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden glass-item w-10 h-10 rounded-full flex items-center justify-center text-color-secondary hover:text-color-primary"
+                className={`glass-item text-color-secondary hover:text-color-primary ${styles.menuButton}`}
                 aria-label="Toggle menu"
                 aria-expanded={isMobileMenuOpen}
               >
                 <svg
-                  className="w-5 h-5"
+                  className={styles.menuButtonSvg}
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -463,14 +464,10 @@ function Header() {
             onFocus={cancelClose}
             onBlur={scheduleClose}
             style={{ left: `${panelLeft}px`, width: menuKey ? `${MENU_WIDTH[menuKey]}px` : undefined }}
-            className={`hidden md:block absolute top-full -translate-x-1/2 z-50 max-w-[calc(100vw-2rem)] transition-[opacity,transform] duration-200 ease-out ${
-              open
-                ? 'opacity-100 visible translate-y-0'
-                : 'opacity-0 invisible -translate-y-1 pointer-events-none'
-            }`}
+            className={`${styles.panel} ${open ? styles.panelOpen : styles.panelClosed}`}
           >
-            <div className="pt-2.5">
-              <div className="glass-panel rounded-2xl p-3">
+            <div className={styles.panelInner}>
+              <div className={`glass-panel ${styles.panelCard}`}>
                 {ActiveBody && <ActiveBody onNavigate={closeNow} />}
               </div>
             </div>
@@ -481,14 +478,14 @@ function Header() {
       {/* Mobile menu */}
       {isMobileMenuOpen && (
         <>
-          <div className="fixed inset-0 bg-scrim z-40 md:hidden" onClick={closeMobileMenu} />
-          <div className="fixed top-[84px] left-4 right-4 z-40 md:hidden glass-panel rounded-2xl p-2">
-            <nav className="flex flex-col">
+          <div className={`bg-scrim ${styles.scrim}`} onClick={closeMobileMenu} />
+          <div className={`glass-panel ${styles.mobileMenu}`}>
+            <nav className={styles.mobileNav}>
               <Link
                 to="/"
                 onClick={closeMobileMenu}
                 aria-current={isActive('/') ? 'page' : undefined}
-                className={`glass-item rounded-2xl px-4 py-3 text-base ${
+                className={`glass-item ${styles.mobileItem} ${
                   isActive('/') ? 'text-color-primary glass-item-active' : 'text-color-secondary'
                 }`}
               >
@@ -498,7 +495,7 @@ function Header() {
                 to="/archive"
                 onClick={closeMobileMenu}
                 aria-current={isActive('/archive') ? 'page' : undefined}
-                className={`glass-item rounded-2xl px-4 py-3 text-base ${
+                className={`glass-item ${styles.mobileItem} ${
                   isActive('/archive') ? 'text-color-primary glass-item-active' : 'text-color-secondary'
                 }`}
               >
@@ -508,7 +505,7 @@ function Header() {
                 to="/about"
                 onClick={closeMobileMenu}
                 aria-current={isActive('/about') ? 'page' : undefined}
-                className={`glass-item rounded-2xl px-4 py-3 text-base ${
+                className={`glass-item ${styles.mobileItem} ${
                   isActive('/about') ? 'text-color-primary glass-item-active' : 'text-color-secondary'
                 }`}
               >
@@ -516,11 +513,11 @@ function Header() {
               </Link>
               <button
                 onClick={handleContactClick}
-                className="glass-item rounded-2xl px-4 py-3 text-base text-color-secondary text-left"
+                className={`glass-item text-color-secondary ${styles.mobileItem} ${styles.mobileItemButton}`}
               >
                 Contact
               </button>
-              <div className="px-4 py-3 mt-1 border-t border-glass sm:hidden">
+              <div className={`border-t border-glass ${styles.mobileLocation}`}>
                 <Location />
               </div>
             </nav>

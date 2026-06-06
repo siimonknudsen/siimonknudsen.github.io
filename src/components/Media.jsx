@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import styles from './Media.module.css'
 
 /**
  * Media — the one component for all imagery & video.
@@ -20,6 +21,16 @@ import { useState, useRef, useEffect } from 'react'
 
 const IMAGE_FORMATS = ['.jpg', '.jpeg', '.png', '.webp']
 const EXT_RE = /\.(jpg|jpeg|png|webp|gif|avif|svg)$/i
+
+// Map the legacy class-string props to real CSS values (no Tailwind).
+const ASPECT = { 'aspect-video': '16 / 9', 'aspect-square': '1 / 1', 'aspect-[9/16]': '9 / 16' }
+const RADIUS = {
+  rounded: 'var(--radius-sm)',
+  'rounded-lg': 'var(--radius-md)',
+  'rounded-xl': 'var(--radius-lg)',
+  'rounded-2xl': 'var(--radius-xl)',
+  'rounded-full': 'var(--radius-pill)',
+}
 
 function Media({
   src,
@@ -116,15 +127,15 @@ function Media({
   // 'auto' (or '') → image drives its own height (natural ratio); otherwise a
   // fixed aspect frame with object-cover (uniform thumbnails).
   const isAuto = !aspect || aspect === 'auto'
-  const fit = isAuto ? 'w-full h-auto block' : 'w-full h-full object-cover'
+  const fit = isAuto ? styles.fitAuto : styles.fitCover
 
   // Reveal: fade + subtle scale (collapses to instant under reduced motion via
   // the global safety net in index.css). Latches `revealed` true once the image
   // has loaded OR scrolled into view — so an on-screen image can never stay
   // stuck invisible if onLoad is missed (cached / fast-nav), which caused blank
   // gaps on mobile; and it never re-hides when scrolled past.
-  const reveal = `transition-[opacity,transform] duration-slower ease-decelerate ${
-    revealed ? 'opacity-100 scale-100' : 'opacity-0 scale-[1.03]'
+  const reveal = `${styles.reveal} ${
+    revealed ? styles.revealShown : styles.revealHidden
   }`
 
   // A natural-ratio image that exhausted every format has no sensible
@@ -137,7 +148,11 @@ function Media({
       ref={wrapRef}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
-      className={`relative overflow-hidden bg-surface-color-tertiary ${isAuto ? '' : aspect} ${rounded} ${className}`}
+      className={`${styles.wrap} bg-surface-color-tertiary ${className}`}
+      style={{
+        aspectRatio: !isAuto ? ASPECT[aspect] : undefined,
+        borderRadius: RADIUS[rounded],
+      }}
     >
       {isVideo ? (
         <video

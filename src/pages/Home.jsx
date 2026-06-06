@@ -4,6 +4,7 @@ import { PrimaryButton, SecondaryButton } from '../components/buttons/Button'
 import TestimonialCard from '../components/cards/TestimonialCard'
 import HeroBackground from '../components/HeroBackground'
 import ScrollAnimation from '../components/animations/ScrollAnimation'
+import styles from './Home.module.css'
 
 function Home() {
   useEffect(() => {
@@ -19,30 +20,30 @@ function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative overflow-hidden flex flex-col items-center justify-center min-h-[calc(100vh-80px)] max-h-[900px] p-6 mb-20">
+      <section className={styles.hero}>
         <HeroBackground />
-        <div className="relative z-10 flex flex-col items-center">
+        <div className={styles.heroContent}>
         {/* Large Avatar */}
-        <div className="w-[148px] h-[148px] rounded-full overflow-hidden flex-shrink-0 bg-surface-color-tertiary mb-6">
-          <img 
-            src={`${import.meta.env.BASE_URL}simon-virtual.png`} 
+        <div className={`bg-surface-color-tertiary ${styles.avatar}`}>
+          <img
+            src={`${import.meta.env.BASE_URL}simon-virtual.png`}
             alt="Simon Knudsen"
-            className="w-full h-full object-cover"
+            className={styles.avatarImg}
           />
         </div>
 
         {/* Name */}
-        <h1 className="type-heading-sm text-color-primary mb-6 text-center">
+        <h1 className={`type-heading-sm text-color-primary ${styles.name}`}>
           Simon Knudsen
         </h1>
 
         {/* Description */}
-        <p className="type-display font-normal text-color-primary text-center max-w-2xl mb-10">
+        <p className={`type-display text-color-primary ${styles.description}`}>
           Product designer turning complex problems into clear, human experiences
         </p>
 
         {/* Call-to-Action Buttons */}
-        <div className="flex items-center gap-4">
+        <div className={styles.ctaRow}>
           <PrimaryButton id="view-projects-btn">
             View projects
           </PrimaryButton>
@@ -54,17 +55,17 @@ function Home() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="w-full p-6 mb-20">
+      <section id="projects" className={styles.projectsSection}>
         <ProjectGrid />
       </section>
 
       {/* Testimonials Section */}
-      <section className="w-full p-6 mb-20">
-        <div className="max-w-page mx-auto">
+      <section className={styles.testimonialsSection}>
+        <div className={styles.container}>
           <ScrollAnimation>
-            <h2 className="type-display font-normal text-color-primary mb-12">Testimonials</h2>
+            <h2 className={`type-display text-color-primary ${styles.testimonialsHeading}`}>Testimonials</h2>
           </ScrollAnimation>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className={styles.testimonialsGrid}>
             <TestimonialCard
               logo={null}
               recommender="Morten Møgelmose"

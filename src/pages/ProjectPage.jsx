@@ -5,6 +5,7 @@ import Media from '../components/Media'
 import ScrollAnimation from '../components/animations/ScrollAnimation'
 import usePageTitle from '../hooks/usePageTitle'
 import { loadProjectContent, getDefaultProjectContent } from '../data/projectContentLoader'
+import styles from './ProjectPage.module.css'
 
 function ProjectPage() {
   const { id } = useParams()
@@ -22,7 +23,7 @@ function ProjectPage() {
 
   if (!project) {
     return (
-      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] p-6">
+      <div className={styles.notFound}>
         <p className="type-body text-color-secondary">Project not found</p>
       </div>
     )
@@ -33,43 +34,43 @@ function ProjectPage() {
   return (
     <>
       {/* Top Section */}
-      <section className="w-full p-6 mb-20">
-        <div className="max-w-page mx-auto">
+      <section className={styles.section}>
+        <div className={styles.container}>
           {/* Row 1: Title + Description */}
-          <div className="mb-8">
+          <div className={styles.titleRow}>
             <ScrollAnimation>
-              <h1 className="type-display text-color-primary mt-10 mb-2">{title}</h1>
+              <h1 className={`type-display text-color-primary ${styles.title}`}>{title}</h1>
             </ScrollAnimation>
             <ScrollAnimation>
-              <p className="type-body-lg text-color-secondary max-w-3xl">
+              <p className={`type-body-lg text-color-secondary ${styles.description}`}>
                 {content.description || project.description}
               </p>
             </ScrollAnimation>
           </div>
 
           {/* Row 2: Client, When, Details */}
-          <div className="flex flex-col md:flex-row gap-10 mb-8">
+          <div className={styles.metaRow}>
             <ScrollAnimation>
               {content.client && (
                 <div>
-                  <p className="type-body-lg text-color-primary mb-2">Client</p>
-                  <p className="type-body font-medium text-color-secondary">{content.client}</p>
+                  <p className={`type-body-lg text-color-primary ${styles.metaLabel}`}>Client</p>
+                  <p className={`type-body text-color-secondary ${styles.metaValue}`}>{content.client}</p>
                 </div>
               )}
             </ScrollAnimation>
             <ScrollAnimation>
               {content.when && (
                 <div>
-                  <p className="type-body-lg text-color-primary mb-2">When</p>
-                  <p className="type-body font-medium text-color-secondary">{content.when}</p>
+                  <p className={`type-body-lg text-color-primary ${styles.metaLabel}`}>When</p>
+                  <p className={`type-body text-color-secondary ${styles.metaValue}`}>{content.when}</p>
                 </div>
               )}
             </ScrollAnimation>
             <ScrollAnimation>
               {content.details && (
                 <div>
-                  <p className="type-body-lg text-color-primary mb-2">Details</p>
-                  <p className="type-body font-medium text-color-secondary">{content.details}</p>
+                  <p className={`type-body-lg text-color-primary ${styles.metaLabel}`}>Details</p>
+                  <p className={`type-body text-color-secondary ${styles.metaValue}`}>{content.details}</p>
                 </div>
               )}
             </ScrollAnimation>
@@ -78,9 +79,9 @@ function ProjectPage() {
           {/* Row 3: Responsibilities */}
           <ScrollAnimation>
             {content.responsibilities && content.responsibilities.length > 0 && (
-              <div className="mb-12">
-                <p className="type-body-lg text-color-primary mb-2">Responsibilities</p>
-                <p className="type-body font-medium text-color-secondary">
+              <div className={styles.responsibilities}>
+                <p className={`type-body-lg text-color-primary ${styles.metaLabel}`}>Responsibilities</p>
+                <p className={`type-body text-color-secondary ${styles.metaValue}`}>
                   {content.responsibilities.join(', ')}
                 </p>
               </div>
@@ -89,9 +90,9 @@ function ProjectPage() {
 
           {/* Hero image */}
           {content.heroImage ? (
-            <Media src={content.heroImage} alt={title} aspect="auto" rounded="rounded-2xl" priority className="mb-20" />
+            <Media src={content.heroImage} alt={title} aspect="auto" rounded="rounded-2xl" priority className={styles.hero} />
           ) : (
-            <div className="w-full aspect-video rounded-2xl mb-20 bg-surface-color-tertiary flex items-center justify-center type-body text-color-secondary">
+            <div className={`bg-surface-color-tertiary type-body text-color-secondary ${styles.heroPlaceholder}`}>
               Project hero image
             </div>
           )}
@@ -99,33 +100,33 @@ function ProjectPage() {
       </section>
 
       {/* Second Section - Challenge, Solution, and Content */}
-      <section className="w-full p-6 mb-20">
-        <div className="max-w-page mx-auto">
+      <section className={styles.section}>
+        <div className={styles.container}>
           {content.challenge && (
-            <div className="mb-12 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-8">
+            <div className={styles.twoCol}>
               <ScrollAnimation>
-                <h2 className="type-subtitle text-color-primary mb-4">The Challenge</h2>
+                <h2 className={`type-subtitle text-color-primary ${styles.colHeading}`}>The Challenge</h2>
               </ScrollAnimation>
               <ScrollAnimation>
-                <p className="type-body text-color-secondary max-w-3xl">{content.challenge}</p>
+                <p className={`type-body text-color-secondary ${styles.prose}`}>{content.challenge}</p>
               </ScrollAnimation>
             </div>
           )}
 
           {content.solution && (
-            <div className="mb-12 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-8">
+            <div className={styles.twoCol}>
               <ScrollAnimation>
-                <h2 className="type-subtitle text-color-primary mb-4">The Solution</h2>
+                <h2 className={`type-subtitle text-color-primary ${styles.colHeading}`}>The Solution</h2>
               </ScrollAnimation>
               <ScrollAnimation>
-                <p className="type-body text-color-secondary max-w-3xl">{content.solution}</p>
+                <p className={`type-body text-color-secondary ${styles.prose}`}>{content.solution}</p>
               </ScrollAnimation>
             </div>
           )}
 
           {/* Ordered content blocks (image / text) */}
           {content.content && content.content.length > 0 && (
-            <div className="space-y-6">
+            <div className={styles.contentBlocks}>
               {content.content.map((block, index) => {
                 if (block.type === 'image') {
                   return (
@@ -141,7 +142,7 @@ function ProjectPage() {
                 if (block.type === 'text') {
                   return (
                     <ScrollAnimation key={index}>
-                      <div className="max-w-3xl">
+                      <div className={styles.textBlock}>
                         <p className="type-body text-color-secondary">{block.content}</p>
                       </div>
                     </ScrollAnimation>
@@ -154,11 +155,11 @@ function ProjectPage() {
 
           {/* App screens */}
           {content.appScreens && content.appScreens.length > 0 && (
-            <div className="mt-20">
+            <div className={styles.appScreens}>
               <ScrollAnimation>
-                <h2 className="type-subtitle text-color-primary mb-8">App Screens</h2>
+                <h2 className={`type-subtitle text-color-primary ${styles.appScreensHeading}`}>App Screens</h2>
               </ScrollAnimation>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+              <div className={styles.appScreensGrid}>
                 {content.appScreens.map((screen, index) => (
                   <Media
                     key={index}
@@ -166,7 +167,7 @@ function ProjectPage() {
                     alt={`${title} — app screen ${index + 1}`}
                     aspect="auto"
                     rounded="rounded-2xl"
-                    className="max-w-[492px] w-full"
+                    className={styles.appScreen}
                   />
                 ))}
               </div>
@@ -176,10 +177,10 @@ function ProjectPage() {
       </section>
 
       {/* Related Projects */}
-      <section className="w-full p-6 mb-20">
-        <div className="max-w-page mx-auto">
+      <section className={styles.section}>
+        <div className={styles.container}>
           <ScrollAnimation>
-            <h2 className="type-display font-normal text-color-primary mb-12">More Projects</h2>
+            <h2 className={`type-display text-color-primary ${styles.moreHeading}`}>More Projects</h2>
           </ScrollAnimation>
           <ProjectGrid excludeProjectId={id} />
         </div>
