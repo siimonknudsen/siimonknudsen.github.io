@@ -9,21 +9,16 @@
   outline: none;
 }
 
-/* Curtain wipe — a calm full-screen panel that sweeps up over the viewport
-   on navigation, then continues off the top to reveal the new page. Slow,
-   smooth in-out easing with a brief hold, plus a soft brand glow at its
-   leading edge so it reads as light rather than a flat block. */
+/* Curtain wipe — a calm full-screen panel in the PAGE background colour that
+   sweeps up to cover the viewport, holds, then lifts to reveal the new page
+   (which fades in after the cover via .page-enter-nav). Same-colour curtain =
+   a seamless, smooth cover with no contrasting flash. */
 .wipe {
   position: fixed;
   inset: 0;
   z-index: 1500; /* above header (50) + content; below the intro loader (2000) */
   pointer-events: none;
-  background: var(--surface-color-secondary);
-  background-image: radial-gradient(
-    140% 60% at 50% 0%,
-    rgba(242, 106, 46, 0.16),
-    transparent 62%
-  );
+  background: var(--surface-color-primary);
   transform: translateY(101%);
   will-change: transform;
   animation: pageWipe 1150ms cubic-bezier(0.76, 0, 0.24, 1) both;
