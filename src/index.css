@@ -35,16 +35,17 @@
   --brand-700: #b43f1b;
   --brand-800: #8c331a;
   --brand-900: #5f2614;
+  --brand-950: #3a160c;
 
   /* — Status + action hue ramps (raw) — complete 50→900 ladders, like Tailwind/
      Radix. success(green) · warning(amber) · error(red) · info(blue) ·
      action(indigo, the interactive/secondary-action hue, distinct from the
      orange brand). Semantics below pick the right stop per theme. */
-  --green-50:#ecfdf5; --green-100:#d1fae5; --green-200:#a7f3d0; --green-300:#6ee7b7; --green-400:#34d399; --green-500:#10b981; --green-600:#059669; --green-700:#047857; --green-800:#065f46; --green-900:#064e3b;
-  --amber-50:#fffbeb; --amber-100:#fef3c7; --amber-200:#fde68a; --amber-300:#fcd34d; --amber-400:#fbbf24; --amber-500:#f59e0b; --amber-600:#d97706; --amber-700:#b45309; --amber-800:#92400e; --amber-900:#78350f;
-  --red-50:#fef2f2;   --red-100:#fee2e2;   --red-200:#fecaca;   --red-300:#fca5a5;   --red-400:#f87171;   --red-500:#ef4444;   --red-600:#dc2626;   --red-700:#b91c1c;   --red-800:#991b1b;   --red-900:#7f1d1d;
-  --blue-50:#eff6ff;  --blue-100:#dbeafe;  --blue-200:#bfdbfe;  --blue-300:#93c5fd;  --blue-400:#60a5fa;  --blue-500:#3b82f6;  --blue-600:#2563eb;  --blue-700:#1d4ed8;  --blue-800:#1e40af;  --blue-900:#1e3a8a;
-  --indigo-50:#eef2ff; --indigo-100:#e0e7ff; --indigo-200:#c7d2fe; --indigo-300:#a5b4fc; --indigo-400:#818cf8; --indigo-500:#6366f1; --indigo-600:#4f46e5; --indigo-700:#4338ca; --indigo-800:#3730a3; --indigo-900:#312e81;
+  --green-50:#ecfdf5; --green-100:#d1fae5; --green-200:#a7f3d0; --green-300:#6ee7b7; --green-400:#34d399; --green-500:#10b981; --green-600:#059669; --green-700:#047857; --green-800:#065f46; --green-900:#064e3b; --green-950:#022c22;
+  --amber-50:#fffbeb; --amber-100:#fef3c7; --amber-200:#fde68a; --amber-300:#fcd34d; --amber-400:#fbbf24; --amber-500:#f59e0b; --amber-600:#d97706; --amber-700:#b45309; --amber-800:#92400e; --amber-900:#78350f; --amber-950:#451a03;
+  --red-50:#fef2f2;   --red-100:#fee2e2;   --red-200:#fecaca;   --red-300:#fca5a5;   --red-400:#f87171;   --red-500:#ef4444;   --red-600:#dc2626;   --red-700:#b91c1c;   --red-800:#991b1b;   --red-900:#7f1d1d;   --red-950:#450a0a;
+  --blue-50:#eff6ff;  --blue-100:#dbeafe;  --blue-200:#bfdbfe;  --blue-300:#93c5fd;  --blue-400:#60a5fa;  --blue-500:#3b82f6;  --blue-600:#2563eb;  --blue-700:#1d4ed8;  --blue-800:#1e40af;  --blue-900:#1e3a8a;  --blue-950:#172554;
+  --indigo-50:#eef2ff; --indigo-100:#e0e7ff; --indigo-200:#c7d2fe; --indigo-300:#a5b4fc; --indigo-400:#818cf8; --indigo-500:#6366f1; --indigo-600:#4f46e5; --indigo-700:#4338ca; --indigo-800:#3730a3; --indigo-900:#312e81; --indigo-950:#1e1b4b;
 
   /* — Transparent ramps (raw alpha): light = white α (overlays/borders on dark);
      dark = black α (scrims/dividers on light). Formalises the glass system. */
@@ -121,11 +122,13 @@
   /* — Layout — */
   --container-max: 1920px; /* page content max width */
 
-  /* — Radius (4 · 8 · 12 · 16 max; pill = icon buttons only) — */
+  /* — Radius (4 · 8 · 12 · 16; 2xl/3xl for big frosted panels & hero/case) — */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
+  --radius-2xl: 28px;
+  --radius-3xl: 40px;
   --radius-pill: 9999px;
 
   /* — Blur / glass effect — */
@@ -154,6 +157,22 @@
   --stagger-2: 120ms;
   --stagger-3: 180ms;
   --stagger-4: 240ms;
+
+  /* — Motion: semantic roles (presets reference these, not raw values) — */
+  --motion-reveal-dur: var(--dur-slow);     /* scroll reveals */
+  --motion-reveal-ease: var(--ease-decelerate);
+  --motion-ui-dur: var(--dur-fast);         /* hover / press / UI */
+  --motion-ui-ease: var(--ease-standard);
+  --motion-page-dur: var(--dur-quick);      /* route crossfade */
+  --motion-page-ease: var(--ease-decelerate);
+
+  /* — Motion: movement distances / amounts (tokenised) — */
+  --motion-shift-sm: 8px;
+  --motion-shift-md: 16px;
+  --motion-shift-lg: 24px;
+  --motion-scale-in: 0.96;
+  --motion-lift: -4px;
+  --motion-press: 0.97;
 
   /* — Z-index scale (semantic layering; avoids magic numbers) — */
   --z-hide: -1;
@@ -214,8 +233,8 @@ html.dark {
   --glass-bg: rgba(38, 38, 40, 0.55);
   --glass-bg-strong: rgba(28, 28, 30, 0.80);
   --glass-border: var(--transparent-light-12);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  --glass-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.07), inset 0 -1px 0 rgba(0, 0, 0, 0.22);
+  --glass-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 -1px 0 rgba(0, 0, 0, 0.28);
   --glass-item-hover: var(--transparent-light-8);
   --glass-item-active: var(--transparent-light-12);
   --glass-solid: #1c1c1e;
@@ -270,8 +289,8 @@ html:not(.dark) {
   --glass-bg: rgba(255, 255, 255, 0.60);
   --glass-bg-strong: rgba(255, 255, 255, 0.85);
   --glass-border: var(--transparent-dark-8);
-  --glass-shadow: 0 8px 32px rgba(17, 17, 17, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.80);
-  --glass-shadow-lg: 0 20px 60px rgba(17, 17, 17, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.90);
+  --glass-shadow: 0 8px 32px rgba(17, 17, 17, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.80), inset 0 -1px 0 rgba(17, 17, 17, 0.06);
+  --glass-shadow-lg: 0 20px 60px rgba(17, 17, 17, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.90), inset 0 -1px 0 rgba(17, 17, 17, 0.08);
   --glass-item-hover: var(--transparent-dark-4);
   --glass-item-active: var(--transparent-dark-8);
   --glass-solid: #f4f4f5;
@@ -803,5 +822,58 @@ html.theme-anim *::after {
   }
   to {
     opacity: 1;
+  }
+}
+
+/* ── MOTION PRESETS — the owned motion design-system layer ──────────
+   Scroll-reveal presets: start hidden, animate to shown when the
+   `.is-visible` class is toggled by the IntersectionObserver in
+   useReveal()/<Reveal>. Tokenised; reduced-motion shows instantly. */
+.fx-reveal {
+  opacity: 0;
+  transition:
+    opacity var(--motion-reveal-dur) var(--motion-reveal-ease),
+    transform var(--motion-reveal-dur) var(--motion-reveal-ease);
+  will-change: opacity, transform;
+}
+.fx-fade-up {
+  transform: translateY(var(--motion-shift-md));
+}
+.fx-scale-in {
+  transform: scale(var(--motion-scale-in));
+}
+.fx-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Stagger: a parent sets each child's --i index; <Stagger> injects it. */
+.fx-stagger > * {
+  transition-delay: calc(var(--i, 0) * var(--stagger-1));
+}
+
+/* Hover-lift + press (interaction presets) */
+.fx-hover-lift {
+  transition:
+    transform var(--motion-ui-dur) var(--motion-ui-ease),
+    box-shadow var(--motion-ui-dur) var(--motion-ui-ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .fx-hover-lift:hover {
+    transform: translateY(var(--motion-lift));
+  }
+}
+.fx-press {
+  transition: transform var(--dur-instant) var(--motion-ui-ease);
+}
+.fx-press:active {
+  transform: scale(var(--motion-press));
+}
+
+/* Safety: if JS/observer never runs (or reduced motion), never hide content. */
+@media (prefers-reduced-motion: reduce) {
+  .fx-reveal {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

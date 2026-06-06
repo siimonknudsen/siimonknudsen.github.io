@@ -6,6 +6,7 @@ import ShaderBackground from '../components/shader/ShaderBackground'
 import ProjectCard from '../components/projects/ProjectCard'
 import ProjectTag from '../components/projects/ProjectTag'
 import Input from '../components/forms/Input'
+import { Reveal, Stagger } from '../components/motion'
 import TestimonialCard from '../components/cards/TestimonialCard'
 import SkillCard from '../components/cards/SkillCard'
 import Avatar from '../components/Avatar'
@@ -755,6 +756,29 @@ function StyleGuide() {
                     </div>
                     <span className="type-caption text-color-secondary">Tap Play above</span>
                   </div>
+                </div>
+
+                {/* Owned motion layer — live staggered reveal */}
+                <div style={{ marginTop: 'var(--space-24)' }}>
+                  <span className={`font-mono text-color-secondary ${styles.motionLabel}`}>
+                    Presets · the owned motion layer (&lt;Reveal&gt; + &lt;Stagger&gt;)
+                  </span>
+                  <Stagger
+                    key={play ? 'on' : 'off'}
+                    style={{ display: 'flex', gap: 'var(--space-12)', marginTop: 'var(--space-16)', flexWrap: 'wrap' }}
+                  >
+                    {[0, 1, 2, 3, 4, 5].map((i) => (
+                      <Reveal
+                        key={i}
+                        preset="fade-up"
+                        className="bg-accent-soft border-accent"
+                        style={{ width: 56, height: 56, borderRadius: 'var(--radius-lg)', borderWidth: 1, borderStyle: 'solid' }}
+                      />
+                    ))}
+                  </Stagger>
+                  <span className="type-caption text-color-secondary" style={{ display: 'block', marginTop: 'var(--space-8)' }}>
+                    fade · fade-up · scale-in · stagger · hover-lift · press · scroll-reveal · page-transition — tap Play to replay
+                  </span>
                 </div>
               </div>
             </ScrollAnimation>

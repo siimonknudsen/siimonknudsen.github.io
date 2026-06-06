@@ -7,6 +7,31 @@ detail). Format is lightweight ADR (Architecture Decision Record).
 
 ---
 
+## 2026-06 — Motion system: own it (not Framer Motion) + extended color ramps
+
+**Motion — decision: build our OWN tokenized motion layer; do NOT adopt Framer
+Motion as the default.** (Researched.) Rationale: CSS + WAAPI + IntersectionObserver
+cover ~90% of a portfolio's needs (fade, fade-up, scale-in, stagger, scroll-reveal,
+hover-lift, press, page transitions) at **~0kb** library cost — consistent with the
+"own everything" stance from dropping Tailwind, and same performance tier (compositor
+transform/opacity). Framer Motion is ~34kb (or ~4.6kb via LazyMotion+`m`) and only
+earns its weight for **interruptible shared-element / FLIP morphs** — which we don't
+have yet. So: keep the View Transitions API for theme/route crossfades; reserve a
+single **lazy** `motion` escape hatch for a future ProjectCard→hero morph only.
+
+**Built:** semantic motion tokens (`--motion-reveal/ui/page-*`, `--motion-shift-*`,
+`--motion-scale-in/lift/press`) + 8 CSS presets (`.fx-reveal`/`-fade-up`/`-scale-in`,
+`.fx-stagger`, `.fx-hover-lift`, `.fx-press`) + a small owned React API in
+`src/components/motion/` (`useReducedMotion`, `useReveal`, `<Reveal>`, `<Stagger>`).
+Reduced-motion always shows content. Demoed live on `/design-system`.
+
+**Color ramps extended:** filled every status hue to a full 50→950 ladder (added
+200/800/950), added `--brand-950`, and a new **action** colour (indigo) with themed
+semantics + utilities. Added `--radius-2xl 28` / `--radius-3xl 40` for big frosted
+panels, and a specular **bottom rim-light** on glass (reads as a curved glass slab).
+
+---
+
 ## 2026-06 — Removed Tailwind entirely → CSS Modules
 
 **Decision (Simon's call).** Remove the Tailwind framework completely; express all
