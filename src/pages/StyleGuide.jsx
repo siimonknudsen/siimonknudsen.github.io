@@ -375,30 +375,48 @@ function StyleGuide() {
                 </div>
               </ScrollAnimation>
 
-              {/* Primitives — transparent ramps */}
+              {/* Primitives — transparent light (white α), per-swatch like the solid ramps */}
               <ScrollAnimation>
-                <div className={styles.transparentGrid}>
-                  <div>
-                    <Overline>Primitives · transparent light</Overline>
-                    <div className={styles.transparentPanel} style={{ background: 'repeating-conic-gradient(var(--neutral-700) 0% 25%, var(--neutral-900) 0% 50%) 50% / 16px 16px' }}>
-                      <div className={styles.transparentRow}>
-                        {transparentSteps.map((s) => (
-                          <div key={s} className={styles.transparentCell} style={{ backgroundColor: `var(--transparent-light-${s})` }} title={`light-${s}`} />
-                        ))}
+                <div>
+                  <Overline>Primitives · transparent light (white α)</Overline>
+                  <div className={styles.rampGrid}>
+                    {transparentSteps.map((s) => (
+                      <div key={s} className={styles.swatchCol}>
+                        <div
+                          className={styles.swatch}
+                          style={{
+                            backgroundColor: 'var(--neutral-800)',
+                            backgroundImage: `linear-gradient(var(--transparent-light-${s}), var(--transparent-light-${s})), repeating-conic-gradient(var(--neutral-600) 0% 25%, var(--neutral-900) 0% 50%)`,
+                            backgroundSize: 'auto, 12px 12px',
+                          }}
+                        />
+                        <span className={`font-mono text-color-primary ${styles.swatchStep}`}>{s}</span>
+                        <span className={`font-mono text-color-tertiary ${styles.swatchHex}`}>{s}%</span>
                       </div>
-                    </div>
-                    <MonoMeta className={styles.transparentCaption}>white α · 2–80%</MonoMeta>
+                    ))}
                   </div>
-                  <div>
-                    <Overline>Primitives · transparent dark</Overline>
-                    <div className={styles.transparentPanel} style={{ background: 'repeating-conic-gradient(var(--neutral-100) 0% 25%, var(--neutral-0) 0% 50%) 50% / 16px 16px' }}>
-                      <div className={styles.transparentRow}>
-                        {transparentSteps.map((s) => (
-                          <div key={s} className={styles.transparentCell} style={{ backgroundColor: `var(--transparent-dark-${s})` }} title={`dark-${s}`} />
-                        ))}
+                </div>
+              </ScrollAnimation>
+
+              {/* Primitives — transparent dark (black α) */}
+              <ScrollAnimation>
+                <div>
+                  <Overline>Primitives · transparent dark (black α)</Overline>
+                  <div className={styles.rampGrid}>
+                    {transparentSteps.map((s) => (
+                      <div key={s} className={styles.swatchCol}>
+                        <div
+                          className={styles.swatch}
+                          style={{
+                            backgroundColor: 'var(--neutral-100)',
+                            backgroundImage: `linear-gradient(var(--transparent-dark-${s}), var(--transparent-dark-${s})), repeating-conic-gradient(var(--neutral-300) 0% 25%, var(--neutral-0) 0% 50%)`,
+                            backgroundSize: 'auto, 12px 12px',
+                          }}
+                        />
+                        <span className={`font-mono text-color-primary ${styles.swatchStep}`}>{s}</span>
+                        <span className={`font-mono text-color-tertiary ${styles.swatchHex}`}>{s}%</span>
                       </div>
-                    </div>
-                    <MonoMeta className={styles.transparentCaption}>black α · 2–80%</MonoMeta>
+                    ))}
                   </div>
                 </div>
               </ScrollAnimation>
