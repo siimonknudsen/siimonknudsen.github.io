@@ -6,117 +6,202 @@
   padding: var(--space-24);
 }
 
-.section {
-  width: 100%;
-  padding: var(--space-24);
-  margin-bottom: var(--space-80);
-}
-
 .container {
   max-width: var(--container-max);
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Row 1: Title + Description */
+/* ── Hero ───────────────────────────────────────────────────────────── */
+.heroSection {
+  width: 100%;
+  padding: var(--space-24);
+}
+
 .titleRow {
+  margin-top: var(--space-40);
   margin-bottom: var(--space-32);
 }
 
 .title {
-  margin-top: var(--space-40);
   margin-bottom: var(--space-8);
 }
 
 .description {
-  max-width: 48rem;
+  max-width: 52rem;
 }
 
-/* Row 2: Client, When, Details */
-.metaRow {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-40);
-  margin-bottom: var(--space-32);
-}
-
-@media (min-width: 768px) {
-  .metaRow {
-    flex-direction: row;
-  }
-}
-
-.metaLabel {
-  margin-bottom: var(--space-8);
-}
-
-.metaValue {
-  font-weight: var(--weight-medium);
-}
-
-/* Row 3: Responsibilities */
-.responsibilities {
-  margin-bottom: var(--space-48);
-}
-
-/* Hero image */
 .hero {
-  margin-bottom: var(--space-80);
+  margin-bottom: 0;
 }
 
 .heroPlaceholder {
   width: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: var(--radius-xl);
-  margin-bottom: var(--space-80);
+  border-radius: var(--radius-2xl);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Challenge / Solution two-column */
-.twoCol {
-  margin-bottom: var(--space-48);
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: var(--space-12);
+/* ── Body: sticky rail + content ────────────────────────────────────── */
+.bodySection {
+  width: 100%;
+  padding: var(--space-64) var(--space-24);
 }
 
-@media (min-width: 768px) {
-  .twoCol {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-32);
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-48);
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 7fr);
+    gap: var(--space-64);
+    align-items: start;
   }
 }
 
-.colHeading {
-  margin-bottom: var(--space-16);
+/* Meta rail */
+.rail {
+  min-width: 0;
 }
 
-.prose {
-  max-width: 48rem;
+@media (min-width: 1024px) {
+  .railInner {
+    position: sticky;
+    top: var(--space-80);
+  }
 }
 
-/* Ordered content blocks */
-.contentBlocks {
+.railMeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+}
+
+.railRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.railKey {
+  margin: 0;
+}
+
+.railVal {
+  margin: 0;
+  font-weight: var(--weight-medium);
+}
+
+.railOutcome {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-16);
+  border-top: 1px solid var(--border-color-primary);
+}
+
+.railMetric {
+  margin: var(--space-2) 0 0;
+  line-height: 1;
+}
+
+.railOutcomeLabel {
+  margin: 0;
+  max-width: 28ch;
+}
+
+.railNav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding-top: var(--space-16);
+  border-top: 1px solid var(--border-color-primary);
+}
+
+.railLink {
+  color: var(--text-color-secondary);
+  text-decoration: none;
+  width: fit-content;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.railLink:hover {
+  color: var(--text-color-primary);
+}
+
+/* Content column */
+.content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-80);
+}
+
+.block {
   display: flex;
   flex-direction: column;
   gap: var(--space-24);
+  scroll-margin-top: var(--space-80);
+}
+
+.kicker {
+  margin: 0;
+}
+
+.lede {
+  margin: 0;
+  max-width: 60ch;
+  font-weight: var(--weight-medium);
+}
+
+.prose {
+  margin: 0;
+  max-width: 60ch;
+}
+
+/* Process steps */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-40);
+}
+
+/* Legacy ordered content blocks */
+.contentBlocks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
 }
 
 .textBlock {
-  max-width: 48rem;
+  max-width: 60ch;
+}
+
+/* Full-bleed media breakout — pulls slightly wider than the prose column for
+   editorial rhythm, with the strong radius + shadow. */
+.breakout {
+  width: 100%;
+}
+
+.breakoutMedia {
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .breakout {
+    width: calc(100% + var(--space-48));
+    margin-left: calc(var(--space-48) * -0.5);
+  }
 }
 
 /* App screens */
-.appScreens {
-  margin-top: var(--space-80);
-}
-
-.appScreensHeading {
-  margin-bottom: var(--space-32);
-}
-
 .appScreensGrid {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -124,7 +209,7 @@
   justify-items: center;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .appScreensGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -136,12 +221,101 @@
   }
 }
 
-.appScreen {
+.appScreenReveal {
+  width: 100%;
   max-width: 492px;
+  display: flex;
+  justify-content: center;
+}
+
+.appScreen {
   width: 100%;
 }
 
-/* Related projects */
+/* Behind the scenes — lighter captioned gallery */
+.bts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+  padding: var(--space-32) 0;
+}
+
+.btsHeading {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.btsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-16);
+}
+
+@media (min-width: 640px) {
+  .btsGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.btsItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.btsCaption {
+  margin: 0;
+}
+
+/* ── Next project tile ──────────────────────────────────────────────── */
+.nextSection {
+  width: 100%;
+  padding: var(--space-24);
+  margin-top: var(--space-40);
+}
+
+.nextTile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: var(--space-40);
+  border-radius: var(--radius-2xl);
+  text-decoration: none;
+  transition: transform var(--dur-base) var(--ease-emphasized),
+    box-shadow var(--dur-base) var(--ease-emphasized);
+}
+
+.nextTile:hover {
+  transform: translateY(var(--motion-lift));
+  box-shadow: var(--glass-shadow-lg);
+}
+
+.nextLabel {
+  margin: 0;
+}
+
+.nextTitle {
+  margin: var(--space-4) 0 0;
+}
+
+.nextDesc {
+  margin: 0;
+  max-width: 60ch;
+}
+
+.nextCta {
+  margin-top: var(--space-12);
+}
+
+/* ── Related projects ───────────────────────────────────────────────── */
+.relatedSection {
+  width: 100%;
+  padding: var(--space-24);
+  margin-top: var(--space-80);
+  margin-bottom: var(--space-80);
+}
+
 .moreHeading {
   font-weight: var(--weight-regular);
   margin-bottom: var(--space-48);

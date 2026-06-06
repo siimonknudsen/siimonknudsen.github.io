@@ -4,6 +4,9 @@
   "client": "Zliide",
   "when": "2024",
   "details": "App",
+  "role": "Lead Product Designer",
+  "team": "1 designer, 2 engineers, 1 PM",
+  "timeline": "2024 · ~3 months",
   "responsibilities": [
     "UX Research",
     "UX Design",
@@ -13,8 +16,44 @@
     "QA Testing"
   ],
   "heroImage": "images/hero.jpg",
-  "challenge": "Zliide is a technology company that seeks to reinvent the fashion industry by making physical retail stores more digital with solutions and features such as assisted-checkout, in-store ordering and informative dashboards. The task was to improve the current user experience of the in-store ordering app.",
-  "solution": "The new solution improved user satisfaction by 21.3%. The concept was enhanced through feedback gathered from brand stakeholders, store employees, and store customers. During user testing, the new solution was selected as the preferred choice by 100% of the participants. As a result of the new solution, new Figma design system components and tokens were added, while others were updated.",
+  "problem": "Zliide is a technology company that seeks to reinvent the fashion industry by making physical retail stores more digital with solutions and features such as assisted-checkout, in-store ordering and informative dashboards. The existing in-store ordering experience left shoppers stranded when an item was out of stock, sending revenue out the door. The task was to improve the current user experience of the in-store ordering app.",
+  "challenge": "The task was to improve the current user experience of the in-store ordering app, with a particular focus on reducing out-of-stock situations and the lost sales they caused.",
+  "solution": "The concept was enhanced through feedback gathered from brand stakeholders, store employees, and store customers. The new flow let shoppers order out-of-stock items on the spot, and new Figma design system components and tokens were added while others were updated to support it.",
+  "process": [
+    {
+      "step": "Research with three audiences",
+      "body": "Gathered feedback from brand stakeholders, store employees, and store customers to map where the existing in-store ordering flow broke down — most acutely when an item was out of stock."
+    },
+    {
+      "step": "Redesign the ordering flow",
+      "body": "Reworked the core in-store ordering journey so a shopper facing an out-of-stock item could order it on the spot, rather than leaving empty-handed."
+    },
+    {
+      "step": "Extend the design system",
+      "body": "Added new Figma design system components and tokens, and updated existing ones, so the new patterns were reusable and consistent across the product."
+    },
+    {
+      "step": "Validate with user testing",
+      "body": "Tested the new solution against the old experience. It was selected as the preferred choice by 100% of participants and measured a 21.3% lift in user satisfaction."
+    }
+  ],
+  "outcomes": [
+    {
+      "metric": "+6%",
+      "label": "monthly store revenue",
+      "note": "Additional revenue per physical store from reduced out-of-stock situations."
+    },
+    {
+      "metric": "100%",
+      "label": "preferred in user testing",
+      "note": "Every participant chose the new solution over the existing experience."
+    },
+    {
+      "metric": "+21.3%",
+      "label": "user satisfaction",
+      "note": "Measured improvement from the redesigned ordering flow."
+    }
+  ],
   "content": [
     {
       "type": "image",

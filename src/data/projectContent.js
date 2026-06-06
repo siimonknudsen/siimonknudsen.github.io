@@ -38,6 +38,15 @@ export const defaultProjectContent = {
   when: "2024",
   details: "Project",
   responsibilities: ["UX Design", "UI Design"],
+  // New optional editorial / case-study fields. Null/empty by default so the
+  // ProjectPage renders the legacy challenge/solution/content blocks and nothing
+  // breaks for projects that haven't filled these in yet.
+  role: null,
+  team: null,
+  timeline: null,
+  problem: null,
+  process: [],
+  outcomes: [],
   heroImage: null,
   challenge: "This project addressed key user experience challenges through comprehensive research and design.",
   solution: "The solution was developed through iterative design processes, focusing on usability and meeting user needs.",

@@ -79,6 +79,12 @@
   margin-right: auto;
 }
 
+/* Section index overline */
+.overline {
+  display: block;
+  margin-bottom: var(--space-12);
+}
+
 /* Headings */
 .heading8 {
   margin-bottom: var(--space-32);

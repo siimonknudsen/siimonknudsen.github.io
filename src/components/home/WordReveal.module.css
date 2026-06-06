@@ -1,0 +1,38 @@
+/* Each word wrapper clips the rising inner span. margin-right provides the
+   inter-word gap (whitespace inside an overflow:hidden inline-block collapses). */
+.word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  margin-right: 0.26em;
+}
+.word:last-of-type {
+  margin-right: 0;
+}
+
+.wordInner {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.4em);
+  animation: wordRise var(--dur-slow) var(--ease-decelerate) both;
+}
+
+.wordInnerStatic {
+  display: inline-block;
+}
+
+@keyframes wordRise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced motion: never animate, regardless of class. */
+@media (prefers-reduced-motion: reduce) {
+  .wordInner {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}

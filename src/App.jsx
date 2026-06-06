@@ -5,6 +5,7 @@ import ProjectPage from './pages/ProjectPage'
 import Archive from './pages/Archive'
 import About from './pages/About'
 import StyleGuide from './pages/StyleGuide'
+import Playground from './pages/Playground'
 import NotFound from './pages/NotFound'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -18,6 +19,7 @@ const ROUTE_TITLES = {
   '/about': 'About',
   '/style-guide': 'Design System',
   '/design-system': 'Design System',
+  '/playground': 'Playground',
 }
 
 // Keyed by pathname so the gentle fade-in (.page-enter) re-runs on each navigation.
@@ -40,6 +42,7 @@ function AnimatedRoutes() {
         <Route path="/about" element={<About />} />
         <Route path="/style-guide" element={<StyleGuide />} />
         <Route path="/design-system" element={<StyleGuide />} />
+        <Route path="/playground" element={<Playground />} />
         <Route path="/project/:id" element={<ProjectPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -65,6 +68,8 @@ function App() {
         </main>
         <Footer />
       </div>
+      {/* Global film-grain — filmic depth over the flat-digital surfaces */}
+      <div className="grain" aria-hidden="true" />
     </Router>
   )
 }

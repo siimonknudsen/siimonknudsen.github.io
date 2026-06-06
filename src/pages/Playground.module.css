@@ -1,0 +1,162 @@
+.section {
+  width: 100%;
+  padding: var(--space-24);
+  margin-bottom: var(--space-80);
+}
+
+.section:focus {
+  outline: none;
+}
+
+.container {
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Intro */
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  max-width: 56ch;
+  margin-bottom: var(--space-48);
+}
+
+.lede {
+  margin-top: var(--space-4);
+}
+
+/* Experiment grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: var(--space-24);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .cardWide {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Cards */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+  padding: var(--space-24);
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.code {
+  font-family: var(--font-mono, monospace);
+  font-size: var(--text-2xs);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--transparent-light-8);
+  margin: 0 var(--space-2);
+}
+
+/* (a) Shader frame */
+.frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--transparent-light-8);
+}
+
+.shader {
+  position: absolute;
+  inset: 0;
+}
+
+@media (min-width: 768px) {
+  .frame {
+    aspect-ratio: 32 / 9;
+  }
+}
+
+/* (b) Motion tiles */
+.motionTiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-8);
+  margin-top: auto;
+}
+
+.motionTile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-lg);
+}
+
+/* (c) Glass lab */
+.glassStage {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-16);
+  margin-top: auto;
+  padding: var(--space-24);
+  min-height: 160px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background:
+    radial-gradient(120% 120% at 0% 0%, var(--accent) 0%, transparent 55%),
+    linear-gradient(135deg, var(--action) 0%, transparent 70%);
+}
+
+.glassChip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-16) var(--space-20);
+  border-radius: var(--radius-lg);
+  min-width: 120px;
+}
+
+/* (d) Link card */
+.linkCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+  flex: 1;
+  padding: var(--space-24);
+  border-radius: var(--radius-2xl);
+  text-decoration: none;
+  transition:
+    transform var(--dur-quick) var(--ease-standard),
+    box-shadow var(--dur-quick) var(--ease-standard);
+}
+
+.linkCard:hover {
+  transform: translateY(var(--motion-lift));
+  box-shadow: var(--glass-shadow-lg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .linkCard:hover {
+    transform: none;
+  }
+}
+
+.linkCta {
+  margin-top: auto;
+}

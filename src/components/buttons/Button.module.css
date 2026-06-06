@@ -13,6 +13,7 @@
 
 /* base */
 .base {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -20,6 +21,7 @@
   border-radius: var(--radius-md);
   white-space: nowrap;
   user-select: none;
+  overflow: hidden;
   transition-property: background-color, color, transform, opacity, box-shadow;
   transition-duration: var(--dur-fast);
   transition-timing-function: var(--ease-standard);
@@ -62,12 +64,49 @@
 }
 
 /* variants */
+
+/*
+ * Specular sweep — reserved for primary + accent only.
+ * A soft diagonal light gradient parked off-screen to the left; on hover it
+ * sweeps across once. The ::after is clipped to the button radius via the
+ * base's overflow:hidden and never intercepts pointer events.
+ */
+.primary::after,
+.accent::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    var(--transparent-light-40) 48%,
+    var(--transparent-light-24) 56%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  opacity: 0;
+  transition:
+    transform 0s var(--ease-standard),
+    opacity var(--dur-fast) var(--ease-standard);
+}
+
+.primary:hover::after,
+.accent:hover::after {
+  opacity: 1;
+  transform: translateX(120%);
+  transition:
+    transform var(--dur-slow) var(--ease-decelerate),
+    opacity var(--dur-fast) var(--ease-standard);
+}
+
 .primary {
   box-shadow: var(--shadow-sm);
 }
 
 .primary:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
   transform: translateY(-1px);
 }
 
@@ -86,7 +125,7 @@
 }
 
 .accent:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
   transform: translateY(-1px);
 }
 
@@ -101,4 +140,24 @@
 /* full width */
 .fullWidth {
   width: 100%;
+}
+
+/* Respect reduced motion — no sweep, no lift/press transforms */
+@media (prefers-reduced-motion: reduce) {
+  .primary::after,
+  .accent::after,
+  .primary:hover::after,
+  .accent:hover::after {
+    display: none;
+  }
+
+  .base,
+  .base:active,
+  .primary:hover,
+  .accent:hover,
+  .secondary:hover,
+  .glass:hover {
+    transform: none;
+    transition-duration: var(--dur-instant);
+  }
 }

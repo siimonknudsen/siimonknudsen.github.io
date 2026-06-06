@@ -1,8 +1,10 @@
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import ProjectGrid, { allArchiveProjects } from '../components/projects/ProjectGrid'
 import Media from '../components/Media'
-import ScrollAnimation from '../components/animations/ScrollAnimation'
+import { Reveal, Stagger } from '../components/motion'
+import OutcomeGrid from '../components/case/OutcomeGrid'
+import ProcessStep from '../components/case/ProcessStep'
 import usePageTitle from '../hooks/usePageTitle'
 import { loadProjectContent, getDefaultProjectContent } from '../data/projectContentLoader'
 import styles from './ProjectPage.module.css'
@@ -31,161 +33,318 @@ function ProjectPage() {
 
   const title = content.title || project.title
 
+  // Next project in the archive order (wraps around to the first).
+  const currentIndex = allArchiveProjects.findIndex((p) => p.id === id)
+  const nextProject =
+    currentIndex >= 0
+      ? allArchiveProjects[(currentIndex + 1) % allArchiveProjects.length]
+      : null
+
+  // The headline outcome shown in the rail — prefer the first outcome, then the
+  // card's impact chip.
+  const headlineOutcome =
+    (content.outcomes && content.outcomes[0]) ||
+    (project.impact ? { metric: project.impact.value, label: project.impact.label } : null)
+
+  const hasProcess = content.process && content.process.length > 0
+  const hasOutcomes = content.outcomes && content.outcomes.length > 0
+
+  // Section anchors for the rail's little table of contents — only show the
+  // sections that actually have content.
+  const sections = [
+    content.problem || content.challenge ? { id: 'problem', label: 'Problem' } : null,
+    hasProcess || content.solution || (content.content && content.content.length > 0)
+      ? { id: 'process', label: 'Process' }
+      : null,
+    hasOutcomes ? { id: 'impact', label: 'Impact' } : null,
+    content.appScreens && content.appScreens.length > 0
+      ? { id: 'screens', label: 'Screens' }
+      : null,
+  ].filter(Boolean)
+
   return (
     <>
-      {/* Top Section */}
-      <section className={styles.section}>
+      {/* Hero */}
+      <section className={styles.heroSection}>
         <div className={styles.container}>
-          {/* Row 1: Title + Description */}
           <div className={styles.titleRow}>
-            <ScrollAnimation>
+            <Reveal preset="fade-up">
               <h1 className={`type-display text-color-primary ${styles.title}`}>{title}</h1>
-            </ScrollAnimation>
-            <ScrollAnimation>
+            </Reveal>
+            <Reveal preset="fade-up" delay={60}>
               <p className={`type-body-lg text-color-secondary ${styles.description}`}>
                 {content.description || project.description}
               </p>
-            </ScrollAnimation>
+            </Reveal>
           </div>
 
-          {/* Row 2: Client, When, Details */}
-          <div className={styles.metaRow}>
-            <ScrollAnimation>
-              {content.client && (
-                <div>
-                  <p className={`type-body-lg text-color-primary ${styles.metaLabel}`}>Client</p>
-                  <p className={`type-body text-color-secondary ${styles.metaValue}`}>{content.client}</p>
-                </div>
-              )}
-            </ScrollAnimation>
-            <ScrollAnimation>
-              {content.when && (
-                <div>
-                  <p className={`type-body-lg text-color-primary ${styles.metaLabel}`}>When</p>
-                  <p className={`type-body text-color-secondary ${styles.metaValue}`}>{content.when}</p>
-                </div>
-              )}
-            </ScrollAnimation>
-            <ScrollAnimation>
-              {content.details && (
-                <div>
-                  <p className={`type-body-lg text-color-primary ${styles.metaLabel}`}>Details</p>
-                  <p className={`type-body text-color-secondary ${styles.metaValue}`}>{content.details}</p>
-                </div>
-              )}
-            </ScrollAnimation>
-          </div>
-
-          {/* Row 3: Responsibilities */}
-          <ScrollAnimation>
-            {content.responsibilities && content.responsibilities.length > 0 && (
-              <div className={styles.responsibilities}>
-                <p className={`type-body-lg text-color-primary ${styles.metaLabel}`}>Responsibilities</p>
-                <p className={`type-body text-color-secondary ${styles.metaValue}`}>
-                  {content.responsibilities.join(', ')}
-                </p>
-              </div>
-            )}
-          </ScrollAnimation>
-
-          {/* Hero image */}
           {content.heroImage ? (
-            <Media src={content.heroImage} alt={title} aspect="auto" rounded="rounded-2xl" priority className={styles.hero} />
+            <Reveal preset="scale-in">
+              <Media
+                src={content.heroImage}
+                alt={title}
+                aspect="auto"
+                rounded="rounded-2xl"
+                priority
+                className={styles.hero}
+              />
+            </Reveal>
           ) : (
-            <div className={`bg-surface-color-tertiary type-body text-color-secondary ${styles.heroPlaceholder}`}>
+            <div
+              className={`bg-surface-color-tertiary type-body text-color-secondary ${styles.heroPlaceholder}`}
+            >
               Project hero image
             </div>
           )}
         </div>
       </section>
 
-      {/* Second Section - Challenge, Solution, and Content */}
-      <section className={styles.section}>
+      {/* Body: sticky meta rail + scrolling content */}
+      <section className={styles.bodySection}>
         <div className={styles.container}>
-          {content.challenge && (
-            <div className={styles.twoCol}>
-              <ScrollAnimation>
-                <h2 className={`type-subtitle text-color-primary ${styles.colHeading}`}>The Challenge</h2>
-              </ScrollAnimation>
-              <ScrollAnimation>
-                <p className={`type-body text-color-secondary ${styles.prose}`}>{content.challenge}</p>
-              </ScrollAnimation>
-            </div>
-          )}
-
-          {content.solution && (
-            <div className={styles.twoCol}>
-              <ScrollAnimation>
-                <h2 className={`type-subtitle text-color-primary ${styles.colHeading}`}>The Solution</h2>
-              </ScrollAnimation>
-              <ScrollAnimation>
-                <p className={`type-body text-color-secondary ${styles.prose}`}>{content.solution}</p>
-              </ScrollAnimation>
-            </div>
-          )}
-
-          {/* Ordered content blocks (image / text) */}
-          {content.content && content.content.length > 0 && (
-            <div className={styles.contentBlocks}>
-              {content.content.map((block, index) => {
-                if (block.type === 'image') {
-                  return (
-                    <Media
-                      key={index}
-                      src={block.src}
-                      alt={`${title} — image ${index + 1}`}
-                      aspect="auto"
-                      rounded="rounded-2xl"
-                    />
-                  )
-                }
-                if (block.type === 'text') {
-                  return (
-                    <ScrollAnimation key={index}>
-                      <div className={styles.textBlock}>
-                        <p className="type-body text-color-secondary">{block.content}</p>
-                      </div>
-                    </ScrollAnimation>
-                  )
-                }
-                return null
-              })}
-            </div>
-          )}
-
-          {/* App screens */}
-          {content.appScreens && content.appScreens.length > 0 && (
-            <div className={styles.appScreens}>
-              <ScrollAnimation>
-                <h2 className={`type-subtitle text-color-primary ${styles.appScreensHeading}`}>App Screens</h2>
-              </ScrollAnimation>
-              <div className={styles.appScreensGrid}>
-                {content.appScreens.map((screen, index) => (
-                  <Media
-                    key={index}
-                    src={screen.src}
-                    alt={`${title} — app screen ${index + 1}`}
-                    aspect="auto"
-                    rounded="rounded-2xl"
-                    className={styles.appScreen}
+          <div className={styles.layout}>
+            {/* Meta rail (sticky on lg) */}
+            <aside className={styles.rail}>
+              <div className={styles.railInner}>
+                <Reveal preset="fade-up" as="div" className={styles.railMeta}>
+                  <RailItem label="Role" value={content.role} />
+                  <RailItem label="Client" value={content.client} />
+                  <RailItem
+                    label="Team"
+                    value={content.team || (content.responsibilities && content.responsibilities.join(', '))}
                   />
-                ))}
+                  <RailItem label="Timeline" value={content.timeline || content.when} />
+
+                  {headlineOutcome && headlineOutcome.metric && (
+                    <div className={styles.railOutcome}>
+                      <p className={`type-overline text-color-tertiary ${styles.railKey}`}>
+                        Outcome
+                      </p>
+                      <p className={`type-heading-sm text-accent ${styles.railMetric}`}>
+                        {headlineOutcome.metric}
+                      </p>
+                      {headlineOutcome.label && (
+                        <p className={`type-body-sm text-color-secondary ${styles.railOutcomeLabel}`}>
+                          {headlineOutcome.label}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {sections.length > 0 && (
+                    <nav className={styles.railNav} aria-label="Case study sections">
+                      {sections.map((s) => (
+                        <a key={s.id} href={`#${s.id}`} className={`type-body-sm ${styles.railLink}`}>
+                          {s.label}
+                        </a>
+                      ))}
+                    </nav>
+                  )}
+                </Reveal>
               </div>
+            </aside>
+
+            {/* Scrolling content */}
+            <div className={styles.content}>
+              {/* Problem */}
+              {(content.problem || content.challenge) && (
+                <div id="problem" className={styles.block}>
+                  <Reveal preset="fade-up">
+                    <p className={`type-overline text-accent ${styles.kicker}`}>Problem</p>
+                  </Reveal>
+                  <Reveal preset="fade-up" delay={60}>
+                    <p className={`type-body-lg text-color-primary ${styles.lede}`}>
+                      {content.problem || content.challenge}
+                    </p>
+                  </Reveal>
+                  {/* If we have a dedicated problem, the legacy challenge can still
+                      add supporting context below it. */}
+                  {content.problem && content.challenge && (
+                    <Reveal preset="fade-up" delay={120}>
+                      <p className={`type-body text-color-secondary ${styles.prose}`}>
+                        {content.challenge}
+                      </p>
+                    </Reveal>
+                  )}
+                </div>
+              )}
+
+              {/* Process */}
+              {(hasProcess || content.solution || (content.content && content.content.length > 0)) && (
+                <div id="process" className={styles.block}>
+                  <Reveal preset="fade-up">
+                    <p className={`type-overline text-accent ${styles.kicker}`}>Process</p>
+                  </Reveal>
+
+                  {content.solution && (
+                    <Reveal preset="fade-up" delay={60}>
+                      <p className={`type-body-lg text-color-primary ${styles.lede}`}>
+                        {content.solution}
+                      </p>
+                    </Reveal>
+                  )}
+
+                  {hasProcess && (
+                    <Stagger className={styles.steps}>
+                      {content.process.map((step, i) => (
+                        <Reveal key={i} preset="fade-up">
+                          <ProcessStep index={i} step={step.step} body={step.body} image={step.image} />
+                        </Reveal>
+                      ))}
+                    </Stagger>
+                  )}
+
+                  {/* Legacy ordered content blocks (image / text / bts) */}
+                  {content.content && content.content.length > 0 && (
+                    <div className={styles.contentBlocks}>
+                      {content.content.map((block, index) => {
+                        if (block.type === 'image') {
+                          return (
+                            <Reveal key={index} preset="scale-in" className={styles.breakout}>
+                              <Media
+                                src={block.src}
+                                alt={`${title} — image ${index + 1}`}
+                                aspect="auto"
+                                rounded="rounded-2xl"
+                                className={styles.breakoutMedia}
+                              />
+                            </Reveal>
+                          )
+                        }
+                        if (block.type === 'text') {
+                          return (
+                            <Reveal key={index} preset="fade-up">
+                              <div className={styles.textBlock}>
+                                <p className="type-body text-color-secondary">{block.content}</p>
+                              </div>
+                            </Reveal>
+                          )
+                        }
+                        if (block.type === 'bts') {
+                          return (
+                            <BehindTheScenes key={index} title={block.title} items={block.items} />
+                          )
+                        }
+                        return null
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Impact */}
+              {hasOutcomes && (
+                <div id="impact" className={styles.block}>
+                  <Reveal preset="fade-up">
+                    <p className={`type-overline text-accent ${styles.kicker}`}>Impact</p>
+                  </Reveal>
+                  <OutcomeGrid outcomes={content.outcomes} />
+                </div>
+              )}
+
+              {/* App screens */}
+              {content.appScreens && content.appScreens.length > 0 && (
+                <div id="screens" className={styles.block}>
+                  <Reveal preset="fade-up">
+                    <p className={`type-overline text-accent ${styles.kicker}`}>Screens</p>
+                  </Reveal>
+                  <Stagger className={styles.appScreensGrid}>
+                    {content.appScreens.map((screen, index) => (
+                      <Reveal key={index} preset="fade-up" className={styles.appScreenReveal}>
+                        <Media
+                          src={screen.src}
+                          alt={`${title} — app screen ${index + 1}`}
+                          aspect="auto"
+                          rounded="rounded-2xl"
+                          className={styles.appScreen}
+                        />
+                      </Reveal>
+                    ))}
+                  </Stagger>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </section>
 
+      {/* Next project tile */}
+      {nextProject && (
+        <section className={styles.nextSection}>
+          <div className={styles.container}>
+            <Reveal preset="fade-up">
+              <Link to={`/project/${nextProject.id}`} className={`glass-panel border-glass focus-ring ${styles.nextTile}`}>
+                <span className={`type-overline text-color-tertiary ${styles.nextLabel}`}>
+                  Next project
+                </span>
+                <span className={`type-heading-sm text-color-primary ${styles.nextTitle}`}>
+                  {nextProject.title}
+                </span>
+                <span className={`type-body text-color-secondary ${styles.nextDesc}`}>
+                  {nextProject.description}
+                </span>
+                <span className={`type-label text-accent ${styles.nextCta}`} aria-hidden="true">
+                  View case →
+                </span>
+              </Link>
+            </Reveal>
+          </div>
+        </section>
+      )}
+
       {/* Related Projects */}
-      <section className={styles.section}>
+      <section className={styles.relatedSection}>
         <div className={styles.container}>
-          <ScrollAnimation>
+          <Reveal preset="fade-up">
             <h2 className={`type-display text-color-primary ${styles.moreHeading}`}>More Projects</h2>
-          </ScrollAnimation>
+          </Reveal>
           <ProjectGrid excludeProjectId={id} />
         </div>
       </section>
     </>
+  )
+}
+
+/** A single label/value row in the meta rail. Renders nothing when empty. */
+function RailItem({ label, value }) {
+  if (!value) return null
+  return (
+    <div className={styles.railRow}>
+      <p className={`type-overline text-color-tertiary ${styles.railKey}`}>{label}</p>
+      <p className={`type-body-sm text-color-primary ${styles.railVal}`}>{value}</p>
+    </div>
+  )
+}
+
+/** Behind-the-scenes — a lighter, captioned gallery for sketches / iterations. */
+function BehindTheScenes({ title, items }) {
+  if (!items || items.length === 0) return null
+  return (
+    <div className={styles.bts}>
+      <Reveal preset="fade-up">
+        <p className={`type-label text-color-tertiary ${styles.btsHeading}`}>
+          {title || 'Behind the scenes'}
+        </p>
+      </Reveal>
+      <Stagger className={styles.btsGrid}>
+        {items.map((item, i) => (
+          <Reveal key={i} preset="fade-up" className={styles.btsItem}>
+            <Media
+              src={item.src}
+              video={item.video}
+              alt={item.caption || `Behind the scenes ${i + 1}`}
+              aspect={item.aspect || 'aspect-square'}
+              rounded="rounded-xl"
+            />
+            {item.caption && (
+              <p className={`type-caption text-color-tertiary ${styles.btsCaption}`}>
+                {item.caption}
+              </p>
+            )}
+          </Reveal>
+        ))}
+      </Stagger>
+    </div>
   )
 }
 

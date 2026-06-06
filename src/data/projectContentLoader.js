@@ -34,6 +34,18 @@ export async function loadProjectContent(projectId) {
       when: jsonData.when || defaultProjectContent.when,
       details: jsonData.details || defaultProjectContent.details,
       responsibilities: jsonData.responsibilities || defaultProjectContent.responsibilities,
+      // New optional editorial / case-study fields (null when absent → render falls back)
+      role: jsonData.role || null,
+      team: jsonData.team || null,
+      timeline: jsonData.timeline || null,
+      problem: jsonData.problem || null,
+      // Process steps: resolve any per-step image relative to the project folder
+      process: (jsonData.process || []).map(step => ({
+        ...step,
+        image: step.image ? `${projectBasePath}${step.image}` : null
+      })),
+      // Outcomes: { metric, label, note? } — pass through untouched
+      outcomes: jsonData.outcomes || [],
       heroImage: jsonData.heroImage ? `${projectBasePath}${jsonData.heroImage}` : null,
       challenge: jsonData.challenge || defaultProjectContent.challenge,
       solution: jsonData.solution || defaultProjectContent.solution,
@@ -42,6 +54,16 @@ export async function loadProjectContent(projectId) {
           return {
             ...block,
             src: `${projectBasePath}${block.src}`
+          }
+        }
+        // Behind-the-scenes block: resolve each item's image src
+        if (block.type === 'bts') {
+          return {
+            ...block,
+            items: (block.items || []).map(item => ({
+              ...item,
+              src: item.src ? `${projectBasePath}${item.src}` : item.src
+            }))
           }
         }
         return block

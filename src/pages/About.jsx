@@ -1,8 +1,10 @@
 import TestimonialCard from '../components/cards/TestimonialCard'
 import ScrollAnimation from '../components/animations/ScrollAnimation'
+import { Reveal } from '../components/motion'
 import LogoGrid from '../components/grids/LogoGrid'
 import ImageGrid from '../components/grids/ImageGrid'
 import SkillCard from '../components/cards/SkillCard'
+import PrinciplesList from '../components/about/PrinciplesList'
 import styles from './About.module.css'
 
 function About() {
@@ -45,35 +47,35 @@ function About() {
   const skills = [
     {
       title: 'UX Design',
-      description: 'Crafting intuitive and seamless user experiences through research, wireframing, and user journey mapping to enhance customer satisfaction, ensuring products meet user needs, ultimately leading to increased user retention and loyalty.'
+      description: 'I map the user journey, then shape flows and structure so people reach what they came for without friction.'
     },
     {
       title: 'UI Design',
-      description: 'Creating visually appealing interfaces that enhance user interaction and engagement, elevating brand perception and user engagement, driving conversion rates and customer satisfaction.'
+      description: 'I design interfaces that are clean, considered and consistent — every state and edge case accounted for.'
     },
     {
       title: 'Design Systems',
-      description: 'Establishing consistent design language and guidelines to ensure cohesive brand experiences, streamlining development processes, ensuring consistency and scalability across products, reducing time to market and development costs.'
+      description: 'I build tokenised component libraries so teams ship faster and the product stays coherent as it grows.'
     },
     {
       title: 'Prototyping',
-      description: 'Building interactive prototypes to visualize and test design concepts before implementation, minimizing development risks by validating ideas early, saving time and resources while improving the quality of the final product.'
+      description: 'I prototype interactions in Figma and code to test ideas with real behaviour before a line is built.'
     },
     {
       title: 'UX Research',
-      description: 'Conducting in-depth research to understand user needs, behaviors, and preferences, providing actionable insights into user behaviors and preferences, enabling companies to make informed decisions and prioritize features that matter most.'
+      description: 'I run interviews and analyse behaviour to ground design decisions in what users actually do.'
     },
     {
       title: 'User Testing',
-      description: 'Gathering feedback from real users to validate design decisions and improve usability, identifying usability issues and opportunities for improvement, resulting in higher conversion rates, lower churn, and increased customer satisfaction.'
+      description: 'I put designs in front of real users, watch where they struggle, and iterate on the evidence.'
     },
     {
       title: 'UX Writing',
-      description: 'Crafting clear and concise content that guides users and enhances their experience, enhancing user comprehension and engagement, leading to clearer communication, improved task completion rates, and reduced support costs.'
+      description: 'I write the words in the interface — labels, empty states, errors — so the product speaks plainly.'
     },
     {
       title: 'Frontend Development',
-      description: 'Translating design concepts into functional web interfaces using HTML, CSS, and JavaScript, delivering seamless user experiences across devices, improving accessibility, and increasing customer satisfaction and retention.'
+      description: 'I build my designs in HTML, CSS and React, so handoff is clean and the result matches the intent.'
     }
   ]
 
@@ -82,6 +84,12 @@ function About() {
       {/* First Section - Headshot and Introduction */}
       <section id="about-me" className={styles.heroSection}>
         <div className={styles.heroInner}>
+          <Reveal>
+            <p className={`type-overline font-mono text-color-tertiary ${styles.overline}`}>
+              01 — About me
+            </p>
+          </Reveal>
+
           {/* Headshot */}
           <ScrollAnimation>
             <div className={`bg-surface-color-tertiary ${styles.headshot}`}>
@@ -113,11 +121,31 @@ function About() {
         </div>
       </section>
 
+      {/* Section - How I work (Design principles) */}
+      <section id="principles" className={styles.anchorSection}>
+        <div className={styles.inner}>
+          <Reveal>
+            <p className={`type-overline font-mono text-color-tertiary ${styles.overline}`}>
+              02 — How I work
+            </p>
+          </Reveal>
+          <Reveal>
+            <h2 className={`type-display text-color-primary ${styles.heading12}`}>Principles I design by</h2>
+          </Reveal>
+          <PrinciplesList />
+        </div>
+      </section>
+
       {/* Third Section - Companies */}
       <section id="companies" className={styles.anchorSection}>
         <div className={styles.inner}>
           {/* Companies Section */}
           <div>
+            <Reveal>
+              <p className={`type-overline font-mono text-color-tertiary ${styles.overline}`}>
+                03 — Companies
+              </p>
+            </Reveal>
             <ScrollAnimation>
               <h2 className={`type-subtitle text-color-primary ${styles.heading8}`}>Companies i've done design for</h2>
             </ScrollAnimation>
@@ -129,6 +157,11 @@ function About() {
       {/* Fourth Section - Detailed Skills */}
       <section id="skills" className={styles.anchorSection}>
         <div className={styles.inner}>
+          <Reveal>
+            <p className={`type-overline font-mono text-color-tertiary ${styles.overline}`}>
+              04 — Skills
+            </p>
+          </Reveal>
           <ScrollAnimation>
             <h2 className={`text-color-primary ${styles.skillsHeading}`}>Skills</h2>
           </ScrollAnimation>
@@ -147,6 +180,11 @@ function About() {
       {/* Fifth Section - Testimonials */}
       <section id="testimonials" className={styles.anchorSection}>
         <div className={styles.inner}>
+          <Reveal>
+            <p className={`type-overline font-mono text-color-tertiary ${styles.overline}`}>
+              05 — Testimonials
+            </p>
+          </Reveal>
           <ScrollAnimation>
             <h2 className={`type-display text-color-primary ${styles.heading12}`}>Testimonials</h2>
           </ScrollAnimation>
@@ -179,6 +217,11 @@ function About() {
       {/* Sixth Section - Pictures */}
       <section id="pictures" className={styles.anchorSection}>
         <div className={styles.inner}>
+          <Reveal>
+            <p className={`type-overline font-mono text-color-tertiary ${styles.overline}`}>
+              06 — Pictures
+            </p>
+          </Reveal>
           <ScrollAnimation>
             <h2 className={`type-display text-color-primary ${styles.heading12}`}>A Picture Is Worth a Thousand Words</h2>
           </ScrollAnimation>

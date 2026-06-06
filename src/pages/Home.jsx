@@ -1,57 +1,76 @@
-import { useEffect } from 'react'
 import ProjectGrid from '../components/projects/ProjectGrid'
 import { PrimaryButton, SecondaryButton } from '../components/buttons/Button'
 import TestimonialCard from '../components/cards/TestimonialCard'
 import HeroBackground from '../components/HeroBackground'
 import ScrollAnimation from '../components/animations/ScrollAnimation'
+import AvailabilityPill from '../components/home/AvailabilityPill'
+import StatBand from '../components/home/StatBand'
+import WordReveal from '../components/home/WordReveal'
+import { useReducedMotion } from '../components/motion'
 import styles from './Home.module.css'
 
 function Home() {
-  useEffect(() => {
-    const viewProjectsBtn = document.getElementById('view-projects-btn');
-    const contactBtn = document.getElementById('contact-btn');
-    
-    if (viewProjectsBtn && contactBtn) {
-      const width = viewProjectsBtn.offsetWidth;
-      contactBtn.style.width = `${width}px`;
-    }
-  }, []);
+  const reduced = useReducedMotion()
+
+  const scrollToContact = () => {
+    const footer = document.querySelector('footer')
+    if (!footer) return
+    footer.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' })
+  }
 
   return (
     <>
-      {/* Hero Section */}
+      {/* Hero Section — shader behind → frosted light-stage card → content */}
       <section className={styles.hero}>
         <HeroBackground />
+
         <div className={styles.heroContent}>
-        {/* Large Avatar */}
-        <div className={`bg-surface-color-tertiary ${styles.avatar}`}>
-          <img
-            src={`${import.meta.env.BASE_URL}simon-virtual.png`}
-            alt="Simon Knudsen"
-            className={styles.avatarImg}
-          />
-        </div>
+          <div className={`glass-panel ${styles.heroCard}`}>
+            {/* Availability pill */}
+            <AvailabilityPill label="Available for work" />
 
-        {/* Name */}
-        <h1 className={`type-heading-sm text-color-primary ${styles.name}`}>
-          Simon Knudsen
-        </h1>
+            {/* Large Avatar */}
+            <div className={`bg-surface-color-tertiary ${styles.avatar}`}>
+              <img
+                src={`${import.meta.env.BASE_URL}simon-virtual.png`}
+                alt="Simon Knudsen"
+                className={styles.avatarImg}
+              />
+            </div>
 
-        {/* Description */}
-        <p className={`type-display text-color-primary ${styles.description}`}>
-          Product designer turning complex problems into clear, human experiences
-        </p>
+            {/* Eyebrow */}
+            <p className={`type-overline text-color-tertiary ${styles.eyebrow}`}>
+              Product Designer · Aarhus · Available
+            </p>
 
-        {/* Call-to-Action Buttons */}
-        <div className={styles.ctaRow}>
-          <PrimaryButton id="view-projects-btn">
-            View projects
-          </PrimaryButton>
-          <SecondaryButton id="contact-btn">
-            Contact
-          </SecondaryButton>
+            {/* Name */}
+            <h1 className={`type-heading-sm text-color-primary ${styles.name}`}>
+              Simon Knudsen
+            </h1>
+
+            {/* Description — word-by-word reveal */}
+            <WordReveal
+              as="p"
+              text="Product designer turning complex problems into clear, human experiences"
+              className={`type-display text-color-primary ${styles.description}`}
+            />
+
+            {/* Call-to-Action Buttons */}
+            <div className={styles.ctaRow}>
+              <PrimaryButton className={styles.cta} as="a" href="#projects">
+                View projects
+              </PrimaryButton>
+              <SecondaryButton className={styles.cta} onClick={scrollToContact}>
+                Contact
+              </SecondaryButton>
+            </div>
+          </div>
         </div>
-        </div>
+      </section>
+
+      {/* Stats Band */}
+      <section className={styles.statsSection}>
+        <StatBand />
       </section>
 
       {/* Projects Section */}
@@ -95,4 +114,3 @@ function Home() {
 }
 
 export default Home
-

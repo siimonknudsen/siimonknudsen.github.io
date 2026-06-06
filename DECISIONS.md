@@ -7,6 +7,28 @@ detail). Format is lightweight ADR (Architecture Decision Record).
 
 ---
 
+## 2026-06 — Roadmap build (parallel agent swarm)
+
+Built the research roadmap in parallel (5 agents, disjoint files) + orchestrator
+shared-file integration:
+- **Hero light-stage** (`Home`): content on a floating `.glass-panel` over the shader;
+  eyebrow, live **"Available for work"** pill, word-by-word headline reveal, **stats
+  band** (placeholder numbers to confirm), CSS-equal CTAs (removed the JS width hack).
+- **Case study** (`ProjectPage`): sticky meta rail + **Problem→Process→Impact** + outcome
+  metrics (orange) + behind-the-scenes block; schema extended (role/team/timeline/
+  problem/process/outcomes) with **graceful fallbacks** so legacy projects still render.
+  Zliide scaffolded as the worked example; other projects need their data filled.
+- **About**: design **principles** section + numbered section indices + tightened skill copy.
+- **Button**: specular hover sweep (primary/accent) + refined lift.
+- **/playground** page (live shader, motion demos, glass lab) + route + footer link.
+- **Global film-grain** overlay (filmic depth; off for reduced-transparency).
+
+Fix during integration: WordReveal collapsed inter-word spaces (overflow-hidden
+inline-blocks) → added `margin-right` word gap. All verified on the production build
+(desktop + mobile, legacy + worked-example projects, no overflow).
+
+---
+
 ## 2026-06 — Motion system: own it (not Framer Motion) + extended color ramps
 
 **Motion — decision: build our OWN tokenized motion layer; do NOT adopt Framer
