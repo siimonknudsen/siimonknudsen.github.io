@@ -57,10 +57,12 @@
 .stackCard {
   /* Sticky so each card sticks under the header and the next scrolls over it.
      The per-card --i adds a small extra offset so the tops peek like a deck.
-     No fixed height — the full-width image sets it (16:9). */
+     Height tracks the viewport (min 440 / max 860) so the card fits the window
+     rather than towering; the image fills it via object-cover. */
   --dim: 0;
   position: sticky;
   top: calc(var(--header-height) + var(--space-16) + var(--i, 0) * 12px);
+  height: clamp(440px, 78vh, 860px);
   border-radius: var(--radius-md);
   overflow: hidden;
   /* Clean theme-aware drop shadow (no glass inset lines that looked harsh in
@@ -86,10 +88,11 @@
   text-decoration: none;
 }
 
-/* Full-bleed image */
+/* Full-bleed image — fills the card height */
 .stackMedia {
   position: relative;
   width: 100%;
+  height: 100%;
 }
 
 /* Dark scrim so overlaid text stays legible over any image */

@@ -56,7 +56,7 @@
 
 .workGrid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: var(--space-6);
 }
 
@@ -373,6 +373,30 @@
   padding: var(--space-8) var(--space-16);
   border-radius: var(--radius-md);
   white-space: nowrap;
+  /* Sit above the sliding pill so the label stays legible. */
+  position: relative;
+  z-index: 1;
+}
+
+/* Single pill that travels between triggers on hover and rests on the
+   active-route trigger. Positioned via inline transform/width from JS. */
+.navPill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: var(--radius-md);
+  background: var(--glass-item-active);
+  z-index: 0;
+  pointer-events: none;
+  transition: transform 380ms var(--ease-emphasized),
+    width 380ms var(--ease-emphasized), opacity 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navPill {
+    transition: none;
+  }
 }
 
 /* Right — utilities */
@@ -469,6 +493,10 @@
 .panelCard {
   border-radius: var(--radius-xl);
   padding: var(--space-12);
+  /* The single-column Archive menu (~11 items) can get tall — cap the height
+     and let it scroll gracefully instead of running off-screen. */
+  max-height: 70vh;
+  overflow-y: auto;
 }
 
 /* ── Dropdown content reveal ────────────────────────────────────────
@@ -540,6 +568,31 @@
 .aboutList > *:nth-child(7),
 .contactList > *:nth-child(7) {
   animation-delay: 540ms;
+}
+.workGrid > *:nth-child(8),
+.aboutList > *:nth-child(8),
+.contactList > *:nth-child(8) {
+  animation-delay: 620ms;
+}
+.workGrid > *:nth-child(9),
+.aboutList > *:nth-child(9),
+.contactList > *:nth-child(9) {
+  animation-delay: 700ms;
+}
+.workGrid > *:nth-child(10),
+.aboutList > *:nth-child(10),
+.contactList > *:nth-child(10) {
+  animation-delay: 780ms;
+}
+.workGrid > *:nth-child(11),
+.aboutList > *:nth-child(11),
+.contactList > *:nth-child(11) {
+  animation-delay: 860ms;
+}
+.workGrid > *:nth-child(12),
+.aboutList > *:nth-child(12),
+.contactList > *:nth-child(12) {
+  animation-delay: 940ms;
 }
 
 @media (prefers-reduced-motion: reduce) {

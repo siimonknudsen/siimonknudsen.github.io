@@ -140,7 +140,7 @@ function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
                 <Media
                   src={`/projects/${project.id}/images/hero`}
                   alt={project.title}
-                  aspect="aspect-video"
+                  aspect="fill"
                   rounded="none"
                 />
               </div>

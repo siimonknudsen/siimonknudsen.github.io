@@ -165,6 +165,7 @@ function About() {
         <div className={`bg-surface-color-secondary ${styles.missionPanel}`}>
           <WordReveal
             as="p"
+            whenInView
             text="Making the world of digital products more user friendly, one product at a time."
             className={`type-display text-color-primary ${styles.missionText}`}
           />

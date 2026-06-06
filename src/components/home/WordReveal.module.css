@@ -24,6 +24,15 @@
   animation: wordRise var(--dur-slow) var(--ease-decelerate) both;
 }
 
+/* Waiting state (whenInView, not yet scrolled to): hold at the reveal start
+   state — hidden and shifted down — with no animation, so the staggered
+   wordRise can run once `inView` flips and the animating class is applied. */
+.wordInnerWaiting {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.4em);
+}
+
 .wordInnerStatic {
   display: inline-block;
 }

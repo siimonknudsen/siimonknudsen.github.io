@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import Location from './Location'
 import ThemeToggle from './ThemeToggle'
@@ -265,8 +265,13 @@ function Header() {
   const [open, setOpen] = useState(false)
   const [menuKey, setMenuKey] = useState(null)
   const [panelLeft, setPanelLeft] = useState(0)
+  // Which trigger the cursor is over (drives the sliding nav pill).
+  const [hovered, setHovered] = useState(null)
+  // {left, width, opacity} for the sliding nav pill.
+  const [pillStyle, setPillStyle] = useState({ left: 0, width: 0, opacity: 0 })
 
   const wrapperRef = useRef(null)
+  const navRef = useRef(null)
   const triggerRefs = useRef({})
   const closeTimer = useRef(null)
 
@@ -324,6 +329,40 @@ function Header() {
 
   useEffect(() => () => closeTimer.current && clearTimeout(closeTimer.current), [])
 
+  // The nav trigger matching the current route (Contact is never a route, so
+  // it's never the resting target). Used as the pill's default position.
+  const activeRouteKey =
+    location.pathname === '/'
+      ? 'projects'
+      : location.pathname === '/archive'
+        ? 'archive'
+        : location.pathname === '/about'
+          ? 'about'
+          : null
+
+  // Position the sliding nav pill under the hovered trigger, or — when nothing
+  // is hovered — under the active-route trigger. If neither exists (e.g. on a
+  // project page with no hover), fade the pill out.
+  useLayoutEffect(() => {
+    const positionPill = () => {
+      const nav = navRef.current
+      const targetKey = hovered ?? activeRouteKey
+      const target = targetKey ? triggerRefs.current[targetKey] : null
+      if (!nav || !target) {
+        setPillStyle((s) => ({ ...s, opacity: 0 }))
+        return
+      }
+      setPillStyle({
+        left: target.offsetLeft,
+        width: target.offsetWidth,
+        opacity: 1,
+      })
+    }
+    positionPill()
+    window.addEventListener('resize', positionPill)
+    return () => window.removeEventListener('resize', positionPill)
+  }, [hovered, activeRouteKey, location.pathname])
+
   // Mobile menu: lock body scroll while open and close on Escape.
   useEffect(() => {
     if (!isMobileMenuOpen) return
@@ -356,10 +395,12 @@ function Header() {
     { key: 'contact', label: 'Contact', to: '#contact', active: false, onClick: handleContactClick },
   ]
 
+  // The sliding pill now supplies the highlight background, so the trigger only
+  // controls its TEXT colour (active/open → primary, otherwise secondary).
   const triggerClass = (active, isOpen) =>
     `glass-item ${styles.trigger} ${
       active || isOpen
-        ? 'text-color-primary glass-item-active'
+        ? 'text-color-primary'
         : 'text-color-secondary hover:text-color-primary'
     }`
 
@@ -398,15 +439,33 @@ function Header() {
                 button) so moving across the gaps keeps the menu open and the
                 last-hovered trigger stays highlighted. */}
             <div
+              ref={navRef}
               className={styles.nav}
               onMouseEnter={cancelClose}
-              onMouseLeave={scheduleClose}
+              onMouseLeave={() => {
+                scheduleClose()
+                setHovered(null)
+              }}
             >
+              {/* Single pill that slides between triggers as you hover, and
+                  rests on the active-route trigger otherwise. */}
+              <span
+                className={styles.navPill}
+                aria-hidden="true"
+                style={{
+                  transform: `translateX(${pillStyle.left}px)`,
+                  width: `${pillStyle.width}px`,
+                  opacity: pillStyle.opacity,
+                }}
+              />
               {navItems.map((item) => {
                 const isOpenItem = open && menuKey === item.key
                 const shared = {
                   ref: (el) => (triggerRefs.current[item.key] = el),
-                  onMouseEnter: () => openMenu(item.key),
+                  onMouseEnter: () => {
+                    openMenu(item.key)
+                    setHovered(item.key)
+                  },
                   onFocus: () => openMenu(item.key),
                   onBlur: scheduleClose,
                   className: triggerClass(item.active, isOpenItem),
