@@ -27,11 +27,6 @@
   transition-timing-function: var(--ease-standard);
 }
 
-.base:active {
-  transform: scale(0.98);
-  translate: 0 0;
-}
-
 .base:disabled {
   opacity: 0.5;
   pointer-events: none;
@@ -66,48 +61,16 @@
 /* variants */
 
 /*
- * Specular sweep — reserved for primary + accent only.
- * A soft diagonal light gradient parked off-screen to the left; on hover it
- * sweeps across once. The ::after is clipped to the button radius via the
- * base's overflow:hidden and never intercepts pointer events.
+ * Hover is a different BACKGROUND COLOUR only — no lift/translate, no added
+ * shadow, no light sweep. Calm and flat by request.
  */
-.primary::after,
-.accent::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: linear-gradient(
-    105deg,
-    transparent 30%,
-    var(--transparent-light-40) 48%,
-    var(--transparent-light-24) 56%,
-    transparent 70%
-  );
-  transform: translateX(-120%);
-  opacity: 0;
-  transition:
-    transform 0s var(--ease-standard),
-    opacity var(--dur-fast) var(--ease-standard);
-}
-
-.primary:hover::after,
-.accent:hover::after {
-  opacity: 1;
-  transform: translateX(120%);
-  transition:
-    transform var(--dur-slow) var(--ease-decelerate),
-    opacity var(--dur-fast) var(--ease-standard);
-}
 
 .primary {
   box-shadow: var(--shadow-sm);
 }
 
 .primary:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-1px);
+  background-color: color-mix(in oklch, var(--surface-color-contrast-primary), var(--surface-color-primary) 14%) !important;
 }
 
 .secondary {
@@ -116,7 +79,6 @@
 
 .secondary:hover {
   background-color: var(--surface-color-secondary) !important;
-  transform: translateY(-1px);
 }
 
 .accent {
@@ -125,16 +87,37 @@
 }
 
 .accent:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-1px);
+  background-color: color-mix(in oklch, var(--accent), #000 12%) !important;
 }
 
-.glass:hover {
-  transform: translateY(-1px);
-}
+/* glass + ghost variants get their hover background from the shared
+   .glass-item rule in index.css (a subtle translucent fill). */
 
 .ghost:hover {
   color: var(--text-color-primary) !important;
+}
+
+/* Text-roll on hover — the label rolls up and a duplicate rises from below.
+   The second copy is absolutely positioned one line below; on hover both shift
+   up by 100% so the first exits the top and the second lands in place. */
+.roll {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.rollText {
+  display: block;
+  transition: transform var(--dur-base) var(--ease-emphasized);
+}
+.rollText:nth-child(2) {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+}
+.base:hover .rollText {
+  transform: translateY(-100%);
 }
 
 /* full width */
@@ -142,22 +125,15 @@
   width: 100%;
 }
 
-/* Respect reduced motion — no sweep, no lift/press transforms */
+/* Respect reduced motion — snap the colour transition, no text-roll */
 @media (prefers-reduced-motion: reduce) {
-  .primary::after,
-  .accent::after,
-  .primary:hover::after,
-  .accent:hover::after {
-    display: none;
-  }
-
-  .base,
-  .base:active,
-  .primary:hover,
-  .accent:hover,
-  .secondary:hover,
-  .glass:hover {
-    transform: none;
+  .base {
     transition-duration: var(--dur-instant);
+  }
+  .rollText {
+    transition: none;
+  }
+  .base:hover .rollText {
+    transform: none;
   }
 }

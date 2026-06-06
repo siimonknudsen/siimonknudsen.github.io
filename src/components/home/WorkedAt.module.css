@@ -1,8 +1,10 @@
 .section {
   width: 100%;
   padding: 0 var(--page-gutter);
-  /* Pull up closer to the hero, with a generous gap before the projects. */
-  margin-top: calc(-1 * var(--space-80));
+  /* Balanced — roughly equal gap above (from the hero content) and below (to
+     the projects). Tuned at desktop; the top gap floats slightly with viewport
+     height because the hero centres its content. */
+  margin-top: calc(-1 * var(--space-64));
   margin-bottom: var(--space-128);
 }
 

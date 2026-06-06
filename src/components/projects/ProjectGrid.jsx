@@ -98,17 +98,27 @@ function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
     let raf = 0
     const update = () => {
       raf = 0
-      for (let i = 0; i < cards.length; i++) {
-        const next = cards[i + 1]
-        if (!next) {
-          cards[i].style.setProperty('--dim', '0')
-          continue
-        }
-        const r = cards[i].getBoundingClientRect()
-        const rn = next.getBoundingClientRect()
+      // ── READ phase (no writes between reads → no layout thrash) ──
+      // `top` comes from getBoundingClientRect (its top edge is FIXED under our
+      // scale because transform-origin is top-center), but height comes from
+      // offsetHeight — the LAYOUT height, which ignores the transform. Using the
+      // scaled rect height here would feed the scale back into its own input and
+      // make the animation jitter. offsetHeight breaks that loop.
+      const tops = cards.map((c) => c.getBoundingClientRect().top)
+      const heights = cards.map((c) => c.offsetHeight)
+      const vals = cards.map((_, i) => {
+        if (i === cards.length - 1) return [0, 1] // foremost card: full size, undimmed
+        const h = heights[i] || 1
         // How far the next card has risen over this one (0 → 1).
-        const prog = Math.max(0, Math.min(1, (r.bottom - rn.top) / Math.max(1, r.height)))
-        cards[i].style.setProperty('--dim', (prog * 0.6).toFixed(3))
+        const prog = Math.max(0, Math.min(1, (tops[i] + h - tops[i + 1]) / h))
+        // Darken AND shrink as it's covered, so it recedes behind the foremost
+        // card (top card reads largest/closest; cards below get smaller).
+        return [prog * 0.6, 1 - prog * 0.05]
+      })
+      // ── WRITE phase ──
+      for (let i = 0; i < cards.length; i++) {
+        cards[i].style.setProperty('--dim', vals[i][0].toFixed(3))
+        cards[i].style.setProperty('--scale', vals[i][1].toFixed(4))
       }
     }
     const onScroll = () => {
@@ -133,13 +143,31 @@ function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
             key={project.id}
             ref={(el) => (cardRefs.current[index] = el)}
             className={styles.stackCard}
-            style={{ '--i': index }}
+            // Progressive base size: each card a touch larger than the previous
+            // (first = smallest, last/front = full size), so the stack grows as
+            // you scroll. Combined (×) with the scroll-driven recede scale.
+            style={{
+              '--i': index,
+              '--base': (1 - (projects.length - 1 - index) * 0.025).toFixed(3),
+            }}
           >
             <Link to={`/project/${project.id}`} className={styles.stackLink}>
               <div className={styles.stackMedia}>
                 <Media
                   src={`/projects/${project.id}/images/hero`}
                   alt={project.title}
+                  aspect="fill"
+                  rounded="none"
+                />
+              </div>
+              {/* Blurred copy of the same image, masked to the lower text zone.
+                  This is a STATIC filter:blur (cached, GPU-cheap) — not a live
+                  backdrop-filter — so it frosts the text area without re-blurring
+                  every scroll frame. */}
+              <div className={styles.stackBlur} aria-hidden="true">
+                <Media
+                  src={`/projects/${project.id}/images/hero`}
+                  alt=""
                   aspect="fill"
                   rounded="none"
                 />

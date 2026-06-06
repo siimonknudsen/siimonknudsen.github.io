@@ -42,7 +42,7 @@
   font-weight: var(--weight-medium);
   font-size: clamp(2rem, 4.4vw, 3.5rem);
   line-height: 1.12;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.05em;
   max-width: min(18ch, 100%);
   margin: 0;
 }

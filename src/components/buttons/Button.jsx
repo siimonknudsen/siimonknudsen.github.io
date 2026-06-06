@@ -56,7 +56,14 @@ function Button({
     >
       {loading && <Spinner />}
       {!loading && iconLeft}
-      {children}
+      {/* Text-roll on hover: the label slides up and out while a duplicate
+          rises from below into place. */}
+      <span className={styles.roll}>
+        <span className={styles.rollText}>{children}</span>
+        <span className={styles.rollText} aria-hidden="true">
+          {children}
+        </span>
+      </span>
       {!loading && iconRight}
     </Comp>
   )

@@ -1,0 +1,68 @@
+/* Consent card — bottom-left, on the glass-panel overlay surface so it reads
+   over any background (incl. the shader hero) while staying legible. Sits
+   below the intro loader (z-intro 2000) but above all other chrome. */
+.card {
+  position: fixed;
+  left: var(--page-gutter);
+  bottom: var(--page-gutter);
+  z-index: var(--z-toast);
+  width: min(380px, calc(100vw - var(--page-gutter) * 2));
+  padding: var(--space-28);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+
+  /* Enter/exit motion baseline */
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+  transform-origin: bottom left; /* grows from its own corner */
+  will-change: transform, opacity;
+  transition:
+    opacity var(--dur-base) var(--ease-decelerate),
+    transform var(--dur-base) var(--ease-decelerate);
+}
+
+.in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.exit {
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+  transition:
+    opacity var(--dur-fast) var(--ease-accelerate),
+    transform var(--dur-fast) var(--ease-accelerate);
+}
+
+.title {
+  margin: 0 0 var(--space-12);
+}
+
+.body {
+  margin: 0 0 var(--space-24);
+  color: var(--text-color-secondary);
+  text-wrap: pretty;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-12);
+}
+
+/* Pill buttons to match the friendly consent style; both share equal width. */
+.pill {
+  flex: 1 1 0;
+  border-radius: var(--radius-pill) !important;
+}
+
+/* Decline = outline pill (transparent fill + hairline border). */
+.decline {
+  border: 1px solid var(--border-color-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+    will-change: auto;
+  }
+}

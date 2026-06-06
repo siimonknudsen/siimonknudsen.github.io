@@ -10,7 +10,9 @@ import NotFound from './pages/NotFound'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import IntroLoader from './components/IntroLoader'
+import CookieConsent from './components/CookieConsent'
 import ScrollToTop from './components/animations/ScrollToTop'
+import { initConsent } from './lib/consent'
 import styles from './App.module.css'
 
 // Document titles for the static routes (project pages set their own).
@@ -70,6 +72,11 @@ function AnimatedRoutes() {
 }
 
 function App() {
+  // If the visitor accepted analytics on a previous visit, resume Clarity.
+  useEffect(() => {
+    initConsent()
+  }, [])
+
   return (
     <Router basename={import.meta.env.BASE_URL}>
       {/* Skip link — first focusable element, for keyboard / screen-reader users */}
@@ -91,6 +98,8 @@ function App() {
       <div className="grain" aria-hidden="true" />
       {/* First-load intro loader — wordmark + filling line, once per session */}
       <IntroLoader />
+      {/* Cookie consent — gates Microsoft Clarity (nothing loads until Accept) */}
+      <CookieConsent />
     </Router>
   )
 }

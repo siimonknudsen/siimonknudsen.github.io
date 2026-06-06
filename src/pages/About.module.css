@@ -28,9 +28,11 @@
   font-weight: var(--weight-medium);
   font-size: clamp(2.25rem, 5vw, 4rem);
   line-height: 1.08;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.05em;
   max-width: min(16ch, 100%);
-  margin: 0 0 var(--space-40);
+  /* Auto side-margins so the capped-width block centres itself inside the
+     block-level reveal wrapper (align-items:center can't reach across it). */
+  margin: 0 auto var(--space-40);
 }
 
 /* Portrait + floating chips */

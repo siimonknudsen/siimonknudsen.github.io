@@ -92,11 +92,14 @@
   /* Negative tracking scale. Modern, tight feel; graduated because tight
      tracking aids large display but HURTS legibility at small sizes (see
      DECISIONS). Applied across all .type-* roles; overline stays positive. */
-  --tracking-tighter: -0.045em; /* display */
-  --tracking-tight: -0.035em;   /* headings */
-  --tracking-snug: -0.025em;    /* titles / body */
-  --tracking-base: -0.015em;    /* small text */
-  --tracking-normal: 0em;
+  /* Deliberately tight ramp (Simon's preference): everything sits in roughly
+     the −2% to −5% band, tightest on display. Overrides the usual "body ≈ 0"
+     best practice on purpose — see DESIGN_KNOWLEDGE §6.8. */
+  --tracking-tighter: -0.05em;  /* display */
+  --tracking-tight: -0.04em;    /* headings */
+  --tracking-snug: -0.03em;     /* titles / body */
+  --tracking-base: -0.025em;    /* small text (kept ≥ −2%) */
+  --tracking-normal: 0em;       /* explicit opt-out (inputs/code) */
   --tracking-wide: 0.02em;
   --tracking-label: 0.08em;    /* uppercase overline (needs positive) */
 
@@ -938,6 +941,6 @@ html:not(.dark) .grain {
 }
 @media (min-width: 1024px) {
   :root {
-    --page-gutter: var(--space-64);
+    --page-gutter: var(--space-80);
   }
 }
