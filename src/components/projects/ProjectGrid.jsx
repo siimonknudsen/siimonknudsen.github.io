@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import ProjectCard from './ProjectCard'
+import TagRow from './TagRow'
 import Media from '../Media'
 import { ZliideLogo, AdtractionLogo, LenusLogo } from '../home/WorkedAtLogos'
 import styles from './ProjectGrid.module.css'
@@ -212,13 +213,12 @@ function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
                   {project.description}
                 </p>
                 {project.tags?.length > 0 && (
-                  <div className={styles.stackTags}>
-                    {project.tags.map((tag) => (
-                      <span key={tag} className={styles.stackTag}>
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                  <TagRow
+                    tags={project.tags}
+                    variant="stack"
+                    containerClassName={styles.stackTags}
+                    chipClassName={styles.stackTag}
+                  />
                 )}
               </div>
             </Link>

@@ -9,5 +9,8 @@
 
 .visible {
   opacity: 1;
-  transform: translateY(0);
+  /* `none`, not translateY(0): any non-none transform creates a containing block
+     that breaks `backdrop-filter` on descendants (e.g. glass-panel cards inside).
+     Releasing it once revealed lets nested glass surfaces blur the page behind. */
+  transform: none;
 }

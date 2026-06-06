@@ -23,7 +23,8 @@
 }
 
 .workRow {
-  border-radius: var(--radius-xl);
+  /* Tight hover-highlight radius (glass-item bg uses this); was --radius-xl (too round). */
+  border-radius: 6px;
   padding: var(--space-8);
   display: flex;
   align-items: center;
@@ -342,7 +343,8 @@
 }
 
 .bar {
-  border-radius: var(--radius-xl);
+  border: none;
+  border-radius: var(--radius-pill);
   display: flex;
   align-items: center;
   gap: var(--space-8);

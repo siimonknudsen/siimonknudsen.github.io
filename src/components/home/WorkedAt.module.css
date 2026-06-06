@@ -29,31 +29,20 @@
   text-transform: uppercase;
 }
 
-/* 3-column grid so the middle logo (Zliide) centres under the "Worked at"
-   label: left logo hugs the centre from the left, right logo from the right. */
+/* Centred flex row so the set of companies sits balanced under the "Worked at"
+   label regardless of count (now four). Wraps to a centred column on mobile. */
 .logos {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   column-gap: var(--space-48);
-}
-
-.logos > *:nth-child(1) {
-  justify-self: end;
-}
-.logos > *:nth-child(3) {
-  justify-self: start;
+  row-gap: var(--space-20);
 }
 
 @media (max-width: 600px) {
   .logos {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    row-gap: var(--space-20);
-  }
-  .logos > *:nth-child(1),
-  .logos > *:nth-child(3) {
-    justify-self: center;
+    flex-direction: column;
   }
 }
 
@@ -131,6 +120,18 @@
     visibility 0s linear var(--dur-base);
 }
 
+/* Hover bridge: an invisible strip filling the 12px gap between the logo and the
+   tooltip, so the pointer can travel down into the tooltip without crossing a
+   dead zone that drops :hover and dismisses it. (hover bridge / hit-area buffer) */
+.tooltip::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(-1 * var(--space-12));
+  height: var(--space-12);
+}
+
 .companyChip:hover .tooltip,
 .companyChip:focus-within .tooltip {
   opacity: 1;
@@ -175,31 +176,30 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-12);
 }
 
-/* Label + value row (a real box so it can stagger in). Label left, value
-   right-aligned on the right edge. */
+/* Stacked spec row (a real box so it can stagger in): muted label above its
+   value, all left-aligned to a single axis — calmer than a two-column table
+   when value lengths vary. */
 .ttRow {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-20);
+  flex-direction: column;
+  gap: var(--space-2);
 }
 
 .ttRow dt {
-  font-size: var(--text-xs);
-  letter-spacing: var(--tracking-base);
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
   color: var(--text-color-tertiary);
 }
 
 .ttRow dd {
   margin: 0;
-  font-size: var(--text-xs);
-  letter-spacing: var(--tracking-base);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-snug);
   color: var(--text-color-primary);
-  white-space: nowrap;
-  text-align: right;
 }
 
 /* ── Staggered content reveal — each item rises + fades in one by one when the

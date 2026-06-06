@@ -1,14 +1,17 @@
 .card {
+  position: relative;
+  overflow: hidden;
   border-radius: var(--radius-xl);
   padding: var(--space-20);
   display: flex;
   flex-direction: column;
   height: 100%;
-  transition: transform var(--dur-fast) var(--ease-standard);
 }
 
-.card:hover {
-  transform: translateY(-4px);
+/* Spotlight glow is the first child at z-index:0; lift real content above it. */
+.card > *:not(:first-child) {
+  position: relative;
+  z-index: 1;
 }
 
 .title {

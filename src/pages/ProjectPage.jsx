@@ -33,11 +33,7 @@ function ProjectPage() {
 
   const title = content.title || project.title
 
-  // The headline outcome shown in the rail — prefer the first outcome, then the
-  // card's impact chip.
-  const headlineOutcome =
-    (content.outcomes && content.outcomes[0]) ||
-    (project.impact ? { metric: project.impact.value, label: project.impact.label } : null)
+  // Outcome meta (headlineOutcome) temporarily removed from the rail — see meta grid below.
 
   const hasProcess = content.process && content.process.length > 0
   const hasOutcomes = content.outcomes && content.outcomes.length > 0
@@ -108,21 +104,8 @@ function ProjectPage() {
                   />
                   <RailItem label="Timeline" value={content.timeline || content.when} />
 
-                  {headlineOutcome && headlineOutcome.metric && (
-                    <div className={styles.railOutcome}>
-                      <p className={`type-overline text-color-tertiary ${styles.railKey}`}>
-                        Outcome
-                      </p>
-                      <p className={`type-heading-sm text-accent ${styles.railMetric}`}>
-                        {headlineOutcome.metric}
-                      </p>
-                      {headlineOutcome.label && (
-                        <p className={`type-body-sm text-color-secondary ${styles.railOutcomeLabel}`}>
-                          {headlineOutcome.label}
-                        </p>
-                      )}
-                    </div>
-                  )}
+                  {/* Outcome meta item temporarily removed — only Role / Client /
+                      Team / Timeline render in the 4-column meta grid for now. */}
 
                   {sections.length > 0 && (
                     <nav className={styles.railNav} aria-label="Case study sections">
@@ -146,7 +129,7 @@ function ProjectPage() {
                     <p className={`type-overline text-accent ${styles.kicker}`}>Problem</p>
                   </Reveal>
                   <Reveal preset="fade-up" delay={60}>
-                    <p className={`type-body-lg text-color-primary ${styles.lede}`}>
+                    <p className={`type-body-lg text-color-primary ${styles.lede} ${styles.problemLede}`}>
                       {content.problem || content.challenge}
                     </p>
                   </Reveal>

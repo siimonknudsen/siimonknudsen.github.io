@@ -127,33 +127,36 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
 
             {/* Prev / Next + image + counter — stopPropagation so clicks don't close */}
             <div className={styles.stage} onClick={(e) => e.stopPropagation()}>
-              {realIndices.length > 1 && (
-                <button
-                  type="button"
-                  className={`${styles.ctrl} ${styles.nav} ${styles.prev}`}
-                  onClick={goPrev}
-                  aria-label="Previous image"
-                >
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-              )}
+              {/* Horizontal row: arrow + image + arrow, each separated by a 16px gap */}
+              <div className={styles.row}>
+                {realIndices.length > 1 && (
+                  <button
+                    type="button"
+                    className={`${styles.ctrl} ${styles.nav}`}
+                    onClick={goPrev}
+                    aria-label="Previous image"
+                  >
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                )}
 
-              <img key={openIndex} src={openSrc} alt="" className={styles.lightboxImg} />
+                <img key={openIndex} src={openSrc} alt="" className={styles.lightboxImg} />
 
-              {realIndices.length > 1 && (
-                <button
-                  type="button"
-                  className={`${styles.ctrl} ${styles.nav} ${styles.next}`}
-                  onClick={goNext}
-                  aria-label="Next image"
-                >
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-              )}
+                {realIndices.length > 1 && (
+                  <button
+                    type="button"
+                    className={`${styles.ctrl} ${styles.nav}`}
+                    onClick={goNext}
+                    aria-label="Next image"
+                  >
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                )}
+              </div>
 
               <p className={`${styles.counter} type-caption`}>
                 {realIndices.indexOf(openIndex) + 1} of {realIndices.length}

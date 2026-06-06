@@ -58,6 +58,7 @@
   --transparent-light-40: rgba(255, 255, 255, 0.40);
   --transparent-light-60: rgba(255, 255, 255, 0.60);
   --transparent-light-80: rgba(255, 255, 255, 0.80);
+  --transparent-light-90: rgba(255, 255, 255, 0.90);
   --transparent-dark-2:   rgba(0, 0, 0, 0.02);
   --transparent-dark-4:   rgba(0, 0, 0, 0.04);
   --transparent-dark-8:   rgba(0, 0, 0, 0.08);
@@ -67,6 +68,11 @@
   --transparent-dark-40:  rgba(0, 0, 0, 0.40);
   --transparent-dark-60:  rgba(0, 0, 0, 0.60);
   --transparent-dark-80:  rgba(0, 0, 0, 0.80);
+
+  /* On-media chrome — text/accents that always sit over dark-scrimmed photos,
+     so they're fixed light (theme-independent), not the theme-aware text tokens. */
+  --text-on-media: #fff;
+  --accent-on-media: #ff9a6a; /* lightened brand orange for AA legibility on photos */
 
   /* — Typography — */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
@@ -129,12 +135,15 @@
   --header-height: 88px; /* sticky header footprint — used to slide the hero shader up behind the nav (slight overshoot guarantees full coverage) */
 
   /* — Radius (4 · 8 · 12 · 16; 2xl/3xl for big frosted panels & hero/case) — */
+  /* Tight 2026 aesthetic: cards/panels/images cap at 8px. The larger steps are
+     intentionally clamped to 8px so "most components" read tight without a
+     per-file sweep; use sm(4)/md(8) for new work. radius-pill stays for chips. */
   --radius-sm: 4px;
   --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-2xl: 28px;
-  --radius-3xl: 40px;
+  --radius-lg: 8px;
+  --radius-xl: 8px;
+  --radius-2xl: 8px;
+  --radius-3xl: 8px;
   --radius-pill: 9999px;
 
   /* — Blur / glass effect — */
@@ -245,6 +254,8 @@ html.dark {
   --glass-item-hover: var(--transparent-light-8);
   --glass-item-active: var(--transparent-light-12);
   --glass-solid: #1c1c1e;
+  /* Cursor-spotlight glow (dark = white specular sheen) */
+  --glass-glow: var(--transparent-light-12);
   /* Elevation (solid surfaces, dark = deeper/softer shadows) */
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.40);
   --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.45);
@@ -292,15 +303,20 @@ html:not(.dark) {
   --text-color-contrast-primary: var(--neutral-0);
   --text-color-contrast-secondary: var(--neutral-400);
   --text-color-contrast-tertiary: var(--neutral-300);
-  /* Frosted glass (light) */
-  --glass-bg: rgba(255, 255, 255, 0.60);
-  --glass-bg-strong: rgba(255, 255, 255, 0.85);
+  /* Frosted glass (light) — lower opacity than before (was 0.60/0.85) so the
+     warm shader actually blurs *through* the surface and reads as glass instead
+     of a flat white box. Dark text stays legible on the still-substantial fill. */
+  --glass-bg: rgba(255, 255, 255, 0.46);
+  --glass-bg-strong: rgba(255, 255, 255, 0.66);
   --glass-border: var(--transparent-dark-8);
   --glass-shadow: 0 8px 32px rgba(17, 17, 17, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.80), inset 0 -1px 0 rgba(17, 17, 17, 0.06);
   --glass-shadow-lg: 0 20px 60px rgba(17, 17, 17, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.90), inset 0 -1px 0 rgba(17, 17, 17, 0.08);
   --glass-item-hover: var(--transparent-dark-4);
   --glass-item-active: var(--transparent-dark-8);
   --glass-solid: #f4f4f5;
+  /* Cursor-spotlight glow (light = soft warm-accent tint; a white glow would be
+     invisible on a light card) */
+  --glass-glow: color-mix(in oklch, var(--accent) 16%, transparent);
   /* Elevation (solid surfaces, light = subtle/tight shadows) */
   --shadow-xs: 0 1px 2px rgba(17, 17, 17, 0.06);
   --shadow-sm: 0 2px 6px rgba(17, 17, 17, 0.08);
@@ -643,6 +659,34 @@ html:not(.dark) {
 
   .glass-item-active {
     background-color: var(--glass-item-active);
+  }
+}
+
+/* Cursor spotlight — a soft glow that follows the pointer across a card, used in
+   place of a hover "lift" on glass cards. The card must be `position: relative`
+   + `overflow: hidden` and carry the `group` class; feed pointer coords into
+   --mx/--my via the useSpotlight hook (onMouseMove). Theme-aware via --glass-glow. */
+.fx-spotlight {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    440px circle at var(--mx, 50%) var(--my, 50%),
+    var(--glass-glow),
+    transparent 45%
+  );
+  transition: opacity var(--dur-base) var(--ease-standard);
+}
+.group:hover .fx-spotlight,
+.group:focus-within .fx-spotlight {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fx-spotlight {
+    transition: none;
   }
 }
 

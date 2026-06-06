@@ -1,16 +1,14 @@
 import { useState } from 'react'
 import { Reveal } from '../components/motion'
-import Location from '../components/Location'
 import Button from '../components/buttons/Button'
 import styles from './Contact.module.css'
 
 const EMAIL = 'simonoverlund@hotmail.com'
-const LINKEDIN = 'https://www.linkedin.com/in/simon-knudsen/'
 
 /**
  * Contact — editorial + simple. A glass form that composes a prefilled email
- * (mailto) so it works on a static host with no backend, plus a direct-email
- * fallback and the live location/availability chip. Sits over the global shader.
+ * (mailto) so it works on a static host with no backend. Sits over the global
+ * shader.
  */
 function Contact() {
   const [name, setName] = useState('')
@@ -33,15 +31,8 @@ function Contact() {
       <div className={styles.inner}>
         <Reveal preset="fade-up">
           <h1 className={`type-display text-color-primary ${styles.headline}`}>
-            Let's make something worth using.
+            Get in touch with me
           </h1>
-        </Reveal>
-
-        <Reveal preset="fade-up" delay={80}>
-          <p className={`type-body-lg text-color-secondary ${styles.lede}`}>
-            Whether it's a project, a question, or just a hello — drop me a line
-            below or email me directly. I usually reply within a day.
-          </p>
         </Reveal>
 
         {/* Glass form — composes a prefilled email via mailto */}
@@ -100,31 +91,6 @@ function Contact() {
               Opens your email app with the message ready to send.
             </p>
           </form>
-        </Reveal>
-
-        {/* Direct email + links */}
-        <Reveal preset="fade-up" delay={240}>
-          <div className={styles.direct}>
-            <span className={`type-overline text-color-tertiary ${styles.directLabel}`}>
-              Or reach me directly
-            </span>
-            <div className={styles.links}>
-              <a href={`mailto:${EMAIL}`} className={styles.link}>
-                {EMAIL}
-              </a>
-              <a
-                href={LINKEDIN}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.link}
-              >
-                LinkedIn <span aria-hidden="true">→</span>
-              </a>
-            </div>
-            <div className={styles.meta}>
-              <Location />
-            </div>
-          </div>
         </Reveal>
       </div>
     </section>

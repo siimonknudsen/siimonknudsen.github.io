@@ -7,7 +7,6 @@
   background-color: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
-  border-top: 1px solid var(--glass-border);
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {

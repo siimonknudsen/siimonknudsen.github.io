@@ -1,4 +1,6 @@
 .card {
+  position: relative;
+  overflow: hidden;
   border-radius: var(--radius-xl);
   padding: var(--space-32);
   display: flex;
@@ -6,11 +8,27 @@
   gap: var(--space-24);
   height: 100%;
   margin: 0;
-  transition: transform var(--dur-fast) var(--ease-standard);
 }
 
-.card:hover {
-  transform: translateY(-4px);
+/* Spotlight glow is the first child at z-index:0; lift real content above it. */
+.card > *:not(:first-child) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Oversized decorative quotation glyph — the section's single warm-accent touch,
+   kept low-opacity so it reads as atmosphere, not decoration. */
+.quoteMark {
+  position: absolute;
+  top: var(--space-16);
+  right: var(--space-32);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 5rem;
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.22;
+  pointer-events: none;
+  user-select: none;
 }
 
 /* Logo slot — inline svg (currentColor, muted) or contained image */
@@ -33,10 +51,23 @@
   object-fit: contain;
 }
 
-/* Quote — grows so the footer (name/role) bottom-aligns across the 3 cards */
-.text {
+/* Quote — grows so the footer (name/role) bottom-aligns across the 3 cards.
+   Paragraphs are spaced so a long quote reads in a natural rhythm. */
+.quote {
   flex: 1;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.para {
+  margin: 0;
+}
+
+/* First paragraph = brighter "lead line" for hierarchy (rest are secondary). */
+.lead {
+  color: var(--text-color-primary);
 }
 
 .foot {

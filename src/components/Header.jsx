@@ -158,7 +158,7 @@ function AboutMenu({ onNavigate }) {
         <span className={styles.aboutName}>
           <span className={`text-color-primary ${styles.aboutNameTitle}`}>Simon Knudsen</span>
           <span className={`text-color-secondary ${styles.aboutNameSub}`}>
-            Product Designer · Aarhus
+            Product Designer
           </span>
         </span>
       </div>

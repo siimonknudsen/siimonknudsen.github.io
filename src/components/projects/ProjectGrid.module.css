@@ -141,7 +141,7 @@
   z-index: 1;
   display: inline-flex;
   padding: var(--space-32);
-  color: #fff;
+  color: var(--text-on-media);
   opacity: 0.92;
 }
 .stackLogo svg {
@@ -158,24 +158,27 @@
   border-radius: var(--radius-pill);
   font-size: var(--text-xs);
   letter-spacing: var(--tracking-base);
-  background: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  color: rgba(255, 255, 255, 0.92);
+  /* On-image chrome: tokenised white-α (theme-independent) instead of hardcoded
+     rgba. No backdrop-filter — these live inside a card that scales on scroll
+     (would jank, and the transform breaks the blur anyway). */
+  background: var(--transparent-light-16);
+  border: 1px solid var(--transparent-light-24);
+  color: var(--transparent-light-90);
 }
 .stackImpact strong {
   font-weight: var(--weight-semibold);
-  color: #ff9a6a;
+  color: var(--accent-on-media);
 }
 
 .stackTitle {
   margin: 0;
-  color: #fff;
+  color: var(--text-on-media);
 }
 
 .stackDesc {
   margin: 0;
   max-width: 52ch;
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--transparent-light-80);
 }
 
 .stackTags {
@@ -188,9 +191,9 @@
   padding: var(--space-4) var(--space-12);
   border-radius: var(--radius-pill);
   font-size: var(--text-xs);
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.9);
+  background: var(--transparent-light-12);
+  border: 1px solid var(--transparent-light-16);
+  color: var(--transparent-light-90);
 }
 
 @media (min-width: 768px) {

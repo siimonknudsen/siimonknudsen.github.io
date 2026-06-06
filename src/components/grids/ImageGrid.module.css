@@ -89,7 +89,7 @@
   }
 }
 
-/* Stage holds the image, side nav buttons and the counter */
+/* Stage holds the image row and the counter, stacked vertically */
 .stage {
   position: relative;
   display: flex;
@@ -100,11 +100,23 @@
   max-height: 100%;
 }
 
+/* Row holds prev arrow + image + next arrow, with a 16px gap each side */
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-16);
+  max-width: 100%;
+  min-width: 0;
+}
+
 .lightboxImg {
   position: relative;
-  z-index: 1; /* below the nav/close controls */
+  z-index: 1; /* below the close control */
   max-width: 100%;
   max-height: 80vh;
+  min-width: 0;
   border-radius: var(--radius-md);
   object-fit: contain;
   box-shadow: var(--glass-shadow-lg);
@@ -160,37 +172,13 @@
   }
 }
 
-/* Prev / Next — vertically centered on each side of the image */
-/* Pinned to the viewport sides — fully OUTSIDE the image, vertically centred. */
+/* Prev / Next — in-flow flex items hugging the image with a 16px gap */
 .nav {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
+  flex: none;
   width: 44px;
   height: 44px;
   border-radius: var(--radius-pill);
   z-index: 2;
-}
-
-.nav:active {
-  transform: translateY(-50%) scale(0.94);
-}
-
-.prev {
-  left: var(--space-16);
-}
-
-.next {
-  right: var(--space-16);
-}
-
-@media (min-width: 640px) {
-  .prev {
-    left: var(--space-24);
-  }
-  .next {
-    right: var(--space-24);
-  }
 }
 
 /* Counter below the image */

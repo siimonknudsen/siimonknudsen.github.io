@@ -15,29 +15,8 @@
     box-shadow var(--dur-fast) var(--ease-standard);
 }
 
-.card:hover {
-  transform: translateY(var(--motion-lift));
-  box-shadow: var(--glass-shadow-lg);
-}
-
-/* Cursor spotlight — radial sheen that follows the pointer (glass specular) */
-.spotlight {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    420px circle at var(--mx, 50%) var(--my, 0%),
-    var(--transparent-light-12),
-    transparent 45%
-  );
-  transition: opacity var(--dur-base) var(--ease-standard);
-}
-.card:hover .spotlight {
-  opacity: 1;
-}
+/* No hover "lift" — the cursor spotlight (global .fx-spotlight) is the only
+   hover affordance on glass cards now. */
 
 
 .frame {
@@ -94,8 +73,12 @@
   padding: var(--space-16) var(--space-4) 0;
 }
 
-/* Chips collapsed by the overflow logic — removed from layout entirely. */
-.hiddenChip {
+/* Chips collapsed by the overflow logic — removed from layout entirely.
+   Compound selectors (0,2,0) so this beats `.tagSlot`/`.plusTag { display:
+   inline-flex }` regardless of source order — otherwise the later single-class
+   rule wins and nothing ever hides (the phantom "+1" bug). */
+.tagSlot.hiddenChip,
+.plusTag.hiddenChip {
   display: none;
 }
 
@@ -113,6 +96,18 @@
 .plusTag {
   cursor: default;
   opacity: 0.75;
+}
+
+/* Hidden-tag list inside the "+N" tooltip — one tag per line, subtle. */
+.plusList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.plusListItem {
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-snug);
+  color: var(--text-color-secondary);
 }
 
 /* Featured (bento) — full-width; editorial side-by-side on large screens */
