@@ -53,38 +53,54 @@
 
 .stackCard {
   /* Sticky so each card sticks under the header and the next scrolls over it.
-     The per-card --i adds a small extra offset so the tops peek like a deck. */
+     The per-card --i adds a small extra offset so the tops peek like a deck.
+     No fixed height — the full-width image sets it (16:9). */
   position: sticky;
   top: calc(var(--header-height) + var(--space-16) + var(--i, 0) * 12px);
-  height: 90vh;
   border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1px solid var(--glass-border);
-  background: var(--surface-color-secondary);
   box-shadow: var(--glass-shadow-lg);
 }
 
 .stackLink {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  position: relative;
+  display: block;
   text-decoration: none;
 }
 
+/* Full-bleed image */
 .stackMedia {
   position: relative;
-  flex: 1 1 auto;
-  min-height: 0;
   width: 100%;
 }
 
+/* Dark scrim so overlaid text stays legible over any image */
+.stackScrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.82) 0%,
+    rgba(0, 0, 0, 0.55) 24%,
+    rgba(0, 0, 0, 0.12) 48%,
+    transparent 70%
+  );
+}
+
+/* Content overlaid bottom-left */
 .stackInfo {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--space-16);
+  gap: var(--space-12);
+  width: 100%;
+  max-width: 620px;
   padding: var(--space-32);
-  flex: 0 0 auto;
 }
 
 .stackImpact {
@@ -95,18 +111,26 @@
   border-radius: var(--radius-pill);
   font-size: var(--text-xs);
   letter-spacing: var(--tracking-base);
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 .stackImpact strong {
   font-weight: var(--weight-semibold);
+  color: #ff9a6a;
 }
 
 .stackTitle {
   margin: 0;
+  color: #fff;
 }
 
 .stackDesc {
   margin: 0;
   max-width: 52ch;
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .stackTags {
@@ -119,27 +143,23 @@
   padding: var(--space-4) var(--space-12);
   border-radius: var(--radius-pill);
   font-size: var(--text-xs);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .stackCta {
   margin-top: var(--space-4);
   font-weight: var(--weight-medium);
+  color: #fff;
 }
 
-/* Desktop: image + info side-by-side, info vertically centred */
-@media (min-width: 1024px) {
-  .stackLink {
-    flex-direction: row;
-  }
-  .stackMedia {
-    flex: 1 1 58%;
-    height: 100%;
-  }
+@media (min-width: 768px) {
   .stackInfo {
-    flex: 1 1 42%;
-    justify-content: center;
     padding: var(--space-48);
-    gap: var(--space-20);
+    gap: var(--space-16);
   }
 }
 

@@ -118,7 +118,7 @@ function About() {
           <div className={styles.portraitStage}>
             <div className={styles.portraitGlow} aria-hidden="true" />
             <ScrollAnimation>
-              <div className={`bg-surface-color-tertiary ${styles.portrait}`}>
+              <div className={styles.portrait}>
                 <img
                   src={`${import.meta.env.BASE_URL}simon-virtual.png`}
                   alt="Simon Knudsen"

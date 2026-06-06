@@ -121,7 +121,7 @@
 
   /* — Layout — */
   --container-max: 1920px; /* page content max width */
-  --page-gutter: var(--space-48); /* horizontal breathing room on every page section + header (48px) */
+  --page-gutter: var(--space-64); /* horizontal breathing room on every page section + header + footer (64px) */
   --header-height: 88px; /* sticky header footprint — used to slide the hero shader up behind the nav (slight overshoot guarantees full coverage) */
 
   /* — Radius (4 · 8 · 12 · 16; 2xl/3xl for big frosted panels & hero/case) — */

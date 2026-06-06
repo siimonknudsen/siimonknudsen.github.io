@@ -103,34 +103,33 @@ function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
                 <Media
                   src={`/projects/${project.id}/images/hero`}
                   alt={project.title}
-                  aspect="fill"
+                  aspect="aspect-video"
                   rounded="none"
                 />
               </div>
+              <div className={styles.stackScrim} aria-hidden="true" />
               <div className={styles.stackInfo}>
                 {project.impact && (
-                  <span className={`bg-accent-soft text-accent ${styles.stackImpact}`}>
+                  <span className={styles.stackImpact}>
                     <strong>{project.impact.value}</strong> {project.impact.label}
                   </span>
                 )}
-                <h3 className={`type-heading-sm text-color-primary ${styles.stackTitle}`}>
+                <h3 className={`type-heading-sm ${styles.stackTitle}`}>
                   {project.title}
                 </h3>
-                <p className={`type-body-lg text-color-secondary ${styles.stackDesc}`}>
+                <p className={`type-body-lg ${styles.stackDesc}`}>
                   {project.description}
                 </p>
                 {project.tags?.length > 0 && (
                   <div className={styles.stackTags}>
                     {project.tags.map((tag) => (
-                      <span key={tag} className={`glass-item text-color-secondary ${styles.stackTag}`}>
+                      <span key={tag} className={styles.stackTag}>
                         {tag}
                       </span>
                     ))}
                   </div>
                 )}
-                <span className={`text-color-primary ${styles.stackCta}`}>
-                  View project →
-                </span>
+                <span className={styles.stackCta}>View project →</span>
               </div>
             </Link>
           </article>

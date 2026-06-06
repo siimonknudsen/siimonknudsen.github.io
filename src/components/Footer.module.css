@@ -67,17 +67,47 @@
 }
 
 .link {
-  display: block;
+  position: relative;
+  display: inline-flex;
+  width: fit-content;
   padding-top: var(--space-8);
   padding-bottom: var(--space-8);
   border-radius: 6px;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
+  transition: color 150ms var(--ease-standard),
+    transform 220ms var(--ease-standard);
+}
+
+/* Underline that grows from the left on hover */
+.link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: var(--space-6);
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 240ms var(--ease-standard);
 }
 
 .link:hover {
   color: var(--text-color-primary) !important;
+  transform: translateX(var(--space-4));
+}
+
+.link:hover::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link:hover {
+    transform: none;
+  }
+  .link::after {
+    transition: none;
+  }
 }
 
 .bottom {
