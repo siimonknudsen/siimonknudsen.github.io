@@ -18,6 +18,7 @@
   --neutral-800: #2d2d2d;
   --neutral-850: #1e1e1e;
   --neutral-900: #1a1a1a;
+  --neutral-950: #0f0f0f;
   --neutral-1000: #000000;
   /* — Brand ramp (the one owned brand colour). Recommended default: a warm
      orange — see DECISIONS. Distinct from the ubiquitous SaaS green, warmer/
@@ -35,12 +36,15 @@
   --brand-800: #8c331a;
   --brand-900: #5f2614;
 
-  /* — Status hue ramps (raw): success(green) · warning(amber) · error(red) ·
-     info(blue). Full ramps so semantics can pick the right stop per theme. */
-  --green-50:#ecfdf5; --green-100:#d1fae5; --green-300:#6ee7b7; --green-400:#34d399; --green-500:#10b981; --green-600:#059669; --green-700:#047857; --green-900:#064e3b;
-  --amber-50:#fffbeb; --amber-100:#fef3c7; --amber-300:#fcd34d; --amber-400:#fbbf24; --amber-500:#f59e0b; --amber-600:#d97706; --amber-700:#b45309; --amber-900:#78350f;
-  --red-50:#fef2f2;   --red-100:#fee2e2;   --red-300:#fca5a5;   --red-400:#f87171;   --red-500:#ef4444;   --red-600:#dc2626;   --red-700:#b91c1c;   --red-900:#7f1d1d;
-  --blue-50:#eff6ff;  --blue-100:#dbeafe;  --blue-300:#93c5fd;  --blue-400:#60a5fa;  --blue-500:#3b82f6;  --blue-600:#2563eb;  --blue-700:#1d4ed8;  --blue-900:#1e3a8a;
+  /* — Status + action hue ramps (raw) — complete 50→900 ladders, like Tailwind/
+     Radix. success(green) · warning(amber) · error(red) · info(blue) ·
+     action(indigo, the interactive/secondary-action hue, distinct from the
+     orange brand). Semantics below pick the right stop per theme. */
+  --green-50:#ecfdf5; --green-100:#d1fae5; --green-200:#a7f3d0; --green-300:#6ee7b7; --green-400:#34d399; --green-500:#10b981; --green-600:#059669; --green-700:#047857; --green-800:#065f46; --green-900:#064e3b;
+  --amber-50:#fffbeb; --amber-100:#fef3c7; --amber-200:#fde68a; --amber-300:#fcd34d; --amber-400:#fbbf24; --amber-500:#f59e0b; --amber-600:#d97706; --amber-700:#b45309; --amber-800:#92400e; --amber-900:#78350f;
+  --red-50:#fef2f2;   --red-100:#fee2e2;   --red-200:#fecaca;   --red-300:#fca5a5;   --red-400:#f87171;   --red-500:#ef4444;   --red-600:#dc2626;   --red-700:#b91c1c;   --red-800:#991b1b;   --red-900:#7f1d1d;
+  --blue-50:#eff6ff;  --blue-100:#dbeafe;  --blue-200:#bfdbfe;  --blue-300:#93c5fd;  --blue-400:#60a5fa;  --blue-500:#3b82f6;  --blue-600:#2563eb;  --blue-700:#1d4ed8;  --blue-800:#1e40af;  --blue-900:#1e3a8a;
+  --indigo-50:#eef2ff; --indigo-100:#e0e7ff; --indigo-200:#c7d2fe; --indigo-300:#a5b4fc; --indigo-400:#818cf8; --indigo-500:#6366f1; --indigo-600:#4f46e5; --indigo-700:#4338ca; --indigo-800:#3730a3; --indigo-900:#312e81;
 
   /* — Transparent ramps (raw alpha): light = white α (overlays/borders on dark);
      dark = black α (scrims/dividers on light). Formalises the glass system. */
@@ -236,6 +240,10 @@ html.dark {
   --accent: var(--brand-500);
   --accent-soft: rgba(242, 106, 46, 0.16);
   --accent-contrast: var(--neutral-1000);
+  /* Action — interactive / secondary-action colour (indigo), distinct from brand */
+  --action: var(--indigo-500);
+  --action-soft: rgba(99, 102, 241, 0.16);
+  --action-contrast: var(--neutral-0);
   /* Overlay / scrim behind modals & lightboxes */
   --overlay-scrim: var(--transparent-dark-80);
 }
@@ -289,6 +297,10 @@ html:not(.dark) {
   --accent: var(--brand-600);
   --accent-soft: rgba(242, 106, 46, 0.12);
   --accent-contrast: var(--neutral-1000);
+  /* Action — interactive / secondary-action colour (indigo), deeper on light */
+  --action: var(--indigo-600);
+  --action-soft: rgba(99, 102, 241, 0.12);
+  --action-contrast: var(--neutral-0);
   /* Overlay / scrim behind modals & lightboxes */
   --overlay-scrim: var(--transparent-dark-60);
 }
@@ -653,6 +665,12 @@ html:not(.dark) {
 .border-accent {
   border-color: var(--accent) !important;
 }
+
+/* Action (interactive / secondary action) — indigo */
+.bg-action { background-color: var(--action) !important; }
+.text-action { color: var(--action) !important; }
+.bg-action-soft { background-color: var(--action-soft) !important; }
+.border-action { border-color: var(--action) !important; }
 
 /* Feedback (status) colour utilities — fg, soft surface, border per status */
 .text-success { color: var(--feedback-success) !important; }

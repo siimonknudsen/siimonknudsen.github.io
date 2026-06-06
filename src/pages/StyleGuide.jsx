@@ -128,6 +128,7 @@ const feedback = [
   { title: 'Warning', token: '--feedback-warning', text: 'text-warning', soft: 'bg-warning-soft', border: 'border-warning', light: '#D97706', dark: '#FBBF24' },
   { title: 'Error', token: '--feedback-error', text: 'text-error', soft: 'bg-error-soft', border: 'border-error', light: '#DC2626', dark: '#F87171' },
   { title: 'Info', token: '--feedback-info', text: 'text-info', soft: 'bg-info-soft', border: 'border-info', light: '#2563EB', dark: '#60A5FA' },
+  { title: 'Action', token: '--action', text: 'text-action', soft: 'bg-action-soft', border: 'border-action', light: '#4F46E5', dark: '#6366F1' },
 ]
 
 // Elevation / shadow scale (theme-aware)
