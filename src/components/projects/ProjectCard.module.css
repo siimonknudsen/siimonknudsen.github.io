@@ -39,6 +39,35 @@
   opacity: 1;
 }
 
+/* Hover chevron — centred on the right edge */
+.chevron {
+  position: absolute;
+  top: 50%;
+  right: var(--space-16);
+  z-index: 2;
+  color: var(--text-color-primary);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(8px, -50%);
+  transition: opacity var(--dur-base) var(--ease-decelerate),
+    transform var(--dur-base) var(--ease-decelerate);
+}
+.chevron svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+.card:hover .chevron {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: opacity var(--dur-fast) linear;
+    transform: translate(0, -50%);
+  }
+}
+
 .frame {
   position: relative;
   z-index: 1;

@@ -19,7 +19,7 @@
 
 @media (min-width: 1024px) {
   .grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -93,6 +93,35 @@
   display: block;
   height: 100%;
   text-decoration: none;
+}
+
+/* Chevron that fades in on hover, centred on the right edge. */
+.chevron {
+  position: absolute;
+  top: 50%;
+  right: var(--space-32);
+  z-index: 3;
+  color: #fff;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(8px, -50%);
+  transition: opacity var(--dur-base) var(--ease-decelerate),
+    transform var(--dur-base) var(--ease-decelerate);
+}
+.chevron svg {
+  display: block;
+  width: 32px;
+  height: 32px;
+}
+.stackCard:hover .chevron {
+  opacity: 0.95;
+  transform: translate(0, -50%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: opacity var(--dur-fast) linear;
+    transform: translate(0, -50%);
+  }
 }
 
 /* Full-bleed image — fills the card height */
@@ -174,7 +203,7 @@
 }
 .stackLogo svg {
   display: block;
-  height: 20px;
+  height: calc(20px * var(--logo-scale, 1));
   width: auto;
 }
 
@@ -228,6 +257,9 @@
   }
   .stackLogo {
     padding: var(--space-48);
+  }
+  .chevron {
+    right: var(--space-48);
   }
 }
 

@@ -88,7 +88,6 @@ function Chevron({ className = '' }) {
 function ProjectsMenu({ onNavigate }) {
   return (
     <>
-      <MenuLabel>Featured work</MenuLabel>
       <div className={styles.workGrid}>
         {featuredProjects.map((p) => (
           <WorkRow
@@ -100,20 +99,13 @@ function ProjectsMenu({ onNavigate }) {
           />
         ))}
       </div>
-      <div className={`border-t border-glass ${styles.menuFooter}`}>
+      <div className={`border-t border-glass ${styles.menuFooterSingle}`}>
         <Link
           to="/"
           onClick={onNavigate}
           className={`text-color-primary ${styles.footerLink}`}
         >
           View all projects <span aria-hidden="true">→</span>
-        </Link>
-        <Link
-          to="/archive"
-          onClick={onNavigate}
-          className={`text-color-secondary hover:text-color-primary ${styles.footerLinkSecondary}`}
-        >
-          Archive
         </Link>
       </div>
     </>
@@ -123,8 +115,7 @@ function ProjectsMenu({ onNavigate }) {
 function ArchiveMenu({ onNavigate }) {
   return (
     <>
-      <MenuLabel>From the archive</MenuLabel>
-      <div className={styles.workGrid}>
+      <div className={`${styles.workGrid} ${styles.workGridScroll}`}>
         {allArchiveProjects.map((p) => (
           <WorkRow
             key={p.id}

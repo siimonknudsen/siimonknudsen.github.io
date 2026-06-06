@@ -9,10 +9,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: calc(64vh + 200px);
-  max-height: calc(900px + var(--header-height));
+  /* Content-height (no min-height) so there's NO floating trailing space below
+     the content — that space is what made the gap above "Worked at" drift with
+     screen/font size. Worked-at now sits a fixed 164px below the buttons. */
   margin-top: calc(-1 * var(--header-height));
-  padding: calc(var(--header-height) + var(--space-24)) var(--page-gutter) var(--space-24);
+  padding: calc(var(--header-height) + var(--space-40)) var(--page-gutter) 0;
   margin-bottom: 0;
 }
 
@@ -67,14 +68,14 @@
 .statsSection {
   width: 100%;
   padding: 0 var(--page-gutter);
-  margin-bottom: var(--space-128);
+  margin-bottom: var(--space-164);
 }
 
 /* Projects Section */
 .projectsSection {
   width: 100%;
   padding: var(--space-24) var(--page-gutter);
-  margin-bottom: var(--space-128);
+  margin-bottom: var(--space-164);
   /* Land below the sticky header when scrolled to via "View projects". */
   scroll-margin-top: var(--header-height);
 }
@@ -91,7 +92,7 @@
 .testimonialsSection {
   width: 100%;
   padding: var(--space-24) var(--page-gutter);
-  margin-bottom: var(--space-128);
+  margin-bottom: var(--space-164);
 }
 
 .container {

@@ -173,14 +173,9 @@ function About() {
       </section>
 
       {/* Section - How I work (Design principles) */}
-      <section id="principles" className={styles.anchorSection}>
-        <div className={styles.inner}>
-          <Reveal>
-            <h2 className={`type-display text-color-primary ${styles.heading12}`}>Principles I design by</h2>
-          </Reveal>
-          <PrinciplesList />
-        </div>
-      </section>
+      {/* "Principles I design by" section removed for now — parked as an idea.
+          The <PrinciplesList /> component + content are kept in the codebase so
+          it can be re-added later. See DESIGN_LOG "Parked ideas". */}
 
       {/* Third Section - Companies */}
       <section id="companies" className={styles.anchorSection}>

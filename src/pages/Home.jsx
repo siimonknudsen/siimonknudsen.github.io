@@ -1,5 +1,5 @@
 import ProjectGrid from '../components/projects/ProjectGrid'
-import { PrimaryButton, SecondaryButton } from '../components/buttons/Button'
+import Button from '../components/buttons/Button'
 import TestimonialCard from '../components/cards/TestimonialCard'
 import HeroBackground from '../components/HeroBackground'
 import WorkedAt from '../components/home/WorkedAt'
@@ -69,12 +69,12 @@ function Home() {
 
           {/* Call-to-Action Buttons */}
           <div className={styles.ctaRow}>
-            <PrimaryButton className={styles.cta} as="a" href="#projects">
+            <Button variant="primary" className={styles.cta} as="a" href="#projects">
               View projects
-            </PrimaryButton>
-            <SecondaryButton className={styles.cta} onClick={scrollToContact}>
+            </Button>
+            <Button variant="glass" className={styles.cta} onClick={scrollToContact}>
               Contact
-            </SecondaryButton>
+            </Button>
           </div>
         </div>
       </section>

@@ -89,6 +89,18 @@ function WorkedAt({ companies = COMPANIES }) {
                         <dd>{company.industry}</dd>
                       </div>
                     )}
+                    {company.period && (
+                      <div className={styles.ttRow}>
+                        <dt>Period</dt>
+                        <dd>{company.period}</dd>
+                      </div>
+                    )}
+                    {company.size && (
+                      <div className={styles.ttRow}>
+                        <dt>Company size</dt>
+                        <dd>{company.size}</dd>
+                      </div>
+                    )}
                     {company.website && (
                       <div className={styles.ttRow}>
                         <dt>Website</dt>
@@ -102,18 +114,6 @@ function WorkedAt({ companies = COMPANIES }) {
                             {company.website}
                           </a>
                         </dd>
-                      </div>
-                    )}
-                    {company.period && (
-                      <div className={styles.ttRow}>
-                        <dt>Period</dt>
-                        <dd>{company.period}</dd>
-                      </div>
-                    )}
-                    {company.size && (
-                      <div className={styles.ttRow}>
-                        <dt>Team size</dt>
-                        <dd>{company.size}</dd>
                       </div>
                     )}
                   </dl>

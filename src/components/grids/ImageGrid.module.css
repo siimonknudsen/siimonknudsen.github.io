@@ -101,13 +101,15 @@
 }
 
 .lightboxImg {
+  position: relative;
+  z-index: 1; /* below the nav/close controls */
   max-width: 100%;
   max-height: 80vh;
   border-radius: var(--radius-md);
   object-fit: contain;
   box-shadow: var(--glass-shadow-lg);
-  /* Image gently scales + rises in — also re-runs on navigation (img is keyed) */
-  animation: lightboxImgIn 360ms var(--ease-decelerate) both;
+  /* Smooth crossfade between pictures — re-runs on navigation (img is keyed). */
+  animation: lightboxImgIn 380ms var(--ease-decelerate) both;
 }
 
 /* Glass control buttons (close + nav) */
@@ -148,7 +150,7 @@
   width: 40px;
   height: 40px;
   border-radius: var(--radius-pill);
-  z-index: 1;
+  z-index: 3;
 }
 
 @media (min-width: 640px) {
@@ -159,13 +161,15 @@
 }
 
 /* Prev / Next — vertically centered on each side of the image */
+/* Pinned to the viewport sides — fully OUTSIDE the image, vertically centred. */
 .nav {
-  position: absolute;
+  position: fixed;
   top: 50%;
   transform: translateY(-50%);
   width: 44px;
   height: 44px;
   border-radius: var(--radius-pill);
+  z-index: 2;
 }
 
 .nav:active {
@@ -173,19 +177,19 @@
 }
 
 .prev {
-  left: calc(-1 * var(--space-12));
+  left: var(--space-16);
 }
 
 .next {
-  right: calc(-1 * var(--space-12));
+  right: var(--space-16);
 }
 
 @media (min-width: 640px) {
   .prev {
-    left: calc(-1 * var(--space-24));
+    left: var(--space-24);
   }
   .next {
-    right: calc(-1 * var(--space-24));
+    right: var(--space-24);
   }
 }
 
@@ -213,8 +217,8 @@
   to { opacity: 0; }
 }
 @keyframes lightboxImgIn {
-  from { opacity: 0; transform: scale(0.92) translateY(8px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
 }
 @keyframes lightboxImgOut {
   from { opacity: 1; transform: scale(1); }

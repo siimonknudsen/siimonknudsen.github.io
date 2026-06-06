@@ -4,7 +4,7 @@
   display: block;
   width: 92px;
   height: 60px;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-sm); /* 4px */
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -58,6 +58,26 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-6);
+}
+
+/* Archive list — scrolls internally (capped height) so the "View full archive"
+   footer stays pinned/visible; scrollbar shown at all times. */
+.workGridScroll {
+  max-height: 46vh;
+  overflow-y: scroll;
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color-secondary) transparent;
+}
+.workGridScroll::-webkit-scrollbar {
+  width: 8px;
+}
+.workGridScroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.workGridScroll::-webkit-scrollbar-thumb {
+  background: var(--border-color-secondary);
+  border-radius: var(--radius-pill);
 }
 
 .menuFooter {

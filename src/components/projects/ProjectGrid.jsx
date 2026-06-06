@@ -10,6 +10,9 @@ import styles from './ProjectGrid.module.css'
 // apple-home-app is a concept piece, so it carries no company logo.)
 const COMPANY_LOGO = { zliide: ZliideLogo, adtraction: AdtractionLogo, lenus: LenusLogo }
 const COMPANY_NAME = { zliide: 'Zliide', adtraction: 'Adtraction', lenus: 'Lenus' }
+// Optical scale so the differently-proportioned logos read at a balanced size
+// (matches the Worked-at row / tooltips).
+const COMPANY_SCALE = { zliide: 0.7, adtraction: 0.9, lenus: 1 }
 const PROJECT_COMPANY = {
   'zliide-app': 'zliide',
   'zliide-website': 'zliide',
@@ -194,6 +197,11 @@ function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
               </div>
               <div className={styles.stackScrim} aria-hidden="true" />
               <div className={styles.stackDim} aria-hidden="true" />
+              <span className={styles.chevron} aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m9 6 6 6-6 6" />
+                </svg>
+              </span>
               {(() => {
                 const key = PROJECT_COMPANY[project.id]
                 const Logo = key && COMPANY_LOGO[key]
@@ -202,6 +210,7 @@ function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
                     className={styles.stackLogo}
                     role="img"
                     aria-label={`${COMPANY_NAME[key]} project`}
+                    style={{ '--logo-scale': COMPANY_SCALE[key] ?? 1 }}
                   >
                     <Logo />
                   </span>

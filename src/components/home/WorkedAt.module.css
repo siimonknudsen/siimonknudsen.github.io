@@ -1,11 +1,18 @@
 .section {
   width: 100%;
   padding: 0 var(--page-gutter);
+  /* Sit above the hero's absolutely-positioned bottom fade overlay, which was
+     painting over the "Worked at" label (positioned elements cover static ones
+     regardless of DOM order). */
+  position: relative;
+  z-index: 1;
   /* Balanced — roughly equal gap above (from the hero content) and below (to
      the projects). Tuned at desktop; the top gap floats slightly with viewport
      height because the hero centres its content. */
-  margin-top: calc(-1 * var(--space-64));
-  margin-bottom: var(--space-128);
+  /* Equal, stable gaps: the hero is content-height (no trailing space), so a
+     plain 164px top margin matches the 164px bottom margin. */
+  margin-top: var(--space-164);
+  margin-bottom: var(--space-164);
 }
 
 .inner {
@@ -111,8 +118,8 @@
   left: 50%;
   z-index: var(--z-tooltip);
   width: max-content;
-  max-width: 260px;
-  padding: var(--space-8);
+  max-width: 280px;
+  padding: var(--space-12);
   border-radius: var(--radius-xl);
   text-align: left;
   /* hidden until hover/focus */
@@ -136,7 +143,7 @@
 /* Brand logo at the top of the card (replaces the text name) */
 .ttLogo {
   display: block;
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-12);
   color: var(--text-color-primary);
 }
 .ttLogo svg {
@@ -171,15 +178,16 @@
   gap: var(--space-4);
 }
 
-/* Label + value row (a real box so it can stagger in). */
+/* Label + value row (a real box so it can stagger in). Label left, value
+   right-aligned on the right edge. */
 .ttRow {
   display: flex;
   align-items: baseline;
-  gap: var(--space-8);
+  justify-content: space-between;
+  gap: var(--space-20);
 }
 
 .ttRow dt {
-  min-width: 64px; /* aligns the values across rows */
   font-size: var(--text-xs);
   letter-spacing: var(--tracking-base);
   color: var(--text-color-tertiary);
@@ -191,6 +199,7 @@
   letter-spacing: var(--tracking-base);
   color: var(--text-color-primary);
   white-space: nowrap;
+  text-align: right;
 }
 
 /* ── Staggered content reveal — each item rises + fades in one by one when the
