@@ -1,11 +1,11 @@
 import TestimonialCard from '../components/cards/TestimonialCard'
 import ScrollAnimation from '../components/animations/ScrollAnimation'
 import { Reveal } from '../components/motion'
+import WordReveal from '../components/home/WordReveal'
 import LogoGrid from '../components/grids/LogoGrid'
 import ImageGrid from '../components/grids/ImageGrid'
 import SkillCard from '../components/cards/SkillCard'
 import PrinciplesList from '../components/about/PrinciplesList'
-import RecognitionStrip from '../components/about/RecognitionStrip'
 import Button from '../components/buttons/Button'
 import styles from './About.module.css'
 
@@ -70,35 +70,35 @@ function About() {
   const skills = [
     {
       title: 'UX Design',
-      description: 'I map the user journey, then shape flows and structure so people reach what they came for without friction.'
+      description: 'Crafting intuitive and seamless user experiences through research, wireframing, and user journey mapping to enhance customer satisfaction, ensuring products meet user needs, ultimately leading to increased user retention and loyalty.'
     },
     {
       title: 'UI Design',
-      description: 'I design interfaces that are clean, considered and consistent — every state and edge case accounted for.'
+      description: 'Creating visually appealing interfaces that enhance user interaction and engagement, elevating brand perception and user engagement, driving conversion rates and customer satisfaction.'
     },
     {
       title: 'Design Systems',
-      description: 'I build tokenised component libraries so teams ship faster and the product stays coherent as it grows.'
+      description: 'Establishing consistent design language and guidelines to ensure cohesive brand experiences, streamlining development processes, ensuring consistency and scalability across products, reducing time to market and development costs.'
     },
     {
       title: 'Prototyping',
-      description: 'I prototype interactions in Figma and code to test ideas with real behaviour before a line is built.'
+      description: 'Building interactive prototypes to visualize and test design concepts before implementation, minimizing development risks by validating ideas early, saving time and resources while improving the quality of the final product.'
     },
     {
       title: 'UX Research',
-      description: 'I run interviews and analyse behaviour to ground design decisions in what users actually do.'
+      description: 'Conducting in-depth research to understand user needs, behaviors, and preferences, providing actionable insights into user behaviors and preferences, enabling companies to make informed decisions and prioritize features that matter most.'
     },
     {
       title: 'User Testing',
-      description: 'I put designs in front of real users, watch where they struggle, and iterate on the evidence.'
+      description: 'Gathering feedback from real users to validate design decisions and improve usability, identifying usability issues and opportunities for improvement, resulting in higher conversion rates, lower churn, and increased customer satisfaction.'
     },
     {
       title: 'UX Writing',
-      description: 'I write the words in the interface — labels, empty states, errors — so the product speaks plainly.'
+      description: 'Crafting clear and concise content that guides users and enhances their experience, enhancing user comprehension and engagement, leading to clearer communication, improved task completion rates, and reduced support costs.'
     },
     {
       title: 'Frontend Development',
-      description: 'I build my designs in HTML, CSS and React, so handoff is clean and the result matches the intent.'
+      description: 'Translating design concepts into functional web interfaces using HTML, CSS, and JavaScript, delivering seamless user experiences across devices, improving accessibility, and increasing customer satisfaction and retention.'
     }
   ]
 
@@ -163,11 +163,11 @@ function About() {
       {/* Second Section - Mission Statement */}
       <section className={styles.fullSection}>
         <div className={`bg-surface-color-secondary ${styles.missionPanel}`}>
-          <ScrollAnimation>
-            <p className={`type-display text-color-primary ${styles.missionText}`}>
-              Making the world of digital products more user friendly, one product at a time.
-            </p>
-          </ScrollAnimation>
+          <WordReveal
+            as="p"
+            text="Making the world of digital products more user friendly, one product at a time."
+            className={`type-display text-color-primary ${styles.missionText}`}
+          />
         </div>
       </section>
 
@@ -241,16 +241,6 @@ function About() {
               text="Simon has proven to be a very ambitious, curious, change-oriented and positive student. Both when it comes to individual projects and in larger group projects. He willingly takes on the role of leader, but is also very good at working as an integrated part of the group. He shows great understanding of how best to combine theory and practice. Not least in the UX/UI field, where he has also specialised further along the way. He often wants to know more, do more and look at both problem spaces and solutions from multiple angles to really find the right match between issues and solutions. At the same time, he has also taken on the role of tutor for our upcoming international team. He would bring value, teamwork and skills and I hope this recommendation shows that."
             />
           </div>
-        </div>
-      </section>
-
-      {/* Sixth Section - Recognition */}
-      <section id="recognition" className={styles.anchorSection}>
-        <div className={styles.inner}>
-          <ScrollAnimation>
-            <h2 className={`type-display text-color-primary ${styles.heading12}`}>Awards, features & speaking</h2>
-          </ScrollAnimation>
-          <RecognitionStrip />
         </div>
       </section>
 

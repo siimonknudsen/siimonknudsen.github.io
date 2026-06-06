@@ -1,39 +1,41 @@
 import ScrollAnimation from '../animations/ScrollAnimation'
 import styles from './TestimonialCard.module.css'
 
-function TestimonialCard({ logo, recommender, title, company, text }) {
+/**
+ * TestimonialCard — vertical quote card for the 3-up testimonials grid.
+ * Logo slot accepts either an inline component (`logoNode`, e.g. a currentColor
+ * SVG) or an image URL (`logo`). Omit both for no logo.
+ */
+function TestimonialCard({ logo, logoNode, recommender, title, company, text }) {
+  const hasLogo = logoNode || logo
   return (
     <ScrollAnimation>
-      <div className={`glass-panel ${styles.card}`}>
-      {/* Logo and Recommender Info */}
-      <div className={styles.header}>
-        {/* Logo */}
-        <div className={styles.logoWrap}>
-          <div className={styles.logo}>
-            {logo ? (
+      <figure className={`glass-panel ${styles.card}`}>
+        {hasLogo && (
+          <div className={styles.logoRow}>
+            {logoNode || (
               <img src={logo} alt={company} className={styles.logoImg} />
-            ) : (
-              <div className={`bg-surface-color-tertiary ${styles.logoPlaceholder}`}></div>
             )}
           </div>
-        </div>
+        )}
 
-        {/* Recommender Info - Vertical Column */}
-        <div className={styles.info}>
-          <p className={`type-subtitle text-color-primary ${styles.name}`}>{recommender}</p>
-          <p className={`type-body text-color-secondary ${styles.meta}`}>{title}</p>
-          <p className={`type-body text-color-secondary ${styles.meta}`}>{company}</p>
-        </div>
-      </div>
+        <blockquote className={`type-body text-color-secondary ${styles.text}`}>
+          {text}
+        </blockquote>
 
-      {/* Testimonial Text */}
-      <p className={`type-body text-color-secondary ${styles.text}`}>
-        {text}
-      </p>
-      </div>
+        <figcaption className={styles.foot}>
+          <span className={`type-subtitle text-color-primary ${styles.name}`}>
+            {recommender}
+          </span>
+          <span className={`type-body-sm text-color-tertiary ${styles.meta}`}>
+            {title}
+            {title && company ? ' · ' : ''}
+            {company}
+          </span>
+        </figcaption>
+      </figure>
     </ScrollAnimation>
   )
 }
 
 export default TestimonialCard
-

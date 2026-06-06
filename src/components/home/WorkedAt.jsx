@@ -1,16 +1,17 @@
 import { Reveal } from '../motion'
+import { LenusLogo, ZliideLogo, AdtractionLogo } from './WorkedAtLogos'
 import styles from './WorkedAt.module.css'
 
 /**
  * WorkedAt — a quiet "Worked at" trust row beneath the hero (inspired by
- * bevel.health's "Works with"). Each company renders a real logo when one is
- * provided, otherwise a styled text wordmark placeholder that adapts to the
- * theme. Drop logo files in and set `logo` to swap them in.
+ * bevel.health's "Works with"). Each company renders an inline logo component
+ * (`Logo`, theme-aware via currentColor) when provided, otherwise a styled
+ * text wordmark placeholder.
  */
 const COMPANIES = [
-  { name: 'Lenus', logo: null },
-  { name: 'Zliide', logo: null },
-  { name: 'Adtraction', logo: null },
+  { name: 'Lenus', Logo: LenusLogo },
+  { name: 'Zliide', Logo: ZliideLogo },
+  { name: 'Adtraction', Logo: AdtractionLogo },
 ]
 
 function WorkedAt({ companies = COMPANIES }) {
@@ -24,14 +25,15 @@ function WorkedAt({ companies = COMPANIES }) {
         </p>
         <div className={styles.logos}>
           {companies.map((company) =>
-            company.logo ? (
-              <img
+            company.Logo ? (
+              <span
                 key={company.name}
-                src={company.logo}
-                alt={company.name}
-                loading="lazy"
-                className={styles.logoImg}
-              />
+                className={styles.logoWrap}
+                role="img"
+                aria-label={company.name}
+              >
+                <company.Logo className={styles.logoSvg} />
+              </span>
             ) : (
               <span key={company.name} className={styles.wordmark}>
                 {company.name}

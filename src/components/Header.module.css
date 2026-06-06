@@ -239,6 +239,32 @@
   width: var(--space-8);
   height: var(--space-8);
   border-radius: var(--radius-pill);
+  /* Success-green availability dot (mirrors the header Location dot). */
+  background-color: var(--feedback-success);
+  box-shadow:
+    0 0 0 0 var(--feedback-success),
+    0 0 6px var(--feedback-success);
+  animation: locationDotPulse 2.4s var(--ease-standard) infinite;
+}
+
+@keyframes locationDotPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 var(--feedback-success),
+      0 0 6px var(--feedback-success);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px var(--feedback-success-soft),
+      0 0 10px var(--feedback-success);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .statusDot {
+    animation: none;
+  }
 }
 
 /* ── Header shell ───────────────────────────────────────────────── */
@@ -283,6 +309,12 @@
   gap: 10px;
   flex-shrink: 0;
   user-select: none;
+  text-decoration: none;
+  transition: background-color var(--dur-base) var(--ease-standard);
+}
+
+.brand:hover {
+  background-color: var(--glass-item-hover, var(--transparent-light-8));
 }
 
 .brandAvatar {
@@ -405,7 +437,10 @@
   transform: translateX(-50%);
   z-index: 50;
   max-width: calc(100vw - 2rem);
-  transition: opacity 200ms ease-out, transform 200ms ease-out;
+  /* `left` + `width` transition so the panel glides between triggers (Projects
+     → Archive → …) and resizes smoothly instead of closing/reopening. */
+  transition: opacity 220ms ease-out, transform 220ms ease-out,
+    left 420ms var(--ease-emphasized), width 420ms var(--ease-emphasized);
 }
 
 @media (min-width: 768px) {
@@ -434,6 +469,86 @@
 .panelCard {
   border-radius: var(--radius-xl);
   padding: var(--space-12);
+}
+
+/* ── Dropdown content reveal ────────────────────────────────────────
+   On open (and on every menu switch, via the keyed remount) the content
+   cross-fades in and the rows rise one-by-one — slow and relaxed. */
+.menuContent {
+  animation: menuContentIn 420ms var(--ease-decelerate) both;
+}
+
+@keyframes menuContentIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Stagger the repeated rows of each menu (project previews, about links,
+   contact rows). They appear in sequence for a considered, premium feel. */
+.workGrid > *,
+.aboutList > *,
+.contactList > * {
+  animation: menuRowIn 620ms var(--ease-decelerate) both;
+}
+
+@keyframes menuRowIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.workGrid > *:nth-child(1),
+.aboutList > *:nth-child(1),
+.contactList > *:nth-child(1) {
+  animation-delay: 60ms;
+}
+.workGrid > *:nth-child(2),
+.aboutList > *:nth-child(2),
+.contactList > *:nth-child(2) {
+  animation-delay: 140ms;
+}
+.workGrid > *:nth-child(3),
+.aboutList > *:nth-child(3),
+.contactList > *:nth-child(3) {
+  animation-delay: 220ms;
+}
+.workGrid > *:nth-child(4),
+.aboutList > *:nth-child(4),
+.contactList > *:nth-child(4) {
+  animation-delay: 300ms;
+}
+.workGrid > *:nth-child(5),
+.aboutList > *:nth-child(5),
+.contactList > *:nth-child(5) {
+  animation-delay: 380ms;
+}
+.workGrid > *:nth-child(6),
+.aboutList > *:nth-child(6),
+.contactList > *:nth-child(6) {
+  animation-delay: 460ms;
+}
+.workGrid > *:nth-child(7),
+.aboutList > *:nth-child(7),
+.contactList > *:nth-child(7) {
+  animation-delay: 540ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menuContent,
+  .workGrid > *,
+  .aboutList > *,
+  .contactList > * {
+    animation: none;
+  }
 }
 
 /* ── Mobile menu ────────────────────────────────────────────────── */

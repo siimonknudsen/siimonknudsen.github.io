@@ -1,24 +1,13 @@
 .footer {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   padding: var(--space-64) var(--page-gutter) var(--space-32);
-  border-top-width: 1px;
-  border-top-style: solid;
-  /* Subtle brand gradient wash blooming down from the top edge — "colour as
-     light", not a flat fill. Strongest where the footer meets the content
-     above, fading toward the bottom, so the footer reads as a lit surface. */
-  --footer-glow: rgba(242, 106, 46, 0.14);
-  background-image: radial-gradient(
-    120% 130% at 50% -18%,
-    var(--footer-glow),
-    transparent 60%
-  );
-}
-
-:global(html:not(.dark)) .footer {
-  --footer-glow: rgba(242, 106, 46, 0.09);
 }
 
 .container {
+  position: relative;
+  z-index: 1;
   max-width: 80rem;
   margin-left: auto;
   margin-right: auto;
@@ -111,8 +100,6 @@
 }
 
 .bottom {
-  border-top-width: 1px;
-  border-top-style: solid;
   padding-top: var(--space-24);
 }
 

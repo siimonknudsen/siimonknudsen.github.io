@@ -92,10 +92,10 @@
   /* Negative tracking scale. Modern, tight feel; graduated because tight
      tracking aids large display but HURTS legibility at small sizes (see
      DECISIONS). Applied across all .type-* roles; overline stays positive. */
-  --tracking-tighter: -0.04em; /* display */
-  --tracking-tight: -0.03em;   /* headings */
-  --tracking-snug: -0.02em;    /* titles / body */
-  --tracking-base: -0.01em;    /* small text */
+  --tracking-tighter: -0.045em; /* display */
+  --tracking-tight: -0.035em;   /* headings */
+  --tracking-snug: -0.025em;    /* titles / body */
+  --tracking-base: -0.015em;    /* small text */
   --tracking-normal: 0em;
   --tracking-wide: 0.02em;
   --tracking-label: 0.08em;    /* uppercase overline (needs positive) */
@@ -502,6 +502,13 @@ html:not(.dark) {
     line-height: 1;
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
+  }
+  /* Smallest role — 10px. Badges, footnotes, dense meta. */
+  .type-micro {
+    font-size: var(--text-2xs);
+    font-weight: var(--weight-medium);
+    line-height: 1.3;
+    letter-spacing: var(--tracking-base);
   }
 }
 

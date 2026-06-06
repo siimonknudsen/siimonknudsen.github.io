@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import ProjectCard from './ProjectCard'
 import Media from '../Media'
@@ -87,14 +88,50 @@ function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
     ? allProjects.filter((project) => project.id !== excludeProjectId)
     : allProjects
 
-  // Full-width cards that stack on top of each other as you scroll (sticky),
-  // each filling ~90vh. Used on the home page.
+  // Stacking depth cue: as each card is covered by the next, dim it so the
+  // front card always reads as the lightest/foremost. Scroll-driven (rAF).
+  const cardRefs = useRef([])
+  useEffect(() => {
+    if (variant !== 'stack') return
+    const cards = cardRefs.current.filter(Boolean)
+    if (!cards.length) return
+    let raf = 0
+    const update = () => {
+      raf = 0
+      for (let i = 0; i < cards.length; i++) {
+        const next = cards[i + 1]
+        if (!next) {
+          cards[i].style.setProperty('--dim', '0')
+          continue
+        }
+        const r = cards[i].getBoundingClientRect()
+        const rn = next.getBoundingClientRect()
+        // How far the next card has risen over this one (0 → 1).
+        const prog = Math.max(0, Math.min(1, (r.bottom - rn.top) / Math.max(1, r.height)))
+        cards[i].style.setProperty('--dim', (prog * 0.6).toFixed(3))
+      }
+    }
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update)
+    }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      if (raf) cancelAnimationFrame(raf)
+    }
+  }, [variant, projects.length])
+
+  // Full-width cards that stack on top of each other as you scroll (sticky).
   if (variant === 'stack') {
     return (
       <div className={styles.stack}>
         {projects.map((project, index) => (
           <article
             key={project.id}
+            ref={(el) => (cardRefs.current[index] = el)}
             className={styles.stackCard}
             style={{ '--i': index }}
           >
@@ -108,6 +145,7 @@ function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
                 />
               </div>
               <div className={styles.stackScrim} aria-hidden="true" />
+              <div className={styles.stackDim} aria-hidden="true" />
               <div className={styles.stackInfo}>
                 {project.impact && (
                   <span className={styles.stackImpact}>
@@ -129,10 +167,33 @@ function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
                     ))}
                   </div>
                 )}
-                <span className={styles.stackCta}>View project →</span>
               </div>
             </Link>
           </article>
+        ))}
+      </div>
+    )
+  }
+
+  // Plain even 3-column grid — every project rendered as an equal ProjectCard
+  // (no oversized featured split). Reuses the bento .grid/.cell + .fx-stagger.
+  if (variant === 'grid') {
+    return (
+      <div className={`fx-stagger ${styles.grid}`}>
+        {projects.map((project, index) => (
+          <div
+            key={project.id}
+            className={styles.cell}
+            style={{ '--i': index }}
+          >
+            <ProjectCard
+              id={project.id}
+              title={project.title}
+              description={project.description}
+              tags={project.tags}
+              impact={project.impact}
+            />
+          </div>
         ))}
       </div>
     )

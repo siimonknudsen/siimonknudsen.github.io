@@ -142,11 +142,14 @@
   gap: var(--space-80);
 }
 
+/* Single-column body content — every block and its paragraphs stack
+   vertically and span the full content column (no side-by-side split). */
 .block {
   display: flex;
   flex-direction: column;
   gap: var(--space-24);
   scroll-margin-top: var(--space-80);
+  width: 100%;
 }
 
 .kicker {
@@ -155,13 +158,15 @@
 
 .lede {
   margin: 0;
-  max-width: 60ch;
+  width: 100%;
+  max-width: none;
   font-weight: var(--weight-medium);
 }
 
 .prose {
   margin: 0;
-  max-width: 60ch;
+  width: 100%;
+  max-width: none;
 }
 
 /* Process steps */
@@ -179,7 +184,8 @@
 }
 
 .textBlock {
-  max-width: 60ch;
+  width: 100%;
+  max-width: none;
 }
 
 /* Full-bleed media breakout — pulls slightly wider than the prose column for
@@ -266,46 +272,6 @@
 
 .btsCaption {
   margin: 0;
-}
-
-/* ── Next project tile ──────────────────────────────────────────────── */
-.nextSection {
-  width: 100%;
-  padding: var(--space-24) var(--page-gutter);
-  margin-top: var(--space-40);
-}
-
-.nextTile {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
-  padding: var(--space-40);
-  border-radius: var(--radius-2xl);
-  text-decoration: none;
-  transition: transform var(--dur-base) var(--ease-emphasized),
-    box-shadow var(--dur-base) var(--ease-emphasized);
-}
-
-.nextTile:hover {
-  transform: translateY(var(--motion-lift));
-  box-shadow: var(--glass-shadow-lg);
-}
-
-.nextLabel {
-  margin: 0;
-}
-
-.nextTitle {
-  margin: var(--space-4) 0 0;
-}
-
-.nextDesc {
-  margin: 0;
-  max-width: 60ch;
-}
-
-.nextCta {
-  margin-top: var(--space-12);
 }
 
 /* ── Related projects ───────────────────────────────────────────────── */

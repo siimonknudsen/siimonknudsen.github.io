@@ -372,6 +372,28 @@ Quick map from principle → our implementation (keeps the knowledge actionable)
 - Templated tells: numbered `01 — Section` eyebrows, centered everything, bouncy/springy hover gimmicks.
 - Motion that draws attention to itself instead of the content.
 
+### 6.7 Simon's taste — in general words
+A one-paragraph north star to sanity-check any new design against:
+
+> **Confident, minimal, editorial — atmospheric, not decorative.** Big statement typography is the hero; everything else gets out of its way. Lots of negative space and one clear focal point per view. Depth comes from **light** — animated shaders, gradients-as-light, frosted glass, soft shadows — never from hard borders or boxes (he actively dislikes harsh dividers and boxed-in containers). A restrained palette: neutral + one warm orange accent, few weights. Motion is **slow, relaxed and considered** — staggered reveals, smooth morphing transitions, nothing bouncy or gimmicky. Imagery does the emotional work (full-bleed, text overlaid, consistent cinematic grading). Above all it must never read as **templated / AI-generated**: no numbered eyebrows, no redundant labels, no clutter. Let it breathe; let it feel premium and human.
+
+### 6.8 What Simon DOESN'T like — anti-pattern log
+> **Rule (also in project memory):** When Simon asks to change, remove, or redo something I designed, treat it as a signal that the original approach was *wrong for his taste* — not just a tweak. Capture the rejected approach here (what I did → what he wanted instead → the lesson) so the same mistake isn't repeated. Keep this list growing.
+
+| I designed → | He wanted → | Lesson |
+|---|---|---|
+| Hero content inside a frosted **card** | Content directly on the shader, no card | Don't box the hero; confident type owns the space |
+| Numbered `01 — Section` **eyebrows** | Removed entirely | Reads as templated/AI — avoid |
+| **Magnetic** pull on buttons | Removed | No gimmicky/novelty motion |
+| Fixed **90vh** stacking cards | Image-driven height, content overlaid bottom-left | Let the image set the size; overlay, don't split |
+| Stacking gap 80 → 200px | 400px | He likes slow, spacious scroll pacing |
+| **Stat boxes** (5 yrs / 3 companies…) under the logos | Removed | Cut filler metrics |
+| **"View project"** CTA on each project card | Removed (whole card is the link) | Don't repeat the obvious affordance |
+| Company **logo marquee** on home | Removed | Don't pad the page with logo walls |
+| Harsh **borders/dividers** in the footer | Removed | Separate with space/light, not lines |
+| 48px page gutter | 64px | Give it more room to breathe |
+| Footer gradient blooming from the **bottom** | From the **top** edge | Light should feel like it enters from above |
+
 ---
 
 ## 7. Sources

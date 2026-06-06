@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import ProjectGrid, { allArchiveProjects } from '../components/projects/ProjectGrid'
 import Media from '../components/Media'
@@ -32,13 +32,6 @@ function ProjectPage() {
   }
 
   const title = content.title || project.title
-
-  // Next project in the archive order (wraps around to the first).
-  const currentIndex = allArchiveProjects.findIndex((p) => p.id === id)
-  const nextProject =
-    currentIndex >= 0
-      ? allArchiveProjects[(currentIndex + 1) % allArchiveProjects.length]
-      : null
 
   // The headline outcome shown in the rail — prefer the first outcome, then the
   // card's impact chip.
@@ -268,37 +261,13 @@ function ProjectPage() {
         </div>
       </section>
 
-      {/* Next project tile */}
-      {nextProject && (
-        <section className={styles.nextSection}>
-          <div className={styles.container}>
-            <Reveal preset="fade-up">
-              <Link to={`/project/${nextProject.id}`} className={`glass-panel border-glass focus-ring ${styles.nextTile}`}>
-                <span className={`type-overline text-color-tertiary ${styles.nextLabel}`}>
-                  Next project
-                </span>
-                <span className={`type-heading-sm text-color-primary ${styles.nextTitle}`}>
-                  {nextProject.title}
-                </span>
-                <span className={`type-body text-color-secondary ${styles.nextDesc}`}>
-                  {nextProject.description}
-                </span>
-                <span className={`type-label text-accent ${styles.nextCta}`} aria-hidden="true">
-                  View case →
-                </span>
-              </Link>
-            </Reveal>
-          </div>
-        </section>
-      )}
-
       {/* Related Projects */}
       <section className={styles.relatedSection}>
         <div className={styles.container}>
           <Reveal preset="fade-up">
             <h2 className={`type-display text-color-primary ${styles.moreHeading}`}>More Projects</h2>
           </Reveal>
-          <ProjectGrid excludeProjectId={id} />
+          <ProjectGrid excludeProjectId={id} variant="grid" />
         </div>
       </section>
     </>

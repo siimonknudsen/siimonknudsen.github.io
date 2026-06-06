@@ -734,11 +734,19 @@
   margin-top: var(--space-8);
 }
 
+/* Contrasting stage so the (light) shadow cards read clearly against it */
+.elevationStage {
+  margin-top: var(--space-20);
+  padding: var(--space-48) var(--space-32);
+  border-radius: var(--radius-2xl);
+  background: var(--surface-color-tertiary);
+  border: 1px solid var(--border-color-secondary);
+}
+
 .elevationGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-20);
-  margin-top: var(--space-20);
+  gap: var(--space-32);
 }
 @media (min-width: 640px) {
   .elevationGrid {

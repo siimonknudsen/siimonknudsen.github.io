@@ -155,7 +155,7 @@ function Media({
       ref={wrapRef}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
-      className={`${styles.wrap} bg-surface-color-tertiary ${className}`}
+      className={`${styles.wrap} ${className}`}
       style={{
         aspectRatio: !isAuto && !isFill ? ASPECT[aspect] : undefined,
         height: isFill ? '100%' : undefined,

@@ -1,13 +1,16 @@
 import { Link } from 'react-router-dom'
 import Avatar from './Avatar'
 import Location from './Location'
+import HeroBackground from './HeroBackground'
 import { allProjects } from './projects/ProjectGrid'
 import styles from './Footer.module.css'
 
 function Footer() {
 
   return (
-    <footer className={`bg-surface-color-primary text-color-primary border-color-on-primary ${styles.footer}`}>
+    <footer className={`bg-surface-color-primary text-color-primary ${styles.footer}`}>
+      {/* Hero shader reused (no grid) as a living footer background */}
+      <HeroBackground showGrid={false} />
       <div className={styles.container}>
         {/* Four Columns */}
         <div className={styles.columns}>
@@ -92,7 +95,7 @@ function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className={`border-color-on-primary ${styles.bottom}`}>
+        <div className={styles.bottom}>
           <p className={`type-caption text-color-secondary ${styles.copyright}`}>
             © 2021-{new Date().getFullYear()} Simon Knudsen. All rights reserved.
           </p>

@@ -8,3 +8,29 @@
   flex: 1 1 auto;
   outline: none;
 }
+
+/* Curtain wipe — a calm full-screen panel that sweeps up over the viewport
+   on navigation, then continues off the top to reveal the new page. */
+.wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 1500; /* above header (50) + content; below the intro loader (2000) */
+  pointer-events: none;
+  background: var(--surface-color-secondary);
+  transform: translateY(100%);
+  animation: pageWipe 880ms var(--ease-emphasized) both;
+}
+
+@keyframes pageWipe {
+  0%   { transform: translateY(100%); }
+  46%  { transform: translateY(0); }
+  56%  { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wipe {
+    display: none;
+    animation: none;
+  }
+}

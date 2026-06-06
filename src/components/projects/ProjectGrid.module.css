@@ -46,7 +46,10 @@
 .stack {
   display: flex;
   flex-direction: column;
-  gap: var(--space-32);
+  /* Large gap so each pinned card holds for a long, relaxed beat before the
+     next slides up over it. (Flow-gap reads as less than its value because the
+     cards are shorter than the viewport, so this is deliberately generous.) */
+  gap: 600px;
   max-width: var(--container-max);
   margin: 0 auto;
 }
@@ -55,11 +58,26 @@
   /* Sticky so each card sticks under the header and the next scrolls over it.
      The per-card --i adds a small extra offset so the tops peek like a deck.
      No fixed height — the full-width image sets it (16:9). */
+  --dim: 0;
   position: sticky;
   top: calc(var(--header-height) + var(--space-16) + var(--i, 0) * 12px);
   border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: var(--glass-shadow-lg);
+  /* Clean theme-aware drop shadow (no glass inset lines that looked harsh in
+     light mode over a photo). */
+  box-shadow: var(--shadow-lg);
+}
+
+/* Depth dim — driven by --dim (set on scroll); darkens a card as the next
+   one stacks over it so the front card always reads as foremost. */
+.stackDim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: #000;
+  opacity: var(--dim, 0);
+  pointer-events: none;
+  transition: opacity 90ms linear;
 }
 
 .stackLink {
@@ -148,12 +166,6 @@
   color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-}
-
-.stackCta {
-  margin-top: var(--space-4);
-  font-weight: var(--weight-medium);
-  color: #fff;
 }
 
 @media (min-width: 768px) {

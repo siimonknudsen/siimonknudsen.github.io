@@ -15,14 +15,14 @@ const PALETTE = {
  * HeroBackground — the calm flow-gradient behind the hero, tinted to the active
  * theme, with a soft fade into the page surface at the bottom.
  */
-function HeroBackground() {
+function HeroBackground({ showGrid = true }) {
   const { theme } = useTheme()
   const colors = PALETTE[theme] || PALETTE.dark
 
   return (
     <div className={styles.root} aria-hidden="true">
       <ShaderBackground colors={colors} speed={0.05} className={styles.shader} />
-      <div className={styles.grid} />
+      {showGrid && <div className={styles.grid} />}
       <div className={styles.fade} />
     </div>
   )

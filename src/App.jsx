@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import ProjectPage from './pages/ProjectPage'
@@ -26,6 +26,9 @@ const ROUTE_TITLES = {
 // Keyed by pathname so the gentle fade-in (.page-enter) re-runs on each navigation.
 function AnimatedRoutes() {
   const location = useLocation()
+  // Skip the curtain wipe on the very first paint; only play it on
+  // subsequent client-side navigations.
+  const firstRender = useRef(true)
 
   // Keep the tab title meaningful per route (ProjectPage overrides via usePageTitle).
   useEffect(() => {
@@ -35,8 +38,22 @@ function AnimatedRoutes() {
     }
   }, [location.pathname])
 
+  // Render the wipe for this navigation, then flip the flag off so the
+  // first load stays untouched. Read before flipping so the panel still
+  // mounts on the *next* navigation (the first real route change).
+  const playWipe = !firstRender.current
+  useEffect(() => {
+    firstRender.current = false
+  }, [location.pathname])
+
   return (
-    <div key={location.pathname} className="page-enter">
+    <>
+      {/* Curtain wipe — keyed by pathname so it remounts and replays on
+          every navigation. Sweeps up over the viewport, then off the top. */}
+      {playWipe && (
+        <div key={location.pathname} className={styles.wipe} aria-hidden="true" />
+      )}
+      <div key={location.pathname} className="page-enter">
       <Routes location={location}>
         <Route path="/" element={<Home />} />
         <Route path="/archive" element={<Archive />} />
@@ -47,7 +64,8 @@ function AnimatedRoutes() {
         <Route path="/project/:id" element={<ProjectPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </div>
+      </div>
+    </>
   )
 }
 

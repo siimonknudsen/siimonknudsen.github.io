@@ -18,12 +18,32 @@
   text-transform: uppercase;
 }
 
+/* 3-column grid so the middle logo (Zliide) centres under the "Worked at"
+   label: left logo hugs the centre from the left, right logo from the right. */
 .logos {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: center;
-  gap: var(--space-24) var(--space-48);
+  column-gap: var(--space-48);
+}
+
+.logos > *:nth-child(1) {
+  justify-self: end;
+}
+.logos > *:nth-child(3) {
+  justify-self: start;
+}
+
+@media (max-width: 600px) {
+  .logos {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    row-gap: var(--space-20);
+  }
+  .logos > *:nth-child(1),
+  .logos > *:nth-child(3) {
+    justify-self: center;
+  }
 }
 
 /* Text wordmark placeholder — muted, lifts to full colour on hover */
@@ -42,22 +62,30 @@
   opacity: 1;
 }
 
-/* Real logo (when provided) */
-.logoImg {
-  height: 28px;
-  width: auto;
-  object-fit: contain;
-  opacity: 0.7;
-  transition: opacity var(--dur-base) var(--ease-standard);
+/* Inline logo (theme-aware via currentColor) */
+.logoWrap {
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-color-tertiary);
+  opacity: 0.85;
+  transition: color var(--dur-base) var(--ease-standard),
+    opacity var(--dur-base) var(--ease-standard);
 }
 
-.logoImg:hover {
+.logoWrap:hover {
+  color: var(--text-color-primary);
   opacity: 1;
+}
+
+.logoSvg {
+  display: block;
+  height: 24px;
+  width: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .wordmark,
-  .logoImg {
+  .logoWrap {
     transition: none;
   }
 }

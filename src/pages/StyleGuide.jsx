@@ -32,6 +32,7 @@ const typeScale = [
   { label: 'type-label', cls: 'type-label', meta: '14 · Medium' },
   { label: 'type-caption', cls: 'type-caption', meta: '12 · Regular' },
   { label: 'type-overline', cls: 'type-overline', meta: '12 · Medium · Uppercase' },
+  { label: 'type-micro', cls: 'type-micro', meta: '10 · Medium' },
 ]
 
 const surfaces = [
@@ -122,6 +123,15 @@ const brandRamp = [
 
 // Transparent alpha ramps (light = white α, dark = black α)
 const transparentSteps = ['2', '4', '8', '12', '16', '24', '40', '60', '80']
+
+// Status primitive ramps (50→950) — feed the success/warning/error/info roles.
+const statusSteps = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950']
+const statusRamps = [
+  { key: 'green', label: 'Success · green ramp', hexes: ['#ECFDF5', '#D1FAE5', '#A7F3D0', '#6EE7B7', '#34D399', '#10B981', '#059669', '#047857', '#065F46', '#064E3B', '#022C22'] },
+  { key: 'amber', label: 'Warning · amber ramp', hexes: ['#FFFBEB', '#FEF3C7', '#FDE68A', '#FCD34D', '#FBBF24', '#F59E0B', '#D97706', '#B45309', '#92400E', '#78350F', '#451A03'] },
+  { key: 'red', label: 'Error · red ramp', hexes: ['#FEF2F2', '#FEE2E2', '#FECACA', '#FCA5A5', '#F87171', '#EF4444', '#DC2626', '#B91C1C', '#991B1B', '#7F1D1D', '#450A0A'] },
+  { key: 'blue', label: 'Info · blue ramp', hexes: ['#EFF6FF', '#DBEAFE', '#BFDBFE', '#93C5FD', '#60A5FA', '#3B82F6', '#2563EB', '#1D4ED8', '#1E40AF', '#1E3A8A', '#172554'] },
+]
 
 // Feedback / status colours (theme-aware semantics)
 const feedback = [
@@ -300,7 +310,8 @@ function StyleGuide() {
               ['#typography', 'Typography'],
               ['#color', 'Color'],
               ['#materials', 'Materials'],
-              ['#spacing', 'Spacing & Radius'],
+              ['#spacing', 'Spacing'],
+              ['#radius', 'Radius'],
               ['#motion', 'Motion'],
               ['#components', 'Components'],
             ].map(([href, label]) => (
@@ -503,6 +514,30 @@ function StyleGuide() {
                 </div>
               </ScrollAnimation>
 
+              {/* Primitives — status ramps (success / warning / error / info) */}
+              {statusRamps.map((ramp) => (
+                <ScrollAnimation key={ramp.key}>
+                  <div>
+                    <Overline>Primitives · {ramp.label}</Overline>
+                    <div className={styles.rampGrid}>
+                      {statusSteps.map((step, i) => (
+                        <div key={step} className={styles.swatchCol}>
+                          <CopySwatch
+                            value={ramp.hexes[i]}
+                            copyKey={`${ramp.key}-${step}`}
+                            copied={copied}
+                            onCopy={copy}
+                            swatchStyle={{ backgroundColor: `var(--${ramp.key}-${step})`, border: '1px solid var(--border-color-secondary)' }}
+                          />
+                          <span className={`font-mono text-color-primary ${styles.swatchStep}`}>{step}</span>
+                          <span className={`font-mono text-color-tertiary ${styles.swatchHex}`}>{ramp.hexes[i]}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </ScrollAnimation>
+              ))}
+
               {/* Semantic roles → Surfaces */}
               <ScrollAnimation>
                 <div>
@@ -690,17 +725,43 @@ function StyleGuide() {
                   For solid (non-glass) surfaces. Theme-aware — tight and subtle in light, deeper
                   and softer in dark.
                 </p>
-                <div className={styles.elevationGrid}>
-                  {elevation.map((e) => (
-                    <div key={e.token} className={styles.colorItem}>
-                      <div
-                        className={`bg-surface-color-secondary ${styles.elevationCard}`}
-                        style={{ boxShadow: `var(${e.token})` }}
-                      />
-                      <div className={styles.colorLabel}>
-                        <span className={`text-color-primary ${styles.colorTitle}`}>{e.name}</span>
-                        <MonoMeta>{e.token}</MonoMeta>
+                <div className={styles.elevationStage}>
+                  <div className={styles.elevationGrid}>
+                    {elevation.map((e) => (
+                      <div key={e.token} className={styles.colorItem}>
+                        <div
+                          className={`bg-surface-color-primary ${styles.elevationCard}`}
+                          style={{ boxShadow: `var(${e.token})` }}
+                        />
+                        <div className={styles.colorLabel}>
+                          <span className={`text-color-primary ${styles.colorTitle}`}>{e.name}</span>
+                          <MonoMeta>{e.token}</MonoMeta>
+                        </div>
                       </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </ScrollAnimation>
+          </section>
+
+          {/* Spacing */}
+          <section>
+            <ScrollAnimation>
+              <SectionHeading id="spacing" overline="Foundations" title="Spacing">
+                A consistent rhythm built on a 4px base.
+              </SectionHeading>
+            </ScrollAnimation>
+
+            <ScrollAnimation>
+              <div>
+                <Overline>Spacing scale</Overline>
+                <div className={styles.spacingList}>
+                  {spacingScale.map((s) => (
+                    <div key={s.name} className={styles.spacingRow}>
+                      <div className={`bg-accent ${styles.spacingBar}`} style={{ width: `${s.px}px` }} />
+                      <MonoMeta className="text-color-secondary">{s.name}</MonoMeta>
+                      <MonoMeta>{s.px}px</MonoMeta>
                     </div>
                   ))}
                 </div>
@@ -708,50 +769,33 @@ function StyleGuide() {
             </ScrollAnimation>
           </section>
 
-          {/* Spacing & Radius */}
+          {/* Radius */}
           <section>
             <ScrollAnimation>
-              <SectionHeading id="spacing" overline="Foundations" title="Spacing & Radius">
-                A consistent rhythm built on a 4px base, with a small set of corner radii.
+              <SectionHeading id="radius" overline="Foundations" title="Radius">
+                A small, deliberate set of corner radii.
               </SectionHeading>
             </ScrollAnimation>
 
-            <div className={styles.twoCol}>
-              <ScrollAnimation>
-                <div>
-                  <Overline>Spacing</Overline>
-                  <div className={styles.spacingList}>
-                    {spacingScale.map((s) => (
-                      <div key={s.name} className={styles.spacingRow}>
-                        <div className={`bg-accent ${styles.spacingBar}`} style={{ width: `${s.px}px` }} />
-                        <MonoMeta className="text-color-secondary">{s.name}</MonoMeta>
-                        <MonoMeta>{s.px}px</MonoMeta>
+            <ScrollAnimation>
+              <div>
+                <Overline>Radius scale</Overline>
+                <div className={styles.radiusGrid}>
+                  {radiusScale.map((r) => (
+                    <div key={r.name} className={styles.radiusItem}>
+                      <div
+                        className={`bg-surface-color-secondary ${styles.radiusSwatch}`}
+                        style={{ borderRadius: r.val === 'full' ? '9999px' : r.val }}
+                      />
+                      <div className={styles.radiusMetaRow}>
+                        <MonoMeta className="text-color-secondary">{r.name}</MonoMeta>
+                        <MonoMeta>{r.val}</MonoMeta>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                 </div>
-              </ScrollAnimation>
-
-              <ScrollAnimation>
-                <div>
-                  <Overline>Radius</Overline>
-                  <div className={styles.radiusGrid}>
-                    {radiusScale.map((r) => (
-                      <div key={r.name} className={styles.radiusItem}>
-                        <div
-                          className={`bg-surface-color-secondary ${styles.radiusSwatch}`}
-                          style={{ borderRadius: r.val === 'full' ? '9999px' : r.val }}
-                        />
-                        <div className={styles.radiusMetaRow}>
-                          <MonoMeta className="text-color-secondary">{r.name}</MonoMeta>
-                          <MonoMeta>{r.val}</MonoMeta>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </ScrollAnimation>
-            </div>
+              </div>
+            </ScrollAnimation>
           </section>
 
           {/* Motion */}

@@ -9,6 +9,16 @@ import styles from './ImageGrid.module.css'
  */
 function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }) {
   const [openSrc, setOpenSrc] = useState(null)
+  const [closing, setClosing] = useState(false)
+
+  // Animate the close before unmounting (matches the CSS exit duration).
+  const closeLightbox = () => {
+    setClosing(true)
+    window.setTimeout(() => {
+      setOpenSrc(null)
+      setClosing(false)
+    }, 260)
+  }
 
   const gridCols = {
     2: styles.cols2,
@@ -29,7 +39,7 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
 
   useEffect(() => {
     if (!openSrc) return
-    const onKey = (e) => e.key === 'Escape' && setOpenSrc(null)
+    const onKey = (e) => e.key === 'Escape' && closeLightbox()
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
   }, [openSrc])
@@ -62,13 +72,13 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
       {openSrc &&
         createPortal(
           <div
-            className={styles.lightbox}
+            className={`${styles.lightbox} ${closing ? styles.lightboxClosing : ''}`}
             style={{
               backgroundColor: 'var(--overlay-scrim)',
               backdropFilter: 'blur(8px)',
               WebkitBackdropFilter: 'blur(8px)',
             }}
-            onClick={() => setOpenSrc(null)}
+            onClick={closeLightbox}
             role="dialog"
             aria-modal="true"
           >

@@ -200,10 +200,7 @@ function ContactMenu({ onNavigate }) {
     <>
       <div className={styles.contactHead}>
         <div className={`text-color-primary ${styles.contactTitle}`}>
-          Let&apos;s work together
-        </div>
-        <div className={`text-color-secondary ${styles.contactSub}`}>
-          Open to new projects and roles.
+          Contact me
         </div>
       </div>
       <div className={`border-t border-glass ${styles.contactList}`}>
@@ -246,7 +243,7 @@ function ContactMenu({ onNavigate }) {
         </a>
       </div>
       <div className={`border-t border-glass text-color-secondary ${styles.contactStatus}`}>
-        <span className={`bg-accent pulse-glow ${styles.statusDot}`} />
+        <span className={styles.statusDot} />
         Available · Aarhus, Denmark
       </div>
     </>
@@ -304,7 +301,9 @@ function Header() {
   }
   const scheduleClose = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current)
-    closeTimer.current = setTimeout(() => setOpen(false), 180)
+    // Generous delay so moving the cursor across the gap between triggers
+    // doesn't close the panel — it stays open and slides to the next menu.
+    closeTimer.current = setTimeout(() => setOpen(false), 260)
   }
   const closeNow = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current)
@@ -375,8 +374,8 @@ function Header() {
         <div ref={wrapperRef} className={styles.wrapper}>
           {/* The single glass bar */}
           <div className={`glass ${styles.bar}`}>
-            {/* Left — brand (non-interactive) */}
-            <div className={styles.brand}>
+            {/* Left — brand (links home) */}
+            <Link to="/" className={`focus-ring ${styles.brand}`} aria-label="Simon Knudsen — home">
               <span className={`bg-surface-color-tertiary ${styles.brandAvatar}`}>
                 <img
                   src={`${import.meta.env.BASE_URL}simon-virtual.png`}
@@ -392,16 +391,22 @@ function Header() {
                   Product Designer
                 </span>
               </span>
-            </div>
+            </Link>
 
-            {/* Center — nav triggers (absolutely centred in the bar) */}
-            <div className={styles.nav}>
+            {/* Center — nav triggers (absolutely centred in the bar).
+                Close is scheduled on leaving the whole nav region (not each
+                button) so moving across the gaps keeps the menu open and the
+                last-hovered trigger stays highlighted. */}
+            <div
+              className={styles.nav}
+              onMouseEnter={cancelClose}
+              onMouseLeave={scheduleClose}
+            >
               {navItems.map((item) => {
                 const isOpenItem = open && menuKey === item.key
                 const shared = {
                   ref: (el) => (triggerRefs.current[item.key] = el),
                   onMouseEnter: () => openMenu(item.key),
-                  onMouseLeave: scheduleClose,
                   onFocus: () => openMenu(item.key),
                   onBlur: scheduleClose,
                   className: triggerClass(item.active, isOpenItem),
@@ -468,7 +473,13 @@ function Header() {
           >
             <div className={styles.panelInner}>
               <div className={`glass-panel ${styles.panelCard}`}>
-                {ActiveBody && <ActiveBody onNavigate={closeNow} />}
+                {/* Keyed by menuKey so switching menus cross-fades + re-runs
+                    the staggered item reveal. */}
+                {ActiveBody && (
+                  <div key={menuKey} className={styles.menuContent}>
+                    <ActiveBody onNavigate={closeNow} />
+                  </div>
+                )}
               </div>
             </div>
           </div>

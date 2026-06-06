@@ -93,6 +93,20 @@
   padding: var(--space-16) var(--space-4) 0;
 }
 
+/* Chips collapsed by the overflow logic — removed from layout entirely. */
+.hiddenChip {
+  display: none;
+}
+
+/* The trailing "+N" overflow chip — slightly muted so it reads as a counter.
+   Combined with .hiddenChip in JSX so it starts hidden (no +1 flash); the
+   measuring effect reveals it only when there are overflowing tags. */
+.plusTag {
+  display: inline-flex;
+  cursor: default;
+  opacity: 0.75;
+}
+
 /* Featured (bento) — full-width; editorial side-by-side on large screens */
 .featured {
   border-radius: var(--radius-2xl);
