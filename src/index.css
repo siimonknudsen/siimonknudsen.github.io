@@ -268,17 +268,43 @@ html:not(.dark) {
    can still be fine-tuned with leading-* / tracking-* utilities.
    ============================================================ */
 @layer components {
+  /* Display roles are mobile-first responsive: large type would otherwise
+     overwhelm small screens and wrap excessively. Scales up at sm / lg. */
   .type-display {
-    font-size: var(--text-5xl);
+    font-size: var(--text-3xl); /* 32 — mobile */
     font-weight: var(--weight-medium);
-    line-height: 1;
+    line-height: 1.1;
     letter-spacing: var(--tracking-tight);
   }
+  @media (min-width: 640px) {
+    .type-display {
+      font-size: var(--text-4xl); /* 40 */
+      line-height: 1.05;
+    }
+  }
+  @media (min-width: 1024px) {
+    .type-display {
+      font-size: var(--text-5xl); /* 48 */
+      line-height: 1;
+    }
+  }
   .type-display-sm {
-    font-size: var(--text-4xl);
+    font-size: var(--text-2xl); /* 24 — mobile */
     font-weight: var(--weight-medium);
-    line-height: 1.05;
+    line-height: 1.15;
     letter-spacing: var(--tracking-tight);
+  }
+  @media (min-width: 640px) {
+    .type-display-sm {
+      font-size: var(--text-3xl); /* 32 */
+      line-height: 1.1;
+    }
+  }
+  @media (min-width: 1024px) {
+    .type-display-sm {
+      font-size: var(--text-4xl); /* 40 */
+      line-height: 1.05;
+    }
   }
   .type-heading {
     font-size: var(--text-3xl);

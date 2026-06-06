@@ -20,11 +20,11 @@ function Footer() {
               <Location />
             </div>
 
-            <div className="flex flex-col gap-2">
-              <Link to="/archive" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors">
+            <div className="flex flex-col gap-0.5">
+              <Link to="/archive" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring">
                 Archive
               </Link>
-              <Link to="/design-system" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors">
+              <Link to="/design-system" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring">
                 Design system
               </Link>
             </div>
@@ -33,12 +33,12 @@ function Footer() {
           {/* Column 2: Projects */}
           <div className="flex flex-col">
             <h3 className="type-label text-color-primary mb-4">Projects</h3>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-0.5">
               {allProjects.map((project) => (
                 <Link 
                   key={project.id}
                   to={`/project/${project.id}`} 
-                  className="type-body-sm text-color-secondary hover:text-color-primary transition-colors"
+                  className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring"
                 >
                   {project.title}
                 </Link>
@@ -49,20 +49,20 @@ function Footer() {
           {/* Column 3: About */}
           <div className="flex flex-col">
             <h3 className="type-label text-color-primary mb-4">About</h3>
-            <div className="flex flex-col gap-2">
-              <Link to="/about#about-me" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors">
+            <div className="flex flex-col gap-0.5">
+              <Link to="/about#about-me" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring">
                 About me
               </Link>
-              <Link to="/about#companies" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors">
+              <Link to="/about#companies" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring">
                 Companies
               </Link>
-              <Link to="/about#skills" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors">
+              <Link to="/about#skills" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring">
                 Skills
               </Link>
-              <Link to="/about#testimonials" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors">
+              <Link to="/about#testimonials" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring">
                 Testimonials
               </Link>
-              <Link to="/about#pictures" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors">
+              <Link to="/about#pictures" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring">
                 Pictures
               </Link>
             </div>
@@ -71,15 +71,15 @@ function Footer() {
           {/* Column 4: Contact */}
           <div className="flex flex-col">
             <h3 className="type-label text-color-primary mb-4">Contact</h3>
-            <div className="flex flex-col gap-2">
-              <a href="mailto:simonoverlund@hotmail.com" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors">
+            <div className="flex flex-col gap-0.5">
+              <a href="mailto:simonoverlund@hotmail.com" className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring">
                 simonoverlund@hotmail.com
               </a>
               <a 
                 href="https://www.linkedin.com/in/simon-knudsen/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="type-body-sm text-color-secondary hover:text-color-primary transition-colors"
+                className="type-body-sm text-color-secondary hover:text-color-primary transition-colors block py-2 rounded-md focus-ring"
               >
                 LinkedIn
               </a>

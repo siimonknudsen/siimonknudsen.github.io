@@ -7,6 +7,20 @@ detail). Format is lightweight ADR (Architecture Decision Record).
 
 ---
 
+## 2026-06 — Design knowledge base
+
+**Decision.** Add [DESIGN_KNOWLEDGE.md](DESIGN_KNOWLEDGE.md) — a durable, source-verified
+reference of design *expertise* (Laws of UX, Gestalt, Nielsen/Shneiderman heuristics, UI
+& visual craft, WCAG 2.2 AA, motion & interaction best practices), mapped to how we apply
+each in this project, plus a pre-ship checklist and a reserved section for Simon's
+aesthetic/taste references (per-section, per-component, animation links).
+
+**Why.** So design work is grounded in established best practice (not vibes), and so the
+*taste* layer (personal, project-specific) has a structured home to grow as Simon adds
+references. Built from parallel deep research across four domains with primary sources.
+
+---
+
 ## 2026-06 — Token system completed to "top-tier" coverage
 
 **Decision.** Extend the token set beyond colour/type/spacing/motion to also cover
@@ -117,6 +131,11 @@ fallback.
 ($249). We recreated the concept from scratch — calm, conceptual, non-disturbing,
 and fully owned. Note: headless preview has WebGL **off** (shows the CSS fallback);
 the real shader only renders in a normal browser.
+
+**Update (2026-06).** Added **cursor reactivity** — a smoothed `u_mouse` + strength
+uniform makes the gradient gently swirl and bloom around the pointer (eased in/out,
+identity when no pointer, disabled under reduced motion). Free, owned, works in both
+themes. The swirl is subtle by design (calm aesthetic).
 
 ---
 

@@ -113,6 +113,8 @@ export default function ShaderBackground({ colors = DEFAULT_COLORS, speed = 0.06
       color2: gl.getUniformLocation(program, 'u_color2'),
       color3: gl.getUniformLocation(program, 'u_color3'),
       colorCount: gl.getUniformLocation(program, 'u_colorCount'),
+      mouse: gl.getUniformLocation(program, 'u_mouse'),
+      mouseStrength: gl.getUniformLocation(program, 'u_mouseStrength'),
     }
 
     function uploadColors() {
@@ -144,10 +146,23 @@ export default function ShaderBackground({ colors = DEFAULT_COLORS, speed = 0.06
     resize()
 
     const start = performance.now()
+
+    // Cursor reaction — smoothed pointer position (uv space, y-up) + strength.
+    // Eased each frame so the swirl glides rather than snaps. Disabled under
+    // reduced motion (interaction-triggered animation).
+    let mouseX = 0.5, mouseY = 0.5
+    let mTargetX = 0.5, mTargetY = 0.5
+    let strength = 0, strengthTarget = 0
+
     function renderFrame(nowMs) {
+      mouseX += (mTargetX - mouseX) * 0.08
+      mouseY += (mTargetY - mouseY) * 0.08
+      strength += (strengthTarget - strength) * 0.06
       gl.uniform2f(u.resolution, width, height)
       gl.uniform1f(u.time, (nowMs - start) / 1000)
       gl.uniform1f(u.speed, speedRef.current)
+      gl.uniform2f(u.mouse, mouseX, mouseY)
+      gl.uniform1f(u.mouseStrength, strength)
       uploadColors()
       gl.drawArrays(gl.TRIANGLES, 0, 3)
     }
@@ -199,12 +214,30 @@ export default function ShaderBackground({ colors = DEFAULT_COLORS, speed = 0.06
     }
     document.addEventListener('visibilitychange', onVisibility)
 
+    // Pointer reaction: track globally, activate only while the cursor is over
+    // the canvas region (so it works across the whole hero, even over the text).
+    function onPointerMove(e) {
+      const rect = canvas.getBoundingClientRect()
+      if (rect.width === 0 || rect.height === 0) return
+      const x = (e.clientX - rect.left) / rect.width
+      const y = (e.clientY - rect.top) / rect.height
+      if (x >= 0 && x <= 1 && y >= 0 && y <= 1) {
+        mTargetX = x
+        mTargetY = 1 - y // flip to uv (y-up) to match the shader
+        strengthTarget = 1
+      } else {
+        strengthTarget = 0
+      }
+    }
+    if (!reduceMotion) window.addEventListener('pointermove', onPointerMove, { passive: true })
+
     return () => {
       drawRef.current = null
       stopLoop()
       ro.disconnect()
       io.disconnect()
       document.removeEventListener('visibilitychange', onVisibility)
+      if (!reduceMotion) window.removeEventListener('pointermove', onPointerMove)
       gl.deleteBuffer(buffer)
       gl.deleteProgram(program)
       const lose = gl.getExtension('WEBGL_lose_context')

@@ -406,6 +406,7 @@ function Header() {
                   className: triggerClass(item.active, isOpenItem),
                   'aria-haspopup': 'true',
                   'aria-expanded': isOpenItem,
+                  'aria-current': item.active ? 'page' : undefined,
                 }
                 return item.onClick ? (
                   <a key={item.key} href={item.to} onClick={item.onClick} {...shared}>
@@ -486,6 +487,7 @@ function Header() {
               <Link
                 to="/"
                 onClick={closeMobileMenu}
+                aria-current={isActive('/') ? 'page' : undefined}
                 className={`glass-item rounded-2xl px-4 py-3 text-base ${
                   isActive('/') ? 'text-color-primary glass-item-active' : 'text-color-secondary'
                 }`}
@@ -495,6 +497,7 @@ function Header() {
               <Link
                 to="/archive"
                 onClick={closeMobileMenu}
+                aria-current={isActive('/archive') ? 'page' : undefined}
                 className={`glass-item rounded-2xl px-4 py-3 text-base ${
                   isActive('/archive') ? 'text-color-primary glass-item-active' : 'text-color-secondary'
                 }`}
@@ -504,6 +507,7 @@ function Header() {
               <Link
                 to="/about"
                 onClick={closeMobileMenu}
+                aria-current={isActive('/about') ? 'page' : undefined}
                 className={`glass-item rounded-2xl px-4 py-3 text-base ${
                   isActive('/about') ? 'text-color-primary glass-item-active' : 'text-color-secondary'
                 }`}

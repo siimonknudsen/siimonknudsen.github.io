@@ -2,7 +2,9 @@
 
 The single source of truth for the portfolio's design language. Vision lives in
 [VISION.md](VISION.md); the decision log (what we chose & why) in
-[DECISIONS.md](DECISIONS.md); frosted-glass specifics in
+[DECISIONS.md](DECISIONS.md); the design-expertise reference (UX laws, heuristics,
+UI/a11y/motion best practices + taste references) in
+[DESIGN_KNOWLEDGE.md](DESIGN_KNOWLEDGE.md); frosted-glass specifics in
 [GLASS_DESIGN_SYSTEM.md](GLASS_DESIGN_SYSTEM.md). Tokens are defined in
 [`src/index.css`](src/index.css) and exposed to Tailwind in
 [`tailwind.config.js`](tailwind.config.js). A live reference renders at
@@ -281,7 +283,7 @@ Status of current components and the highest-value upgrades toward the 2026 look
 | **ExperienceTimeline** | ⚪ Tokenised colours; currently unused | Migrate text → type roles if re-introduced |
 | **Typography** | ✅ Semantic role classes; pages + components migrated | Header chrome keeps a few fine-tuned sizes |
 | **ScrollAnimation** | ✅ Tokenised motion | Add `delay`/stagger prop for choreographed sections |
-| **Hero background** | ✅ Own WebGL shader (`ShaderBackground`) + CSS fallback | — |
+| **Hero background** | ✅ Own WebGL shader (`ShaderBackground`) + CSS fallback; **cursor-reactive** (swirl + bloom follows pointer, reduced-motion-safe) | — |
 | **ThemeToggle** | ✅ Segmented control + View-Transitions reveal | — |
 | **Section** | ✅ Fine | Optional `size` (rhythm) prop |
 

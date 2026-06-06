@@ -44,4 +44,6 @@ live at `/design-system`):
   architecture, colour, typography, spacing, radius, elevation, motion, components.
 - **[VISION.md](VISION.md)** — the design vision and principles.
 - **[DECISIONS.md](DECISIONS.md)** — decision log (what we chose and why).
+- **[DESIGN_KNOWLEDGE.md](DESIGN_KNOWLEDGE.md)** — design expertise reference (UX laws,
+  heuristics, UI craft, accessibility, motion) + Simon's taste/vision references.
 - **[GLASS_DESIGN_SYSTEM.md](GLASS_DESIGN_SYSTEM.md)** — frosted-glass material spec.
