@@ -38,7 +38,7 @@ function Home() {
 
         {/* Description */}
         <p className="type-display font-normal text-color-primary text-center max-w-2xl mb-10">
-          Product Designer specialized in creating innovative and human-centered digital experiences
+          Product designer turning complex problems into clear, human experiences
         </p>
 
         {/* Call-to-Action Buttons */}
