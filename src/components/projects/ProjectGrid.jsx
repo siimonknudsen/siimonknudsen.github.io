@@ -1,13 +1,15 @@
 import ProjectCard from './ProjectCard'
-import ScrollAnimation from '../animations/ScrollAnimation'
 import styles from './ProjectGrid.module.css'
 
+// `impact` (optional): a one-line outcome shown as a chip on the card.
+// Scaffolded — fill in real numbers per project as they're confirmed.
 export const allProjects = [
   {
     id: 'zliide-app',
     title: "Zliide In-Store Ordering App",
     description: "Redesigned an in-store ordering app increasing physical fashion stores monthly store revenue.",
-    tags: ["UX Design", "UI Design", "Design System"]
+    tags: ["UX Design", "UI Design", "Design System"],
+    impact: { value: "+6%", label: "monthly store revenue" }
   },
   {
     id: 'apple-home-app',
@@ -79,22 +81,38 @@ export const archiveProjects = [
 export const allArchiveProjects = [...allProjects, ...archiveProjects]
 
 function ProjectGrid({ excludeProjectId = null }) {
-  const projects = excludeProjectId 
-    ? allProjects.filter(project => project.id !== excludeProjectId)
+  const projects = excludeProjectId
+    ? allProjects.filter((project) => project.id !== excludeProjectId)
     : allProjects
 
+  const [featured, ...rest] = projects
+
   return (
-    <div className={styles.grid}>
-      {projects.map((project) => (
-        <ScrollAnimation key={project.id}>
-          <ProjectCard
-            id={project.id}
-            title={project.title}
-            description={project.description}
-            tags={project.tags}
-          />
-        </ScrollAnimation>
-      ))}
+    <div className={styles.wrap}>
+      {featured && (
+        <ProjectCard
+          featured
+          id={featured.id}
+          title={featured.title}
+          description={featured.description}
+          tags={featured.tags}
+          impact={featured.impact}
+        />
+      )}
+      {rest.length > 0 && (
+        <div className={styles.grid}>
+          {rest.map((project) => (
+            <ProjectCard
+              key={project.id}
+              id={project.id}
+              title={project.title}
+              description={project.description}
+              tags={project.tags}
+              impact={project.impact}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
