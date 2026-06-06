@@ -4,6 +4,8 @@
   "client": "Adservice",
   "when": "2024",
   "details": "Website",
+  "role": "Product Designer",
+  "timeline": "2024",
   "responsibilities": [
     "UX Design",
     "UI Design",
@@ -11,8 +13,35 @@
     "Frontend Development"
   ],
   "heroImage": "images/hero.jpg",
+  "problem": "The Adservice website felt dated and inconsistent. Mismatched design patterns, slow load times, and poor mobile responsiveness undercut the brand and made the experience harder than it needed to be.",
   "challenge": "The Adservice website needed a complete redesign to modernize the brand and improve user experience. The existing site had inconsistent design patterns, slow load times, and poor mobile responsiveness.",
   "solution": "Complete redesign with a new design system that created consistency across all pages while improving load times and mobile responsiveness. The modern, clean design improved content hierarchy and streamlined contact forms.",
+  "process": [
+    {
+      "step": "Build a design system",
+      "body": "Created a shared system of components and patterns to replace the inconsistent design and bring every page into a single, coherent language."
+    },
+    {
+      "step": "Modernize the brand and layout",
+      "body": "Designed a clean, modern look with clearer content hierarchy and streamlined contact forms."
+    },
+    {
+      "step": "Improve performance and responsiveness",
+      "body": "Implemented the redesign with attention to load times and mobile responsiveness across all pages."
+    }
+  ],
+  "outcomes": [
+    {
+      "metric": "Shipped",
+      "label": "full site redesign",
+      "note": "New design system applied consistently across all pages."
+    },
+    {
+      "metric": "↑",
+      "label": "performance & mobile experience",
+      "note": "Improved load times and mobile responsiveness."
+    }
+  ],
   "content": [
     {
       "type": "image",

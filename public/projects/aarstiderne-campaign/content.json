@@ -4,13 +4,42 @@
   "client": "Aarstiderne",
   "when": "2022",
   "details": "Campaign",
+  "role": "Product Designer",
+  "timeline": "2022",
   "responsibilities": [
     "UX Design",
     "UI Design",
     "Design System",
     "Marketing Design"
   ],
+  "problem": "Aarstiderne, an advertiser working with the affiliate company Adservice, wanted to generate more leads. The plan was to channel that demand through Adservice's gamification concept, LeadPlatform.",
   "challenge": "Adservice is an affiliate company that connects advertisers and publishers. Aarstiderne was one of our advertisers which wanted to generate more leads through our gamification concept \"LeadPlatform\".",
   "solution": "A campaign website and campaign material were designed resulting in 10.000+ visitiors and and a 17%+ conversion rate.",
+  "process": [
+    {
+      "step": "Adapt the gamification concept",
+      "body": "Shaped Aarstiderne's offer to fit the LeadPlatform gamification concept so the campaign could capture leads through an interactive experience."
+    },
+    {
+      "step": "Design the campaign",
+      "body": "Designed the campaign website and supporting marketing material, on-brand and built on the design system."
+    },
+    {
+      "step": "Launch and convert",
+      "body": "Took the campaign live to drive traffic and turn visitors into qualified leads."
+    }
+  ],
+  "outcomes": [
+    {
+      "metric": "10.000+",
+      "label": "visitors",
+      "note": "Total campaign traffic."
+    },
+    {
+      "metric": "17%+",
+      "label": "conversion rate",
+      "note": "Visitors converted into leads."
+    }
+  ],
   "content": []
 }

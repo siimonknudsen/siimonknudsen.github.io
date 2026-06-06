@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import ScrollAnimation from '../components/animations/ScrollAnimation'
 import Button from '../components/buttons/Button'
 import Media from '../components/Media'
@@ -6,7 +6,7 @@ import ShaderBackground from '../components/shader/ShaderBackground'
 import ProjectCard from '../components/projects/ProjectCard'
 import ProjectTag from '../components/projects/ProjectTag'
 import Input from '../components/forms/Input'
-import { Reveal, Stagger } from '../components/motion'
+import { Reveal, Stagger, useReducedMotion } from '../components/motion'
 import TestimonialCard from '../components/cards/TestimonialCard'
 import SkillCard from '../components/cards/SkillCard'
 import Avatar from '../components/Avatar'
@@ -132,6 +132,21 @@ const feedback = [
   { title: 'Action', token: '--action', text: 'text-action', soft: 'bg-action-soft', border: 'border-action', light: '#4F46E5', dark: '#6366F1' },
 ]
 
+// The eight owned motion presets (the .fx-* / page-enter layer in index.css).
+// kind drives how each specimen replays: 'reveal' toggles .is-visible on Play,
+// 'stagger' replays staggered children, 'enter' re-runs its keyframe via key,
+// 'interactive' responds to pointer / focus and is always live.
+const fxPresets = [
+  { name: '.fx-reveal', desc: 'Fade in', kind: 'reveal', cls: 'fx-reveal' },
+  { name: '.fx-reveal + .fx-fade-up', desc: 'Fade + rise', kind: 'reveal', cls: 'fx-reveal fx-fade-up' },
+  { name: '.fx-reveal + .fx-scale-in', desc: 'Scale in', kind: 'reveal', cls: 'fx-reveal fx-scale-in' },
+  { name: '.fx-stagger', desc: 'Stagger children', kind: 'stagger' },
+  { name: '.fx-reveal (observer)', desc: 'Scroll reveal', kind: 'reveal', cls: 'fx-reveal fx-fade-up' },
+  { name: '.fx-hover-lift', desc: 'Hover lift', kind: 'interactive', cls: 'fx-hover-lift' },
+  { name: '.fx-press', desc: 'Press scale', kind: 'interactive', cls: 'fx-press' },
+  { name: '.page-enter', desc: 'Page transition', kind: 'enter', cls: 'page-enter' },
+]
+
 // Elevation / shadow scale (theme-aware)
 const elevation = [
   { name: 'shadow-xs', token: '--shadow-xs' },
@@ -182,10 +197,57 @@ function ColorLabel({ title, token, light, dark }) {
   )
 }
 
+/* ── Copy-to-clipboard hook ─────────────────────────────────────── */
+
+function useCopy() {
+  const [copied, setCopied] = useState(null)
+  const timer = useRef(null)
+
+  useEffect(() => () => clearTimeout(timer.current), [])
+
+  const copy = useCallback((value, key) => {
+    if (!navigator.clipboard) return
+    navigator.clipboard.writeText(value).then(() => {
+      setCopied(key)
+      clearTimeout(timer.current)
+      timer.current = setTimeout(() => setCopied(null), 1200)
+    }).catch(() => {})
+  }, [])
+
+  return { copied, copy }
+}
+
+// A swatch that copies a token/hex to the clipboard on click.
+function CopySwatch({ value, copyKey, copied, onCopy, className = '', faceClassName = '', style, swatchStyle, children }) {
+  const isCopied = copied === copyKey
+  return (
+    <button
+      type="button"
+      onClick={() => onCopy(value, copyKey)}
+      title={`Copy ${value}`}
+      aria-label={`Copy ${value} to clipboard`}
+      className={`focus-ring ${styles.copySwatch} ${className}`}
+      style={style}
+    >
+      <span className={`${styles.copySwatchFace} ${faceClassName}`} style={swatchStyle}>
+        {children}
+        <span
+          aria-hidden={!isCopied}
+          className={`font-mono ${styles.copyBadge} ${isCopied ? styles.copyBadgeOn : ''}`}
+        >
+          Copied
+        </span>
+      </span>
+    </button>
+  )
+}
+
 /* ── Page ───────────────────────────────────────────────────────── */
 
 function StyleGuide() {
   const [play, setPlay] = useState(false)
+  const prefersReduced = useReducedMotion()
+  const { copied, copy } = useCopy()
 
   return (
     <>
@@ -345,7 +407,13 @@ function StyleGuide() {
                   <div className={styles.rampGrid}>
                     {neutrals.map(([step, hex]) => (
                       <div key={step} className={styles.swatchCol}>
-                        <div className={styles.swatch} style={{ backgroundColor: `var(--neutral-${step})` }} />
+                        <CopySwatch
+                          value={hex}
+                          copyKey={`neutral-${step}`}
+                          copied={copied}
+                          onCopy={copy}
+                          swatchStyle={{ backgroundColor: `var(--neutral-${step})`, border: '1px solid var(--border-color-secondary)' }}
+                        />
                         <span className={`font-mono text-color-primary ${styles.swatchStep}`}>{step}</span>
                         <span className={`font-mono text-color-tertiary ${styles.swatchHex}`}>{hex}</span>
                       </div>
@@ -361,7 +429,13 @@ function StyleGuide() {
                   <div className={styles.rampGrid}>
                     {brandRamp.map(([step, hex]) => (
                       <div key={step} className={styles.swatchCol}>
-                        <div className={styles.swatch} style={{ backgroundColor: `var(--brand-${step})` }} />
+                        <CopySwatch
+                          value={hex}
+                          copyKey={`brand-${step}`}
+                          copied={copied}
+                          onCopy={copy}
+                          swatchStyle={{ backgroundColor: `var(--brand-${step})`, border: '1px solid var(--border-color-secondary)' }}
+                        />
                         <span className={`font-mono text-color-primary ${styles.swatchStep}`}>{step}</span>
                         <span className={`font-mono text-color-tertiary ${styles.swatchHex}`}>{hex}</span>
                       </div>
@@ -382,12 +456,16 @@ function StyleGuide() {
                   <div className={styles.rampGrid}>
                     {transparentSteps.map((s) => (
                       <div key={s} className={styles.swatchCol}>
-                        <div
-                          className={styles.swatch}
-                          style={{
+                        <CopySwatch
+                          value={`--transparent-light-${s}`}
+                          copyKey={`tl-${s}`}
+                          copied={copied}
+                          onCopy={copy}
+                          swatchStyle={{
                             backgroundColor: 'var(--neutral-800)',
                             backgroundImage: `linear-gradient(var(--transparent-light-${s}), var(--transparent-light-${s})), repeating-conic-gradient(var(--neutral-600) 0% 25%, var(--neutral-900) 0% 50%)`,
                             backgroundSize: 'auto, 12px 12px',
+                            border: '1px solid var(--border-color-secondary)',
                           }}
                         />
                         <span className={`font-mono text-color-primary ${styles.swatchStep}`}>{s}</span>
@@ -405,12 +483,16 @@ function StyleGuide() {
                   <div className={styles.rampGrid}>
                     {transparentSteps.map((s) => (
                       <div key={s} className={styles.swatchCol}>
-                        <div
-                          className={styles.swatch}
-                          style={{
+                        <CopySwatch
+                          value={`--transparent-dark-${s}`}
+                          copyKey={`td-${s}`}
+                          copied={copied}
+                          onCopy={copy}
+                          swatchStyle={{
                             backgroundColor: 'var(--neutral-100)',
                             backgroundImage: `linear-gradient(var(--transparent-dark-${s}), var(--transparent-dark-${s})), repeating-conic-gradient(var(--neutral-300) 0% 25%, var(--neutral-0) 0% 50%)`,
                             backgroundSize: 'auto, 12px 12px',
+                            border: '1px solid var(--border-color-secondary)',
                           }}
                         />
                         <span className={`font-mono text-color-primary ${styles.swatchStep}`}>{s}</span>
@@ -494,9 +576,15 @@ function StyleGuide() {
                   <div className={styles.feedbackGrid}>
                     {feedback.map((f) => (
                       <div key={f.token} className={styles.colorItem}>
-                        <div className={`${f.border} ${f.soft} ${styles.feedbackSwatch}`}>
+                        <CopySwatch
+                          value={f.token}
+                          copyKey={f.token}
+                          copied={copied}
+                          onCopy={copy}
+                          faceClassName={`${f.border} ${f.soft} ${styles.feedbackSwatch}`}
+                        >
                           <span className={`${f.text} ${styles.feedbackTitle}`}>{f.title}</span>
-                        </div>
+                        </CopySwatch>
                         <div className={styles.colorLabel}>
                           <span className={`text-color-primary ${styles.colorTitle}`}>{f.title}</span>
                           <MonoMeta>{f.token}</MonoMeta>
@@ -552,6 +640,29 @@ function StyleGuide() {
                     </div>
                   </div>
                 </div>
+              </div>
+            </ScrollAnimation>
+
+            {/* Glass lab — chips floating over a moving gradient so the blur reads */}
+            <ScrollAnimation>
+              <div className={styles.glassLab}>
+                <div
+                  aria-hidden="true"
+                  className={`${styles.glassLabStage} ${prefersReduced ? '' : styles.glassLabStageAnim}`}
+                />
+                <div className={styles.glassLabChips}>
+                  <div className={`glass ${styles.glassLabChip}`}>
+                    <span className={`text-color-primary ${styles.glassLabChipName}`}>.glass</span>
+                    <span className={`font-mono text-color-secondary ${styles.glassLabChipMeta}`}>16px blur · lighter tint</span>
+                  </div>
+                  <div className={`glass-panel ${styles.glassLabChip}`}>
+                    <span className={`text-color-primary ${styles.glassLabChipName}`}>.glass-panel</span>
+                    <span className={`font-mono text-color-secondary ${styles.glassLabChipMeta}`}>24px blur · stronger scrim</span>
+                  </div>
+                </div>
+                <span className={`font-mono text-color-tertiary ${styles.glassLabCaption}`}>
+                  Glass lab · chips float over a moving gradient — compare how each material blurs the motion behind it
+                </span>
               </div>
             </ScrollAnimation>
 
@@ -710,10 +821,13 @@ function StyleGuide() {
                             className={`bg-accent ${styles.trackDot}`}
                             style={{
                               left: play ? 'calc(100% - 20px)' : '4px',
-                              transition: `left 700ms cubic-bezier(${e.curve})`,
+                              transition: prefersReduced ? 'none' : `left 700ms cubic-bezier(${e.curve})`,
                             }}
                           />
                         </div>
+                        <span className={`font-mono text-color-tertiary ${styles.trackCurve}`}>
+                          cubic-bezier({e.curve})
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -796,6 +910,62 @@ function StyleGuide() {
                   </Stagger>
                   <span className="type-caption text-color-secondary" style={{ display: 'block', marginTop: 'var(--space-8)' }}>
                     fade · fade-up · scale-in · stagger · hover-lift · press · scroll-reveal · page-transition — tap Play to replay
+                  </span>
+                </div>
+
+                {/* The eight .fx-* presets — discoverable specimens */}
+                <div className={styles.fxBlock}>
+                  <span className={`font-mono text-color-secondary ${styles.motionLabel}`}>
+                    Presets · the eight .fx-* utility classes
+                  </span>
+                  <div key={play ? 'fx-on' : 'fx-off'} className={styles.fxGrid}>
+                    {fxPresets.map((p) => {
+                      // .is-visible reveals the .fx-reveal family; on Play (or reduced motion) show it.
+                      const revealed = play || prefersReduced
+                      let stage
+                      if (p.kind === 'stagger') {
+                        stage = (
+                          <div className={`fx-stagger ${styles.fxStaggerRow}`}>
+                            {[0, 1, 2].map((i) => (
+                              <span
+                                key={i}
+                                className={`bg-accent-soft border-accent fx-reveal fx-fade-up ${revealed ? 'is-visible' : ''} ${styles.fxStaggerDot}`}
+                                style={{ '--i': i }}
+                              />
+                            ))}
+                          </div>
+                        )
+                      } else if (p.kind === 'interactive') {
+                        stage = (
+                          <span
+                            tabIndex={0}
+                            className={`bg-accent-soft border-accent ${p.cls} ${styles.fxDot}`}
+                          />
+                        )
+                      } else if (p.kind === 'enter') {
+                        // Re-runs its keyframe whenever Play flips (the grid key remounts it).
+                        stage = (
+                          <span className={`bg-accent-soft border-accent ${prefersReduced ? '' : p.cls} ${styles.fxDot}`} />
+                        )
+                      } else {
+                        // reveal family
+                        stage = (
+                          <span
+                            className={`bg-accent-soft border-accent ${p.cls} ${revealed ? 'is-visible' : ''} ${styles.fxDot}`}
+                          />
+                        )
+                      }
+                      return (
+                        <div key={p.name} className={`glass-panel ${styles.fxCard}`}>
+                          <div className={styles.fxStage}>{stage}</div>
+                          <span className={`font-mono text-color-primary ${styles.fxName}`}>{p.name}</span>
+                          <span className="type-caption text-color-tertiary">{p.desc}</span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                  <span className="type-caption text-color-secondary" style={{ display: 'block', marginTop: 'var(--space-8)' }}>
+                    Entrance presets replay on Play · hover-lift &amp; press respond to pointer / focus
                   </span>
                 </div>
               </div>

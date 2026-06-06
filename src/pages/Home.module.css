@@ -114,19 +114,33 @@
   margin-right: auto;
 }
 
+.testimonialsHeader {
+  margin-bottom: var(--space-32);
+}
+
+.testimonialsOverline {
+  margin-bottom: var(--space-8);
+}
+
 .testimonialsHeading {
   font-weight: var(--weight-regular);
+}
+
+/* Logo wall sits between the featured quote and the secondary row */
+.logoWallWrap {
+  margin-top: var(--space-48);
   margin-bottom: var(--space-48);
 }
 
-.testimonialsGrid {
+/* Compact secondary row — two short quotes, side by side on tablet+ */
+.secondaryGrid {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: var(--space-24);
 }
 
 @media (min-width: 768px) {
-  .testimonialsGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .secondaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

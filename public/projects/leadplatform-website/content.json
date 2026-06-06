@@ -4,14 +4,43 @@
   "client": "LeadPlatform",
   "when": "2024",
   "details": "Website",
+  "role": "Product Designer",
+  "timeline": "2024",
   "responsibilities": [
     "UX Design",
     "UI Design",
     "Frontend Development"
   ],
   "heroImage": "images/hero.jpg",
+  "problem": "LeadPlatform — a gamification-based lead generation concept — needed a marketing website that could explain an unfamiliar idea clearly and turn visitors into leads.",
   "challenge": "A marketing website was needed for a gamification lead generating concept to increase conversion rates and effectively communicate the value proposition.",
   "solution": "Designed a marketing website that effectively communicated the gamification concept and increased conversion rates through clear messaging and engaging visuals.",
+  "process": [
+    {
+      "step": "Communicate the concept",
+      "body": "Distilled the gamification lead-generation idea into clear messaging so first-time visitors could quickly grasp the value proposition."
+    },
+    {
+      "step": "Design for conversion",
+      "body": "Designed engaging visuals and a layout aimed at moving visitors toward becoming leads."
+    },
+    {
+      "step": "Design and build",
+      "body": "Took the marketing site from UX and UI design through to frontend implementation."
+    }
+  ],
+  "outcomes": [
+    {
+      "metric": "↑",
+      "label": "conversion rate",
+      "note": "Higher conversion through clearer messaging and engaging visuals."
+    },
+    {
+      "metric": "Shipped",
+      "label": "marketing site",
+      "note": "Designed and built end to end."
+    }
+  ],
   "content": [
     {
       "type": "image",

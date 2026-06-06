@@ -4,14 +4,43 @@
   "client": "Zliide",
   "when": "2024",
   "details": "Dashboard",
+  "role": "Product Designer",
+  "timeline": "2024",
   "responsibilities": [
     "UX Design",
     "UI Design",
     "Design System"
   ],
   "heroImage": "images/hero.jpg",
+  "problem": "Fashion brand stakeholders needed a clear window into their data, but the existing solution buried key metrics and lacked the clarity to make them actionable.",
   "challenge": "Fashion brand stakeholders needed a dashboard interface to access important data statistics. The existing solution lacked clarity and didn't effectively present key metrics.",
   "solution": "Designed a dashboard interface that provides fashion brand stakeholders with clear, actionable data statistics through intuitive visualizations and organized information architecture.",
+  "process": [
+    {
+      "step": "Identify the key metrics",
+      "body": "Worked out which data statistics mattered most to fashion brand stakeholders so the dashboard could lead with them."
+    },
+    {
+      "step": "Structure the information",
+      "body": "Organized the information architecture so stakeholders could find and act on the right numbers without friction."
+    },
+    {
+      "step": "Design intuitive visualizations",
+      "body": "Designed clear visualizations, supported by the design system, to turn raw statistics into actionable insight."
+    }
+  ],
+  "outcomes": [
+    {
+      "metric": "Shipped",
+      "label": "stakeholder dashboard",
+      "note": "Clear, organized view of key brand metrics."
+    },
+    {
+      "metric": "↑",
+      "label": "data clarity",
+      "note": "Key metrics surfaced through intuitive visualizations."
+    }
+  ],
   "content": [
     {
       "type": "image",

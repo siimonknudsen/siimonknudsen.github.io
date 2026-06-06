@@ -4,6 +4,8 @@
   "client": "Zliide",
   "when": "2024",
   "details": "Website",
+  "role": "Product Designer",
+  "timeline": "2024",
   "responsibilities": [
     "UX Design",
     "UI Design",
@@ -11,8 +13,35 @@
     "Frontend Development"
   ],
   "heroImage": "images/hero.jpg",
+  "problem": "The Zliide company website wasn't pulling its weight. It lacked a clear value proposition and had navigation issues that broke user journeys, dragging down engagement and conversion.",
   "challenge": "The Zliide company website needed a redesign to improve user engagement and conversion rates. The existing site lacked a clear value proposition and had navigation issues that hindered user journeys.",
   "solution": "Redesigned the website with a focus on clear value proposition and streamlined user journeys. The redesign resulted in a 35% increase in conversion rates and improved user engagement metrics across all key pages.",
+  "process": [
+    {
+      "step": "Sharpen the value proposition",
+      "body": "Reworked the messaging so the site communicated what Zliide does and why it matters within seconds of landing."
+    },
+    {
+      "step": "Streamline the journeys",
+      "body": "Fixed the navigation issues that were stalling users, simplifying the paths through the key pages."
+    },
+    {
+      "step": "Design and build",
+      "body": "Designed the new pages against the design system and implemented them in frontend code."
+    }
+  ],
+  "outcomes": [
+    {
+      "metric": "+35%",
+      "label": "conversion rate",
+      "note": "Measured lift after the redesign."
+    },
+    {
+      "metric": "↑",
+      "label": "engagement across key pages",
+      "note": "Improved engagement metrics following the streamlined journeys."
+    }
+  ],
   "content": [
     {
       "type": "image",

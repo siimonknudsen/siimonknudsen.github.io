@@ -22,3 +22,22 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* Each cell is a real grid item that carries the stagger index (--i) and
+   stretches its card to full height so the 3-up rest row stays even. */
+.cell {
+  display: flex;
+  min-width: 0;
+}
+
+.cell > * {
+  width: 100%;
+}
+
+/* The grid carries .fx-stagger; --i set on each .cell inherits to the inner
+   <Reveal> (.fx-reveal), so the cascade delay lands on the animating element.
+   The global `.fx-stagger > *` rule only reaches the cell itself, so apply the
+   same delay calc to the reveal element using the inherited --i. */
+.cell .fx-reveal {
+  transition-delay: calc(var(--i, 0) * var(--stagger-1));
+}

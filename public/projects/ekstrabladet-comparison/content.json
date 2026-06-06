@@ -4,6 +4,8 @@
   "client": "Ekstra Bladet",
   "when": "2022",
   "details": "Comparison Website",
+  "role": "Product Designer",
+  "timeline": "2022",
   "responsibilities": [
     "UX Design",
     "UI Design",
@@ -12,8 +14,35 @@
     "Frontend Development"
   ],
   "heroImage": "images/hero.jpg",
+  "problem": "Ekstra Bladet, a publisher partner of the affiliate company Adservice, wanted to turn its large audience into revenue. The opening: a comparison solution that helped readers compare popular services and earned affiliate income from their choices.",
   "challenge": "Adservice is an affiliate company that connects advertisers and publishers. Ekstra Bladet was one of our publishers which wanted to generate revenue with their large traffic, through a comparison solution.",
   "solution": "A comparison website and campaign material were designed resulting in several subpages of different popular services such as internet, eletricity, telephone subscriptions and streaming services.",
+  "process": [
+    {
+      "step": "Map the comparison categories",
+      "body": "Identified the popular services worth comparing for Ekstra Bladet's audience — internet, electricity, telephone subscriptions, and streaming."
+    },
+    {
+      "step": "Design the comparison experience",
+      "body": "Designed the website and a set of subpages, one per service category, using a shared design system for consistency."
+    },
+    {
+      "step": "Create campaign material and build",
+      "body": "Produced supporting marketing design and implemented the site in frontend code."
+    }
+  ],
+  "outcomes": [
+    {
+      "metric": "Shipped",
+      "label": "comparison site + subpages",
+      "note": "Covering internet, electricity, telephone, and streaming services."
+    },
+    {
+      "metric": "→",
+      "label": "new revenue stream",
+      "note": "Turned publisher traffic into affiliate revenue."
+    }
+  ],
   "content": [
     {
       "type": "image",

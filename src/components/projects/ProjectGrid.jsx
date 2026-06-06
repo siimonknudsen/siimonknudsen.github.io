@@ -100,16 +100,21 @@ function ProjectGrid({ excludeProjectId = null }) {
         />
       )}
       {rest.length > 0 && (
-        <div className={styles.grid}>
-          {rest.map((project) => (
-            <ProjectCard
+        <div className={`fx-stagger ${styles.grid}`}>
+          {rest.map((project, index) => (
+            <div
               key={project.id}
-              id={project.id}
-              title={project.title}
-              description={project.description}
-              tags={project.tags}
-              impact={project.impact}
-            />
+              className={styles.cell}
+              style={{ '--i': index }}
+            >
+              <ProjectCard
+                id={project.id}
+                title={project.title}
+                description={project.description}
+                tags={project.tags}
+                impact={project.impact}
+              />
+            </div>
           ))}
         </div>
       )}

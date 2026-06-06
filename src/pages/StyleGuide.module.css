@@ -68,6 +68,131 @@
   line-height: 1.25;
 }
 
+/* ── Copy-on-click swatch ───────────────────────────────────────── */
+
+.copySwatch {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: var(--radius-lg);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.copySwatchFace {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: var(--space-56, 56px);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: transform var(--dur-fast) var(--ease-standard);
+}
+@media (hover: hover) and (pointer: fine) {
+  .copySwatch:hover .copySwatchFace {
+    transform: translateY(-2px);
+  }
+}
+.copySwatch:active .copySwatchFace {
+  transform: scale(0.98);
+}
+
+.copyBadge {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--neutral-0);
+  background: var(--transparent-dark-60);
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-standard);
+  pointer-events: none;
+}
+.copyBadgeOn {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .copySwatchFace,
+  .copyBadge {
+    transition: none;
+  }
+}
+
+/* ── Glass lab ──────────────────────────────────────────────────── */
+
+.glassLab {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-color-secondary);
+  margin-top: var(--space-20);
+  padding: var(--space-32) var(--space-24);
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-20);
+}
+@media (min-width: 640px) {
+  .glassLab {
+    padding: var(--space-40);
+  }
+}
+
+.glassLabStage {
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(120deg, var(--accent) 0%, var(--action) 35%, var(--neutral-700) 70%, var(--accent) 100%);
+  background-size: 300% 300%;
+  opacity: 0.9;
+}
+.glassLabStageAnim {
+  animation: glassLabDrift 14s var(--ease-standard) infinite alternate;
+}
+@keyframes glassLabDrift {
+  from { background-position: 0% 50%; transform: rotate(0deg); }
+  to { background-position: 100% 50%; transform: rotate(8deg); }
+}
+
+.glassLabChips {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-16);
+}
+
+.glassLabChip {
+  flex: 1 1 200px;
+  border-radius: var(--radius-xl);
+  padding: var(--space-20);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.glassLabChipName {
+  font-size: 15px;
+  font-weight: var(--weight-medium);
+}
+
+.glassLabChipMeta {
+  font-size: 11px;
+}
+
+.glassLabCaption {
+  position: relative;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
 /* ── Cover ──────────────────────────────────────────────────────── */
 
 .cover {
@@ -779,8 +904,79 @@
   border-radius: var(--radius-pill);
 }
 
+.trackCurve {
+  display: none;
+  font-size: var(--text-2xs);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+@media (min-width: 640px) {
+  .trackCurve {
+    display: inline;
+  }
+}
+
 .panelLabelMt {
   margin-top: var(--space-16);
+}
+
+/* ── Motion · .fx-* preset gallery ──────────────────────────────── */
+
+.fxBlock {
+  margin-top: var(--space-24);
+}
+
+.fxGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-12);
+  margin-top: var(--space-16);
+}
+@media (min-width: 640px) {
+  .fxGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.fxCard {
+  border-radius: var(--radius-xl);
+  padding: var(--space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.fxStage {
+  display: grid;
+  place-items: center;
+  min-height: 72px;
+}
+
+.fxDot {
+  height: var(--space-40);
+  width: var(--space-40);
+  border-radius: var(--radius-lg);
+  border-width: 1px;
+  border-style: solid;
+}
+
+.fxStaggerRow {
+  display: flex;
+  gap: var(--space-8);
+}
+
+.fxStaggerDot {
+  height: var(--space-24);
+  width: var(--space-24);
+  border-radius: var(--radius-md);
+  border-width: 1px;
+  border-style: solid;
+}
+
+.fxName {
+  font-size: var(--text-2xs);
+  line-height: 1.3;
+  word-break: break-word;
 }
 
 .interactionGrid {

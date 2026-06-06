@@ -7,6 +7,20 @@ detail). Format is lightweight ADR (Architecture Decision Record).
 
 ---
 
+## 2026-06 — Deferred roadmap items finished (second swarm)
+
+Completed the items previously deferred: **testimonials rework** (Home — featured
+pull-quote + logo wall/marquee + tight secondary row; TestimonialCard API untouched),
+**/design-system showpiece** (copy-on-click swatches, glass lab, live easing specimens
++ motion-preset gallery), **magnetic button** (subtle cursor-pull on primary/accent,
+fine-pointer + reduced-motion gated), **scroll-stagger on the project grid** (cells carry
+`--i` under `.fx-stagger`), and **case-study scaffolds for all remaining projects**
+(role/timeline/problem/process derived from existing copy; outcomes kept QUALITATIVE —
+no fabricated numbers; exact metrics still need Simon's data). All verified on the
+production build (desktop + mobile, no overflow, no console errors).
+
+---
+
 ## 2026-06 — Roadmap build (parallel agent swarm)
 
 Built the research roadmap in parallel (5 agents, disjoint files) + orchestrator
