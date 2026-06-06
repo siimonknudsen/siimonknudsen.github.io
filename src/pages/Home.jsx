@@ -1,12 +1,12 @@
 import ProjectGrid from '../components/projects/ProjectGrid'
 import Button from '../components/buttons/Button'
 import TestimonialCard from '../components/cards/TestimonialCard'
-import HeroBackground from '../components/HeroBackground'
 import WorkedAt from '../components/home/WorkedAt'
 import WordReveal from '../components/home/WordReveal'
 import { ZliideLogo } from '../components/home/WorkedAtLogos'
 import adServiceLogo from '../assets/logos/ad-service.png'
-import { Reveal, useReducedMotion } from '../components/motion'
+import { Reveal } from '../components/motion'
+import { Link } from 'react-router-dom'
 import styles from './Home.module.css'
 
 // Testimonials — three full, verbatim recommendations (sourced from About.jsx).
@@ -39,20 +39,10 @@ const TESTIMONIALS = [
 ]
 
 function Home() {
-  const reduced = useReducedMotion()
-
-  const scrollToContact = () => {
-    const footer = document.querySelector('footer')
-    if (!footer) return
-    footer.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' })
-  }
-
   return (
     <>
-      {/* Hero Section — shader behind → frosted light-stage card → content */}
+      {/* Hero Section — content over the global fixed shader (in App shell). */}
       <section className={styles.hero}>
-        <HeroBackground />
-
         {/* Content sits directly over the shader — no card, left-aligned. */}
         <div className={styles.heroContent}>
           {/* Faded name kicker */}
@@ -72,7 +62,7 @@ function Home() {
             <Button variant="primary" className={styles.cta} as="a" href="#projects">
               View projects
             </Button>
-            <Button variant="glass" className={styles.cta} onClick={scrollToContact}>
+            <Button variant="glass" className={styles.cta} as={Link} to="/contact">
               Contact
             </Button>
           </div>

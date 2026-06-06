@@ -65,6 +65,11 @@ function WorkRow({ id, title, subtitle, onNavigate }) {
         </span>
         <span className={`text-color-secondary ${styles.workSubtitle}`}>{subtitle}</span>
       </span>
+      <span className={styles.workChevron} aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m9 6 6 6-6 6" />
+        </svg>
+      </span>
     </Link>
   )
 }
@@ -392,23 +397,11 @@ function Header() {
     }
   }, [isMobileMenuOpen])
 
-  const handleContactClick = (e) => {
-    if (e) e.preventDefault()
-    closeMobileMenu()
-    closeNow()
-    if (location.pathname !== '/') {
-      window.location.href = '/#contact'
-    } else {
-      const footer = document.querySelector('footer')
-      if (footer) footer.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
-
   const navItems = [
     { key: 'projects', label: 'Projects', to: '/', active: isActive('/') },
     { key: 'archive', label: 'Archive', to: '/archive', active: isActive('/archive') },
     { key: 'about', label: 'About', to: '/about', active: isActive('/about') },
-    { key: 'contact', label: 'Contact', to: '#contact', active: false, onClick: handleContactClick },
+    { key: 'contact', label: 'Contact', to: '/contact', active: isActive('/contact') },
   ]
 
   // The sliding pill is the ONLY background highlight — the trigger itself has
@@ -607,12 +600,15 @@ function Header() {
               >
                 About
               </Link>
-              <button
-                onClick={handleContactClick}
-                className={`glass-item text-color-secondary ${styles.mobileItem} ${styles.mobileItemButton}`}
+              <Link
+                to="/contact"
+                aria-current={isActive('/contact') ? 'page' : undefined}
+                className={`glass-item ${styles.mobileItem} ${
+                  isActive('/contact') ? 'text-color-primary glass-item-active' : 'text-color-secondary'
+                }`}
               >
                 Contact
-              </button>
+              </Link>
               <div className={`border-t border-glass ${styles.mobileLocation}`}>
                 <Location />
               </div>

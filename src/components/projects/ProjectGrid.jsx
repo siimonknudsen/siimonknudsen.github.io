@@ -183,25 +183,8 @@ function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
                   rounded="none"
                 />
               </div>
-              {/* Blurred copy of the same image, masked to the lower text zone.
-                  This is a STATIC filter:blur (cached, GPU-cheap) — not a live
-                  backdrop-filter — so it frosts the text area without re-blurring
-                  every scroll frame. */}
-              <div className={styles.stackBlur} aria-hidden="true">
-                <Media
-                  src={`/projects/${project.id}/images/hero`}
-                  alt=""
-                  aspect="fill"
-                  rounded="none"
-                />
-              </div>
               <div className={styles.stackScrim} aria-hidden="true" />
               <div className={styles.stackDim} aria-hidden="true" />
-              <span className={styles.chevron} aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="m9 6 6 6-6 6" />
-                </svg>
-              </span>
               {(() => {
                 const key = PROJECT_COMPANY[project.id]
                 const Logo = key && COMPANY_LOGO[key]

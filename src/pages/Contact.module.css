@@ -1,0 +1,86 @@
+.section {
+  width: 100%;
+  /* Same padding rhythm as the hero (below the nav), generous bottom. */
+  padding: calc(var(--header-height) + var(--space-128)) var(--page-gutter)
+    var(--space-164);
+  margin-top: calc(-1 * var(--header-height));
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: calc(var(--header-height) + var(--space-64)) var(--page-gutter)
+      var(--space-80);
+  }
+}
+
+.inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-24);
+}
+
+.headline {
+  margin: 0;
+  max-width: 16ch;
+}
+
+.lede {
+  margin: 0;
+  max-width: 52ch;
+}
+
+/* Frosted email card */
+.card {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-12);
+  margin-top: var(--space-16);
+  padding: var(--space-32);
+  border-radius: var(--radius-2xl);
+  max-width: 100%;
+}
+
+.cardLabel {
+  margin: 0;
+}
+
+/* Big, clickable email — the page's focal action */
+.email {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.1;
+  color: var(--text-color-primary);
+  text-decoration: none;
+  word-break: break-word;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+.email:hover {
+  color: var(--accent);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-24);
+  margin-top: var(--space-4);
+}
+
+.link {
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-snug);
+  color: var(--text-color-secondary);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+.link:hover {
+  color: var(--text-color-primary);
+}
+
+.meta {
+  margin-top: var(--space-8);
+}

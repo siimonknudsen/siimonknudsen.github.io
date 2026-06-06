@@ -52,6 +52,36 @@
   line-height: 1.375;
 }
 
+/* Chevron revealed on hover, centred on the row's right edge. */
+.workChevron {
+  margin-left: auto;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-self: center;
+  color: var(--text-color-tertiary);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity var(--dur-base) var(--ease-decelerate),
+    transform var(--dur-base) var(--ease-decelerate);
+}
+.workChevron svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+.workRow:hover .workChevron,
+.workRow:focus-visible .workChevron {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--text-color-primary);
+}
+@media (prefers-reduced-motion: reduce) {
+  .workChevron {
+    transition: opacity var(--dur-fast) linear;
+    transform: none;
+  }
+}
+
 /* ── Dropdown bodies ────────────────────────────────────────────── */
 
 .workGrid {

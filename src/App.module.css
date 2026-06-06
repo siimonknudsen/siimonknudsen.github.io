@@ -4,9 +4,21 @@
   flex-direction: column;
 }
 
+/* Global shader — fixed full-viewport, behind all content (content sits at
+   z-index 1+). Stays put while the page scrolls over it. */
+.fixedShader {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .main {
   flex: 1 1 auto;
   outline: none;
+  /* Above the fixed shader */
+  position: relative;
+  z-index: 1;
 }
 
 /* Curtain wipe — a calm full-screen panel in the PAGE background colour that

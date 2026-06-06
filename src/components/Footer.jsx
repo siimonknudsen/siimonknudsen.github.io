@@ -1,16 +1,13 @@
 import { Link } from 'react-router-dom'
 import Avatar from './Avatar'
 import Location from './Location'
-import HeroBackground from './HeroBackground'
 import { allProjects } from './projects/ProjectGrid'
 import styles from './Footer.module.css'
 
 function Footer() {
 
   return (
-    <footer className={`bg-surface-color-primary text-color-primary ${styles.footer}`}>
-      {/* Hero shader reused (no grid) as a living footer background */}
-      <HeroBackground showGrid={false} />
+    <footer className={`text-color-primary ${styles.footer}`}>
       <div className={styles.container}>
         {/* Four Columns */}
         <div className={styles.columns}>

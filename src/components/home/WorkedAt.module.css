@@ -9,10 +9,10 @@
   /* Balanced — roughly equal gap above (from the hero content) and below (to
      the projects). Tuned at desktop; the top gap floats slightly with viewport
      height because the hero centres its content. */
-  /* Equal, stable gaps: the hero is content-height (no trailing space), so a
-     plain 164px top margin matches the 164px bottom margin. */
-  margin-top: var(--space-164);
-  margin-bottom: var(--space-164);
+  /* The gap ABOVE comes from the hero's 128px bottom padding; match it below so
+     the gaps are equal and viewport-independent. */
+  margin-top: 0;
+  margin-bottom: var(--space-128);
 }
 
 .inner {

@@ -95,69 +95,12 @@
   text-decoration: none;
 }
 
-/* Chevron that fades in on hover, centred on the right edge. */
-.chevron {
-  position: absolute;
-  top: 50%;
-  right: var(--space-32);
-  z-index: 3;
-  color: #fff;
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(8px, -50%);
-  transition: opacity var(--dur-base) var(--ease-decelerate),
-    transform var(--dur-base) var(--ease-decelerate);
-}
-.chevron svg {
-  display: block;
-  width: 32px;
-  height: 32px;
-}
-.stackCard:hover .chevron {
-  opacity: 0.95;
-  transform: translate(0, -50%);
-}
-@media (prefers-reduced-motion: reduce) {
-  .chevron {
-    transition: opacity var(--dur-fast) linear;
-    transform: translate(0, -50%);
-  }
-}
 
 /* Full-bleed image — fills the card height */
 .stackMedia {
   position: relative;
   width: 100%;
   height: 100%;
-}
-
-/* Frosted text zone — a blurred COPY of the image, masked to the lower portion
-   and faded up. This is a static `filter: blur()` (rasterised once, then just
-   composited/scaled by the GPU), so unlike a live backdrop-filter it does NOT
-   re-blur every scroll frame — the cheap way to keep the frosted look while the
-   card scales. Slightly over-scaled so the blur's soft edges stay clipped by the
-   card's overflow:hidden instead of showing transparent fringes. */
-.stackBlur {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  /* Max blur 8px at the very bottom, ramping smoothly to 0 (sharp) by ~58% up.
-     One cached blur layer + a linear mask = a "blur gradient" look without the
-     cost of stacking several blur passes. */
-  filter: blur(8px);
-  transform: scale(1.05);
-  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 58%);
-  mask-image: linear-gradient(to top, #000 0%, transparent 58%);
-}
-.stackBlur > * {
-  width: 100%;
-  height: 100%;
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .stackBlur {
-    display: none;
-  }
 }
 
 /* Dark gradient wash behind the overlaid text — keeps text AA-legible over the
@@ -257,9 +200,6 @@
   }
   .stackLogo {
     padding: var(--space-48);
-  }
-  .chevron {
-    right: var(--space-48);
   }
 }
 

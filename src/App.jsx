@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import ProjectPage from './pages/ProjectPage'
 import Archive from './pages/Archive'
 import About from './pages/About'
+import Contact from './pages/Contact'
 import StyleGuide from './pages/StyleGuide'
 import Playground from './pages/Playground'
 import NotFound from './pages/NotFound'
@@ -11,6 +12,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import IntroLoader from './components/IntroLoader'
 import CookieConsent from './components/CookieConsent'
+import HeroBackground from './components/HeroBackground'
 import ScrollToTop from './components/animations/ScrollToTop'
 import { initConsent } from './lib/consent'
 import styles from './App.module.css'
@@ -20,6 +22,7 @@ const ROUTE_TITLES = {
   '/': null, // site default
   '/archive': 'Archive',
   '/about': 'About',
+  '/contact': 'Contact',
   '/style-guide': 'Design System',
   '/design-system': 'Design System',
   '/playground': 'Playground',
@@ -60,6 +63,7 @@ function AnimatedRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/archive" element={<Archive />} />
         <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/style-guide" element={<StyleGuide />} />
         <Route path="/design-system" element={<StyleGuide />} />
         <Route path="/playground" element={<Playground />} />
@@ -88,6 +92,11 @@ function App() {
           content. The nav no longer re-mounts on navigation, and there is one
           real <main> landmark + skip-link target for the whole site. */}
       <div className={`${styles.shell} bg-surface-color-primary text-color-primary`}>
+        {/* Global shader — fixed behind ALL content on every page, fills the
+            viewport and stays put while the page scrolls over it. */}
+        <div className={styles.fixedShader} aria-hidden="true">
+          <HeroBackground />
+        </div>
         <Header />
         <main id="main-content" tabIndex={-1} className={styles.main}>
           <AnimatedRoutes />

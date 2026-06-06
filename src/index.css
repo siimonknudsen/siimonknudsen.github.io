@@ -360,6 +360,10 @@ html:not(.dark) {
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* Automatic optical sizing — the browser maps Inter's opsz axis to each
+       rendered size (display gets the finer cut, body the sturdier one). This
+       is the go-to, better than a fixed opsz on every size. */
+    font-optical-sizing: auto;
   }
 
   h1, h2, h3, h4, h5, h6 {
