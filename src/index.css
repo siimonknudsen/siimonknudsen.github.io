@@ -168,7 +168,7 @@
      surface (blended soft-light) so panels read like real sandblasted / Apple
      "Liquid Glass", not just a flat blur. Unique filter id (gn) so it never
      clashes with the global film-grain (.grain uses id 'n'). */
-  --glass-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='gn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23gn)' opacity='0.55'/%3E%3C/svg%3E");
+  --glass-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='gn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23gn)' opacity='0.28'/%3E%3C/svg%3E");
 
   /* — Motion: durations — */
   --dur-instant: 100ms;
@@ -177,7 +177,7 @@
   --dur-base: 300ms;
   --dur-slow: 450ms;
   --dur-slower: 600ms;
-  --dur-reveal: 1200ms;  /* slow, relaxed scroll-reveal (Simon's calm pace — sits above the UI scale on purpose) */
+  --dur-reveal: 900ms;  /* slow, relaxed scroll-reveal (Simon's calm pace — sits above the UI scale on purpose) */
 
   /* — Motion: easing curves — */
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
@@ -1000,7 +1000,11 @@ html:not(.dark) .grain {
    has covered (~480ms), then fade + rise it in as the curtain lifts — so it
    reveals cleanly instead of flashing before/under the wipe. */
 .page-enter-nav {
-  animation: page-enter-nav 620ms var(--ease-decelerate) both;
+  /* `backwards` (not `both`): holds the hidden start-state during the curtain
+     delay, then reverts to NO transform once done. `both`/`forwards` would leave
+     a permanent translateY(0) — a transform that creates a containing block and
+     kills `backdrop-filter` on every glass surface on the page. */
+  animation: page-enter-nav 620ms var(--ease-decelerate) backwards;
   animation-delay: 480ms;
 }
 @keyframes page-enter {

@@ -543,7 +543,10 @@
   display: none;
   position: absolute;
   top: 100%;
-  transform: translateX(-50%);
+  /* No transform here: a transform (even translateX(-50%)) on this wrapper would
+     create a containing block that kills `backdrop-filter` on the glass panelCard
+     inside. So it's positioned by left-EDGE from JS (centred there) instead, and
+     open/close animates opacity only — no transform anywhere in the chain. */
   z-index: 50;
   /* Width fits the widest row of the current menu (no fixed px), capped so it
      never runs off-screen on small viewports. */
@@ -551,7 +554,7 @@
   max-width: min(92vw, 560px);
   /* `left` transition so the panel glides between triggers (Projects → Archive
      → …); width adapts to content instead of closing/reopening. */
-  transition: opacity 220ms ease-out, transform 220ms ease-out,
+  transition: opacity 220ms ease-out,
     left 420ms var(--ease-emphasized), width 420ms var(--ease-emphasized);
 }
 
@@ -564,13 +567,11 @@
 .panelOpen {
   opacity: 1;
   visibility: visible;
-  transform: translateX(-50%) translateY(0);
 }
 
 .panelClosed {
   opacity: 0;
   visibility: hidden;
-  transform: translateX(-50%) translateY(-4px);
   pointer-events: none;
 }
 

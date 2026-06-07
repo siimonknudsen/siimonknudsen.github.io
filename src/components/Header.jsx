@@ -295,10 +295,11 @@ function Header() {
     setMobileOpen(null)
   }
 
-  // Position the (shared) panel centred under its trigger, clamped on-screen.
-  // The panel now sizes to its content (width: max-content), so we measure its
-  // actual rendered width via panelRef when available; before the first render
-  // we fall back to the raw trigger centre (the CSS max-width keeps it on-screen).
+  // Position the (shared) panel under its trigger, clamped on-screen. Returns the
+  // panel's LEFT EDGE (centred on the trigger) — NOT a centre point — because the
+  // panel can't use `transform: translateX(-50%)` to self-centre (a transform on
+  // the wrapper would kill `backdrop-filter` on the glass panelCard inside). The
+  // panel sizes to its content, so we measure its rendered width via panelRef.
   const positionFor = (key) => {
     const wrap = wrapperRef.current
     const trig = triggerRefs.current[key]
@@ -307,13 +308,14 @@ function Header() {
     const tb = trig.getBoundingClientRect()
     const center = tb.left - wb.left + tb.width / 2
     const w = panelRef.current ? panelRef.current.offsetWidth : 0
+    // Pre-measure: approximate the left edge (re-clamped once width is known).
     if (!w) return Math.round(center)
     const pad = 8
-    const min = w / 2 + pad
-    const max = wb.width - w / 2 - pad
-    // When the wrapper is narrower than the panel, just centre it.
-    if (min > max) return Math.round(wb.width / 2)
-    return Math.round(Math.max(Math.min(center, max), min))
+    const left = center - w / 2
+    const max = wb.width - w - pad
+    // When the wrapper is narrower than the panel, centre it as best as possible.
+    if (pad > max) return Math.round((wb.width - w) / 2)
+    return Math.round(Math.max(Math.min(left, max), pad))
   }
 
   const openMenu = (key) => {
