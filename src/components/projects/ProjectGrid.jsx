@@ -110,7 +110,7 @@ export const archiveProjects = [
 
 export const allArchiveProjects = [...allProjects, ...archiveProjects]
 
-function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
+function ProjectGrid({ excludeProjectId = null, variant = 'grid' }) {
   const projects = excludeProjectId
     ? allProjects.filter((project) => project.id !== excludeProjectId)
     : allProjects
@@ -231,63 +231,26 @@ function ProjectGrid({ excludeProjectId = null, variant = 'bento' }) {
     )
   }
 
-  // Plain even 3-column grid — every project rendered as an equal ProjectCard
-  // (no oversized featured split). Reuses the bento .grid/.cell + .fx-stagger.
-  if (variant === 'grid') {
-    return (
-      <div className={`fx-stagger ${styles.grid}`}>
-        {projects.map((project, index) => (
-          <div
-            key={project.id}
-            className={styles.cell}
-            style={{ '--i': index }}
-          >
-            <ProjectCard
-              id={project.id}
-              title={project.title}
-              description={project.description}
-              tags={project.tags}
-              impact={project.impact}
-            />
-          </div>
-        ))}
-      </div>
-    )
-  }
-
-  const [featured, ...rest] = projects
-
+  // Plain even 3-column grid — every project rendered as an equal ProjectCard.
+  // The only two variants in use are 'stack' (handled above) and 'grid' (here,
+  // also the default).
   return (
-    <div className={styles.wrap}>
-      {featured && (
-        <ProjectCard
-          featured
-          id={featured.id}
-          title={featured.title}
-          description={featured.description}
-          tags={featured.tags}
-          impact={featured.impact}
-        />
-      )}
-      {rest.length > 0 && (
-        <div className={`fx-stagger ${styles.grid}`}>
-          {rest.map((project, index) => (
-            <div
-              key={project.id}
-              className={styles.cell}
-              style={{ '--i': index }}
-            >
-              <ProjectCard
-                id={project.id}
-                title={project.title}
-                description={project.description}
-                tags={project.tags}
-                impact={project.impact}
-              />
-            </div>
-          ))}
+    <div className={`fx-stagger ${styles.grid}`}>
+      {projects.map((project, index) => (
+        <div
+          key={project.id}
+          className={styles.cell}
+          style={{ '--i': index }}
+        >
+          <ProjectCard
+            id={project.id}
+            title={project.title}
+            description={project.description}
+            tags={project.tags}
+            impact={project.impact}
+          />
         </div>
-      )}
+      ))}
     </div>
   )
 }

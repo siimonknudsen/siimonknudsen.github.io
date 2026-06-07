@@ -188,13 +188,19 @@ function AboutMenu({ onNavigate }) {
   )
 }
 
-function ContactMenu({ onNavigate }) {
+function ContactMenu({ onNavigate, active }) {
   // Live local time, matching the header Location component ("HH:MM", 24h).
-  const [now, setNow] = useState(new Date())
+  const [now, setNow] = useState(() => new Date())
   useEffect(() => {
+    // Only tick while the panel is actually open — the body stays mounted
+    // (CSS-hidden) after close, so an always-on interval would re-render the
+    // menu every second forever in the background.
+    if (!active) return
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional one-shot refresh when the panel opens
+    setNow(new Date()) // refresh immediately on open
     const timer = setInterval(() => setNow(new Date()), 1000)
     return () => clearInterval(timer)
-  }, [])
+  }, [active])
   const time = now.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
@@ -563,7 +569,7 @@ function Header() {
                     the staggered item reveal. */}
                 {ActiveBody && (
                   <div key={menuKey} className={styles.menuContent}>
-                    <ActiveBody onNavigate={closeNow} />
+                    <ActiveBody onNavigate={closeNow} active={open} />
                   </div>
                 )}
               </div>

@@ -63,6 +63,10 @@ export default function ShaderBackground({ colors = DEFAULT_COLORS, speed = 0.06
   // Lets us repaint a single static frame when colours change (e.g. theme flip)
   // while the rAF loop is paused (reduced motion / offscreen).
   const drawRef = useRef(null)
+  // Re-upload the (otherwise static) colour/speed uniforms when those props
+  // change, without doing it every frame.
+  const applyColorsRef = useRef(null)
+  const applySpeedRef = useRef(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -142,8 +146,21 @@ export default function ShaderBackground({ colors = DEFAULT_COLORS, speed = 0.06
         canvas.height = height
       }
       gl.viewport(0, 0, width, height)
+      // u_resolution only changes on resize — upload here, not per frame.
+      gl.uniform2f(u.resolution, width, height)
     }
+
+    // Static uniforms — uploaded once at init and only when their source
+    // changes (resize / theme flip / speed prop), never inside the rAF loop.
+    function uploadSpeed() {
+      gl.uniform1f(u.speed, speedRef.current)
+    }
+    applyColorsRef.current = uploadColors
+    applySpeedRef.current = uploadSpeed
+
     resize()
+    uploadColors()
+    uploadSpeed()
 
     const start = performance.now()
 
@@ -154,16 +171,15 @@ export default function ShaderBackground({ colors = DEFAULT_COLORS, speed = 0.06
     let mTargetX = 0.5, mTargetY = 0.5
     let strength = 0, strengthTarget = 0
 
+    // Per-frame: only the genuinely time-varying uniforms (time + eased cursor).
+    // Colours / resolution / speed are uploaded out-of-band (see above).
     function renderFrame(nowMs) {
       mouseX += (mTargetX - mouseX) * 0.08
       mouseY += (mTargetY - mouseY) * 0.08
       strength += (strengthTarget - strength) * 0.06
-      gl.uniform2f(u.resolution, width, height)
       gl.uniform1f(u.time, (nowMs - start) / 1000)
-      gl.uniform1f(u.speed, speedRef.current)
       gl.uniform2f(u.mouse, mouseX, mouseY)
       gl.uniform1f(u.mouseStrength, strength)
-      uploadColors()
       gl.drawArrays(gl.TRIANGLES, 0, 3)
     }
     drawRef.current = () => renderFrame(performance.now())
@@ -172,9 +188,16 @@ export default function ShaderBackground({ colors = DEFAULT_COLORS, speed = 0.06
     let running = false
     let visibleOnScreen = true
 
+    // Cap to ~60fps. On 60Hz displays this is a no-op (the −2ms tolerance keeps
+    // every native tick); on 120Hz ProMotion it halves GPU/battery for a calm
+    // gradient that moves imperceptibly between 60 and 120fps.
+    const FRAME_INTERVAL = 1000 / 60 - 2
+    let lastFrameAt = 0
     function frame(now) {
-      renderFrame(now)
       rafId = requestAnimationFrame(frame)
+      if (now - lastFrameAt < FRAME_INTERVAL) return
+      lastFrameAt = now
+      renderFrame(now)
     }
     function startLoop() {
       if (running || reduceMotion) return
@@ -196,7 +219,9 @@ export default function ShaderBackground({ colors = DEFAULT_COLORS, speed = 0.06
 
     const ro = new ResizeObserver(() => {
       resize()
-      renderFrame(performance.now())
+      // Only force a paint when the loop is paused; otherwise the next rAF tick
+      // repaints anyway (avoids a redundant synchronous render mid-resize).
+      if (!running) renderFrame(performance.now())
     })
     ro.observe(container)
 
@@ -245,10 +270,19 @@ export default function ShaderBackground({ colors = DEFAULT_COLORS, speed = 0.06
     }
   }, [])
 
-  // Repaint a static frame when colours change while paused (theme flip).
+  // Re-upload colour uniforms on theme flip, then repaint (covers the paused
+  // case — reduced motion / offscreen — where no rAF tick would otherwise run).
   useEffect(() => {
+    applyColorsRef.current?.()
     drawRef.current?.()
   }, [colors])
+
+  // Speed is effectively constant in this app, but keep the uniform in sync if
+  // the prop ever changes — without paying for it every frame.
+  useEffect(() => {
+    applySpeedRef.current?.()
+    drawRef.current?.()
+  }, [speed])
 
   if (failed) {
     return <div className={`shader-bg-fallback ${className}`.trim()} style={style} aria-hidden="true" />

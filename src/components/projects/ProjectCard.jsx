@@ -5,14 +5,14 @@ import Media from '../Media'
 import useSpotlight from '../../hooks/useSpotlight'
 import styles from './ProjectCard.module.css'
 
-function ProjectCard({ id, title, description, tags = [], impact, featured = false }) {
+function ProjectCard({ id, title, description, tags = [], impact }) {
   const onSpotlight = useSpotlight()
   return (
     <Reveal preset="fade-up" className={styles.revealWrap}>
       <Link
         to={`/project/${id}`}
         onMouseMove={onSpotlight}
-        className={`group glass-panel ${styles.card} ${featured ? styles.featured : ''}`}
+        className={`group glass-panel ${styles.card}`}
       >
         {/* Cursor spotlight (specular sheen) — shared global utility */}
         <span aria-hidden="true" className="fx-spotlight" />

@@ -487,38 +487,6 @@
   font-size: 11px;
 }
 
-.transparentGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-24);
-}
-@media (min-width: 640px) {
-  .transparentGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.transparentPanel {
-  margin-top: var(--space-16);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 1px solid var(--border-color-secondary);
-}
-
-.transparentRow {
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-}
-
-.transparentCell {
-  height: var(--space-48);
-}
-
-.transparentCaption {
-  margin-top: var(--space-8);
-  display: block;
-}
-
 .threeCol {
   display: grid;
   grid-template-columns: 1fr;

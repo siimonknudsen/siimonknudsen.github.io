@@ -1,31 +1,27 @@
 /**
  * PROJECT CONTENT DATA
- * 
- * NOTE: Projects should now use JSON files in /public/projects/{project-id}/content.json
- * This file is kept for backward compatibility and default content.
- * 
+ *
+ * Projects load from JSON at /public/projects/{project-id}/content.json
+ * (see projectContentLoader.js). This file only holds the default/fallback
+ * content used when a project has no content.json.
+ *
  * To add content for a new project:
- * 1. Find your project ID from ProjectGrid.jsx (e.g., 'zliide-app', 'apple-home-app')
- * 2. Create a folder: /public/projects/{project-id}/
- * 3. Create content.json in that folder with the structure:
+ * 1. Find your project ID in ProjectGrid.jsx (e.g. 'zliide-app', 'apple-home-app')
+ * 2. Create /public/projects/{project-id}/ and a content.json with FLAT fields
+ *    (the loader reads these top-level keys — there is no "metadata" wrapper):
  *    {
- *      "metadata": { "client": "...", "year": "...", "type": "...", "responsibilities": [...] },
- *      "challenge": "...",
- *      "solution": "...",
+ *      "title": "...", "description": "...",
+ *      "role": "...", "client": "...", "team": "...", "timeline": "...",
+ *      "problem": "...", "solution": "...",
  *      "heroImage": "hero.jpg",
- *      "content": [
- *        { "type": "image", "src": "image1.jpg" },
- *        { "type": "text", "content": "Text content..." }
- *      ]
+ *      "process":  [{ "step": "...", "body": "...", "image": "step1.jpg" }],
+ *      "outcomes": [{ "metric": "...", "label": "...", "note": "..." }],
+ *      "content":  [{ "type": "image", "src": "image1.jpg" },
+ *                   { "type": "text",  "content": "..." }],
+ *      "appScreens": [{ "src": "screen1.png" }]
  *    }
- * 4. Upload images to the project folder
+ * 3. Upload images into the project folder (paths resolve relative to it).
  */
-
-// Legacy content - kept for backward compatibility
-// New projects should use JSON files in /public/projects/{project-id}/content.json
-export const projectContent = {
-
-}
 
 /**
  * Default content used when a project doesn't have a content.json file

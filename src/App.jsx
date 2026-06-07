@@ -1,13 +1,18 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
-import ProjectPage from './pages/ProjectPage'
-import Archive from './pages/Archive'
-import About from './pages/About'
-import Contact from './pages/Contact'
-import StyleGuide from './pages/StyleGuide'
-import Playground from './pages/Playground'
-import NotFound from './pages/NotFound'
+// Non-landing routes are code-split: each becomes its own chunk loaded on first
+// visit, so the heavy internal pages (StyleGuide/Playground) no longer ship in
+// the initial bundle. Home stays eager (it's the landing page). The global
+// shader/header/footer remain mounted during navigation, so a null Suspense
+// fallback is seamless (no layout flash).
+const ProjectPage = lazy(() => import('./pages/ProjectPage'))
+const Archive = lazy(() => import('./pages/Archive'))
+const About = lazy(() => import('./pages/About'))
+const Contact = lazy(() => import('./pages/Contact'))
+const StyleGuide = lazy(() => import('./pages/StyleGuide'))
+const Playground = lazy(() => import('./pages/Playground'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 import Header from './components/Header'
 import Footer from './components/Footer'
 import IntroLoader from './components/IntroLoader'
@@ -67,6 +72,7 @@ function AnimatedRoutes() {
       )}
       {/* eslint-disable-next-line react-hooks/refs */}
       <div key={location.pathname} className={playWipe ? 'page-enter-nav' : 'page-enter'}>
+      <Suspense fallback={null}>
       <Routes location={location}>
         <Route path="/" element={<Home />} />
         <Route path="/archive" element={<Archive />} />
@@ -78,6 +84,7 @@ function AnimatedRoutes() {
         <Route path="/project/:id" element={<ProjectPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </Suspense>
       </div>
     </>
   )
