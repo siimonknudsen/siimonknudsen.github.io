@@ -1,0 +1,36 @@
+.spark {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+/* Line draws itself in: pathLength="1" makes the dash math resolution-free. */
+.line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset var(--dur-slower) var(--ease-decelerate);
+}
+.line[data-active] {
+  stroke-dashoffset: 0;
+}
+
+/* Area fades up just after the line begins (layered, calm — not simultaneous). */
+.area {
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-standard) 120ms;
+}
+.area[data-active] {
+  opacity: 1;
+}
+
+/* Reduced motion: show the final state instantly (no draw, no fade). */
+@media (prefers-reduced-motion: reduce) {
+  .line {
+    transition: none;
+    stroke-dashoffset: 0;
+  }
+  .area {
+    transition: none;
+    opacity: 1;
+  }
+}

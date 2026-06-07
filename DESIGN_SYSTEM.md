@@ -76,8 +76,21 @@ Sources: [M3 tokens](https://m3.material.io/foundations/design-tokens) ·
 Plus a `*-contrast-*` set (opposite-mode surfaces/text) and the glass set (see §6).
 Usage: `bg-surface-color-secondary`, `text-color-secondary`, `border-color-on-primary`.
 
+**Tonal elevation ramp** (`--surface-1..4`, utilities `.surface-1..4`) — depth from a
+lightening/deepening *tone*, **not** a shadow or border (Material 3 / Linear; see
+DESIGN_KNOWLEDGE §6.10). Higher step = more lifted. Reserve shadow/glow/glass for the
+*topmost* layer only — this is the primary "depth from light, no boxes" mechanism.
+
+| Step | Light | Dark |
+|---|---|---|
+| `surface-1` | neutral-0 | neutral-950 |
+| `surface-2` | neutral-50 | neutral-900 |
+| `surface-3` | neutral-100 | neutral-850 |
+| `surface-4` | neutral-200 | neutral-800 |
+
 **Accent** — the single owned brand colour, **themed**: `--accent` = `brand-500`
-(dark) / `brand-600` (light) for contrast, with `--accent-soft` (tint) and
+(dark) / `brand-600` (light) for contrast, with `--accent-soft` (tint, **OKLCH-derived
+from `--accent`** via `color-mix` so it tracks the themed accent) and
 `--accent-contrast` (near-black text on the orange fill, keeping labels ≥4.5:1).
 Use `bg-accent`, `text-accent`, `bg-accent-soft`, `border-accent`. **All colour beyond
 this comes from project imagery** — the chrome stays monochrome + accent. (Switching
@@ -311,12 +324,37 @@ Status of current components and the highest-value upgrades toward the 2026 look
 | **Hero background** | ✅ Own WebGL shader (`ShaderBackground`) + CSS fallback; **cursor-reactive** (swirl + bloom follows pointer, reduced-motion-safe) | — |
 | **ThemeToggle** | ✅ Segmented control + View-Transitions reveal | — |
 | **Section** | ✅ Fine | Optional `size` (rhythm) prop |
+| **Charts / KPI kit** (`components/charts/`) | ✅ `StatCard` · `StatGrid` · `Sparkline` · `TrendChart` — hand-rolled SVG, **zero deps**, token-driven, glass surfaces, calm draw-in | Optional: hover tooltip w/ bisector, bar chart, `<details>` data-table fallback |
 
 **Shipped:** Media · Button variants · cards (glass + hover) · type migration · hero
 shader (gradient-grid mesh) · animated theme switch · full colour tokenisation ·
 4·8·12·16 radius scale · ImageGrid lightbox · route transitions · **feedback/status
 colours · elevation scale · z-index scale · opacity/border-width/focus tokens · mono
-+ semibold/bold weights · stagger tokens**.
++ semibold/bold weights · stagger tokens** · **charts/KPI kit**.
+
+### 9.1 Charts & KPI kit (`src/components/charts/`)
+
+Hand-rolled SVG, **zero dependencies** (no Recharts/d3/Tremor) — see DESIGN_KNOWLEDGE §6.10
+for the research rationale. Editorial/minimal: no chart junk (no gridlines, boxed plots
+or legends), accent gradients fading to transparent (depth from light; the glass frosts
+through), direct end-labels over legends, calm draw-in motion that **snaps to final state
+under reduced motion**, `tabular-nums` on every figure.
+
+- **`StatCard`** — one KPI on a `.glass` surface (spotlight glow, no border). Anatomy: label
+  → big value (calm count-up via `useCountUp`) → delta (arrow + sign, **never colour-alone**)
+  → optional sparkline. `accent` prop reserves the warm accent for ONE hero metric per view.
+- **`StatGrid`** — responsive `auto-fit` layout (wraps, never squishes), injects a stagger
+  `delay` per card. Keep a row to 1–4 cards.
+- **`Sparkline`** — minimal inline trend (no axes); accent area gradient → transparent;
+  responsive via `vector-effect: non-scaling-stroke`; draws in via `pathLength="1"`.
+- **`TrendChart`** — single-series line/area with a faint baseline hairline + end-of-line
+  dot + direct label. **Interactive**: hover / touch (or focus + ←/→, Home/End, Esc) moves a
+  vertical guide + highlighted point with a value tooltip (`labels` + `format` props); the
+  active point is announced via `aria-live`. `role="img"` + `aria-label` takeaway. Tooltip is
+  a solid surface (not glass) to avoid glass-on-glass over a panel.
+
+`useCountUp(target, active)` (in `src/hooks/`) eases 0→target on reveal (easeOutCubic, no
+overshoot); reduced motion shows the target directly. Demo lives on `/style-guide#data`.
 
 ---
 

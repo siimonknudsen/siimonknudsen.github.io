@@ -1,0 +1,54 @@
+.card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-24);
+  border-radius: var(--radius-md);
+  min-width: 0; /* let it shrink inside an auto-fit grid without overflow */
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-12);
+}
+
+.label {
+  /* type-overline is uppercase + tracked; keep it quiet */
+  min-width: 0;
+}
+
+.value {
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  /* Engineering-grade figures: equal-width digits so values align across a row
+     and don't jitter during the count-up. */
+  font-variant-numeric: tabular-nums;
+  margin-top: var(--space-4);
+}
+
+/* Delta: direction is carried by the arrow + sign (a11y — never colour-alone).
+   Colour is a quiet reinforcement in the neutral ramp by default; the accent is
+   reserved for the value/sparkline, not sprayed on every delta. */
+.delta {
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-color-secondary);
+}
+.delta[data-dir='up'] {
+  color: var(--text-color-primary);
+}
+.delta[data-dir='down'] {
+  color: var(--text-color-tertiary);
+}
+
+.deltaLabel {
+  margin-top: calc(var(--space-2) * -1);
+}
+
+.spark {
+  margin-top: var(--space-8);
+}

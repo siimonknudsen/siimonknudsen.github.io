@@ -172,6 +172,7 @@
   --dur-base: 300ms;
   --dur-slow: 450ms;
   --dur-slower: 600ms;
+  --dur-reveal: 820ms;  /* slow, relaxed scroll-reveal (Simon's calm pace — sits above the UI scale on purpose) */
 
   /* — Motion: easing curves — */
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
@@ -181,13 +182,13 @@
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* — Motion: stagger / delay steps (for sequenced reveals) — */
-  --stagger-1: 60ms;
-  --stagger-2: 120ms;
-  --stagger-3: 180ms;
-  --stagger-4: 240ms;
+  --stagger-1: 90ms;
+  --stagger-2: 180ms;
+  --stagger-3: 270ms;
+  --stagger-4: 360ms;
 
   /* — Motion: semantic roles (presets reference these, not raw values) — */
-  --motion-reveal-dur: var(--dur-slow);     /* scroll reveals */
+  --motion-reveal-dur: var(--dur-reveal);   /* scroll reveals (slow + relaxed) */
   --motion-reveal-ease: var(--ease-decelerate);
   --motion-ui-dur: var(--dur-fast);         /* hover / press / UI */
   --motion-ui-ease: var(--ease-standard);
@@ -195,9 +196,9 @@
   --motion-page-ease: var(--ease-decelerate);
 
   /* — Motion: movement distances / amounts (tokenised) — */
-  --motion-shift-sm: 8px;
-  --motion-shift-md: 16px;
-  --motion-shift-lg: 24px;
+  --motion-shift-sm: 14px;
+  --motion-shift-md: 28px;
+  --motion-shift-lg: 40px;
   --motion-scale-in: 0.96;
   --motion-lift: -4px;
   --motion-press: 0.97;
@@ -245,6 +246,14 @@ html.dark {
   --surface-color-primary: var(--neutral-1000);
   --surface-color-secondary: var(--neutral-900);
   --surface-color-tertiary: var(--neutral-800);
+  /* Tonal elevation ramp (Material 3 / Linear) — depth from a lightening tone,
+     NOT a heavier shadow or a border. Higher step = closer to the viewer. On
+     dark, "raised" lifts toward grey from the near-black base. Reserve shadow /
+     glow / glass for only the topmost layer; let tone carry the rest. */
+  --surface-1: var(--neutral-950); /* #0f0f0f — barely lifted */
+  --surface-2: var(--neutral-900); /* #1a1a1a */
+  --surface-3: var(--neutral-850); /* #1e1e1e */
+  --surface-4: var(--neutral-800); /* #2d2d2d — highest emphasis */
   --text-color-primary: var(--neutral-0);
   --text-color-secondary: var(--neutral-400);
   --text-color-tertiary: var(--neutral-300);
@@ -288,7 +297,10 @@ html.dark {
   --feedback-error-soft: var(--feedback-danger-soft);
   /* Brand accent (themed) — brand-500 reads vivid on dark surfaces */
   --accent: var(--brand-500);
-  --accent-soft: rgba(242, 106, 46, 0.16);
+  /* Derived in OKLCH from the themed --accent so soft tints track the accent
+     automatically (and stay perceptually uniform) instead of a hardcoded rgba
+     that drifts when --accent changes per theme. */
+  --accent-soft: color-mix(in oklch, var(--accent) 16%, transparent);
   --accent-contrast: var(--neutral-1000);
   /* Action — interactive / secondary-action colour (indigo), distinct from brand */
   --action: var(--indigo-500);
@@ -303,6 +315,13 @@ html:not(.dark) {
   --surface-color-primary: var(--neutral-0);
   --surface-color-secondary: var(--neutral-100);
   --surface-color-tertiary: var(--neutral-200);
+  /* Tonal elevation ramp (Material 3 / Linear) — on light, "raised" deepens
+     subtly off pure white. Gentle steps so raised surfaces read as elevation,
+     not dirt. Reserve shadow / glow / glass for only the topmost layer. */
+  --surface-1: var(--neutral-0);   /* #ffffff — flush with page */
+  --surface-2: var(--neutral-50);  /* #fafafa */
+  --surface-3: var(--neutral-100); /* #f5f5f5 */
+  --surface-4: var(--neutral-200); /* #e5e5e5 — highest emphasis */
   --text-color-primary: var(--neutral-1000);
   --text-color-secondary: var(--neutral-600);
   --text-color-tertiary: var(--neutral-500);
@@ -325,7 +344,7 @@ html:not(.dark) {
   --glass-shadow: 0 8px 32px rgba(17, 17, 17, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.80), inset 0 -1px 0 rgba(17, 17, 17, 0.06);
   --glass-shadow-lg: 0 20px 60px rgba(17, 17, 17, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.90), inset 0 -1px 0 rgba(17, 17, 17, 0.08);
   --glass-item-hover: var(--transparent-dark-4);
-  --glass-item-active: var(--transparent-dark-8);
+  --glass-item-active: var(--transparent-dark-12);
   --glass-solid: #f4f4f5;
   /* Cursor-spotlight glow (light = soft warm-accent tint; a white glow would be
      invisible on a light card) */
@@ -350,7 +369,9 @@ html:not(.dark) {
   /* Brand accent (themed) — brand-600 for stronger contrast on light surfaces;
      black contrast text keeps button labels ≥ 4.5:1 on the orange fill. */
   --accent: var(--brand-600);
-  --accent-soft: rgba(242, 106, 46, 0.12);
+  /* OKLCH-derived from --accent (now brand-600 in light) so the soft tint
+     matches the themed accent — was previously pinned to brand-500. */
+  --accent-soft: color-mix(in oklch, var(--accent) 12%, transparent);
   --accent-contrast: var(--neutral-1000);
   /* Action — interactive / secondary-action colour (indigo), deeper on light */
   --action: var(--indigo-600);
@@ -448,6 +469,7 @@ html:not(.dark) {
     font-weight: var(--weight-medium);
     line-height: 1.1;
     letter-spacing: var(--tracking-tighter);
+    text-wrap: balance; /* even line lengths; no orphan word on big statement type */
   }
   @media (min-width: 640px) {
     .type-display {
@@ -466,6 +488,7 @@ html:not(.dark) {
     font-weight: var(--weight-medium);
     line-height: 1.15;
     letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
   }
   @media (min-width: 640px) {
     .type-display-sm {
@@ -484,42 +507,49 @@ html:not(.dark) {
     font-weight: var(--weight-medium);
     line-height: 1.1;
     letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
   }
   .type-heading-sm {
     font-size: var(--text-2xl);
     font-weight: var(--weight-medium);
     line-height: 1.15;
     letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
   }
   .type-title {
     font-size: var(--text-xl);
     font-weight: var(--weight-medium);
     line-height: 1.2;
     letter-spacing: var(--tracking-snug);
+    text-wrap: balance;
   }
   .type-subtitle {
     font-size: var(--text-lg);
     font-weight: var(--weight-medium);
     line-height: 1.3;
     letter-spacing: var(--tracking-snug);
+    text-wrap: pretty; /* lead text can run long → prevent a lone last-line word */
   }
   .type-body-lg {
     font-size: var(--text-lg);
     font-weight: var(--weight-regular);
     line-height: 1.5;
     letter-spacing: var(--tracking-snug);
+    text-wrap: pretty;
   }
   .type-body {
     font-size: var(--text-base);
     font-weight: var(--weight-regular);
     line-height: 1.5;
     letter-spacing: var(--tracking-snug);
+    text-wrap: pretty;
   }
   .type-body-sm {
     font-size: var(--text-sm);
     font-weight: var(--weight-regular);
     line-height: 1.45;
     letter-spacing: var(--tracking-base);
+    text-wrap: pretty;
   }
   .type-label {
     font-size: var(--text-sm);
@@ -549,6 +579,17 @@ html:not(.dark) {
   }
 }
 
+/* Optical label centering — trims the half-leading above caps / below the
+   baseline so a button's text sits truly centered in its padding box (fixes the
+   classic "label looks 1px high"). Progressive: only applies where supported
+   (Chrome 133+ / Safari 18.2+), a harmless no-op elsewhere. */
+@supports (text-box-trim: trim-both) {
+  button {
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+  }
+}
+
 /* ── Semantic colour utilities (consumed by components) ─────────── */
 @layer utilities {
   .bg-surface-color-primary {
@@ -562,6 +603,13 @@ html:not(.dark) {
   .bg-surface-color-tertiary {
     background-color: var(--surface-color-tertiary) !important;
   }
+
+  /* Tonal elevation ramp — use these for raised surfaces instead of stacking a
+     shadow/border. Higher number = more lifted. (Depth from light, not boxes.) */
+  .surface-1 { background-color: var(--surface-1) !important; }
+  .surface-2 { background-color: var(--surface-2) !important; }
+  .surface-3 { background-color: var(--surface-3) !important; }
+  .surface-4 { background-color: var(--surface-4) !important; }
 
   .text-color-primary {
     color: var(--text-color-primary) !important;
@@ -668,6 +716,13 @@ html:not(.dark) {
 
   .glass-item:hover {
     background-color: var(--glass-item-hover);
+  }
+
+  /* Keyboard focus on a glass row — soft accent glow, not a hard outline. */
+  .glass-item:focus-visible {
+    outline: none;
+    background-color: var(--glass-item-active);
+    box-shadow: 0 0 0 2px color-mix(in oklch, var(--accent) 50%, transparent);
   }
 
   .glass-item-active {
@@ -798,6 +853,14 @@ html:not(.dark) {
   box-shadow: 0 0 0 var(--focus-ring-offset) var(--surface-color-primary),
     0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) var(--focus-ring-color);
   border-radius: var(--radius-md);
+}
+
+/* Glass-native focus ring — a soft accent glow (no hard surface-gap ring), for
+   interactive elements sitting ON glass/translucent surfaces. Theme-aware. */
+.focus-ring-glass:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--glass-border),
+    0 0 0 3px color-mix(in oklch, var(--accent) 45%, transparent);
 }
 
 /* Skip-to-content link — visible only on keyboard focus (a11y) */

@@ -423,6 +423,28 @@ A one-paragraph north star to sanity-check any new design against:
 
 > Corollary: when reviewing or building, walk the tiers top-down. A page with perfect type + spacing + imagery and *zero* motion is already ~beautiful; the reverse (lots of motion, weak type) never is.
 
+### 6.10 Top design-systems study (2025–26) — best practices & what we took
+> A fan-out research pass across the leading systems, filtered through Simon's glass/editorial DNA.
+> Headline finding: **our system already aligns with where the best systems landed** — depth from
+> light, no hard borders, tight per-role tracking, calm motion, small static glass with a11y
+> fallbacks. The genuinely-new ideas are below; the rest validated what we already do.
+
+**Per-system, the transferable principles:**
+- **Apple HIG + Liquid Glass (2025)** — *one glass sheet per view, never glass-on-glass*; translucency is a depth cue (needs something worth refracting behind it, else use a flat tonal fill); guard legibility on the *composited* result (≤~20 blur, ≥4.5:1 after blur); adaptive "vibrancy" tokens for on-glass text (our `--text-on-media`/`--accent-on-media`); honour Reduce Transparency / Increase Contrast / Reduce Motion. Validates our entire "depth from light, never lines" rule at OS level.
+- **Material 3 (2025)** — **tonal surface ramp**: elevation via a lightening *tone*, not a heavier shadow/border (7 steps `surfaceContainerLowest→Highest`). Split motion into *spatial* (slight overshoot allowed) vs *effects* (opacity/colour = **zero overshoot**). We're a "Standard/calm" scheme: low stiffness, high damping, longer durations.
+- **Vercel Geist + Linear** — encode size/role into token names; **bundle each type role** as size+leading+tracking+weight (we do this); **tighten tracking as size grows** (we do this — §6.8); "structure felt, not seen" (whitespace + tone over dividers); **derive accent in OKLCH/LCH** so the warm orange behaves identically across themes; dark mode is infrastructure — needs ≥4 real surface elevation levels, not a flip.
+- **Stripe / Apple marketing** — **one signature atmospheric effect, used once** (our hero shader); scroll motion advances a narrative, stays slow; big type carries the message, gradient/colour only *guides the eye*.
+- **IBM Carbon / Shopify Polaris** — primitive → semantic → (optional) component token tiers; strict naming grammar (`group-element-role-state`); spacing = base × multiplier in the name; themes = an alternate semantic layer over shared primitives; escape hatch = use a primitive, **never invent a one-off hex**.
+
+**What we applied (2026-06-07), all additive/low-risk:**
+1. **Tonal surface ramp** — added `--surface-1..4` + `.surface-1..4` per theme (M3/Linear). Depth from a lightening/deepening tone; reserve shadow/glow/glass for the *topmost* layer only. The cleanest expression yet of "depth from light, never boxes."
+2. **OKLCH-derived `--accent-soft`** — was a hardcoded `brand-500` rgba even in light mode (where `--accent` is `brand-600`) → now `color-mix(in oklch, var(--accent) N%, transparent)` so the soft tint tracks the themed accent and stays perceptually uniform.
+3. **Type micro-craft** — `text-wrap: balance` on display/heading/title roles, `pretty` on subtitle/body roles, `text-box-trim: trim-both` on buttons (`@supports`-guarded). This *implements §7.1's documented craft* that wasn't yet wired into the role classes.
+
+**Already in place (validated, no change needed):** global film-grain overlay (`.grain`, anti-banding), on-media text scrim (`.stackScrim`), `font-optical-sizing: auto`, `prefers-reduced-transparency` / `prefers-contrast` / `prefers-reduced-motion` fallbacks, `saturate()` behind every blur.
+
+**Sources:** Apple HIG Materials & Liquid Glass (developer.apple.com, WWDC25 #219) · m3.material.io (motion/expressive) · vercel.com/geist · linear.app/now (design refresh) · Josh Comeau *backdrop-filter* · web.dev/backdrop-filter · APCA (git.apcacontrast.com) · Carbon & Polaris token guides.
+
 ---
 
 ## 7. Craft & mastery — the beauty layer
