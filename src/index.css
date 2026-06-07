@@ -1,4 +1,17 @@
 /* ============================================================
+   WEBFONTS
+   ============================================================ */
+/* BDO Grotesk — LCTipografi, SIL OFL 1.1 (self-hosted). Variable
+   weight axis 300–900. The site's primary typeface. */
+@font-face {
+  font-family: 'BDO Grotesk';
+  src: url('/fonts/BDOGrotesk-VF.woff2') format('woff2');
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
    DESIGN TOKENS — PRIMITIVES
    Raw, theme-independent values. Do NOT use these directly in
    components; the SEMANTIC tokens below reference them.
@@ -75,7 +88,7 @@
   --accent-on-media: #ff9a6a; /* lightened brand orange for AA legibility on photos */
 
   /* — Typography — */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-sans: 'BDO Grotesk', system-ui, -apple-system, sans-serif;
   --font-mono: 'SF Mono', ui-monospace, 'JetBrains Mono', Menlo, Consolas, monospace;
   --text-2xs: 10px;
   --text-xs: 12px;
@@ -376,9 +389,9 @@ html:not(.dark) {
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    /* Automatic optical sizing — the browser maps Inter's opsz axis to each
-       rendered size (display gets the finer cut, body the sturdier one). This
-       is the go-to, better than a fixed opsz on every size. */
+    /* Automatic optical sizing — honoured if the active font exposes an opsz
+       axis. BDO Grotesk is weight-only (no opsz), so this is a harmless no-op
+       today; kept so any future opsz-capable font is mapped per size. */
     font-optical-sizing: auto;
   }
 

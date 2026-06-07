@@ -185,21 +185,12 @@
 /* Grids */
 .skillsGrid {
   display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: var(--space-8);
 }
 
-@media (min-width: 768px) {
-  .skillsGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1024px) {
-  .skillsGrid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
+/* (Client/brand logo tiles now get their frosted-glass surface directly on
+   LogoGrid's `.cell` — see LogoGrid.module.css.) */
 
 .testimonialsGrid {
   display: grid;

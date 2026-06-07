@@ -471,7 +471,10 @@
   bottom: 0;
   left: 0;
   border-radius: var(--radius-md);
+  /* Transparent (theme-aware) glass tint + blur, not a solid fill. */
   background: var(--glass-item-active);
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
   z-index: 0;
   pointer-events: none;
   transition: transform 380ms var(--ease-emphasized),
@@ -739,6 +742,9 @@
   z-index: 40;
   border-radius: var(--radius-xl);
   padding: var(--space-8);
+  /* Scroll if expanded accordions exceed the viewport. */
+  max-height: calc(100vh - 84px - var(--space-16));
+  overflow-y: auto;
 }
 
 @media (min-width: 768px) {
@@ -760,6 +766,61 @@
 
 .mobileItemButton {
   text-align: left;
+}
+
+/* ── Mobile accordion (reveals each page's dropdown cards) ───────── */
+.mobileSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileAccordionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font: inherit;
+  font-size: var(--text-base);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.mobileChevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  transition: transform var(--dur-base) var(--ease-standard);
+}
+.mobileChevronOpen {
+  transform: rotate(180deg);
+}
+
+/* Accordion body: animate height via the grid-rows 0fr→1fr technique
+   (smooth, content-height-aware, no JS measuring). */
+.mobilePanel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-base) var(--ease-decelerate);
+}
+.mobilePanelOpen {
+  grid-template-rows: 1fr;
+}
+.mobilePanelInner {
+  overflow: hidden;
+  min-height: 0;
+}
+.mobilePanelBody {
+  padding: var(--space-4) var(--space-4) var(--space-12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobilePanel {
+    transition: none;
+  }
+  .mobileChevron {
+    transition: none;
+  }
 }
 
 .mobileLocation {

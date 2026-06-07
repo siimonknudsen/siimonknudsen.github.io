@@ -72,11 +72,17 @@
   gap: var(--space-16);
 }
 
-/* Logo cell */
+/* Logo cell — frosted glass tile (theme-aware, real backdrop blur). Static
+   element, so the blur is safe (no scrolling/scaling ancestor). */
 .cell {
   width: 100%;
   aspect-ratio: 1 / 1;
   overflow: hidden;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
 }
 
 .logo {

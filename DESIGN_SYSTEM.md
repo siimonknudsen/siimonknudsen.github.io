@@ -130,7 +130,7 @@ fine-tune with `leading-*` only when needed.
 | `.type-caption` | 12 · Regular | meta, captions |
 | `.type-overline` | 12 · Medium · uppercase | eyebrows / kickers |
 
-**Underlying primitives:** families Inter (`--font-sans`) + a monospace stack
+**Underlying primitives:** families BDO Grotesk (`--font-sans`, self-hosted variable, wght 300–900, SIL OFL 1.1) + a monospace stack
 (`--font-mono` / Tailwind `font-mono`, used for token labels & tabular meta);
 weights regular 400 / medium 500 / semibold 600 / bold 700 (`--weight-*`, Tailwind
 `font-regular/medium/semibold/bold`); the size scale **10 → 48**
@@ -164,9 +164,13 @@ Conventions: card padding 24 (`p-6`), section rhythm 80 (`mb-20`), tight stacks 
 
 ## 5. Radius, elevation, layering & focus
 
-- **Radius:** a tight scale — `--radius-sm 4 · md 8 · lg 12 · xl 16`. **16 is the max**
-  for cards/panels/bars; **buttons use 8px**. `--radius-pill` (full) is reserved for
-  **icon buttons and circular elements only** (avatars, theme toggle, hamburger).
+- **Radius (tight 2026 cap):** `--radius-sm 4 · md 8`; **`lg/xl/2xl/3xl` are all clamped
+  to 8px** — cards, panels, bars, images cap at **8px** (use sm/md for new work).
+  `--radius-pill` (full) is for **circular elements** (avatars, theme toggle, hamburger,
+  the floating nav bar) **and chips/tags** (see below).
+- **Chips / tags** are **glass pills**: `--radius-pill`, translucent `--glass-bg` fill +
+  `backdrop-filter` blur (`--glass-blur-sm`) + `--glass-border` hairline — theme-aware,
+  same frosted material as the rest of the glass system (not a flat solid fill).
 - **Cards** (project, testimonial, skill, archive) use the **`.glass-panel`** frosted
   surface + hover lift; project images zoom on hover.
 

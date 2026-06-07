@@ -61,7 +61,7 @@ const neutrals = [
   ['1000', '#000000'],
 ]
 
-// Full character set (Inter)
+// Full character set (BDO Grotesk)
 const GLYPHS = [
   ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
   ...'abcdefghijklmnopqrstuvwxyz',
@@ -285,7 +285,7 @@ function StyleGuide() {
               materials, and components that keep everything consistent across light and dark.
             </p>
             <div className={styles.coverTags}>
-              {['Inter', 'Light / Dark', 'Frosted glass', 'Design tokens'].map((t) => (
+              {['BDO Grotesk', 'Light / Dark', 'Frosted glass', 'Design tokens'].map((t) => (
                 <span
                   key={t}
                   className={`glass font-mono text-color-secondary ${styles.coverTag}`}
@@ -344,7 +344,7 @@ function StyleGuide() {
                     Aa
                   </span>
                   <div className={styles.typeAaRow}>
-                    <span className={`text-color-primary ${styles.typeInterLabel}`}>Inter</span>
+                    <span className={`text-color-primary ${styles.typeInterLabel}`}>BDO Grotesk</span>
                     <MonoMeta>Aa–Zz · 0–9</MonoMeta>
                   </div>
                 </div>
@@ -385,7 +385,7 @@ function StyleGuide() {
 
             <ScrollAnimation>
               <div className={styles.charBlock}>
-                <Overline>Character set · Inter</Overline>
+                <Overline>Character set · BDO Grotesk</Overline>
                 <div className={styles.charGrid}>
                   {GLYPHS.map((g, i) => (
                     <div

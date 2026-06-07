@@ -266,6 +266,8 @@ const MENU_BODIES = {
 function Header() {
   const location = useLocation()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  // Which mobile accordion section is expanded (null = all collapsed).
+  const [mobileOpen, setMobileOpen] = useState(null)
   const [open, setOpen] = useState(false)
   const [menuKey, setMenuKey] = useState(null)
   const [panelLeft, setPanelLeft] = useState(0)
@@ -282,7 +284,10 @@ function Header() {
   const panelRef = useRef(null)
 
   const isActive = (path) => location.pathname === path
-  const closeMobileMenu = () => setIsMobileMenuOpen(false)
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false)
+    setMobileOpen(null)
+  }
 
   // Position the (shared) panel centred under its trigger, clamped on-screen.
   // The panel now sizes to its content (width: max-content), so we measure its
@@ -570,45 +575,54 @@ function Header() {
           <div className={`bg-scrim ${styles.scrim}`} onClick={closeMobileMenu} />
           <div className={`glass-panel ${styles.mobileMenu}`}>
             <nav className={styles.mobileNav}>
-              <Link
-                to="/"
-                onClick={closeMobileMenu}
-                aria-current={isActive('/') ? 'page' : undefined}
-                className={`glass-item ${styles.mobileItem} ${
-                  isActive('/') ? 'text-color-primary glass-item-active' : 'text-color-secondary'
-                }`}
-              >
-                Projects
-              </Link>
-              <Link
-                to="/archive"
-                onClick={closeMobileMenu}
-                aria-current={isActive('/archive') ? 'page' : undefined}
-                className={`glass-item ${styles.mobileItem} ${
-                  isActive('/archive') ? 'text-color-primary glass-item-active' : 'text-color-secondary'
-                }`}
-              >
-                Archive
-              </Link>
-              <Link
-                to="/about"
-                onClick={closeMobileMenu}
-                aria-current={isActive('/about') ? 'page' : undefined}
-                className={`glass-item ${styles.mobileItem} ${
-                  isActive('/about') ? 'text-color-primary glass-item-active' : 'text-color-secondary'
-                }`}
-              >
-                About
-              </Link>
-              <Link
-                to="/contact"
-                aria-current={isActive('/contact') ? 'page' : undefined}
-                className={`glass-item ${styles.mobileItem} ${
-                  isActive('/contact') ? 'text-color-primary glass-item-active' : 'text-color-secondary'
-                }`}
-              >
-                Contact
-              </Link>
+              {navItems.map((item) => {
+                // Contact has no rich card content → stays a direct link.
+                if (item.key === 'contact') {
+                  return (
+                    <Link
+                      key={item.key}
+                      to="/contact"
+                      onClick={closeMobileMenu}
+                      aria-current={item.active ? 'page' : undefined}
+                      className={`glass-item ${styles.mobileItem} ${
+                        item.active ? 'text-color-primary glass-item-active' : 'text-color-secondary'
+                      }`}
+                    >
+                      Contact
+                    </Link>
+                  )
+                }
+                // Projects / Archive / About → accordion that reveals the same
+                // cards/rows as the desktop dropdown for that page.
+                const Body = MENU_BODIES[item.key]
+                const expanded = mobileOpen === item.key
+                return (
+                  <div key={item.key} className={styles.mobileSection}>
+                    <button
+                      type="button"
+                      onClick={() => setMobileOpen(expanded ? null : item.key)}
+                      aria-expanded={expanded}
+                      className={`glass-item ${styles.mobileItem} ${styles.mobileAccordionHeader} ${
+                        item.active || expanded ? 'text-color-primary' : 'text-color-secondary'
+                      }`}
+                    >
+                      {item.label}
+                      <Chevron
+                        className={`${styles.mobileChevron} ${expanded ? styles.mobileChevronOpen : ''}`}
+                      />
+                    </button>
+                    <div
+                      className={`${styles.mobilePanel} ${expanded ? styles.mobilePanelOpen : ''}`}
+                    >
+                      <div className={styles.mobilePanelInner}>
+                        <div className={styles.mobilePanelBody}>
+                          <Body onNavigate={closeMobileMenu} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
               <div className={`border-t border-glass ${styles.mobileLocation}`}>
                 <Location />
               </div>

@@ -1,25 +1,9 @@
+/* Gallery thumbnail grid — auto-fit so tiles wrap to fewer columns instead of
+   squishing on mid-size screens; never narrower than 200px. The cols2/3/4
+   classes now only signal intent; auto-fit derives the actual count from width. */
 .grid {
   display: grid;
-}
-
-/* Column variants */
-.cols2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-@media (min-width: 768px) {
-  .cols3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .cols4 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1024px) {
-  .cols4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
 /* Gap variants */

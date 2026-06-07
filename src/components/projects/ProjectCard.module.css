@@ -71,6 +71,7 @@
   flex-wrap: wrap;
   gap: var(--space-8);
   padding: var(--space-16) var(--space-4) 0;
+  margin-top: auto;
 }
 
 /* Chips collapsed by the overflow logic — removed from layout entirely.

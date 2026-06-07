@@ -1,4 +1,9 @@
 .tag {
-  padding: var(--space-6) 10px;
-  border-radius: var(--radius-md);
+  padding: var(--space-6) var(--space-12);
+  border-radius: var(--radius-pill);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border);
+  white-space: nowrap;
 }
