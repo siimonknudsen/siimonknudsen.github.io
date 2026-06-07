@@ -7,8 +7,8 @@ import { useEffect, useRef, useState } from 'react'
  * `once` (default true) reveals a single time and disconnects.
  */
 export default function useReveal({
-  threshold = 0.12,
-  rootMargin = '0px 0px -10% 0px',
+  threshold = 0.1,
+  rootMargin = '0px 0px -28% 0px',
   once = true,
 } = {}) {
   const ref = useRef(null)

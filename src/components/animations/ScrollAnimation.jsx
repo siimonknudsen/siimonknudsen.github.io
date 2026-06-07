@@ -1,40 +1,20 @@
-import { useEffect, useRef, useState } from 'react'
-import styles from './ScrollAnimation.module.css'
+import useReveal from '../motion/useReveal'
 
+/**
+ * <ScrollAnimation> — legacy wrapper, kept for its existing call sites
+ * (About, Archive, SkillCard, TestimonialCard, LogoGrid, ExperienceTimeline…).
+ * It is now a thin alias over the SINGLE central reveal system: the same
+ * `useReveal` hook + global `.fx-reveal`/`.fx-fade-up` classes that <Reveal>
+ * uses. This guarantees every page's scroll-reveal is identical — same slow
+ * even-fade + gentle glide, same trigger position — so the two systems can
+ * never drift apart again. Prefer <Reveal> directly for new work.
+ */
 function ScrollAnimation({ children, className = '' }) {
-  const [isVisible, setIsVisible] = useState(false)
-  const ref = useRef(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      }
-    )
-
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current)
-      }
-    }
-  }, [])
-
+  const { ref, isVisible } = useReveal()
   return (
     <div
       ref={ref}
-      className={`${styles.root} ${
-        isVisible ? styles.visible : styles.hidden
-      } ${className}`}
+      className={`fx-reveal fx-fade-up ${isVisible ? 'is-visible' : ''} ${className}`.trim()}
     >
       {children}
     </div>
@@ -42,4 +22,3 @@ function ScrollAnimation({ children, className = '' }) {
 }
 
 export default ScrollAnimation
-

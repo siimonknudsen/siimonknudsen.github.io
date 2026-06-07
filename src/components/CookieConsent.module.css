@@ -55,9 +55,10 @@
   border-radius: var(--radius-pill) !important;
 }
 
-/* Decline = outline pill (transparent fill + hairline border). */
+/* Decline = ghost pill (transparent fill + soft glass edge instead of a hard
+   hairline border). */
 .decline {
-  border: 1px solid var(--border-color-secondary);
+  border: 1px solid var(--glass-border);
 }
 
 @media (prefers-reduced-motion: reduce) {

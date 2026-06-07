@@ -15,7 +15,7 @@ function Input({ label, hint, error, multiline = false, id, className = '', ...p
   const Field = multiline ? 'textarea' : 'input'
 
   const fieldClass =
-    `bg-surface-color-secondary text-color-primary type-body ${styles.field} ` +
+    `text-color-primary type-body ${styles.field} ` +
     (error ? `${styles.fieldError} ` : `${styles.fieldDefault} `) +
     (multiline ? `${styles.multiline} ` : '') +
     className

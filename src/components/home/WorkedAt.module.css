@@ -9,10 +9,18 @@
   /* Balanced — roughly equal gap above (from the hero content) and below (to
      the projects). Tuned at desktop; the top gap floats slightly with viewport
      height because the hero centres its content. */
-  /* The gap ABOVE comes from the hero's 128px bottom padding; match it below so
-     the gaps are equal and viewport-independent. */
+  /* The gap ABOVE comes from the hero's bottom padding; match it below so the
+     gaps are equal and viewport-independent. The hero drops to a 64px bottom
+     pad on phones (≤640px), so the bottom gap must follow it down — otherwise
+     the section sits 64px above / 128px below on mobile. */
   margin-top: 0;
   margin-bottom: var(--space-128);
+}
+
+@media (max-width: 640px) {
+  .section {
+    margin-bottom: var(--space-64);
+  }
 }
 
 .inner {
@@ -40,9 +48,17 @@
   row-gap: var(--space-20);
 }
 
-@media (max-width: 600px) {
+/* Phones: a balanced 2×2 grid reads far calmer than a tall single column of
+   four logos. Equal columns + centred items keep the differently-proportioned
+   marks optically aligned. */
+@media (max-width: 640px) {
   .logos {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: var(--space-32);
+    row-gap: var(--space-28);
+    justify-items: center;
+    align-items: center;
   }
 }
 
@@ -85,10 +101,13 @@
   opacity: 1;
 }
 
+/* Keyboard focus — soft accent glow (no hard outline), matching the glass
+   focus pattern used across the site. */
 .logoWrap:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 6px;
+  outline: none;
   border-radius: var(--radius-sm);
+  box-shadow: 0 0 0 1px var(--glass-border),
+    0 0 0 3px color-mix(in oklch, var(--accent) 45%, transparent);
 }
 
 .logoSvg {

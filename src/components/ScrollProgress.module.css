@@ -1,0 +1,25 @@
+/* ScrollProgress — a thin, calm reading-progress bar pinned to the very top of
+   the viewport. The fill scales horizontally (transform, not width) so it's
+   cheap to animate; --progress (0→1) is written by the component each rAF. */
+.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  /* Just below the header so the page chrome still reads as the topmost layer,
+     but above all page content. */
+  z-index: var(--z-sticky);
+  pointer-events: none;
+  /* Subtle track — a translucent hairline that matches the glass system. */
+  background-color: var(--glass-border);
+}
+
+.fill {
+  height: 100%;
+  transform-origin: left center;
+  transform: scaleX(var(--progress, 0));
+  background-color: var(--accent);
+  /* The bar follows the scroll position frame-by-frame, so no transition is
+     needed — adding one would only make it lag the scroll. */
+}

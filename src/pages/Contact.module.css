@@ -56,8 +56,10 @@
   width: 100%;
   padding: var(--space-12) var(--space-16);
   border-radius: var(--radius-md);
-  background-color: var(--surface-color-secondary);
-  border: 1px solid var(--border-color-secondary);
+  background-color: var(--glass-item-hover);
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border);
   color: var(--text-color-primary);
   font: inherit;
   font-size: var(--text-base);
@@ -70,8 +72,8 @@
 }
 .input:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 30%, transparent);
+  border-color: color-mix(in oklch, var(--accent) 60%, var(--glass-border));
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 25%, transparent);
 }
 
 .textarea {

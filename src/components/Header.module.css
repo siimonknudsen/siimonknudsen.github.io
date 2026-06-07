@@ -141,11 +141,6 @@
   opacity: 0.7;
 }
 
-.footerLinkSecondary {
-  font-size: 13px;
-  transition: color var(--dur-base) var(--ease-standard);
-}
-
 /* ── About menu ─────────────────────────────────────────────────── */
 
 .aboutHeader {
@@ -218,12 +213,6 @@
   font-size: 15px;
   font-weight: var(--weight-medium);
   line-height: 1.375;
-}
-
-.contactSub {
-  font-size: 13px;
-  line-height: 1.375;
-  margin-top: var(--space-4);
 }
 
 .contactList {
@@ -428,6 +417,14 @@
   /* Sit above the sliding pill so the label stays legible. */
   position: relative;
   z-index: 1;
+}
+
+/* Keyboard focus — soft accent glow (no hard outline), matching the glass
+   focus pattern. */
+.trigger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--glass-border),
+    0 0 0 3px color-mix(in oklch, var(--accent) 45%, transparent);
 }
 
 /* Text-roll on hover — same effect/timing as the buttons (easeInOutQuart /
@@ -762,10 +759,6 @@
   border-radius: var(--radius-xl);
   padding: var(--space-12) var(--space-16);
   font-size: var(--text-base);
-}
-
-.mobileItemButton {
-  text-align: left;
 }
 
 /* ── Mobile accordion (reveals each page's dropdown cards) ───────── */

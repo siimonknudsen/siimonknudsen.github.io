@@ -19,6 +19,10 @@ import styles from './ProjectCard.module.css'
 //   - "stack"          → renders white-on-image pills using class names passed
 //     in from the caller (ProjectGrid's CSS module).
 //
+// On phones (≤640px) the collapse is switched OFF: a "+N" counter whose tags are
+// only reachable via a hover tooltip reads poorly on touch, so every tag is shown
+// and the row simply wraps onto multiple lines (containers already flex-wrap).
+//
 // The slot/+N hiding always uses ProjectCard.module.css's compound selectors
 // (`.tagSlot.hiddenChip` / `.plusTag.hiddenChip { display: none }`), regardless
 // of variant — so the recently-fixed phantom "+1" bug stays fixed.
@@ -41,6 +45,9 @@ function TagRow({
     const container = containerRef.current
     if (!container) return
 
+    // Phones: show every tag and let the row wrap — no "+N" collapse.
+    const mobileQuery = window.matchMedia('(max-width: 640px)')
+
     const measure = () => {
       const chips = chipRefs.current.filter(Boolean)
       const plus = plusRef.current
@@ -50,6 +57,15 @@ function TagRow({
       // every node reports true geometry.
       chips.forEach((el) => el.classList.remove(styles.hiddenChip))
       if (plus) plus.classList.remove(styles.hiddenChip)
+
+      // On phones, skip the overflow math entirely: keep all chips shown, hide
+      // the "+N" chip, and let flex-wrap stack them onto further lines.
+      if (mobileQuery.matches) {
+        chips.forEach((el) => el.removeAttribute('aria-hidden'))
+        if (plus) plus.classList.add(styles.hiddenChip)
+        setCount((prev) => (prev === chips.length ? prev : chips.length))
+        return
+      }
 
       const firstTop = chips[0].offsetTop
       let onFirstLine = chips.length
@@ -86,6 +102,10 @@ function TagRow({
     const ro = new ResizeObserver(() => requestAnimationFrame(measure))
     ro.observe(container)
 
+    // Re-measure when crossing the phone breakpoint (toggles collapse on/off).
+    const onMQ = () => requestAnimationFrame(measure)
+    mobileQuery.addEventListener('change', onMQ)
+
     // Re-measure once web fonts load: before then chip widths use a fallback
     // font, so a tag can falsely "wrap". The container width doesn't change, so
     // the ResizeObserver alone wouldn't catch it.
@@ -100,6 +120,7 @@ function TagRow({
       cancelled = true
       cancelAnimationFrame(raf)
       ro.disconnect()
+      mobileQuery.removeEventListener('change', onMQ)
     }
   }, [tags])
 

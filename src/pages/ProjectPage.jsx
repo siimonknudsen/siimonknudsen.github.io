@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import ProjectGrid, { allArchiveProjects } from '../components/projects/ProjectGrid'
 import Media from '../components/Media'
+import ScrollProgress from '../components/ScrollProgress'
 import { Reveal, Stagger } from '../components/motion'
 import OutcomeGrid from '../components/case/OutcomeGrid'
 import ProcessStep from '../components/case/ProcessStep'
@@ -12,15 +13,29 @@ import styles from './ProjectPage.module.css'
 function ProjectPage() {
   const { id } = useParams()
   const project = allArchiveProjects.find((p) => p.id === id)
-  const [content, setContent] = useState(getDefaultProjectContent(id))
+  const [content, setContent] = useState(getDefaultProjectContent())
+  const [loadedId, setLoadedId] = useState(id)
   usePageTitle(project ? content.title || project.title : 'Project not found')
 
+  // Reset to default the instant the id changes (render-phase state adjustment —
+  // React's recommended way to reset state on a prop change). This avoids
+  // flashing the previous project's body content before the new fetch resolves,
+  // without the cascading render of a setState-in-effect.
+  if (loadedId !== id) {
+    setLoadedId(id)
+    setContent(getDefaultProjectContent())
+  }
+
   useEffect(() => {
-    async function loadContent() {
-      const loadedContent = await loadProjectContent(id)
-      setContent(loadedContent)
+    // Guard against a stale resolve: navigating A→B fires two loads; without
+    // this flag the slower (A) response could overwrite B.
+    let active = true
+    loadProjectContent(id).then((loaded) => {
+      if (active) setContent(loaded)
+    })
+    return () => {
+      active = false
     }
-    loadContent()
   }, [id])
 
   if (!project) {
@@ -53,6 +68,8 @@ function ProjectPage() {
 
   return (
     <>
+      <ScrollProgress />
+
       {/* Hero */}
       <section className={styles.heroSection}>
         <div className={styles.container}>

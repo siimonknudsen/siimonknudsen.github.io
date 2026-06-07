@@ -5,8 +5,8 @@ import styles from './TestimonialCard.module.css'
 /**
  * TestimonialCard — vertical quote card for the 3-up testimonials grid.
  * `text` is an array of paragraphs (or a single string) so a long quote reads in
- * a natural rhythm instead of one wall of type; the first paragraph is treated
- * as a brighter "lead line". A single low-opacity accent quotation glyph adds an
+ * a natural rhythm instead of one wall of type; the whole quote is set in the
+ * secondary text colour. A single low-opacity accent quotation glyph adds an
  * editorial touch. Logo slot accepts an inline component (`logoNode`) or an
  * image URL (`logo`); omit both for no logo.
  */
@@ -37,9 +37,7 @@ function TestimonialCard({ logo, logoNode, recommender, title, company, text }) 
           {paragraphs.map((p, i) => (
             <p
               key={i}
-              className={`type-body ${
-                i === 0 ? styles.lead : 'text-color-secondary'
-              } ${styles.para}`}
+              className={`type-body text-color-secondary ${styles.para}`}
             >
               {p}
             </p>

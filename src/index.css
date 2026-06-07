@@ -164,6 +164,11 @@
   --glass-blur-md: 16px;
   --glass-blur-lg: 24px;
   --glass-saturate: 180%;
+  /* Frosted texture — a faint grayscale fractal-noise tile baked into every glass
+     surface (blended soft-light) so panels read like real sandblasted / Apple
+     "Liquid Glass", not just a flat blur. Unique filter id (gn) so it never
+     clashes with the global film-grain (.grain uses id 'n'). */
+  --glass-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='gn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23gn)' opacity='0.55'/%3E%3C/svg%3E");
 
   /* — Motion: durations — */
   --dur-instant: 100ms;
@@ -172,7 +177,7 @@
   --dur-base: 300ms;
   --dur-slow: 450ms;
   --dur-slower: 600ms;
-  --dur-reveal: 820ms;  /* slow, relaxed scroll-reveal (Simon's calm pace — sits above the UI scale on purpose) */
+  --dur-reveal: 1200ms;  /* slow, relaxed scroll-reveal (Simon's calm pace — sits above the UI scale on purpose) */
 
   /* — Motion: easing curves — */
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
@@ -189,7 +194,8 @@
 
   /* — Motion: semantic roles (presets reference these, not raw values) — */
   --motion-reveal-dur: var(--dur-reveal);   /* scroll reveals (slow + relaxed) */
-  --motion-reveal-ease: var(--ease-decelerate);
+  --motion-reveal-ease: var(--ease-decelerate);            /* the movement: glides + settles softly */
+  --motion-reveal-ease-opacity: cubic-bezier(0.45, 0, 0.5, 1); /* the fade: gradual ease-in-out, NOT front-loaded (was snapping to full early) */
   --motion-ui-dur: var(--dur-fast);         /* hover / press / UI */
   --motion-ui-ease: var(--ease-standard);
   --motion-page-dur: var(--dur-quick);      /* route crossfade */
@@ -707,6 +713,15 @@ html:not(.dark) {
     box-shadow: var(--glass-shadow-lg);
   }
 
+  /* Frosted texture on every glass surface — a whisper of noise over the fill,
+     blended soft-light so it reads as sandblasted glass, not dirt. (Pairs with
+     the global film-grain; this one is baked into the panel itself.) */
+  .glass,
+  .glass-panel {
+    background-image: var(--glass-noise);
+    background-blend-mode: soft-light;
+  }
+
   .glass-item {
     transition:
       background-color var(--dur-fast) var(--ease-standard),
@@ -764,14 +779,16 @@ html:not(.dark) {
   .glass,
   .glass-panel {
     background-color: var(--glass-solid);
+    background-image: none;
   }
 }
 
-/* Accessibility: drop transparency/blur for users who ask for it. */
+/* Accessibility: drop transparency/blur (and the frosted noise) for users who ask. */
 @media (prefers-reduced-transparency: reduce) {
   .glass,
   .glass-panel {
     background-color: var(--glass-solid);
+    background-image: none;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
@@ -781,6 +798,7 @@ html:not(.dark) {
   .glass,
   .glass-panel {
     background-color: var(--glass-solid);
+    background-image: none;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
@@ -1011,7 +1029,7 @@ html:not(.dark) .grain {
 .fx-reveal {
   opacity: 0;
   transition:
-    opacity var(--motion-reveal-dur) var(--motion-reveal-ease),
+    opacity var(--motion-reveal-dur) var(--motion-reveal-ease-opacity),
     transform var(--motion-reveal-dur) var(--motion-reveal-ease);
   will-change: opacity, transform;
 }

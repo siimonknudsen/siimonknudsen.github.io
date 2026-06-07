@@ -45,6 +45,7 @@ classes.
 | `--glass-blur-md` | `16px` | bars / chrome |
 | `--glass-blur-lg` | `24px` | panels / overlays |
 | `--glass-saturate` | `180%` | colour pop behind glass |
+| `--glass-noise` | SVG fractal-noise tile | **frosted texture** baked into every glass surface (Apple "Liquid Glass") — applied as a `background-image` blended `soft-light` over the fill on `.glass`/`.glass-panel`; dropped in the solid/a11y fallbacks. NOT a pseudo-element (would collide with the tooltip hover-bridges). Pairs with the global `.grain` film. |
 | `--radius-pill` | `9999px` | the nav bar, pills |
 | `--radius-panel` | `20px` | dropdowns, modals |
 | `--radius-item` | `14px` | rows inside a panel |

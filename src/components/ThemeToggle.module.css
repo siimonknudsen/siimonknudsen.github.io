@@ -9,7 +9,10 @@
   align-items: center;
   border-radius: var(--radius-pill);
   padding: var(--space-4);
-  border: 1px solid var(--glass-border);
+  /* Soft glass edge instead of a hard 1px line (inset shadow reads softer and
+     never clips the pill radius). */
+  border: none;
+  box-shadow: inset 0 0 0 1px var(--glass-border);
   background-color: var(--glass-item-hover);
 }
 
@@ -20,7 +23,7 @@
   height: var(--space-28);
   width: var(--space-28);
   border-radius: var(--radius-pill);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.22);
+  box-shadow: var(--shadow-xs);
   transition-property: transform;
   transition-duration: 300ms;
   transition-timing-function: ease-out;
@@ -41,4 +44,12 @@
 
 .btnHover:hover {
   color: var(--text-color-primary) !important;
+}
+
+/* Keyboard focus — soft accent glow (no hard outline), matching the glass
+   focus pattern used across the site. */
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--glass-border),
+    0 0 0 3px color-mix(in oklch, var(--accent) 45%, transparent);
 }

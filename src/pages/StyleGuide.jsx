@@ -5,10 +5,12 @@ import Media from '../components/Media'
 import ShaderBackground from '../components/shader/ShaderBackground'
 import ProjectCard from '../components/projects/ProjectCard'
 import ProjectTag from '../components/projects/ProjectTag'
+import Badge from '../components/Badge'
 import Input from '../components/forms/Input'
 import { Reveal, Stagger, useReducedMotion } from '../components/motion'
 import TestimonialCard from '../components/cards/TestimonialCard'
 import SkillCard from '../components/cards/SkillCard'
+import { StatCard, StatGrid, Sparkline, TrendChart } from '../components/charts'
 import Avatar from '../components/Avatar'
 import Location from '../components/Location'
 import ThemeToggle from '../components/ThemeToggle'
@@ -314,6 +316,7 @@ function StyleGuide() {
               ['#radius', 'Radius'],
               ['#motion', 'Motion'],
               ['#components', 'Components'],
+              ['#data', 'Data display'],
             ].map(([href, label]) => (
               <li key={href}>
                 <a
@@ -1051,6 +1054,14 @@ function StyleGuide() {
                     <ProjectTag>Design System</ProjectTag>
                   </div>
                 </Tile>
+                <Tile label="Badges">
+                  <div className={styles.tagRow}>
+                    <Badge variant="solid">Featured</Badge>
+                    <Badge variant="outline">Available</Badge>
+                    <Badge variant="active">Archived</Badge>
+                    <Badge tone="accent">New</Badge>
+                  </div>
+                </Tile>
                 <Tile label="Form input" className={styles.colSpan2Sm}>
                   <div className={styles.inputCol}>
                     <Input label="Email" type="email" placeholder="you@example.com" hint="We'll never share it." />
@@ -1118,6 +1129,71 @@ function StyleGuide() {
                     title="Design Systems"
                     description="Establishing a consistent design language and guidelines to ensure cohesive brand experiences, streamlining development, and scaling across products."
                   />
+                </div>
+              </div>
+            </ScrollAnimation>
+          </section>
+
+          {/* Data display — KPI / stats / charts kit */}
+          <section>
+            <ScrollAnimation>
+              <SectionHeading id="data" overline="Library" title="Data display">
+                KPIs, stats and trend charts — hand-rolled SVG, zero dependencies,
+                driven entirely by the tokens. Depth from the glass surface, spotlight
+                glow and whitespace (no borders); accent gradients fade to transparent;
+                calm draw-in motion that snaps to final state under reduced motion.
+              </SectionHeading>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-32)' }}>
+                <StatGrid>
+                  <StatCard
+                    label="Monthly revenue"
+                    value={48230}
+                    prefix="$"
+                    delta={12.4}
+                    deltaLabel="vs last month"
+                    data={[12, 18, 15, 22, 28, 26, 34, 38, 42, 48]}
+                    accent
+                  />
+                  <StatCard
+                    label="Active users"
+                    value={9120}
+                    delta={4.1}
+                    deltaLabel="vs last month"
+                    data={[40, 42, 41, 45, 47, 46, 50, 53, 55, 58]}
+                  />
+                  <StatCard
+                    label="Churn"
+                    value={2.3}
+                    decimals={1}
+                    suffix="%"
+                    delta={-0.6}
+                    deltaLabel="vs last month"
+                  />
+                  <StatCard label="NPS" value={62} delta={8} deltaLabel="vs last quarter" />
+                </StatGrid>
+
+                <div
+                  className="glass-panel"
+                  style={{ padding: 'var(--space-32)', borderRadius: 'var(--radius-md)' }}
+                >
+                  <p className={`type-overline text-color-tertiary`} style={{ marginBottom: 'var(--space-16)' }}>
+                    Revenue · last 12 months
+                  </p>
+                  <TrendChart
+                    data={[18, 22, 21, 27, 31, 29, 36, 35, 41, 46, 44, 52]}
+                    labels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']}
+                    format={(v) => `$${v}K`}
+                    endLabel="$52K"
+                    ariaLabel="Monthly revenue grew from $18K to $52K over the last 12 months"
+                  />
+                </div>
+
+                <div style={{ maxWidth: '160px' }}>
+                  <p className={`type-overline text-color-tertiary`} style={{ marginBottom: 'var(--space-8)' }}>
+                    Sparkline
+                  </p>
+                  <Sparkline data={[8, 12, 10, 16, 14, 20, 18, 26, 30]} height={44} />
                 </div>
               </div>
             </ScrollAnimation>

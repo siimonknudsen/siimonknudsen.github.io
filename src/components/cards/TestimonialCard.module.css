@@ -17,8 +17,11 @@
 }
 
 /* Oversized decorative quotation glyph — the section's single warm-accent touch,
-   kept low-opacity so it reads as atmosphere, not decoration. */
-.quoteMark {
+   kept low-opacity so it reads as atmosphere, not decoration.
+   Compound selector (.card .quoteMark) so its `absolute` beats the
+   `.card > *:not(:first-child) { position: relative }` lift rule above — otherwise
+   the glyph drops into flow and pads ~105px of dead space onto the card top. */
+.card .quoteMark {
   position: absolute;
   top: var(--space-16);
   right: var(--space-32);
@@ -63,11 +66,6 @@
 
 .para {
   margin: 0;
-}
-
-/* First paragraph = brighter "lead line" for hierarchy (rest are secondary). */
-.lead {
-  color: var(--text-color-primary);
 }
 
 .foot {

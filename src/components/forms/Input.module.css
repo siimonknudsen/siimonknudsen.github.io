@@ -8,8 +8,12 @@
   width: 100%;
   border-radius: var(--radius-md);
   padding: 10px 14px;
+  background-color: var(--glass-item-hover);
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
   border-width: 1px;
   border-style: solid;
+  color: var(--text-color-primary);
   transition-property: border-color, box-shadow;
   transition-duration: var(--dur-fast);
   transition-timing-function: var(--ease-standard);
@@ -33,8 +37,8 @@
 }
 
 .fieldDefault:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px var(--accent);
+  border-color: color-mix(in oklch, var(--accent) 60%, var(--glass-border));
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 25%, transparent);
 }
 
 /* Error state */

@@ -5,8 +5,8 @@
   padding: var(--space-64) var(--page-gutter) var(--space-32);
   /* Frosted glass over the global shader */
   background-color: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
-  -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -98,6 +98,13 @@
 
 .link:hover::after {
   transform: scaleX(1);
+}
+
+/* Keyboard focus — soft accent glow (no hard outline), theme-aware. */
+.link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--glass-border),
+    0 0 0 3px color-mix(in oklch, var(--accent) 45%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

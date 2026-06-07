@@ -3,15 +3,15 @@ import Button from '../components/buttons/Button'
 import TestimonialCard from '../components/cards/TestimonialCard'
 import WorkedAt from '../components/home/WorkedAt'
 import WordReveal from '../components/home/WordReveal'
-import { ZliideLogo, AdtractionLogo } from '../components/home/WorkedAtLogos'
+import { ZliideLogo, AdtractionLogo, BusinessAcademyLogo } from '../components/home/WorkedAtLogos'
 import { Reveal } from '../components/motion'
 import { Link } from 'react-router-dom'
 import styles from './Home.module.css'
 
 // Testimonials — three full, verbatim recommendations (sourced from About.jsx).
 // `text` is an array of paragraphs so each quote breaks into a natural reading
-// rhythm instead of one wall of type. Logos are theme-aware inline SVGs where
-// available (Zliide, Adtraction); Business Academy Aarhus has none.
+// rhythm instead of one wall of type. Logos are theme-aware inline SVGs
+// (Zliide, Adtraction, Business Academy Aarhus), flattened to currentColor.
 const TESTIMONIALS = [
   {
     recommender: 'Morten Møgelmose',
@@ -39,6 +39,7 @@ const TESTIMONIALS = [
     recommender: 'Maria Louise Bendixen',
     title: 'Lecturer',
     company: 'Business Academy Aarhus',
+    logoNode: <BusinessAcademyLogo />,
     text: [
       'Simon has proven to be a very ambitious, curious, change-oriented and positive student. Both when it comes to individual projects and in larger group projects.',
       'He willingly takes on the role of leader, but is also very good at working as an integrated part of the group. He shows great understanding of how best to combine theory and practice. Not least in the UX/UI field, where he has also specialised further along the way.',
@@ -98,7 +99,7 @@ function Home() {
         <div className={styles.container}>
           <Reveal as="header" className={styles.testimonialsHeader}>
             <h2 className={`type-display text-color-primary ${styles.testimonialsHeading}`}>
-              What people say
+              Testimonials
             </h2>
           </Reveal>
 
