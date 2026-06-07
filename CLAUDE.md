@@ -57,11 +57,33 @@ the benefit of the doubt.
    stale server keeps serving an old build on :4173 — the cause of most "it's not updating"
    confusion this project. `npm run build` overwrites `dist/`; the running preview serves it.
    When something looks stale, hard-refresh / clean-restart first.
+   - **Browser cache:** after a rebuild the tab may keep the *old* CSS/JS — if `preview_eval`
+     shows a computed value that contradicts the source you just built, hard-reload
+     (`location.reload(true)`) before debugging deeper. (Chased a "stale" quote-glyph that was
+     really just cached CSS.)
+   - **MCP preview loses its serverId on in-app navigation/SPA reload** — `preview_list` goes empty
+     and evals error "Server not found" even though the server is *still up* (`curl :4173` → 200).
+     Just call `preview_start` again to re-register (it reuses the live server). Also `vite preview`
+     procs **stack up** (saw 3 at once) → `pkill -f "vite preview"` kills all, then start one.
+   - **Scroll for screenshots:** the page sets `scroll-behavior: smooth`, which makes programmatic
+     `window.scrollTo` silently no-op (scrollY stays put). Set
+     `document.documentElement.style.scrollBehavior='auto'` first, then `scrollTo({behavior:'instant'})`.
+     And the home project cards are **sticky/stacking**, so `scrollIntoView` lands at the section top
+     (shows the hero) — compute an explicit `offsetTop + N` offset to land on a pinned card.
 2. **Verify in-browser, never assume.** When the user says something's broken, inspect it
    (`preview_eval` — DOM, computed styles, `elementFromPoint`) before responding. Trust his eyes
    over my assumptions. Don't claim "it's fine" without checking.
 3. **Measuring layout:** `await document.fonts.ready` first; use `offsetTop` (layout, transform-
    independent) not `getBoundingClientRect` (shifts during reveal animations).
+3b. **Preview can't *show* scroll-reveals or below-fold content.** The `preview_eval` realm reports
+    `innerHeight: 0`, so IntersectionObserver never fires — anything gated by `useReveal` /
+    `.fx-reveal` / `ScrollAnimation` stays at `opacity:0`, and `preview_screenshot` captures
+    top-of-document (blank for below-fold). Count-ups, chart draw-ins and fade-up reveals therefore
+    can't be *seen* in-preview. Verify structurally instead: DOM + `getComputedStyle`
+    (`preview_inspect`), and simulate interaction with a FULL pointer sequence (`pointerenter` →
+    `pointermove`, `composed:true`) to reach React's delegated handlers (a lone `pointermove` won't
+    register). Force-reveal via DOM (`classList.add('is-visible')`) shows layout only, not
+    React-state animation — so **have Simon eyeball the actual motion in his real browser.**
 4. **Do EVERY part of a request.** Parse multi-item / screenshot messages into a checklist and
    address each. With a screenshot, identify the *exact* element before editing (e.g. the chevron
    belonged on dropdown rows, not project cards).
@@ -92,14 +114,14 @@ the benefit of the doubt.
    session/push did, integrate (`git pull --rebase origin main`), rebuild & re-verify in the
    browser, *then* push. A committed PreToolUse hook (`.claude/settings.json`) auto-blocks any
    `git push` while behind, but do this review consciously, don't just rely on the block.
-   **Multiple sessions share ONE checkout (the app isn't isolating them in worktrees).** So the
-   working tree often holds *other sessions'* uncommitted edits + untracked files mixed with
-   yours. When committing: **stage only the files YOU changed this session, by explicit path —
-   never `git add -A`/`git add .`.** First `git diff <file>` each one to confirm it's only your
-   change (CSS/JSX files get co-edited); **skip any file entangled with another session's work or
-   that imports an untracked file** (committing it alone breaks the build — e.g. a page importing
-   a not-yet-committed component). Hold those for a later coordinated push and say so. Ideal fix
-   is app-side: turn on per-session worktree isolation in Settings → Claude Code.
+   **Sessions share ONE checkout (no worktree isolation), so Simon's rule is: work ONE session
+   at a time on this repo** — finish/close one before starting the next. That avoids collisions
+   entirely. *Fallback for when sessions DO overlap* (you'll see other sessions' uncommitted edits
+   + untracked files in the tree): when committing, **stage only the files YOU changed this
+   session, by explicit path — never `git add -A`/`git add .`.** `git diff <file>` each first to
+   confirm it's only your change (CSS/JSX get co-edited); **skip any file entangled with another
+   session's work or that imports an untracked file** (committing it alone breaks the build — e.g.
+   a page importing a not-yet-committed component). Hold those for a coordinated push and say so.
 10. **Learn continuously, proactively (don't wait to be told).** Treat every message as a
     learning signal. When Simon states a preference, corrects me, rejects something, reveals a
     fact about himself, or sets a working style, **persist it immediately** to the right place:
