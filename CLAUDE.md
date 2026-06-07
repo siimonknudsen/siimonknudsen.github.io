@@ -92,6 +92,14 @@ the benefit of the doubt.
    session/push did, integrate (`git pull --rebase origin main`), rebuild & re-verify in the
    browser, *then* push. A committed PreToolUse hook (`.claude/settings.json`) auto-blocks any
    `git push` while behind, but do this review consciously, don't just rely on the block.
+   **Multiple sessions share ONE checkout (the app isn't isolating them in worktrees).** So the
+   working tree often holds *other sessions'* uncommitted edits + untracked files mixed with
+   yours. When committing: **stage only the files YOU changed this session, by explicit path —
+   never `git add -A`/`git add .`.** First `git diff <file>` each one to confirm it's only your
+   change (CSS/JSX files get co-edited); **skip any file entangled with another session's work or
+   that imports an untracked file** (committing it alone breaks the build — e.g. a page importing
+   a not-yet-committed component). Hold those for a later coordinated push and say so. Ideal fix
+   is app-side: turn on per-session worktree isolation in Settings → Claude Code.
 10. **Learn continuously, proactively (don't wait to be told).** Treat every message as a
     learning signal. When Simon states a preference, corrects me, rejects something, reveals a
     fact about himself, or sets a working style, **persist it immediately** to the right place:
