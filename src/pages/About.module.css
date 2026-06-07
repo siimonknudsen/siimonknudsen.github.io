@@ -27,7 +27,7 @@
   text-align: center;
   font-weight: var(--weight-medium);
   font-size: clamp(2.25rem, 5vw, 4rem);
-  line-height: 1.08;
+  line-height: 1.1; /* floored to clear the 1.083em content-box (was 1.08); multi-line headline */
   letter-spacing: -0.05em;
   max-width: min(16ch, 100%);
   /* Auto side-margins so the capped-width block centres itself inside the

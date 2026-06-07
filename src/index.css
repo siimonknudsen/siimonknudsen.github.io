@@ -9,6 +9,19 @@
   font-weight: 300 900;
   font-style: normal;
   font-display: swap;
+  /* ── Balanced vertical metrics (the global "font looks centred" fix) ──────
+     BDO Grotesk ships a top-heavy box: native ascent 800 / descent 177 / cap
+     729 (per 1000 em), so its letters sit ~5.5% high in any box — visible in
+     every centred UI label AND as uneven space above text everywhere. We
+     rewrite the metrics at the source so caps are optically centred for ALL
+     uses: the box is balanced when `ascent − descent = cap-height (729)`, so
+     ascent 906 / descent 177. line-gap 294 keeps `line-height: normal` at its
+     original ~1.38 (most text uses explicit line-heights, unaffected). This
+     supersedes per-component `text-box-trim`. Descent is held at the 177
+     descender ink so g/j/p/y never clip. See DESIGN_LOG / DESIGN_SYSTEM. */
+  ascent-override: 90.6%;
+  descent-override: 17.7%;
+  line-gap-override: 29.4%;
 }
 
 /* ============================================================
@@ -489,13 +502,16 @@ html:not(.dark) {
   @media (min-width: 640px) {
     .type-display {
       font-size: var(--text-4xl); /* 40 */
-      line-height: 1.05;
+      /* Floor at 1.1: BDO Grotesk's balanced metrics give a 1.083em content-box
+         (descender-depth bound), so multi-line display below that overlaps.
+         See @font-face note. */
+      line-height: 1.1;
     }
   }
   @media (min-width: 1024px) {
     .type-display {
       font-size: var(--text-5xl); /* 48 */
-      line-height: 1;
+      line-height: 1.1; /* floored — see above (was 1.0; would overlap when wrapped) */
     }
   }
   .type-display-sm {
@@ -514,7 +530,7 @@ html:not(.dark) {
   @media (min-width: 1024px) {
     .type-display-sm {
       font-size: var(--text-4xl); /* 40 */
-      line-height: 1.05;
+      line-height: 1.1; /* floored to clear the 1.083em content-box (was 1.05) */
     }
   }
   .type-heading {
