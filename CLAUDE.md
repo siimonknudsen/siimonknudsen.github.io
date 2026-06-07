@@ -87,6 +87,11 @@ the benefit of the doubt.
    company facts). Use clearly-flagged placeholders and ask. Over-claiming kills a portfolio.
 9. **Git:** never commit/push unless he asks; each batch needs a *fresh* "push" (the auto-mode
    classifier enforces this). End commits with the Co-Authored-By trailer.
+   **Before EVERY push — sync-check first (multiple sessions write to `main`):** `git fetch`,
+   then if behind upstream, *stop* — run `git log HEAD..@{u} --oneline` to see what the other
+   session/push did, integrate (`git pull --rebase origin main`), rebuild & re-verify in the
+   browser, *then* push. A committed PreToolUse hook (`.claude/settings.json`) auto-blocks any
+   `git push` while behind, but do this review consciously, don't just rely on the block.
 10. **Learn continuously, proactively (don't wait to be told).** Treat every message as a
     learning signal. When Simon states a preference, corrects me, rejects something, reveals a
     fact about himself, or sets a working style, **persist it immediately** to the right place:
