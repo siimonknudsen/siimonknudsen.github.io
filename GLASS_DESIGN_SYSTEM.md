@@ -128,3 +128,53 @@ Defined once in `index.css`, applies everywhere:
 - ❌ Don't hard-code `rgba()` fills or `blur()` in components.
 - ❌ Don't stack two `.glass*` surfaces directly on top of each other.
 - ❌ Don't put low-contrast text on `.glass` (the light tint) over photos.
+
+---
+
+## 8. Animating glass & the `backdrop-filter` traps (hard-won)
+
+`backdrop-filter` is fragile in ways that aren't obvious. The whole mental model:
+
+**The backdrop-root rule.** `backdrop-filter` samples the page rendered *behind* the
+element — but only up to the nearest ancestor that is a **"backdrop root."** An
+ancestor becomes a backdrop root if it has any of: a non-`none` **`transform`**,
+**`filter`**, **`perspective`**, **`will-change: transform|filter`**,
+**`contain: paint|layout|strict|content`**, **`opacity < 1`**, or a **`mask`**.
+When that happens the descendant glass samples *nothing* → **the blur silently
+renders nothing** (looks like a flat solid/translucent fill, no frost).
+
+**Own transform is fine — only ANCESTORS break it.** An element's *own* `transform`
+does **not** kill its *own* `backdrop-filter` (the blur just moves with it). So:
+> To animate a glass surface, animate **the glass element itself**, never a wrapper
+> around it. A transformed wrapper = dead frost on its glass children.
+
+**Reveal/scroll animations are the classic killer.** Our `<Reveal>` wraps content in
+a transformed element. While that wrapper animates (the `y`/`scale` glide), every
+glass child's frost is suppressed, then "pops in" when the transform settles. Fixes
+(either works): **(a)** make the glass element *be* the animated element; **(b)**
+**decouple the transition** — quick tween on `transform` (y/scale) so it lands fast
+while the element is still faded-out, slow spring/curve on `opacity`. We use (b) in
+`revealMotion.js` (`REVEAL_SHIFT`) so it's global.
+
+**`animation-fill-mode` trap.** A keyframe/transition that ends at `translateY(0)`
+with `forwards`/`both` leaves a **permanent identity transform** → a permanent
+backdrop-root → frost dead *even at rest*. Use `backwards`, or settle to
+`transform: none`. (This was the `page-enter-nav` route-transition bug: it killed
+the blur on **every** glass surface on **every** navigated page.) Likewise never
+self-centre a glass wrapper with `transform: translateX(-50%)` — position it some
+other way (e.g. JS left-edge). Framer Motion is well-behaved here: it resets the
+transform to `none` once the spring settles, so at-rest frost is fine — only the
+in-flight animation suppresses it.
+
+**Blur is invisible over a smooth backdrop.** Blurring a smooth gradient looks
+identical to not blurring it. Over our flow-gradient shader the "frosted" read comes
+from **translucency + tint + the noise texture**, NOT the blur itself — so **panel
+opacity is the real lever** for "reads glassy" (cards at 0.80 looked solid; 0.62 let
+the shader frost through). The blur only visibly *pays off* where high-frequency
+content sits behind the glass (nav over scrolling text, dropdowns/tooltips over
+images). Don't chase "more blur" to fix a flat-looking card — lower its opacity.
+
+**Diagnosing a dead blur.** Walk the element's ancestor chain and flag any with
+`transform`/`filter`/`will-change`/`contain`/`opacity<1` ≠ none — that's your
+backdrop-root. (`getComputedStyle` per ancestor; in a throttled preview, force
+`element.getAnimations().forEach(a => a.finish())` first to read the settled state.)

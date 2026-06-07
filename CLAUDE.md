@@ -96,9 +96,14 @@ the benefit of the doubt.
 7. **Glass/motion perf:** never animate `backdrop-filter` or put it on scroll-moving/scaling or
    large surfaces (jank). For frost over a fixed image, blur a *static image copy*. Reserve
    `backdrop-filter` for small, static glass (nav, tooltips, footer). Animate transform/opacity only.
-   **Containing-block trap:** any ancestor with a non-`none` `transform`/`filter`/`will-change`
-   (even `translateY(0)`) kills `backdrop-filter` on its descendants — reveal wrappers must settle
-   to `transform: none`. **On-media chrome** (text/pills over project photos) uses the
+   **Backdrop-filter traps (full mental model in GLASS_DESIGN_SYSTEM.md §8):** any *ancestor* with a
+   non-`none` `transform`/`filter`/`will-change`/`contain`/`opacity<1` (even `translateY(0)` /
+   `fill-mode: forwards` leftovers) is a "backdrop-root" → kills descendant `backdrop-filter` (frost
+   renders nothing). An element's *own* transform is fine — so **animate the glass element itself,
+   never a wrapper**, OR decouple the reveal (quick tween on transform, slow on opacity — see
+   `REVEAL_SHIFT`). And: **blur is invisible over a smooth backdrop** — "glassy" comes from
+   translucency+tint+noise, so **panel opacity is the lever**, not more blur. **On-media chrome**
+   (text/pills over project photos) uses the
    `--transparent-light-*` + `--text-on-media`/`--accent-on-media` tokens, NOT glass (it lives on
    transform-scaling cards) and NOT hardcoded rgba.
 7b. **CSS source-order trap:** two single-class rules with equal specificity → the *later* one

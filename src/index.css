@@ -193,7 +193,13 @@
   --stagger-4: 360ms;
 
   /* — Motion: semantic roles (presets reference these, not raw values) — */
-  --motion-reveal-dur: var(--dur-reveal);   /* scroll reveals (slow + relaxed) */
+  --motion-reveal-dur: var(--dur-reveal);   /* scroll reveals — the slow opacity fade */
+  /* The positional glide (transform) finishes quickly so it doesn't suppress
+     `backdrop-filter` for the whole slow fade (a transform makes the element a
+     backdrop-root → blur is dead while it animates). With a short rise the frost
+     appears while the card is still mostly faded-out, instead of popping in at
+     the end of the motion. */
+  --motion-reveal-dur-shift: 0.42s;
   --motion-reveal-ease: var(--ease-decelerate);            /* the movement: glides + settles softly */
   --motion-reveal-ease-opacity: cubic-bezier(0.45, 0, 0.5, 1); /* the fade: gradual ease-in-out, NOT front-loaded (was snapping to full early) */
   --motion-ui-dur: var(--dur-fast);         /* hover / press / UI */
@@ -275,7 +281,10 @@ html.dark {
   --text-color-contrast-tertiary: var(--neutral-500);
   /* Frosted glass (dark) */
   --glass-bg: rgba(38, 38, 40, 0.55);
-  --glass-bg-strong: rgba(28, 28, 30, 0.80);
+  /* Cards/panels were 0.80 → read as flat solid panels (the warm shader couldn't
+     show through, so the frost was invisible). Lowered so the shader frosts
+     through like the footer, while keeping enough scrim for text legibility. */
+  --glass-bg-strong: rgba(28, 28, 30, 0.62);
   --glass-border: var(--transparent-light-12);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.07), inset 0 -1px 0 rgba(0, 0, 0, 0.22);
   --glass-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 -1px 0 rgba(0, 0, 0, 0.28);
@@ -345,7 +354,7 @@ html:not(.dark) {
      warm shader actually blurs *through* the surface and reads as glass instead
      of a flat white box. Dark text stays legible on the still-substantial fill. */
   --glass-bg: rgba(255, 255, 255, 0.46);
-  --glass-bg-strong: rgba(255, 255, 255, 0.66);
+  --glass-bg-strong: rgba(255, 255, 255, 0.56);
   --glass-border: var(--transparent-dark-8);
   --glass-shadow: 0 8px 32px rgba(17, 17, 17, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.80), inset 0 -1px 0 rgba(17, 17, 17, 0.06);
   --glass-shadow-lg: 0 20px 60px rgba(17, 17, 17, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.90), inset 0 -1px 0 rgba(17, 17, 17, 0.08);
@@ -1034,7 +1043,7 @@ html:not(.dark) .grain {
   opacity: 0;
   transition:
     opacity var(--motion-reveal-dur) var(--motion-reveal-ease-opacity),
-    transform var(--motion-reveal-dur) var(--motion-reveal-ease);
+    transform var(--motion-reveal-dur-shift) var(--motion-reveal-ease);
   will-change: opacity, transform;
 }
 .fx-fade-up {

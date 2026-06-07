@@ -249,7 +249,18 @@ Respect `prefers-reduced-motion` — **reduce, don't always remove** (swap "fly 
 - **Drawer/sheet** — slide from its edge; spring supports drag-to-dismiss.
 - **Dropdown/popover** — scale+fade from trigger origin, ~150–200ms, start at **scale 0.95 (not 0)**.
 - **Skeletons vs spinners** — skeleton when layout known; nothing under ~300ms.
-- **Scroll reveals** — small distance (8–24px), short, staggered, **once** (no re-animate); **no scrolljacking**.
+- **Scroll reveals (appearance motion) — Simon's house best-practices** *(adopted 2026-06-07; see DESIGN_LOG for the build)*:
+  1. **Opacity + a small movement together** — never one alone (fade-only = flat; move-only = mechanical). Travel **16–32px** (ours: 28).
+  2. **Trigger when comfortably in view** — ~15–25% into the viewport, not at the bottom edge (too early = animation's over before you look) and not too late (pops in). Ours: `useReveal` rootMargin `-28%`.
+  3. **Reveal once.** Re-animating on scroll-back is the #1 "templated/AI" tell and distracting.
+  4. **No scroll-jacking / scrub-linked reveals** for content — trigger-and-play, user scrolls freely. (Scrubbing is for cinematic storytelling, not a calm editorial site.)
+  5. **Decelerate / settle** — arrive and ease out; with springs, **well-damped, NO overshoot** (bounce = attention-grabbing, against the DNA).
+  6. **Tight time band** — calm/editorial up to ~600–900ms; past ~1s drags. (Spring stiffness ~55 / damping ~18 lands here without a literal duration.)
+  7. **Stagger groups ~60–100ms, reading order** (ours: 90). **Cap it** for long lists — 90ms × 12 = >1s tail; stagger the first few, reveal the rest together.
+  8. **Subtlety scales with frequency** — the more often an element type appears (every card), the more restrained its motion. Save drama for hero moments.
+  9. **One reveal language site-wide** — same motion everywhere reads crafted; per-page variation reads amateur (we unified two drifted systems into one).
+  10. **a11y:** honor `prefers-reduced-motion` (reduce → plain fade / instant, don't hard-cut); **content must never depend on the animation to be visible**.
+  11. **Perf:** animate only `transform` + `opacity` (GPU, 60fps); never layout or `backdrop-filter` during a reveal.
 - **Theme transition** — crossfade ~200–300ms or a View Transition; disable on initial load; reduced-motion = instant. *(We use the View Transitions circular reveal.)*
 
 ### 4.10 Web implementation
@@ -257,8 +268,13 @@ Respect `prefers-reduced-motion` — **reduce, don't always remove** (swap "fly 
 - **View Transitions API** — same-document (SPA) Baseline since Oct 2025 (Chrome 111+/Safari 18+/Firefox 144+); cross-document **not in Firefox yet** (it silently snaps) — always design a no-animation fallback. *(Confirm ours are same-document / router-driven.)*
 - **CSS scroll-driven animations** (`animation-timeline: view()/scroll()`) run off the main thread — prefer over JS scroll listeners for reveals/parallax; Safari still catching up → progressive enhancement.
 
-### 4.11 Tooling: build vs buy — our decision *(researched 2026)*
-**Decision: keep the owned layer (CSS + WAAPI + IntersectionObserver + View Transitions, ~0kb). Stay library-free until a *specific* need proves CSS/WAAPI can't do it — and if that day comes, reach for Motion (lazy-loaded), not GSAP.** Rationale: Simon's motion is the final, calm ~20% (§6.9); slow eased reveals + smooth transitions + gentle stagger are exactly what the platform does best, natively, at zero cost. Libraries earn their weight on flashy/physics/gesture work he's explicitly ruled out.
+### 4.11 Tooling: build vs buy — our decision *(researched 2026; **UPDATED 2026-06-07 — adopted Motion**)*
+**Decision (current): we ADOPTED Motion (Framer Motion, `motion/react`) for the scroll-reveal layer — spring-based.** After repeated rounds of hand-tuning CSS cubic-beziers/durations couldn't land the *feel* Simon wanted (450ms too fast → 820 too fast → 1200 too slow), he asked for a library specifically for motion *quality*. Spring physics give natural deceleration without guessing easing curves — exactly the missing piece. Chose **Motion over GSAP** for this calm editorial site: declarative/React-native, real springs, `AnimatePresence` for exits, and ~14kb lazy vs GSAP's heavier imperative timeline+ScrollTrigger (GSAP's superpowers — pinning, scrub, SVG morph — are the flashy scroll-storytelling things Simon's DNA rules out). Note: **Framer Motion === Motion** (the npm package `framer-motion` was renamed `motion`); installing `motion` *is* using Framer Motion.
+- **Setup:** `<LazyMotion features={…domAnimation} strict>` at the app root (App.jsx) → use `m.*` not `motion.*`; features lazy-load as a ~14kb chunk (out of initial paint). Reveal spring config is a single source of truth in `src/components/motion/revealMotion.js` (Calm preset: stiffness 55 / damping 18 / mass 1, travel 28px, stagger 90ms).
+- **`<Reveal>`/`<Stagger>`/`<ScrollAnimation>`** all render Motion springs now; trigger still via our tuned `useReveal` IntersectionObserver (kept deliberately — preserves the dialled-in `-28%` trigger position rather than swapping to `whileInView`).
+- **Still NOT moved (Phase 2 / staying native):** route transitions, Modal/lightbox enter+exit (→ `AnimatePresence`), Header/menu open-close + stagger, count-up/scroll-progress (→ `useSpring`/`useScroll`) are candidates; WebGL shader, View-Transitions theme toggle, infinite CSS pulse loops, cursor spotlight **stay native** (Motion is the wrong tool). Keep the global `prefers-reduced-motion` net regardless.
+
+**Prior decision (kept for context): build-library-free.** Was: keep the owned layer (CSS + WAAPI + IntersectionObserver + View Transitions, ~0kb), stay library-free until a specific need proves CSS/WAAPI can't do it. That need arrived as *motion feel/quality* + spring physics, so we crossed the line consciously.
 
 Current landscape (verified against primary sources):
 - **GSAP** — now **100% free incl. all plugins** (SplitText, MorphSVG, ScrollTrigger…) after Webflow's acquisition. Best-in-class timelines/ScrollTrigger/SVG-morph/text-split, but **imperative, ~23–27kb core (+18kb ScrollTrigger), and tonally wrong** for a calm editorial site. Only if scope pivots to heavy scroll-storytelling / SVG morphing.

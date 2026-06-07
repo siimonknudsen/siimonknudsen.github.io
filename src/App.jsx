@@ -1,5 +1,6 @@
 import { useEffect, useRef, lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
+import { LazyMotion } from 'motion/react'
 import Home from './pages/Home'
 // Non-landing routes are code-split: each becomes its own chunk loaded on first
 // visit, so the heavy internal pages (StyleGuide/Playground) no longer ship in
@@ -12,7 +13,12 @@ const About = lazy(() => import('./pages/About'))
 const Contact = lazy(() => import('./pages/Contact'))
 const StyleGuide = lazy(() => import('./pages/StyleGuide'))
 const Playground = lazy(() => import('./pages/Playground'))
+const MotionLab = lazy(() => import('./pages/MotionLab'))
 const NotFound = lazy(() => import('./pages/NotFound'))
+
+// Lazily pull in Motion's animation feature set so it stays out of the initial
+// bundle (the `m` components stay tiny until this resolves).
+const loadMotionFeatures = () => import('./lib/motionFeatures').then((m) => m.default)
 import Header from './components/Header'
 import Footer from './components/Footer'
 import IntroLoader from './components/IntroLoader'
@@ -81,6 +87,7 @@ function AnimatedRoutes() {
         <Route path="/style-guide" element={<StyleGuide />} />
         <Route path="/design-system" element={<StyleGuide />} />
         <Route path="/playground" element={<Playground />} />
+        <Route path="/motion-lab" element={<MotionLab />} />
         <Route path="/project/:id" element={<ProjectPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -97,6 +104,7 @@ function App() {
   }, [])
 
   return (
+    <LazyMotion features={loadMotionFeatures} strict>
     <Router basename={import.meta.env.BASE_URL}>
       {/* Skip link — first focusable element, for keyboard / screen-reader users */}
       <a href="#main-content" className="skip-link">
@@ -125,6 +133,7 @@ function App() {
       {/* Cookie consent — gates Microsoft Clarity (nothing loads until Accept) */}
       <CookieConsent />
     </Router>
+    </LazyMotion>
   )
 }
 
