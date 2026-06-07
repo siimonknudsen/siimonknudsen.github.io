@@ -6,9 +6,8 @@
         "hooks": [
           {
             "type": "command",
-            "if": "Bash(git push*)",
             "statusMessage": "Checking for upstream changes before push…",
-            "command": "git fetch --quiet 2>/dev/null; behind=$(git rev-list --count HEAD..@{u} 2>/dev/null); if [ \"${behind:-0}\" -gt 0 ] 2>/dev/null; then echo \"PUSH BLOCKED: your branch is $behind commit(s) behind $(git rev-parse --abbrev-ref --symbolic-full-name @{u}). Another session/push landed first. Review what changed with:  git log HEAD..@{u} --oneline  — then integrate (git pull --rebase origin main), rebuild & re-verify in the browser, and push again.\" >&2; exit 2; fi"
+            "command": "input=$(cat); cmd=$(printf '%s' \"$input\" | jq -r '.tool_input.command // \"\"'); printf '%s' \"$cmd\" | grep -qE '(^|[;&|]|&&|[[:space:]])git[[:space:]]+push' || exit 0; git fetch --quiet 2>/dev/null; behind=$(git rev-list --count HEAD..@{u} 2>/dev/null); if [ \"${behind:-0}\" -gt 0 ] 2>/dev/null; then echo \"PUSH BLOCKED: your branch is $behind commit(s) behind $(git rev-parse --abbrev-ref --symbolic-full-name @{u}). Another session/push landed first. Review what changed with:  git log HEAD..@{u} --oneline  — then integrate (git pull --rebase origin main), rebuild & re-verify in the browser, and push again.\" >&2; exit 2; fi"
           }
         ]
       }
