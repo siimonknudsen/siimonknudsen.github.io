@@ -12,6 +12,9 @@ const PRESET = {
  * inside <Stagger> for sequenced children. Polymorphic via `as`.
  */
 export default function Reveal({
+  // Comp is rendered as <Comp> below; ESLint can't see JSX usage without
+  // react/jsx-uses-vars, so this destructured rename reads as unused.
+  // eslint-disable-next-line no-unused-vars
   as: Comp = 'div',
   preset = 'fade-up',
   delay,

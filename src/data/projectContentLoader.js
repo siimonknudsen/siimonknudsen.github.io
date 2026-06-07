@@ -83,10 +83,9 @@ export async function loadProjectContent(projectId) {
 /**
  * Synchronous version that returns default content immediately
  * Use this for initial render, then update with loadProjectContent
- * @param {string} projectId - The project ID
  * @returns {object} Default project content
  */
-export function getDefaultProjectContent(projectId) {
+export function getDefaultProjectContent() {
   return defaultProjectContent
 }
 

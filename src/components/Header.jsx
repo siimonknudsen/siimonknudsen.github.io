@@ -337,6 +337,9 @@ function Header() {
   useLayoutEffect(() => {
     if (open && menuKey) {
       const left = positionFor(menuKey)
+      // Intentional: re-clamp the panel against its real measured width after
+      // layout. useLayoutEffect runs pre-paint, so this won't flash.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (left != null) setPanelLeft(left)
     }
   }, [open, menuKey])

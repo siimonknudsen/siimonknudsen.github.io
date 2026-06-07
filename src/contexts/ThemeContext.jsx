@@ -1,3 +1,6 @@
+/* eslint-disable react-refresh/only-export-components -- this file intentionally
+   exports both the ThemeProvider component and the useTheme hook that other
+   modules import; splitting them out is out of scope. Only affects dev HMR. */
 import { createContext, useContext, useState, useEffect } from 'react'
 
 const ThemeContext = createContext()

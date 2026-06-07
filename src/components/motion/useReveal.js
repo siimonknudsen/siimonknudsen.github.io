@@ -18,6 +18,9 @@ export default function useReveal({
     const el = ref.current
     if (!el) return
     if (typeof IntersectionObserver === 'undefined') {
+      // Intentional one-time fallback: with no IntersectionObserver we reveal
+      // immediately. Runs once, not a render-loop trigger.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setVisible(true) // no IO support → show immediately
       return
     }

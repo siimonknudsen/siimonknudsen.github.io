@@ -121,11 +121,16 @@ function Media({
   useEffect(() => {
     if (isVideo) return
     const img = imgRef.current
+    // Intentional: syncs React state with an already-cached <img> that finished
+    // loading before onLoad attached. Guarded, so it doesn't loop.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (img && img.complete && img.naturalWidth > 0) setLoaded(true)
   }, [imgSrc, isVideo])
 
   // Latch the reveal once the media has loaded or entered the viewport.
   useEffect(() => {
+    // Intentional latch: once loaded/in-view we reveal and never toggle back.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (loaded || inView) setRevealed(true)
   }, [loaded, inView])
 

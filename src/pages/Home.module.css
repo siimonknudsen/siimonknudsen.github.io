@@ -121,10 +121,12 @@
 }
 
 /* Three testimonials side by side; auto-fit wraps 3→2→1 as width tightens,
-   never squishing a column below 340px. (Only 3 items, so max 3 columns.) */
+   never squishing a column below 340px. (Only 3 items, so max 3 columns.)
+   min(340px, 100%) lets the column collapse to the container on very narrow
+   phones (≤~388px) instead of forcing horizontal overflow. */
 .testimonialsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
   gap: var(--space-24);
   align-items: stretch;
 }

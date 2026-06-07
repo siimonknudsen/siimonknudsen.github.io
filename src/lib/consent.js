@@ -54,7 +54,6 @@ export function loadClarity() {
   if (clarityInjected || window.clarity) return
 
   if (!CLARITY_PROJECT_ID) {
-    // eslint-disable-next-line no-console
     console.info(
       '[consent] Visitor accepted analytics, but no Clarity Project ID is set yet. ' +
         'Add it in src/lib/consent.js (CLARITY_PROJECT_ID) to start tracking.'

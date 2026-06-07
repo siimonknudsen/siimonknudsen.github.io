@@ -1,3 +1,6 @@
+/* eslint-disable react-refresh/only-export-components -- this file intentionally
+   exports both components and the featuredProjects/allArchiveProjects data that
+   other modules import; splitting them out is out of scope. Only affects dev HMR. */
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import ProjectCard from './ProjectCard'

@@ -46,6 +46,11 @@ function AnimatedRoutes() {
   // Render the wipe for this navigation, then flip the flag off so the
   // first load stays untouched. Read before flipping so the panel still
   // mounts on the *next* navigation (the first real route change).
+  // Intentional: reading the ref during render to decide whether to play the
+  // wipe on this navigation. The flag is flipped in the effect below, so the
+  // first paint is skipped and every later navigation plays. Safe because the
+  // value only ever goes true→false once and the effect re-syncs per route.
+  // eslint-disable-next-line react-hooks/refs
   const playWipe = !firstRender.current
   useEffect(() => {
     firstRender.current = false
@@ -55,9 +60,12 @@ function AnimatedRoutes() {
     <>
       {/* Curtain wipe — keyed by pathname so it remounts and replays on
           every navigation. Sweeps up over the viewport, then off the top. */}
+      {/* playWipe is derived from the render-time ref read justified above. */}
+      {/* eslint-disable-next-line react-hooks/refs */}
       {playWipe && (
         <div key={location.pathname} className={styles.wipe} aria-hidden="true" />
       )}
+      {/* eslint-disable-next-line react-hooks/refs */}
       <div key={location.pathname} className={playWipe ? 'page-enter-nav' : 'page-enter'}>
       <Routes location={location}>
         <Route path="/" element={<Home />} />
