@@ -236,7 +236,12 @@ exposed as `duration-*` and `ease-*` Tailwind utilities.
 | `duration-quick` | 200 | small enter/exit (dropdowns) |
 | `duration-base` | 300 | modals, drawers, medium |
 | `duration-slow` | 450 | large overlays, complex morphs |
-| `duration-slower` | 600 | scroll reveals, hero choreography |
+| `duration-slower` | 600 | hero choreography, large transitions |
+
+> **Scroll-reveals are NOT duration-based anymore** — they use a **Framer Motion
+> spring** (Motion / `motion/react`), tuned once in `src/components/motion/revealMotion.js`
+> (Calm: stiffness 55 / damping 18 / mass 1, 28px travel, 90ms stagger). See
+> DESIGN_KNOWLEDGE §4.11 for the library decision + §4.9 for the best-practices.
 
 Rule: duration scales with travel/size; keep most UI ≤300ms; **exits ~20% faster
 than entrances.**
@@ -255,8 +260,9 @@ Purpose · responsiveness (<100ms to input) · choreography (lead element first,
 stagger siblings ~50–80ms) · spatial consistency (animate from a logical origin) ·
 **restraint** (skip animation on very frequent actions).
 
-Stagger steps are tokenised: `--stagger-1 60 · -2 120 · -3 180 · -4 240` (ms) for
-sequenced reveals.
+Stagger steps are tokenised: `--stagger-1 90 · -2 180 · -3 270 · -4 360` (ms) — used
+by the legacy `.fx-stagger` CSS utility. The Framer Motion `<Stagger>` cascades its
+children with its own 90ms step (`REVEAL_STAGGER_MS` in `revealMotion.js`).
 
 ### Patterns
 - **Hover** 150ms ease-out, transform/opacity/colour only; gate behind
@@ -264,8 +270,10 @@ sequenced reveals.
 - **Press** ~100ms, slight `scale(0.97)`.
 - **Focus-visible** instant ring — never suppressed by reduced-motion.
 - **Dropdowns/overlays** 200ms; fade + small rise; origin near trigger.
-- **Scroll-reveal** fade + 8–16px rise, ~600ms decelerate, trigger ~10–15% in view,
-  once; stagger siblings. (Implemented in `ScrollAnimation`.)
+- **Scroll-reveal** fade + 28px rise on a **Framer Motion spring** (Calm preset),
+  trigger ~28% in view (`useReveal` IntersectionObserver), once; stagger siblings.
+  Glass surfaces must BE the reveal element (never wrapped) so their frost survives —
+  see GLASS §8. Components: `<Reveal>` / `<Stagger>` (`<ScrollAnimation>` aliases `<Reveal>`).
 - **Media reveal** scale `1.03→1` + fade, ~600ms emphasized; hover lift/zoom on cards.
 - **Route transitions** (roadmap) 300–450ms; outgoing accelerate, incoming decelerate.
 - **Theme switch** — View Transitions API "circular reveal" blooming from the toggle
@@ -322,7 +330,9 @@ Status of current components and the highest-value upgrades toward the 2026 look
 | **Route transitions** | ✅ Gentle fade-in on navigation (`.page-enter`, keyed by path) | Optional: shared-element morphs |
 | **ExperienceTimeline** | ⚪ Tokenised colours; currently unused | Migrate text → type roles if re-introduced |
 | **Typography** | ✅ Semantic role classes; pages + components migrated | Header chrome keeps a few fine-tuned sizes |
-| **ScrollAnimation** | ✅ Tokenised motion | Add `delay`/stagger prop for choreographed sections |
+| **Reveal / Stagger / ScrollAnimation** | ✅ Framer Motion spring (`revealMotion.js`); `<ScrollAnimation>` now aliases `<Reveal>` | — |
+| **Modal / Lightbox** | ✅ Enter+exit via Motion `AnimatePresence` | Modal not yet wired into a page |
+| **/motion-lab** | ⚪ Unlinked dev page — live spring A/B + sliders for tuning reveals | Remove or fold into style guide when done tuning |
 | **Hero background** | ✅ Own WebGL shader (`ShaderBackground`) + CSS fallback; **cursor-reactive** (swirl + bloom follows pointer, reduced-motion-safe) | — |
 | **ThemeToggle** | ✅ Segmented control + View-Transitions reveal | — |
 | **Section** | ✅ Fine | Optional `size` (rhythm) prop |
