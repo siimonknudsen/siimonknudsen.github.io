@@ -5,7 +5,6 @@ import Button from '../components/buttons/Button'
 import Media from '../components/Media'
 import ShaderBackground from '../components/shader/ShaderBackground'
 import ProjectCard from '../components/projects/ProjectCard'
-import ProjectTag from '../components/projects/ProjectTag'
 import Badge from '../components/Badge'
 import Input from '../components/forms/Input'
 import { Reveal, Stagger, useReducedMotion } from '../components/motion'
@@ -1155,9 +1154,9 @@ function StyleGuide() {
                 </Tile>
                 <Tile label="Tags / Chips">
                   <div className={styles.tagRow}>
-                    <ProjectTag>UX Design</ProjectTag>
-                    <ProjectTag>UI Design</ProjectTag>
-                    <ProjectTag>Design System</ProjectTag>
+                    <Badge size="md">UX Design</Badge>
+                    <Badge size="md">UI Design</Badge>
+                    <Badge size="md">Design System</Badge>
                   </div>
                 </Tile>
                 <Tile label="Badges">

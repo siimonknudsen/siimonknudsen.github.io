@@ -27,7 +27,8 @@ function LogoGrid({ logos = [], columns = 6, gap = "1" }) {
         const logoName = logo ? logo.split('/').pop().replace('.png', '').replace(/-/g, ' ') : ''
         return (
           // The glass cell IS the reveal so its frost survives the reveal.
-          <Reveal key={index} className={styles.cell}>
+          // Per-column delay (resets each row) so a row cascades L→R, not all at once.
+          <Reveal key={index} delay={(index % columns) * 80} className={styles.cell}>
             {logo ? (
               <img
                 src={logo}

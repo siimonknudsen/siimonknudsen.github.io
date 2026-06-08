@@ -185,7 +185,7 @@ function About() {
             <ScrollAnimation>
               <h2 className={`type-subtitle text-color-primary ${styles.heading8}`}>Companies I've designed for</h2>
             </ScrollAnimation>
-            <LogoGrid logos={companies} columns={7} gap="4" />
+            <LogoGrid logos={companies} columns={7} gap="2" />
           </div>
         </div>
       </section>
@@ -224,6 +224,7 @@ function About() {
             />
             <TestimonialCard
               logo={null}
+              delay={80}
               recommender="Frej Korsgaard"
               title="Head of Tech"
               company="Adservice"
@@ -231,6 +232,7 @@ function About() {
             />
             <TestimonialCard
               logo={null}
+              delay={160}
               recommender="Maria Louise Bendixen"
               title="Lecturer"
               company="Business Academy Aarhus"

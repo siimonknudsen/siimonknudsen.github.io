@@ -8,10 +8,10 @@ import styles from './Badge.module.css'
  *  - tone: 'neutral' (default) · 'accent'
  *  - className: optional extra classes
  */
-function Badge({ children, variant = 'solid', tone = 'neutral', className = '' }) {
+function Badge({ children, variant = 'solid', tone = 'neutral', size = 'sm', className = '' }) {
   return (
     <span
-      className={`type-caption ${styles.badge} ${styles[variant]} ${styles[tone]} ${className}`}
+      className={`${styles.badge} ${styles[size]} ${styles[variant]} ${styles[tone]} ${className}`}
     >
       {children}
     </span>

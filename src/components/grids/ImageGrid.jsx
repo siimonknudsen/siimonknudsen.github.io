@@ -83,6 +83,7 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
             <Reveal
               as="button"
               preset="fade-up"
+              delay={(index % columns) * 80}
               key={index}
               type="button"
               onClick={() => setOpenIndex(index)}

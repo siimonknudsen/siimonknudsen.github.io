@@ -152,25 +152,28 @@
   margin: 0;
 }
 
-/* Text blocks span the full container width. */
-.lede {
+/* Running prose is held to a readable measure: half the container width on
+   wider screens, full width on mobile/tablet where 50% would be a thin sliver.
+   min(50%, 65ch) floors it so it never overruns a comfortable line length on
+   very wide viewports. Structural rows (meta grid) + media keep their own width. */
+.lede,
+.problemLede,
+.prose {
   margin: 0;
+  max-width: 100%;
+}
+
+.lede,
+.problemLede {
   font-weight: var(--weight-medium);
 }
 
-/* Exception: the opening Problem paragraph is held to half-width — but only on
-   larger screens; full width on mobile/tablet where 50% would be a thin column. */
-.problemLede {
-  max-width: 100%;
-}
 @media (min-width: 768px) {
-  .problemLede {
-    max-width: 50%;
+  .lede,
+  .problemLede,
+  .prose {
+    max-width: min(50%, 65ch);
   }
-}
-
-.prose {
-  margin: 0;
 }
 
 /* Process steps */
@@ -187,8 +190,16 @@
   gap: var(--space-32);
 }
 
+/* Legacy ordered text block — same readable cap as the prose above. */
 .textBlock {
   width: 100%;
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .textBlock {
+    max-width: min(50%, 65ch);
+  }
 }
 
 /* Full-bleed media breakout — pulls slightly wider than the prose column for

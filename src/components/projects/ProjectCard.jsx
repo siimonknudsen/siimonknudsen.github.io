@@ -11,7 +11,7 @@ import styles from './ProjectCard.module.css'
 // frost alive through the reveal instead of a wrapper killing it.
 const MotionLink = m.create(Link)
 
-function ProjectCard({ id, title, description, tags = [], impact }) {
+function ProjectCard({ id, title, description, tags = [], impact, delay }) {
   const onSpotlight = useSpotlight()
   return (
     // The glass <Link> IS the reveal (animates its own opacity/transform) so its
@@ -22,6 +22,7 @@ function ProjectCard({ id, title, description, tags = [], impact }) {
       to={`/project/${id}`}
       onMouseMove={onSpotlight}
       preset="fade-up"
+      delay={delay}
       className={`group glass-panel ${styles.card} ${styles.revealWrap}`}
     >
       {/* Cursor spotlight (specular sheen) — shared global utility */}

@@ -10,7 +10,7 @@ import styles from './TestimonialCard.module.css'
  * editorial touch. Logo slot accepts an inline component (`logoNode`) or an
  * image URL (`logo`); omit both for no logo.
  */
-function TestimonialCard({ logo, logoNode, recommender, title, company, text }) {
+function TestimonialCard({ logo, logoNode, recommender, title, company, text, delay }) {
   const hasLogo = logoNode || logo
   const paragraphs = Array.isArray(text) ? text : [text]
   const onSpotlight = useSpotlight()
@@ -18,7 +18,7 @@ function TestimonialCard({ logo, logoNode, recommender, title, company, text }) 
   return (
     // The glass <figure> IS the reveal so its frost survives the reveal (a
     // wrapper's opacity/transform would isolate the backdrop & kill the blur).
-    <Reveal as="figure" className={`group glass-panel ${styles.card}`} onMouseMove={onSpotlight}>
+    <Reveal as="figure" delay={delay} className={`group glass-panel ${styles.card}`} onMouseMove={onSpotlight}>
       <span aria-hidden="true" className="fx-spotlight" />
         {/* Single restrained accent touch — an oversized quotation glyph. */}
         <span aria-hidden="true" className={styles.quoteMark}>&ldquo;</span>

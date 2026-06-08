@@ -14,13 +14,14 @@ function Archive() {
           </ScrollAnimation>
           {/* 3 Column Grid */}
           <div className={styles.grid}>
-            {allArchiveProjects.map((project) => (
+            {allArchiveProjects.map((project, index) => (
               <ProjectCard
                 key={project.id}
                 id={project.id}
                 title={project.title}
                 description={project.description}
                 tags={project.tags}
+                delay={(index % 2) * 80}
               />
             ))}
           </div>

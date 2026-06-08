@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react'
-import ProjectTag from './ProjectTag'
+import Badge from '../Badge'
 import Tooltip from '../Tooltip'
 import styles from './ProjectCard.module.css'
 
@@ -14,7 +14,7 @@ import styles from './ProjectCard.module.css'
 // title).
 //
 // Styled two ways via `variant`:
-//   - "card" (default) → renders <ProjectTag> chips (used by ProjectCard /
+//   - "card" (default) → renders glass <Badge> chips (used by ProjectCard /
 //     Archive).
 //   - "stack"          → renders white-on-image pills using class names passed
 //     in from the caller (ProjectGrid's CSS module).
@@ -127,20 +127,23 @@ function TagRow({
   const hiddenCount = Math.max(tags.length - count, 0)
   const hiddenTags = tags.slice(count)
 
-  // Render a single tag's inner chip element per variant.
+  // Render a single tag's inner chip element per variant. The "card" variant
+  // uses the shared glass <Badge> (the one frosted-glass chip in the system —
+  // ProjectTag, which wasn't glass, was removed). "stack" stays an on-media pill
+  // (white-on-photo, NOT glass — it sits over project imagery).
   const renderChip = (tag) =>
     variant === 'stack' ? (
       <span className={chipClassName}>{tag}</span>
     ) : (
-      <ProjectTag>{tag}</ProjectTag>
+      <Badge size="md">{tag}</Badge>
     )
 
-  // The "+N" chip itself reuses the same per-variant chip styling.
+  // The "+N" chip reuses the same per-variant chip.
   const renderPlus = (label) =>
     variant === 'stack' ? (
       <span className={chipClassName}>{label}</span>
     ) : (
-      <ProjectTag>{label}</ProjectTag>
+      <Badge size="md">{label}</Badge>
     )
 
   return (
