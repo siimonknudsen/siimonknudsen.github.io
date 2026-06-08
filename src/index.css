@@ -180,8 +180,14 @@
   /* Frosted texture — a faint grayscale fractal-noise tile baked into every glass
      surface (blended soft-light) so panels read like real sandblasted / Apple
      "Liquid Glass", not just a flat blur. Unique filter id (gn) so it never
-     clashes with the global film-grain (.grain uses id 'n'). */
-  --glass-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='gn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23gn)' opacity='0.28'/%3E%3C/svg%3E");
+     clashes with the global film-grain (.grain uses id 'n').
+     CLEAN GRAIN: feGaussianBlur 0.6 softens the hard per-pixel edges that read as
+     blocky "static" on retina → smooth micro-grain (measured: full-opacity
+     adjacent-pixel harshness 12.5 raw → 4.3 at blur 0.6; 0.4 was too gentle at
+     ~10). 200px tile + 3 octaves = finer, less obvious repeat; 0.20 opacity keeps
+     it present-but-subtle. (Tune: opacity = strength, blur = smoothness,
+     baseFrequency = grain size.) */
+  --glass-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='gn' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeGaussianBlur stdDeviation='0.6'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23gn)' opacity='0.2'/%3E%3C/svg%3E");
 
   /* — Motion: durations — */
   --dur-instant: 100ms;

@@ -1,4 +1,4 @@
-import ScrollAnimation from '../animations/ScrollAnimation'
+import Reveal from '../motion/Reveal'
 import styles from './LogoGrid.module.css'
 
 /**
@@ -26,20 +26,19 @@ function LogoGrid({ logos = [], columns = 6, gap = "1" }) {
         // Extract company name from logo path for better alt text
         const logoName = logo ? logo.split('/').pop().replace('.png', '').replace(/-/g, ' ') : ''
         return (
-          <ScrollAnimation key={index}>
-            <div className={styles.cell}>
-              {logo ? (
-                <img
-                  src={logo}
-                  alt={logoName || `Company logo ${index + 1}`}
-                  loading="lazy"
-                  className={styles.logo}
-                />
-              ) : (
-                <div className={`bg-surface-color-tertiary ${styles.placeholder}`}></div>
-              )}
-            </div>
-          </ScrollAnimation>
+          // The glass cell IS the reveal so its frost survives the reveal.
+          <Reveal key={index} className={styles.cell}>
+            {logo ? (
+              <img
+                src={logo}
+                alt={logoName || `Company logo ${index + 1}`}
+                loading="lazy"
+                className={styles.logo}
+              />
+            ) : (
+              <div className={`bg-surface-color-tertiary ${styles.placeholder}`}></div>
+            )}
+          </Reveal>
         )
       })}
     </div>

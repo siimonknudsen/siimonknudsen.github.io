@@ -2,6 +2,19 @@ import { m, useReducedMotion } from 'motion/react'
 import useReveal from './useReveal'
 import { REVEAL_SPRING, REVEAL_SHIFT, REVEAL_VARIANTS } from './revealMotion'
 
+// Resolve `as` to a Motion component. A string → built-in `m.<tag>`. A custom
+// element (e.g. react-router <Link>) must be passed as an ALREADY-motion
+// component — created once at module scope by the caller via `m.create(...)`
+// (creating it here would trip react-hooks/static-components, and reset state).
+// Why support custom `as`: a glass card must BE the reveal (animate its OWN
+// opacity/transform) so its backdrop-filter frost stays alive — a WRAPPER's
+// opacity<1 / transform isolates the backdrop and the frost "pops in" late.
+// See GLASS_DESIGN_SYSTEM §8.
+function resolveMotion(as) {
+  if (typeof as === 'string') return m[as] || m.div
+  return as // already a motion component (m.create(...) at module scope)
+}
+
 /**
  * <Reveal> — declarative scroll-reveal. Framer Motion spring (the calm preset in
  * revealMotion.js) animated from `hidden`→`shown`, triggered by our tuned
@@ -23,7 +36,7 @@ export default function Reveal({
 }) {
   const reduce = useReducedMotion()
   const { ref, isVisible } = useReveal({ once })
-  const MComp = m[as] || m.div
+  const MComp = resolveMotion(as)
   const variants = REVEAL_VARIANTS[preset] || REVEAL_VARIANTS['fade-up']
   const d = delay != null ? delay / 1000 : 0
   // Opacity on the slow calm spring; the y/scale glide on a quick tween so the
@@ -39,6 +52,9 @@ export default function Reveal({
       }
 
   return (
+    // MComp is a STABLE reference — m.<tag> or a module-scope m.create() component
+    // (selected, not created, per render) — so this is a false positive.
+    // eslint-disable-next-line react-hooks/static-components
     <MComp
       ref={ref}
       // Reduced motion: render shown immediately so content never depends on

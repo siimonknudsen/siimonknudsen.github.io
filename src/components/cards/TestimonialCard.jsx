@@ -1,4 +1,4 @@
-import ScrollAnimation from '../animations/ScrollAnimation'
+import Reveal from '../motion/Reveal'
 import useSpotlight from '../../hooks/useSpotlight'
 import styles from './TestimonialCard.module.css'
 
@@ -16,12 +16,10 @@ function TestimonialCard({ logo, logoNode, recommender, title, company, text }) 
   const onSpotlight = useSpotlight()
 
   return (
-    <ScrollAnimation>
-      <figure
-        className={`group glass-panel ${styles.card}`}
-        onMouseMove={onSpotlight}
-      >
-        <span aria-hidden="true" className="fx-spotlight" />
+    // The glass <figure> IS the reveal so its frost survives the reveal (a
+    // wrapper's opacity/transform would isolate the backdrop & kill the blur).
+    <Reveal as="figure" className={`group glass-panel ${styles.card}`} onMouseMove={onSpotlight}>
+      <span aria-hidden="true" className="fx-spotlight" />
         {/* Single restrained accent touch — an oversized quotation glyph. */}
         <span aria-hidden="true" className={styles.quoteMark}>&ldquo;</span>
 
@@ -54,8 +52,7 @@ function TestimonialCard({ logo, logoNode, recommender, title, company, text }) 
             {company}
           </span>
         </figcaption>
-      </figure>
-    </ScrollAnimation>
+    </Reveal>
   )
 }
 

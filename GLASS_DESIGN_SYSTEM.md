@@ -148,13 +148,27 @@ does **not** kill its *own* `backdrop-filter` (the blur just moves with it). So:
 > To animate a glass surface, animate **the glass element itself**, never a wrapper
 > around it. A transformed wrapper = dead frost on its glass children.
 
-**Reveal/scroll animations are the classic killer.** Our `<Reveal>` wraps content in
-a transformed element. While that wrapper animates (the `y`/`scale` glide), every
-glass child's frost is suppressed, then "pops in" when the transform settles. Fixes
-(either works): **(a)** make the glass element *be* the animated element; **(b)**
-**decouple the transition** — quick tween on `transform` (y/scale) so it lands fast
-while the element is still faded-out, slow spring/curve on `opacity`. We use (b) in
-`revealMotion.js` (`REVEAL_SHIFT`) so it's global.
+**Reveal/scroll animations are the classic killer.** A `<Reveal>`/`<ScrollAnimation>`
+that *wraps* a glass element animates `opacity` **and** `y`/`scale` on the wrapper —
+and **both** isolate the backdrop (`opacity < 1` is a backdrop-root trigger just like
+`transform`). So the glass child's frost is dead for the whole reveal, then "pops in."
+**Critical consequence: `REVEAL_SHIFT` (the quick-transform decouple, fix (b) below)
+does NOT save a *wrapped* glass child** — even with the transform settled fast, the
+wrapper's slow `opacity` fade keeps isolating it. The only real fix for a glass
+surface is **(a): the glass element must BE the reveal element**, animating its own
+opacity/transform (own opacity composites the *already-frosted* element → frost
+visible from frame one; own transform is fine). So:
+> **Never wrap a glass card in `<Reveal>`/`<ScrollAnimation>`. Make the glass element
+> itself the reveal** — `<Reveal as="figure" className="glass-panel …">`, or for a
+> component root (e.g. a `<Link>` card) pass a module-scope `m.create(Link)` as `as`.
+> Done for ProjectCard / SkillCard / TestimonialCard / LogoGrid (2026-06-08).
+
+**(b) decouple the transition** — quick tween on `transform`, slow on `opacity` — still
+applies to *self-animating* glass (and non-glass), so the transform lands before it
+matters; `revealMotion.js` (`REVEAL_SHIFT`) does this globally. **Caveat — nested glass:**
+a glass chip *inside* a glass card that reveals can't keep its own frost (the card's own
+opacity/transform isolates its descendants — unavoidable for any reveal). Accepted for
+the tiny tag pills on project cards; they frost in when the card settles (~0.5s).
 
 **`animation-fill-mode` trap.** A keyframe/transition that ends at `translateY(0)`
 with `forwards`/`both` leaves a **permanent identity transform** → a permanent
