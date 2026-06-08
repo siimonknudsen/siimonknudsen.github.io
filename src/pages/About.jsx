@@ -185,7 +185,7 @@ function About() {
             <ScrollAnimation>
               <h2 className={`type-subtitle text-color-primary ${styles.heading8}`}>Companies I've designed for</h2>
             </ScrollAnimation>
-            <LogoGrid logos={companies} columns={7} gap="1" />
+            <LogoGrid logos={companies} columns={7} gap="4" />
           </div>
         </div>
       </section>
