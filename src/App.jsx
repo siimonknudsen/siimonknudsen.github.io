@@ -23,7 +23,6 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import IntroLoader from './components/IntroLoader'
 import CookieConsent from './components/CookieConsent'
-import HeroBackground from './components/HeroBackground'
 import ScrollToTop from './components/animations/ScrollToTop'
 import { initConsent } from './lib/consent'
 import styles from './App.module.css'
@@ -115,13 +114,20 @@ function App() {
           content. The nav no longer re-mounts on navigation, and there is one
           real <main> landmark + skip-link target for the whole site. */}
       <div className={`${styles.shell} bg-surface-color-primary text-color-primary`}>
-        {/* Global shader — fixed behind ALL content on every page, fills the
-            viewport and stays put while the page scrolls over it. */}
-        <div className={styles.fixedShader} aria-hidden="true">
-          <HeroBackground />
-        </div>
         <Header />
         <main id="main-content" tabIndex={-1} className={styles.main}>
+          {/* The site's single background: a soft warm mesh that glass actually
+              frosts. It MUST live in normal flow (not a `position: fixed` layer)
+              because `backdrop-filter` cannot sample a fixed layer — that was the
+              old shader's core problem (GLASS §8 "fixed-background trap"). So this
+              sits as the FIRST child of <main>, sticky-pinned to the viewport
+              (feels fixed on scroll, yet IS sampleable), carrying soft warm radial
+              blobs (medium-frequency = frosts beautifully) and NO grid lines (a
+              frosted grid was explicitly rejected, GLASS §8). Static by design:
+              re-blurring an animating backdrop every scroll frame behind ~20 live
+              glass surfaces is the main jank source, so it's pure CSS with only an
+              optional slow GPU-cheap transform drift. */}
+          <div className={styles.meshBackdrop} aria-hidden="true" />
           <AnimatedRoutes />
         </main>
         <Footer />

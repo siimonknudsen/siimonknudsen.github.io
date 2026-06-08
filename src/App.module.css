@@ -4,15 +4,6 @@
   flex-direction: column;
 }
 
-/* Global shader — fixed full-viewport, behind all content (content sits at
-   z-index 1+). Stays put while the page scrolls over it. */
-.fixedShader {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
 .main {
   flex: 1 1 auto;
   outline: none;
@@ -20,6 +11,79 @@
   position: relative;
   z-index: 1;
 }
+
+/* In-flow, viewport-pinned mesh backdrop — the PRIMARY backdrop glass frosts.
+   WHY in-flow (not the fixed shader): `backdrop-filter` only samples in-flow
+   content painted behind the element; it cannot see a `position: fixed` layer
+   (the shader). So glass over the fixed shader never actually frosts it. This
+   layer lives in normal flow as the first child of <main>, so glass CAN sample
+   it — but `position: sticky; top: 0; height: 100vh; margin-bottom: -100vh`
+   pins it to the viewport and removes it from flow height, so it visually
+   behaves like a fixed background (no extra scroll height, no push on content)
+   while staying sampleable. z-index:-1 keeps it behind the routed content
+   (which sits at z-index 0+ in normal flow); the fixed shader is further back.
+   WHY static: re-blurring an *animating* backdrop every scroll frame, behind
+   every live glass surface, is the dominant jank source — so this is plain CSS
+   gradients with only a slow, GPU-cheap transform/opacity drift (transform-only,
+   never animating backdrop-filter; see GLASS §7/§8). */
+.meshBackdrop {
+  position: sticky;
+  top: 0;
+  /* Extend UP behind the sticky header so the background fills the viewport to
+     the very top (not just below the header). The header (z-index 50) still
+     paints over this (z-index:-1, inside main's z-index:1 context), so it frosts
+     the mesh too. */
+  margin-top: calc(-1 * var(--header-height));
+  height: calc(100vh + var(--header-height));
+  /* Negative margins keep the layer's net flow contribution at 0 (height +
+     margin-top + margin-bottom = 0), so it adds no scroll height and pushes no
+     content — it overlays the viewport like a fixed element would. */
+  margin-bottom: -100vh;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+
+  /* Soft warm mesh — large radial colour blobs in the brand/neutral palette.
+     Medium-frequency soft detail (not flat, not sharp) → frosts beautifully.
+     Theme-aware blob colours set on custom props below. NO grid lines here. */
+  background-color: var(--mesh-base);
+  background-image:
+    radial-gradient(58% 50% at 16% 12%, var(--mesh-a) 0%, transparent 70%),
+    radial-gradient(50% 46% at 88% 18%, var(--mesh-b) 0%, transparent 72%),
+    radial-gradient(60% 55% at 78% 82%, var(--mesh-c) 0%, transparent 70%),
+    radial-gradient(54% 50% at 22% 88%, var(--mesh-d) 0%, transparent 72%),
+    radial-gradient(42% 40% at 50% 50%, var(--mesh-e) 0%, transparent 75%);
+  background-repeat: no-repeat;
+}
+
+/* Dark-mode mesh — warm ember blooms over near-black, harmonising with the
+   orange brand accent. Kept low-chroma/low-alpha so it reads atmospheric, not
+   loud, yet gives glass enough texture to frost. */
+:global(html.dark) .meshBackdrop {
+  --mesh-base: #0b0b0c;
+  --mesh-a: rgba(242, 106, 46, 0.20);  /* brand-500 warm bloom, top-left */
+  --mesh-b: rgba(124, 54, 24, 0.26);   /* deep ember, top-right */
+  --mesh-c: rgba(219, 83, 32, 0.18);   /* brand-600, bottom-right */
+  --mesh-d: rgba(58, 22, 12, 0.55);    /* brand-950 shadow pool, bottom-left */
+  --mesh-e: rgba(40, 30, 26, 0.40);    /* warm neutral centre lift */
+}
+
+/* Light-mode mesh — pale warm washes over white; soft enough to keep type
+   contrast, present enough that translucent glass frosts a real colour. */
+:global(html:not(.dark)) .meshBackdrop {
+  --mesh-base: #fbf7f4;
+  --mesh-a: rgba(254, 204, 174, 0.55); /* brand-200 peach, top-left */
+  --mesh-b: rgba(255, 244, 238, 0.90); /* brand-50 near-white, top-right */
+  --mesh-c: rgba(252, 171, 124, 0.40); /* brand-300, bottom-right */
+  --mesh-d: rgba(255, 230, 214, 0.70); /* brand-100, bottom-left */
+  --mesh-e: rgba(250, 250, 250, 0.60); /* neutral centre lift */
+}
+
+/* Static by design — no drift. A transform drift on this sticky, viewport-sized
+   layer scaled its own box past the viewport and created a horizontal scrollbar
+   (and static is the performant choice anyway — no per-frame backdrop re-blur).
+   If subtle life is ever wanted, animate a CLIPPED inner `::before`, never this
+   sticky box. */
 
 /* Curtain wipe — a calm full-screen panel in the PAGE background colour that
    sweeps up to cover the viewport, holds, then lifts to reveal the new page

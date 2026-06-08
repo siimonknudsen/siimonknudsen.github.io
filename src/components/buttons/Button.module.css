@@ -39,11 +39,12 @@
     0 0 0 4px var(--accent);
 }
 
-/* sizes */
+/* sizes — heights are tokenised (sm 32 · md 40 · lg 48); horizontal padding
+   scales with height. No hardcoded magic numbers. */
 .sizeSm {
   height: var(--space-32);
-  padding-left: 14px;
-  padding-right: 14px;
+  padding-left: var(--space-12);
+  padding-right: var(--space-12);
 }
 
 .sizeMd {
@@ -58,11 +59,34 @@
   padding-right: var(--space-24);
 }
 
+/* Icon-only — square button: width locks to the size height, padding is removed
+   so a single ~16px icon centres. Pair each size with its height. */
+.iconOnly {
+  padding-left: 0;
+  padding-right: 0;
+  aspect-ratio: 1 / 1;
+}
+.iconOnly.sizeSm {
+  width: var(--space-32);
+}
+.iconOnly.sizeMd {
+  width: var(--space-40);
+}
+.iconOnly.sizeLg {
+  width: var(--space-48);
+}
+/* Normalise the icon glyph inside a square button to ~16px. */
+.iconOnly svg {
+  width: var(--space-16);
+  height: var(--space-16);
+}
+
 /* variants */
 
 /*
  * Hover is a different BACKGROUND COLOUR only — no lift/translate, no added
- * shadow, no light sweep. Calm and flat by request.
+ * shadow, no light sweep. Calm and flat by request. Solid variants darken one
+ * extra step on :active (pressed) — still a colour change only, at --dur-fast.
  */
 
 .primary {
@@ -73,12 +97,20 @@
   background-color: color-mix(in oklch, var(--surface-color-contrast-primary), var(--surface-color-primary) 14%) !important;
 }
 
+.primary:active {
+  background-color: color-mix(in oklch, var(--surface-color-contrast-primary), var(--surface-color-primary) 26%) !important;
+}
+
 .secondary {
   box-shadow: var(--shadow-xs);
 }
 
 .secondary:hover {
   background-color: var(--surface-color-secondary) !important;
+}
+
+.secondary:active {
+  background-color: color-mix(in oklch, var(--surface-color-secondary), var(--surface-color-contrast-primary) 8%) !important;
 }
 
 .accent {
@@ -90,8 +122,35 @@
   background-color: color-mix(in oklch, var(--accent), #000 12%) !important;
 }
 
+.accent:active {
+  background-color: color-mix(in oklch, var(--accent), #000 22%) !important;
+}
+
+/* Outline — transparent fill with a TRANSLUCENT glass hairline (theme-aware:
+   a faint dark edge on light, a faint light edge on dark), NOT a hard solid
+   neutral border. Hover fills with the same subtle translucent wash the glass
+   rows use; active deepens it one step. */
+.outline {
+  background-color: transparent;
+  border: 1px solid var(--glass-border);
+}
+
+.outline:hover {
+  background-color: var(--glass-item-hover);
+}
+
+.outline:active {
+  background-color: var(--glass-item-active);
+}
+
 /* glass + ghost variants get their hover background from the shared
-   .glass-item rule in index.css (a subtle translucent fill). */
+   .glass-item rule in index.css (a subtle translucent fill). The active
+   (pressed) deepen also comes from --glass-item-active. */
+
+.glass:active,
+.ghost:active {
+  background-color: var(--glass-item-active);
+}
 
 .ghost:hover {
   color: var(--text-color-primary) !important;

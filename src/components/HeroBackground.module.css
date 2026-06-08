@@ -2,6 +2,12 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
+  /* Demoted to a faint LIFE-GIVING base: the in-flow `.meshBackdrop` (App) is
+     now the primary backdrop glass frosts (a fixed layer can't be sampled by
+     `backdrop-filter` — GLASS §8). The live WebGL shader stays for subtle
+     motion/atmosphere behind the static mesh, but pulled back so the mesh
+     dominates and the two don't fight. Tune here if it reads too strong/faint. */
+  opacity: 0.5;
 }
 
 .shader {
@@ -10,7 +16,9 @@
 }
 
 /* Subtle technical grid over the shader. Theme-aware line colour; the radial
-   mask fades the grid out toward the edges so it reads as texture, not a table. */
+   mask fades the grid out toward the edges so it reads as texture, not a table.
+   Lives on the FIXED shader on purpose — so it stays a background texture and
+   does NOT get picked up / frosted inside glass surfaces. */
 .grid {
   --grid-line: var(--transparent-light-8);
   position: absolute;

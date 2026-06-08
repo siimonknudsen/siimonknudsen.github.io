@@ -150,10 +150,12 @@
   --space-36: 36px;
   --space-40: 40px;
   --space-48: 48px;
+  --space-56: 56px;
   --space-64: 64px;
   --space-80: 80px;
   --space-128: 128px;
   --space-164: 164px;
+  --space-200: 200px;
 
   /* — Layout — */
   --container-max: 1920px; /* page content max width */
@@ -173,9 +175,12 @@
   --radius-pill: 9999px;
 
   /* — Blur / glass effect — */
+  /* Blur radii kept moderate for performance — each backdrop-filter is a GPU
+     pass that re-renders when the backdrop changes (scroll), and cost scales with
+     radius. Over the soft mesh, 12/16 frosts just as well as the old 16/24. */
   --glass-blur-sm: 8px;
-  --glass-blur-md: 16px;
-  --glass-blur-lg: 24px;
+  --glass-blur-md: 12px;
+  --glass-blur-lg: 16px;
   --glass-saturate: 180%;
   /* Frosted texture — a faint grayscale fractal-noise tile baked into every glass
      surface (blended soft-light) so panels read like real sandblasted / Apple
@@ -298,18 +303,28 @@ html.dark {
   --text-color-contrast-primary: var(--neutral-1000);
   --text-color-contrast-secondary: var(--neutral-600);
   --text-color-contrast-tertiary: var(--neutral-500);
-  /* Frosted glass (dark) */
-  --glass-bg: rgba(38, 38, 40, 0.55);
-  /* Cards/panels were 0.80 → read as flat solid panels (the warm shader couldn't
-     show through, so the frost was invisible). Lowered so the shader frosts
-     through like the footer, while keeping enough scrim for text legibility. */
-  --glass-bg-strong: rgba(28, 28, 30, 0.62);
+  /* Frosted glass (dark) — tint LIFTED off near-black so dark glass reads as
+     frosted, not muddy. Was 38,38,40/.55 + 28,28,30/.62: too dark + too
+     transparent over the dim mesh → low contrast, flat. Nudged lighter & a hair
+     more opaque (still translucent so the mesh frosts through), and the inner
+     top highlight strengthened below for the Apple "lit top edge". Keeps text
+     legible. (Token architecture unchanged — values only.) */
+  --glass-bg: rgba(58, 58, 62, 0.58);
+  --glass-bg-strong: rgba(48, 48, 52, 0.66);
   --glass-border: var(--transparent-light-12);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.07), inset 0 -1px 0 rgba(0, 0, 0, 0.22);
-  --glass-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 -1px 0 rgba(0, 0, 0, 0.28);
+  /* Inset top line = the soft INNER TOP HIGHLIGHT (light catching the top edge);
+     inset bottom line = grounding shadow. Highlight bumped (.07→.14, .08→.16)
+     so dark glass gets a crisp lit edge that sells the frost. */
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 -1px 0 rgba(0, 0, 0, 0.22);
+  --glass-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 -1px 0 rgba(0, 0, 0, 0.28);
   --glass-item-hover: var(--transparent-light-8);
   --glass-item-active: var(--transparent-light-12);
   --glass-solid: #1c1c1e;
+  /* Top-edge SHEEN — a soft vertical light wash baked into the glass fill,
+     brightest at the top, fading by ~half height. With the 1px inset highlight
+     this gives the Apple "Liquid Glass" lit-from-above read. Dark = a gentle
+     white wash. (Layered with --glass-noise; soft-light blended.) */
+  --glass-sheen: linear-gradient(to bottom, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.02) 45%, transparent 70%);
   /* Cursor-spotlight glow (dark = white specular sheen) */
   --glass-glow: var(--transparent-light-12);
   /* Elevation (solid surfaces, dark = deeper/softer shadows) */
@@ -380,6 +395,9 @@ html:not(.dark) {
   --glass-item-hover: var(--transparent-dark-4);
   --glass-item-active: var(--transparent-dark-12);
   --glass-solid: #f4f4f5;
+  /* Top-edge SHEEN (light) — a brighter white wash; on translucent light glass
+     this reads as a glossy lit top edge (pairs with the strong 1px inset). */
+  --glass-sheen: linear-gradient(to bottom, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.14) 45%, transparent 70%);
   /* Cursor-spotlight glow (light = soft warm-accent tint; a white glow would be
      invisible on a light card) */
   --glass-glow: color-mix(in oklch, var(--accent) 16%, transparent);
@@ -744,13 +762,18 @@ html:not(.dark) {
     box-shadow: var(--glass-shadow-lg);
   }
 
-  /* Frosted texture on every glass surface — a whisper of noise over the fill,
-     blended soft-light so it reads as sandblasted glass, not dirt. (Pairs with
-     the global film-grain; this one is baked into the panel itself.) */
+  /* Frosted texture + top-edge sheen on every glass surface. Two layers:
+     (1) --glass-sheen — a soft top-down light wash (NORMAL blend) = the Apple
+         "lit-from-above" inner highlight, paired with the 1px inset top line.
+     (2) --glass-noise — a whisper of fractal noise (SOFT-LIGHT blend) so it
+         reads as sandblasted glass, not dirt (pairs with the global film-grain).
+     Top layer listed first; blend modes map per-layer. Both are dropped in the
+     solid/a11y fallbacks below. None of this creates a backdrop-root (pure
+     background paint — no transform/filter/opacity on the element). */
   .glass,
   .glass-panel {
-    background-image: var(--glass-noise);
-    background-blend-mode: soft-light;
+    background-image: var(--glass-sheen), var(--glass-noise);
+    background-blend-mode: normal, soft-light;
   }
 
   .glass-item {
@@ -891,7 +914,11 @@ html:not(.dark) {
 .border-error { border-color: var(--feedback-error) !important; }
 
 /* Monospace helper (tabular data, code, specimen labels) */
-.font-mono { font-family: var(--font-mono); }
+/* Retired the monospace accent — Simon wants BDO Grotesk everywhere for one
+   consistent typeface. The `.font-mono` class is kept (48 call-sites) but now
+   renders the sans; it just carries the small "meta/label" sizing+tracking, in
+   BDO. (`--font-mono` token left defined for any genuine future code/`<pre>`.) */
+.font-mono { font-family: var(--font-sans); }
 
 /* Modal/overlay scrim backdrop (theme-aware token) */
 .bg-scrim { background-color: var(--overlay-scrim) !important; }

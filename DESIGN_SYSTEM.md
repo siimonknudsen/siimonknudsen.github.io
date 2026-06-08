@@ -145,8 +145,10 @@ fine-tune with `leading-*` only when needed.
 
 **Vertical metrics are overridden on the `@font-face`** (the global "type looks centred" fix). BDO Grotesk ships a top-heavy box (native ascent 800 / descent 177 / cap 729 per 1000 em) so its letters sit ~5.5% high in any box — visible in every centred UI label and as uneven space above text. We rebalance at the source: **`ascent-override: 90.6%` / `descent-override: 17.7%` / `line-gap-override: 29.4%`**, chosen so `ascent − descent = cap-height` (caps centre in any line-box) while `line-height: normal` stays ~1.38 and descenders never clip. Consequence: the balanced content-box is **1.083em**, so **multi-line display type must not go below `line-height: 1.1`** (the display roles are floored there). See DESIGN_LOG → Global.
 
+**The monospace accent was retired (2026-06-09)** — Simon wants one typeface, so **BDO Grotesk is now used everywhere on the public site**. The **`.font-mono` utility renders the sans** (it keeps only the small meta sizing/tracking, not a different family), converting all ~48 prior mono usages (overlines, stat labels, design-system metadata) to BDO. The **`--font-mono` token is reserved only for genuine code** (the internal Playground code block). See DESIGN_LOG → Global.
+
 **Underlying primitives:** families BDO Grotesk (`--font-sans`, self-hosted variable, wght 300–900, SIL OFL 1.1) + a monospace stack
-(`--font-mono` / Tailwind `font-mono`, used for token labels & tabular meta);
+(`--font-mono`, **now reserved for genuine code only** — see above);
 weights regular 400 / medium 500 / semibold 600 / bold 700 (`--weight-*`, Tailwind
 `font-regular/medium/semibold/bold`); the size scale **10 → 48**
 (`--text-2xs … --text-5xl`, also Tailwind `text-2xs … text-5xl` for rare one-offs);
@@ -170,9 +172,10 @@ flat-vs-graduated rationale.)
 4px base, curated scale (px) — exposed via Tailwind's default `p-*`/`gap-*`/`m-*`
 and mirrored as `--space-*` primitives for custom CSS:
 
-`0 · 2 · 4 · 6 · 8 · 12 · 16 · 20 · 24 · 28 · 32 · 36 · 40 · 48 · 64 · 80 · 128`
+`0 · 2 · 4 · 6 · 8 · 12 · 16 · 20 · 24 · 28 · 32 · 36 · 40 · 48 · 56 · 64 · 80 · 128 · 164 · 200`
 
-Tailwind mapping: `0, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 16, 20, 32`.
+Tailwind mapping: `0, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 20, 32, 41, 50`.
+Large end (128 · 164 · 200) is intentionally sparse — for page/section rhythm, not component spacing.
 Conventions: card padding 24 (`p-6`), section rhythm 80 (`mb-20`), tight stacks 8–16.
 
 ---
@@ -217,9 +220,10 @@ tooltip 1700`. (Lightbox uses `z-modal`; skip-link uses `z-tooltip`.)
 ## 6. Materials (frosted glass)
 
 Summarised here; full spec in [GLASS_DESIGN_SYSTEM.md](GLASS_DESIGN_SYSTEM.md).
-`.glass` (chrome, 16px blur) · `.glass-panel` (overlays w/ text, 24px blur, stronger
+`.glass` (chrome, 12px blur) · `.glass-panel` (overlays w/ text, 16px blur, stronger
 scrim) · `.glass-item` (hover/active rows) · `.border-glass` (translucent divider).
-Blur tokens `--glass-blur-sm/md/lg`. Always degrade for reduced transparency/contrast.
+Blur tokens `--glass-blur-sm/md/lg` (8/12/16 — md/lg lowered for perf, 2026-06-09; see
+GLASS §8). Always degrade for reduced transparency/contrast.
 
 ---
 
@@ -321,7 +325,7 @@ Status of current components and the highest-value upgrades toward the 2026 look
 | Component | Status | Recommended variants / optimisations |
 |---|---|---|
 | **Header / nav** | ✅ Glass, dropdowns, segmented theme | Done. Optional: active-route underline animation |
-| **Button** | ✅ Variants (primary/secondary/accent/glass/ghost), sm/md/lg, icon slots, loading, `fullWidth`, polymorphic `as`, focus ring, press motion | Optional: link variant |
+| **Button** | ✅ Variants (primary/secondary/accent/glass/ghost/**outline**), **`iconOnly`**, sm/md/lg (32/40/48px), icon slots, loading, `fullWidth`, polymorphic `as`, focus ring, colour-only `:active` press | Optional: link variant |
 | **ProjectTag / chip** | ✅ Tokenised (`type-caption`) | Optional outline / active variants |
 | **ProjectCard** | ✅ `Media` + hover **zoom + lift** | — |
 | **TestimonialCard / SkillCard** | ✅ Rounded, bordered, hover lift | Optional glass surface |
@@ -343,6 +347,16 @@ shader (gradient-grid mesh) · animated theme switch · full colour tokenisation
 4·8·12·16 radius scale · ImageGrid lightbox · route transitions · **feedback/status
 colours · elevation scale · z-index scale · opacity/border-width/focus tokens · mono
 + semibold/bold weights · stagger tokens** · **charts/KPI kit**.
+
+### 9.0 Button
+
+`variant`: **primary · secondary · accent · glass · ghost · outline**. The **`outline`**
+variant is a translucent **`--glass-border` hairline** (a soft edge that reads as glass) —
+**never a hard 1px border** (Simon's anti-box rule). **`iconOnly`** renders a square button
+(no label padding) and **requires an `aria-label`**. Sizes **sm / md / lg = 32 / 40 / 48px**
+(sm padding tokenised to `--space-12`). **Hover and press are colour-only — no lift or scale:**
+hover changes background (+ the rolling-text label), and `:active` is a pressed colour-darken
+(see DESIGN_LOG §12 for the text-roll detail). Demoed on `/design-system`.
 
 ### 9.1 Charts & KPI kit (`src/components/charts/`)
 

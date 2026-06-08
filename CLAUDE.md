@@ -143,6 +143,13 @@ the benefit of the doubt.
     live in-browser verification (agents can't see the preview), or tightly-coupled back-and-forth
     — a swarm there is slower and burns far more tokens. Default = solo; reach for a swarm when the
     task genuinely splits into parallel chunks.
+12. **Keep the Design System page + docs in sync with EVERY change (Simon's standing request).**
+    Whenever you change a token, component, material, or visual treatment, in the SAME batch
+    update **(a)** the live Design System page (`StyleGuide.jsx` → `/design-system`) so it *shows*
+    the new look/values, and **(b)** the owning doc (`DESIGN_SYSTEM.md` / `GLASS_DESIGN_SYSTEM.md`,
+    + `DESIGN_LOG.md` for the decision). The DS page is the public showcase — a stale page reads as
+    broken. Don't wait to be asked; treat "done" as including the page + docs. (E.g. the spacing
+    scale page was missing `164` for a whole session because this wasn't done.)
 
 ## 4. Build · verify · deploy
 - `npm run build` → (`pkill -f "vite preview"`) → `npm run preview -- --port 4173`.

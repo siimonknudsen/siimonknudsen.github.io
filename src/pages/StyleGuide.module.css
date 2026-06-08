@@ -1,3 +1,15 @@
+/* =================================================================
+   Design System page — editorial redesign
+   ONE strict vertical rhythm, applied everywhere:
+     · between SECTIONS         → 128 desktop / 80 mobile  (.content gap)
+     · heading → first content  → 48                       (.sectionHeading margin)
+     · between GROUPS in section→ 64                        (.group margin)
+     · within a GROUP           → 16                        (local gaps)
+   (~2× ratio between levels.) The "specimen card" grammar (.specimen) is the
+   unifying device: live sample on top, one muted mono metadata row beneath,
+   borderless on glass (cursor spotlight) or a tonal surface fill.
+   ================================================================= */
+
 /* ── Building blocks ────────────────────────────────────────────── */
 
 .overline {
@@ -8,7 +20,22 @@
 
 .sectionHeading {
   scroll-margin-top: 112px;
-  margin-bottom: var(--space-40);
+}
+
+/* ── The one vertical rhythm ────────────────────────────────────── */
+/* Each content <section> stacks its (ScrollAnimation-wrapped) children with a
+   strict rhythm: 48 after the heading, 64 between every group thereafter.
+   The between-SECTIONS gap (128/80) lives on .content. Inner wrappers must NOT
+   add their own top/bottom margins or the rhythm doubles. */
+.content > section {
+  display: flex;
+  flex-direction: column;
+}
+.content > section > * + * {
+  margin-top: var(--space-64); /* group → group */
+}
+.content > section > *:first-child + * {
+  margin-top: var(--space-48); /* heading → first content */
 }
 
 .sectionTitle {
@@ -16,7 +43,7 @@
   font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-tight);
   margin-top: var(--space-12);
-  margin-bottom: var(--space-12);
+  margin-bottom: var(--space-16);
 }
 @media (min-width: 640px) {
   .sectionTitle {
@@ -26,16 +53,57 @@
 
 .sectionLead {
   font-size: var(--text-base);
-  line-height: 1.3;
-  max-width: 42rem;
+  line-height: 1.4;
+  max-width: 60ch; /* lead paragraphs capped ~60ch */
+}
+
+/* A semantic grouping marker. Vertical spacing between groups is owned by the
+   section rhythm (.content > section > * + *); this just scopes a group's
+   internal layout / gives it a stable hook. */
+.group {
+  min-width: 0;
 }
 
 .monoMeta {
   font-size: var(--text-xs);
 }
 
+/* ── The specimen card (unifying device) ────────────────────────── */
+
+.specimen {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  padding: var(--space-24);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16); /* within-group rhythm: sample → meta */
+}
+
+.specimenSample {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+/* One muted mono metadata row: name left / values right. */
+.specimenMeta {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-16);
+  font-size: var(--text-xs);
+}
+.specimenMeta > span:last-child {
+  text-align: right;
+}
+
 .tile {
-  border-radius: var(--radius-xl);
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
   padding: var(--space-20);
   display: flex;
   flex-direction: column;
@@ -43,6 +111,8 @@
 }
 
 .tileBody {
+  position: relative;
+  z-index: 1;
   flex: 1 1 0%;
   display: flex;
   align-items: center;
@@ -51,6 +121,8 @@
 }
 
 .tileLabel {
+  position: relative;
+  z-index: 1;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
@@ -68,6 +140,12 @@
   line-height: 1.25;
 }
 
+/* A transparency hairline for light swatches that would otherwise vanish on a
+   light surface — replaces the old 1px solid border. */
+.swatchHairline {
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--text-color-primary) 8%, transparent);
+}
+
 /* ── Copy-on-click swatch ───────────────────────────────────────── */
 
 .copySwatch {
@@ -77,7 +155,7 @@
   border: 0;
   background: none;
   cursor: pointer;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -88,15 +166,11 @@
   justify-content: center;
   width: 100%;
   height: var(--space-56, 56px);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   overflow: hidden;
   transition: transform var(--dur-fast) var(--ease-standard);
 }
-@media (hover: hover) and (pointer: fine) {
-  .copySwatch:hover .copySwatchFace {
-    transform: translateY(-2px);
-  }
-}
+/* No hover lift — only a gentle press-scale (spec: remove the translateY lift). */
 .copySwatch:active .copySwatchFace {
   transform: scale(0.98);
 }
@@ -126,14 +200,514 @@
   }
 }
 
-/* ── Glass lab ──────────────────────────────────────────────────── */
+/* ── Cover ──────────────────────────────────────────────────────── */
 
+.cover {
+  position: relative;
+  overflow: hidden;
+  padding-left: var(--page-gutter);
+  padding-right: var(--page-gutter);
+  padding-top: var(--space-64);
+  padding-bottom: var(--space-80);
+}
+@media (min-width: 640px) {
+  .cover {
+    padding-top: var(--space-128);
+    padding-bottom: var(--space-128);
+  }
+}
+
+/* A single soft atmospheric accent bloom (replaces the graph-paper grid) — a
+   low-chroma radial of --accent fading to transparent, with a radial mask so it
+   dissolves into the page. Depth from light, no boxes. */
+.coverBloom {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    60% 80% at 22% 8%,
+    color-mix(in oklab, var(--accent) 22%, transparent) 0%,
+    color-mix(in oklab, var(--accent) 9%, transparent) 38%,
+    transparent 72%
+  );
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 25% 0%, black, transparent 78%);
+  mask-image: radial-gradient(ellipse 85% 75% at 25% 0%, black, transparent 78%);
+  pointer-events: none;
+}
+
+.coverInner {
+  position: relative;
+  max-width: 72rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.coverTitle {
+  font-size: clamp(3rem, 7vw, 5rem); /* tops ~80px */
+  line-height: 1.04;
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-tight);
+  margin-top: var(--space-16);
+  margin-bottom: var(--space-24);
+}
+
+.coverLead {
+  font-size: var(--text-lg);
+  line-height: 1.4;
+  max-width: 56ch; /* lead capped ~56ch */
+}
+
+.coverTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  margin-top: var(--space-40);
+}
+
+.coverTag {
+  border-radius: var(--radius-pill);
+  padding-left: var(--space-16);
+  padding-right: var(--space-16);
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-6);
+  font-size: var(--text-xs);
+}
+
+/* ── Body + sticky index ────────────────────────────────────────── */
+
+.body {
+  max-width: 72rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--page-gutter);
+  padding-right: var(--page-gutter);
+  padding-bottom: var(--space-128);
+}
+@media (min-width: 1280px) {
+  .body {
+    display: grid;
+    grid-template-columns: 200px 1fr; /* widened spine */
+    gap: var(--space-80);
+  }
+}
+
+.toc {
+  display: none;
+}
+@media (min-width: 1280px) {
+  .toc {
+    display: block;
+    position: sticky;
+    top: 112px;
+    align-self: flex-start;
+  }
+}
+
+.tocHeading {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: var(--space-20);
+}
+
+.tocList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+/* The spine: each link carries room for a 2px accent tick to its left (a tick,
+   not a box). The tick fades/grows in only on the active item. */
+.tocLink {
+  position: relative;
+  display: block;
+  padding-left: var(--space-16);
+  font-size: var(--text-sm);
+  transition: color var(--dur-quick) var(--ease-standard);
+}
+.tocLink::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  bottom: 0.15em;
+  width: 2px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: center;
+  opacity: 0;
+  transition: opacity var(--dur-quick) var(--ease-standard),
+    transform var(--dur-quick) var(--ease-standard);
+}
+.tocLink:hover {
+  color: var(--text-color-primary);
+}
+.tocLinkActive::before {
+  opacity: 1;
+  transform: scaleY(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tocLink,
+  .tocLink::before {
+    transition: none;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-80); /* between sections — mobile */
+  min-width: 0;
+}
+@media (min-width: 640px) {
+  .content {
+    gap: var(--space-128); /* between sections — desktop */
+  }
+}
+
+/* ── Typography section ─────────────────────────────────────────── */
+
+.typeFontGrid {
+  display: grid;
+  gap: var(--space-16);
+}
+@media (min-width: 640px) {
+  .typeFontGrid {
+    grid-template-columns: 1.2fr 1fr;
+  }
+}
+
+.typeBigPanel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  padding: var(--space-32);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+}
+
+.typeAa {
+  position: relative;
+  z-index: 1;
+  font-size: 88px;
+  line-height: 1;
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-tight);
+}
+
+.typeAaRow {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: var(--space-24);
+}
+
+.typeInterLabel {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-medium);
+}
+
+.typeWeightCol {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  gap: var(--space-16);
+}
+
+.typeWeightCard {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  padding: var(--space-24);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.typeWeightCard > * {
+  position: relative;
+  z-index: 1;
+}
+
+.typeAg {
+  font-size: var(--text-4xl);
+}
+
+.typeWeightText {
+  text-align: right;
+}
+
+.typeWeightName {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+/* Type scale — specimen cards, largest → smallest. */
+.typeScale {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  margin-top: var(--space-16);
+}
+
+.runningText {
+  max-width: 66ch;
+  margin-top: var(--space-16);
+}
+
+.charGrid {
+  display: grid;
+  gap: var(--space-8);
+  margin-top: var(--space-16);
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+}
+
+/* Borderless glyph tiles on a quiet glass surface. */
+.charCell {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.charGlyph {
+  font-size: var(--text-2xl);
+}
+
+/* ── Color section ──────────────────────────────────────────────── */
+
+/* Two calm bands (Primitives / Semantic), separated by 80. */
+.colorBands {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-80);
+}
+
+/* Ramps within a band separated by 64. */
+.colorBand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-64);
+}
+
+.rampGrid {
+  display: grid;
+  gap: var(--space-8);
+  margin-top: var(--space-16);
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+}
+
+.swatchCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.swatchStep {
+  font-size: var(--text-2xs);
+  line-height: 1;
+}
+
+.swatchHex {
+  font-size: var(--text-2xs);
+  line-height: 1;
+}
+
+/* Accent — its own larger lone specimen moment. */
+.accentStage {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-24);
+  margin-top: var(--space-16);
+  align-items: center;
+}
+@media (min-width: 640px) {
+  .accentStage {
+    grid-template-columns: 1.1fr 1fr;
+    gap: var(--space-48);
+  }
+}
+
+.accentBlock {
+  display: block;
+  width: 100%;
+  height: 200px;
+  border-radius: var(--radius-md);
+}
+
+.accentInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.accentBlurb {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  max-width: 48ch;
+}
+
+.accentTokens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-16);
+  margin-top: var(--space-4);
+}
+
+.threeCol {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-20);
+  margin-top: var(--space-16);
+}
+@media (min-width: 640px) {
+  .threeCol {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.colorItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.colorSwatchLg {
+  height: 112px;
+  border-radius: var(--radius-md);
+}
+
+.textSwatch {
+  height: 112px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.textSwatchAg {
+  font-size: var(--text-5xl);
+  font-weight: var(--weight-medium);
+}
+
+.borderSwatch {
+  height: 112px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.borderInner {
+  height: var(--space-64);
+  width: 100%;
+  margin-left: var(--space-16);
+  margin-right: var(--space-16);
+  border-radius: var(--radius-md);
+  border-width: 2px;
+  border-style: solid;
+}
+
+.feedbackGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-20);
+  margin-top: var(--space-16);
+}
+@media (min-width: 1024px) {
+  .feedbackGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Soft tinted fill only — the border is gone (depth from the tint + whitespace). */
+.feedbackSwatch {
+  height: 112px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feedbackTitle {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+}
+
+/* ── Materials section ──────────────────────────────────────────── */
+
+.materialsShowcase {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  padding: var(--space-24);
+}
+@media (min-width: 640px) {
+  .materialsShowcase {
+    padding: var(--space-48);
+  }
+}
+
+.materialsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-16);
+}
+@media (min-width: 640px) {
+  .materialsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.materialCard {
+  border-radius: var(--radius-md);
+  padding: var(--space-20);
+}
+
+.materialName {
+  font-size: 15px;
+  font-weight: var(--weight-medium);
+}
+
+.materialDesc {
+  font-size: 13px;
+  line-height: 1.4;
+  margin-top: var(--space-6);
+}
+
+.materialItemCard {
+  border-radius: var(--radius-md);
+  padding: var(--space-8);
+}
+
+.materialItemLabel {
+  padding-left: var(--space-12);
+  padding-right: var(--space-12);
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-6);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.materialItemRow {
+  border-radius: var(--radius-sm);
+  padding-left: var(--space-12);
+  padding-right: var(--space-12);
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-8);
+  font-size: var(--text-sm);
+}
+
+/* Glass lab — chips floating over a moving gradient (no border; the glass +
+   gradient already give depth). Lives in its own group. */
 .glassLab {
   position: relative;
   overflow: hidden;
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--border-color-secondary);
-  margin-top: var(--space-20);
+  border-radius: var(--radius-md);
   padding: var(--space-32) var(--space-24);
   min-height: 220px;
   display: flex;
@@ -143,7 +717,7 @@
 }
 @media (min-width: 640px) {
   .glassLab {
-    padding: var(--space-40);
+    padding: var(--space-48);
   }
 }
 
@@ -171,7 +745,7 @@
 
 .glassLabChip {
   flex: 1 1 200px;
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-md);
   padding: var(--space-20);
   display: flex;
   flex-direction: column;
@@ -193,486 +767,11 @@
   line-height: 1.4;
 }
 
-/* ── Cover ──────────────────────────────────────────────────────── */
-
-.cover {
-  position: relative;
-  overflow: hidden;
-  padding-left: var(--page-gutter);
-  padding-right: var(--page-gutter);
-  padding-top: var(--space-56, 56px);
-  padding-bottom: var(--space-64);
-}
-@media (min-width: 640px) {
-  .cover {
-    padding-top: var(--space-80);
-    padding-bottom: var(--space-80);
-  }
-}
-
-.coverGrid {
-  position: absolute;
-  inset: 0;
-  opacity: 0.6;
-}
-
-.coverInner {
-  position: relative;
-  max-width: 72rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.coverTitle {
-  font-size: var(--text-4xl);
-  font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-tight);
-  margin-top: var(--space-16);
-  margin-bottom: var(--space-20);
-}
-@media (min-width: 640px) {
-  .coverTitle {
-    font-size: var(--text-5xl);
-  }
-}
-
-.coverLead {
-  font-size: var(--text-lg);
-  line-height: 1.3;
-  max-width: 42rem;
-}
-
-.coverTags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-8);
-  margin-top: var(--space-32);
-}
-
-.coverTag {
-  border-radius: var(--radius-lg);
-  padding-left: var(--space-16);
-  padding-right: var(--space-16);
-  padding-top: var(--space-6);
-  padding-bottom: var(--space-6);
-  font-size: var(--text-xs);
-}
-
-/* ── Body + sticky index ────────────────────────────────────────── */
-
-.body {
-  max-width: 72rem;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: var(--page-gutter);
-  padding-right: var(--page-gutter);
-  padding-bottom: 96px;
-}
-@media (min-width: 1280px) {
-  .body {
-    display: grid;
-    grid-template-columns: 170px 1fr;
-    gap: var(--space-64);
-  }
-}
-
-.toc {
-  display: none;
-}
-@media (min-width: 1280px) {
-  .toc {
-    display: block;
-    position: sticky;
-    top: 112px;
-    align-self: flex-start;
-  }
-}
-
-.tocHeading {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  margin-bottom: var(--space-16);
-}
-
-.tocList {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.tocLink {
-  font-size: var(--text-sm);
-  transition: color var(--dur-quick) var(--ease-standard);
-}
-.tocLink:hover {
-  color: var(--text-color-primary);
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: 96px;
-  min-width: 0;
-}
-
-/* ── Typography section ─────────────────────────────────────────── */
-
-.typeFontGrid {
-  display: grid;
-  gap: var(--space-16);
-  margin-bottom: var(--space-40);
-}
-@media (min-width: 640px) {
-  .typeFontGrid {
-    grid-template-columns: 1.2fr 1fr;
-  }
-}
-
-.typeBigPanel {
-  border-radius: var(--radius-xl);
-  padding: var(--space-32);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 200px;
-}
-
-.typeAa {
-  font-size: 88px;
-  line-height: 1;
-  font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-tight);
-}
-
-.typeAaRow {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-top: var(--space-24);
-}
-
-.typeInterLabel {
-  font-size: var(--text-xl);
-  font-weight: var(--weight-medium);
-}
-
-.typeWeightCol {
-  display: grid;
-  grid-template-rows: repeat(2, 1fr);
-  gap: var(--space-16);
-}
-
-.typeWeightCard {
-  border-radius: var(--radius-xl);
-  padding: var(--space-24);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.typeAg {
-  font-size: var(--text-4xl);
-}
-
-.typeWeightText {
-  text-align: right;
-}
-
-.typeWeightName {
-  font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
-}
-
-.typeScale {
-  display: flex;
-  flex-direction: column;
-}
-
-.typeRow {
-  border-top: 1px solid var(--border-color-on-primary);
-  padding-top: var(--space-20);
-  padding-bottom: var(--space-20);
-}
-
-.typeRowHead {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-16);
-  margin-bottom: var(--space-8);
-}
-
-.typeRowLabel {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-}
-
-.charBlock {
-  margin-top: 48px;
-}
-
-.charGrid {
-  display: grid;
-  gap: var(--space-8);
-  margin-top: var(--space-16);
-  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
-}
-
-.charCell {
-  aspect-ratio: 1 / 1;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-color-on-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.charGlyph {
-  font-size: var(--text-2xl);
-}
-
-/* ── Color section ──────────────────────────────────────────────── */
-
-.colorStack {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-40);
-}
-
-.rampGrid {
-  display: grid;
-  gap: var(--space-8);
-  margin-top: var(--space-16);
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-}
-
-.swatchCol {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-}
-
-.swatch {
-  height: var(--space-56, 56px);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-color-secondary);
-}
-
-.swatchStep {
-  font-size: var(--text-2xs);
-  line-height: 1;
-}
-
-.swatchHex {
-  font-size: var(--text-2xs);
-  line-height: 1;
-}
-
-.accentRow {
-  margin-top: var(--space-16);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.accentDotSm {
-  width: var(--space-24);
-  height: var(--space-24);
-  border-radius: var(--radius-lg);
-}
-
-.accentMono {
-  font-size: 11px;
-}
-
-.threeCol {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-20);
-  margin-top: var(--space-16);
-}
-@media (min-width: 640px) {
-  .threeCol {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.colorItem {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-12);
-}
-
-.colorSwatchLg {
-  height: 112px;
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--border-color-secondary);
-}
-
-.textSwatch {
-  height: 112px;
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--border-color-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.textSwatchAg {
-  font-size: var(--text-5xl);
-  font-weight: var(--weight-medium);
-}
-
-.bordersAccentGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-40);
-}
-@media (min-width: 1024px) {
-  .bordersAccentGrid {
-    grid-template-columns: 2fr 1fr;
-  }
-}
-
-.borderSwatch {
-  height: 112px;
-  border-radius: var(--radius-xl);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.borderInner {
-  height: var(--space-64);
-  width: 100%;
-  margin-left: var(--space-16);
-  margin-right: var(--space-16);
-  border-radius: var(--radius-lg);
-  border-width: 2px;
-  border-style: solid;
-}
-
-.accentCol {
-  margin-top: var(--space-16);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-12);
-}
-
-.accentSwatch {
-  height: 112px;
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--border-color-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.accentDotLg {
-  width: var(--space-20);
-  height: var(--space-20);
-  border-radius: var(--radius-pill);
-}
-
-.feedbackGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-20);
-  margin-top: var(--space-16);
-}
-@media (min-width: 1024px) {
-  .feedbackGrid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.feedbackSwatch {
-  height: 112px;
-  border-radius: var(--radius-xl);
-  border-width: 1px;
-  border-style: solid;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.feedbackTitle {
-  font-size: var(--text-2xl);
-  font-weight: var(--weight-semibold);
-}
-
-/* ── Materials section ──────────────────────────────────────────── */
-
-.materialsShowcase {
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--radius-xl);
-  padding: var(--space-24);
-}
-@media (min-width: 640px) {
-  .materialsShowcase {
-    padding: var(--space-40);
-  }
-}
-
-.materialsGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-16);
-}
-@media (min-width: 640px) {
-  .materialsGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.materialCard {
-  border-radius: var(--radius-xl);
-  padding: var(--space-20);
-}
-
-.materialName {
-  font-size: 15px;
-  font-weight: var(--weight-medium);
-}
-
-.materialDesc {
-  font-size: 13px;
-  line-height: 1.3;
-  margin-top: var(--space-4);
-}
-
-.materialItemCard {
-  border-radius: var(--radius-xl);
-  padding: var(--space-8);
-}
-
-.materialItemLabel {
-  padding-left: var(--space-12);
-  padding-right: var(--space-12);
-  padding-top: var(--space-8);
-  padding-bottom: var(--space-4);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-}
-
-.materialItemRow {
-  border-radius: var(--radius-lg);
-  padding-left: var(--space-12);
-  padding-right: var(--space-12);
-  padding-top: var(--space-8);
-  padding-bottom: var(--space-8);
-  font-size: var(--text-sm);
-}
-
 .blurGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-12);
-  margin-top: var(--space-20);
+  gap: var(--space-16);
+  margin-top: var(--space-16);
 }
 @media (min-width: 640px) {
   .blurGrid {
@@ -680,35 +779,24 @@
   }
 }
 
-.blurCard {
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--border-color-secondary);
-  padding: var(--space-16);
-}
-
 .blurVal {
-  font-size: 15px;
+  font-size: var(--text-2xl);
   font-weight: var(--weight-medium);
-}
-
-.elevationBlock {
-  margin-top: var(--space-40);
+  letter-spacing: var(--tracking-tight);
 }
 
 .elevationLead {
   font-size: var(--text-sm);
-  line-height: 1.3;
-  max-width: 42rem;
+  line-height: 1.5;
+  max-width: 60ch;
   margin-top: var(--space-8);
 }
 
-/* Contrasting stage so the (light) shadow cards read clearly against it */
+/* Tonal surface stage so the (light) shadow cards read clearly — no border. */
 .elevationStage {
-  margin-top: var(--space-20);
+  margin-top: var(--space-16);
   padding: var(--space-48) var(--space-32);
-  border-radius: var(--radius-2xl);
-  background: var(--surface-color-tertiary);
-  border: 1px solid var(--border-color-secondary);
+  border-radius: var(--radius-md);
 }
 
 .elevationGrid {
@@ -729,7 +817,7 @@
 
 .elevationCard {
   height: 96px;
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-md);
 }
 
 /* ── Spacing & Radius section ───────────────────────────────────── */
@@ -737,7 +825,7 @@
 .twoCol {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-40);
+  gap: var(--space-64);
 }
 @media (min-width: 1024px) {
   .twoCol {
@@ -761,11 +849,12 @@
 .spacingBar {
   height: var(--space-16);
   border-radius: var(--radius-sm);
+  flex-shrink: 0;
 }
 
 .radiusGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-16);
   margin-top: var(--space-16);
 }
@@ -778,52 +867,77 @@
 
 .radiusSwatch {
   height: var(--space-80);
-  border: 1px solid var(--border-color-secondary);
 }
 
 .radiusMetaRow {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+  gap: var(--space-12);
+}
+
+.radiusNote {
+  font-size: var(--text-2xs);
+  line-height: 1.5;
+  max-width: 60ch;
+  margin-top: var(--space-16);
 }
 
 /* ── Motion section ─────────────────────────────────────────────── */
 
+/* Borderless mono rows, space-between, on a quiet surface. */
 .motionTokenList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-8);
   margin-top: var(--space-16);
+  border-radius: var(--radius-md);
+  padding: var(--space-8) var(--space-16);
 }
 
 .motionTokenRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-color-secondary);
-  padding-left: var(--space-16);
-  padding-right: var(--space-16);
+  gap: var(--space-16);
   padding-top: 10px;
   padding-bottom: 10px;
+}
+.motionTokenRow + .motionTokenRow {
+  box-shadow: inset 0 1px 0 color-mix(in oklch, var(--text-color-primary) 6%, transparent);
 }
 
 .motionExamples {
   display: flex;
   flex-direction: column;
+  gap: var(--space-64); /* between motion sub-blocks — group rhythm */
+}
+
+.motionSubBlock {
+  display: flex;
+  flex-direction: column;
   gap: var(--space-16);
-  margin-top: var(--space-24);
+}
+
+.motionCaption {
+  display: block;
 }
 
 .motionPanel {
-  border-radius: var(--radius-xl);
-  padding: var(--space-20);
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  padding: var(--space-24);
+}
+.motionPanel > * {
+  position: relative;
+  z-index: 1;
 }
 
 .motionPanelHead {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-16);
   margin-bottom: var(--space-16);
 }
 
@@ -848,7 +962,7 @@
 .trackList {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-12);
 }
 
 .trackRow {
@@ -896,17 +1010,31 @@
   margin-top: var(--space-16);
 }
 
-/* ── Motion · .fx-* preset gallery ──────────────────────────────── */
-
-.fxBlock {
-  margin-top: var(--space-24);
+/* Reveal-layer demo chips (no border — depth from the soft accent tint). */
+.revealRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-12);
 }
+
+.revealChip {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+}
+
+.revealTile {
+  height: var(--space-64);
+  width: var(--space-64);
+  border-radius: var(--radius-md);
+}
+
+/* ── Motion · .fx-* preset gallery ──────────────────────────────── */
 
 .fxGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-12);
-  margin-top: var(--space-16);
+  gap: var(--space-16);
 }
 @media (min-width: 640px) {
   .fxGrid {
@@ -915,14 +1043,22 @@
 }
 
 .fxCard {
-  border-radius: var(--radius-xl);
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
   padding: var(--space-16);
   display: flex;
   flex-direction: column;
   gap: var(--space-8);
 }
+.fxCard > *:not(.fxStage) {
+  position: relative;
+  z-index: 1;
+}
 
 .fxStage {
+  position: relative;
+  z-index: 1;
   display: grid;
   place-items: center;
   min-height: 72px;
@@ -931,9 +1067,7 @@
 .fxDot {
   height: var(--space-40);
   width: var(--space-40);
-  border-radius: var(--radius-lg);
-  border-width: 1px;
-  border-style: solid;
+  border-radius: var(--radius-md);
 }
 
 .fxStaggerRow {
@@ -944,9 +1078,7 @@
 .fxStaggerDot {
   height: var(--space-24);
   width: var(--space-24);
-  border-radius: var(--radius-md);
-  border-width: 1px;
-  border-style: solid;
+  border-radius: var(--radius-sm);
 }
 
 .fxName {
@@ -967,11 +1099,17 @@
 }
 
 .interactionCard {
-  border-radius: var(--radius-xl);
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
   padding: var(--space-20);
   display: flex;
   flex-direction: column;
   gap: var(--space-16);
+}
+.interactionCard > * {
+  position: relative;
+  z-index: 1;
 }
 
 .interactionStage {
@@ -984,7 +1122,7 @@
 .liftTile {
   height: var(--space-64);
   width: var(--space-64);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-md);
   transition: transform var(--dur-fast) var(--ease-standard);
 }
 .interactionCard:hover .liftTile {
@@ -994,17 +1132,11 @@
 .pressTile {
   height: var(--space-64);
   width: var(--space-64);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-md);
   transition: transform var(--dur-instant) var(--ease-standard);
 }
 .pressTile:active {
   transform: scale(0.9);
-}
-
-.revealTile {
-  height: var(--space-64);
-  width: var(--space-64);
-  border-radius: var(--radius-xl);
 }
 
 /* ── Components section ─────────────────────────────────────────── */
@@ -1012,8 +1144,7 @@
 .componentsGrid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-16);
-  margin-bottom: var(--space-16);
+  gap: var(--space-24); /* loosened from 16 */
 }
 @media (min-width: 640px) {
   .componentsGrid {
@@ -1080,12 +1211,12 @@
   position: relative;
   width: 100%;
   height: 144px;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   overflow: hidden;
 }
 
 .cardBlock {
-  margin-bottom: var(--space-16);
+  /* spacing owned by the section rhythm (.content > section > * + *) */
 }
 
 .cardLabel {
@@ -1109,4 +1240,38 @@
   .cardsPair {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+/* ── Data display section ───────────────────────────────────────── */
+
+.dataStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-64); /* group rhythm */
+  /* Data's heading + stack share one ScrollAnimation wrapper, so the section
+     rhythm can't separate them — re-create the heading→content 48 here. */
+  margin-top: var(--space-48);
+}
+
+.dataPanel {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-32);
+  border-radius: var(--radius-md);
+}
+.dataPanel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.dataPanelLabel {
+  margin-bottom: var(--space-16);
+}
+
+.sparklineBlock {
+  max-width: 160px;
+}
+
+.sparklineLabel {
+  margin-bottom: var(--space-8);
 }

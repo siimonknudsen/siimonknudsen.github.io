@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import ScrollAnimation from '../components/animations/ScrollAnimation'
+import useSpotlight from '../hooks/useSpotlight'
 import Button from '../components/buttons/Button'
 import Media from '../components/Media'
 import ShaderBackground from '../components/shader/ShaderBackground'
@@ -20,21 +21,21 @@ import styles from './StyleGuide.module.css'
 
 const SAMPLE = 'Human-centered by design'
 
-// Semantic type styles (the canonical roles). Each bundles size + weight + line-height.
+// Semantic type styles (the canonical roles). Each bundles size + line-height + weight + tracking.
 const typeScale = [
-  { label: 'type-display', cls: 'type-display', meta: '48 · Medium' },
-  { label: 'type-display-sm', cls: 'type-display-sm', meta: '40 · Medium' },
-  { label: 'type-heading', cls: 'type-heading', meta: '32 · Medium' },
-  { label: 'type-heading-sm', cls: 'type-heading-sm', meta: '24 · Medium' },
-  { label: 'type-title', cls: 'type-title', meta: '20 · Medium' },
-  { label: 'type-subtitle', cls: 'type-subtitle', meta: '18 · Medium' },
-  { label: 'type-body-lg', cls: 'type-body-lg', meta: '18 · Regular' },
-  { label: 'type-body', cls: 'type-body', meta: '16 · Regular' },
-  { label: 'type-body-sm', cls: 'type-body-sm', meta: '14 · Regular' },
-  { label: 'type-label', cls: 'type-label', meta: '14 · Medium' },
-  { label: 'type-caption', cls: 'type-caption', meta: '12 · Regular' },
-  { label: 'type-overline', cls: 'type-overline', meta: '12 · Medium · Uppercase' },
-  { label: 'type-micro', cls: 'type-micro', meta: '10 · Medium' },
+  { label: 'type-display', cls: 'type-display', size: '48 / 1.1', weight: 'Medium', track: '−4%' },
+  { label: 'type-display-sm', cls: 'type-display-sm', size: '40 / 1.1', weight: 'Medium', track: '−4%' },
+  { label: 'type-heading', cls: 'type-heading', size: '32 / 1.15', weight: 'Medium', track: '−3%' },
+  { label: 'type-heading-sm', cls: 'type-heading-sm', size: '24 / 1.2', weight: 'Medium', track: '−3%' },
+  { label: 'type-title', cls: 'type-title', size: '20 / 1.3', weight: 'Medium', track: '−2%' },
+  { label: 'type-subtitle', cls: 'type-subtitle', size: '18 / 1.4', weight: 'Medium', track: '−2%' },
+  { label: 'type-body-lg', cls: 'type-body-lg', size: '18 / 1.6', weight: 'Regular', track: '−2%' },
+  { label: 'type-body', cls: 'type-body', size: '16 / 1.6', weight: 'Regular', track: '−2%' },
+  { label: 'type-body-sm', cls: 'type-body-sm', size: '14 / 1.5', weight: 'Regular', track: '−1%' },
+  { label: 'type-label', cls: 'type-label', size: '14 / 1.4', weight: 'Medium', track: '−1%' },
+  { label: 'type-caption', cls: 'type-caption', size: '12 / 1.4', weight: 'Regular', track: '−1%' },
+  { label: 'type-overline', cls: 'type-overline', size: '12 / 1.4', weight: 'Medium', track: '+8% · uppercase' },
+  { label: 'type-micro', cls: 'type-micro', size: '10 / 1.3', weight: 'Medium', track: '−1%' },
 ]
 
 const surfaces = [
@@ -87,9 +88,12 @@ const spacingScale = [
   { name: '9', px: 36 },
   { name: '10', px: 40 },
   { name: '12', px: 48 },
+  { name: '14', px: 56 },
   { name: '16', px: 64 },
   { name: '20', px: 80 },
   { name: '32', px: 128 },
+  { name: '41', px: 164 },
+  { name: '50', px: 200 },
 ]
 
 const durations = [
@@ -109,12 +113,11 @@ const easings = [
   { name: 'ease-spring', curve: '0.34, 1.56, 0.64, 1' },
 ]
 
+// The honest radius scale — sm/md are the only real card radii; lg/xl/2xl all CLAMP to 8 (the 2026 tight cap).
 const radiusScale = [
-  { name: '--radius-sm', val: '4px', cls: 'rounded' },
-  { name: '--radius-md', val: '8px', cls: 'rounded-lg' },
-  { name: '--radius-lg', val: '12px', cls: 'rounded-xl' },
-  { name: '--radius-xl', val: '16px', cls: 'rounded-2xl' },
-  { name: 'pill · icons only', val: 'full', cls: 'rounded-full' },
+  { name: '--radius-sm', val: '4px', css: '4px' },
+  { name: '--radius-md', val: '8px', css: '8px' },
+  { name: '--radius-pill', val: 'full', css: '9999px' },
 ]
 
 // Brand ramp (orange) — the owned brand colour
@@ -190,9 +193,52 @@ function MonoMeta({ children, className = '' }) {
   return <span className={`font-mono text-color-tertiary ${styles.monoMeta} ${className}`}>{children}</span>
 }
 
-function Tile({ label, children, className = '' }) {
+/* A simple inline icon for the icon-only / icon-pair button demos. Inherits
+   currentColor + sizes to 1em so it tracks the button's text colour and size. */
+function ArrowIcon() {
   return (
-    <div className={`glass-panel ${styles.tile} ${className}`}>
+    <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function PlusIcon() {
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+/* The unifying device — a specimen card. Live sample on top, ONE muted mono metadata
+   row beneath (name left / values right). Surface = .glass-panel carrying the cursor
+   spotlight (.fx-spotlight), or a tonal surface-2/3 fill where glass would stack. No border. */
+function Specimen({ children, name, value, surface = 'glass-panel', className = '', sampleClassName = '' }) {
+  const onMouseMove = useSpotlight()
+  const isGlass = surface === 'glass-panel'
+  return (
+    <div
+      onMouseMove={isGlass ? onMouseMove : undefined}
+      className={`${surface} group ${styles.specimen} ${className}`}
+    >
+      {isGlass && <span aria-hidden="true" className="fx-spotlight" />}
+      <div className={`${styles.specimenSample} ${sampleClassName}`}>{children}</div>
+      {(name || value) && (
+        <div className={styles.specimenMeta}>
+          <span className="font-mono text-color-tertiary">{name}</span>
+          {value && <span className="font-mono text-color-tertiary">{value}</span>}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function Tile({ label, children, className = '' }) {
+  const onMouseMove = useSpotlight()
+  return (
+    <div onMouseMove={onMouseMove} className={`glass-panel group ${styles.tile} ${className}`}>
+      <span aria-hidden="true" className="fx-spotlight" />
       <span className={`font-mono text-color-secondary ${styles.tileLabel}`}>{label}</span>
       <div className={styles.tileBody}>{children}</div>
     </div>
@@ -229,6 +275,37 @@ function useCopy() {
   return { copied, copy }
 }
 
+/* ── Active-section tracking for the sticky TOC ─────────────────── */
+// IntersectionObserver flips the active id when a section heading reaches the
+// top third of the viewport. rootMargin: ignore the bottom ~65% so a section
+// only counts as "active" once its heading has climbed near the top.
+function useActiveSection(ids) {
+  const [active, setActive] = useState(ids[0])
+
+  useEffect(() => {
+    const observed = ids
+      .map((id) => document.getElementById(id))
+      .filter(Boolean)
+    if (!observed.length) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Pick the topmost intersecting heading.
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+        if (visible[0]) setActive(visible[0].target.id)
+      },
+      { rootMargin: '-15% 0px -65% 0px', threshold: 0 }
+    )
+
+    observed.forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [ids])
+
+  return active
+}
+
 // A swatch that copies a token/hex to the clipboard on click.
 function CopySwatch({ value, copyKey, copied, onCopy, className = '', faceClassName = '', style, swatchStyle, children }) {
   const isCopied = copied === copyKey
@@ -256,26 +333,29 @@ function CopySwatch({ value, copyKey, copied, onCopy, className = '', faceClassN
 
 /* ── Page ───────────────────────────────────────────────────────── */
 
+const TOC = [
+  ['typography', 'Typography'],
+  ['color', 'Color'],
+  ['materials', 'Materials'],
+  ['spacing', 'Spacing'],
+  ['radius', 'Radius'],
+  ['motion', 'Motion'],
+  ['components', 'Components'],
+  ['data', 'Data display'],
+]
+const TOC_IDS = TOC.map(([id]) => id)
+
 function StyleGuide() {
   const [play, setPlay] = useState(false)
   const prefersReduced = useReducedMotion()
   const { copied, copy } = useCopy()
+  const activeSection = useActiveSection(TOC_IDS)
 
   return (
     <>
       {/* Cover */}
       <section className={styles.cover}>
-        <div
-          aria-hidden="true"
-          className={styles.coverGrid}
-          style={{
-            backgroundImage:
-              'linear-gradient(var(--border-color-on-primary) 1px, transparent 1px), linear-gradient(90deg, var(--border-color-on-primary) 1px, transparent 1px)',
-            backgroundSize: '44px 44px',
-            maskImage: 'radial-gradient(ellipse 80% 70% at 30% 0%, black, transparent 75%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 80% 70% at 30% 0%, black, transparent 75%)',
-          }}
-        />
+        <div aria-hidden="true" className={styles.coverBloom} />
         <div className={styles.coverInner}>
           <ScrollAnimation>
             <Overline>Portfolio · 2026</Overline>
@@ -302,31 +382,26 @@ function StyleGuide() {
 
       {/* Body with sticky index */}
       <div className={styles.body}>
-        {/* Sticky table of contents */}
-        <nav className={styles.toc}>
+        {/* Sticky table of contents — active-section tracking */}
+        <nav className={styles.toc} aria-label="On this page">
           <p className={`font-mono text-color-tertiary ${styles.tocHeading}`}>
             On this page
           </p>
           <ul className={styles.tocList}>
-            {[
-              ['#typography', 'Typography'],
-              ['#color', 'Color'],
-              ['#materials', 'Materials'],
-              ['#spacing', 'Spacing'],
-              ['#radius', 'Radius'],
-              ['#motion', 'Motion'],
-              ['#components', 'Components'],
-              ['#data', 'Data display'],
-            ].map(([href, label]) => (
-              <li key={href}>
-                <a
-                  href={href}
-                  className={`text-color-secondary ${styles.tocLink}`}
-                >
-                  {label}
-                </a>
-              </li>
-            ))}
+            {TOC.map(([id, label]) => {
+              const isActive = activeSection === id
+              return (
+                <li key={id}>
+                  <a
+                    href={`#${id}`}
+                    aria-current={isActive ? 'true' : undefined}
+                    className={`${isActive ? 'text-color-primary' : 'text-color-secondary'} ${styles.tocLink} ${isActive ? styles.tocLinkActive : ''}`}
+                  >
+                    {label}
+                  </a>
+                </li>
+              )
+            })}
           </ul>
         </nav>
 
@@ -371,30 +446,40 @@ function StyleGuide() {
             </ScrollAnimation>
 
             <ScrollAnimation>
-              <div className={styles.typeScale}>
-                {typeScale.map((t) => (
-                  <div key={t.label} className={styles.typeRow}>
-                    <div className={styles.typeRowHead}>
-                      <span className={`font-mono text-color-secondary ${styles.typeRowLabel}`}>
-                        {t.label}
-                      </span>
-                      <MonoMeta>{t.meta}</MonoMeta>
-                    </div>
-                    <p className={`${t.cls} text-color-primary`}>{SAMPLE}</p>
-                  </div>
-                ))}
+              <div className={styles.group}>
+                <Overline>Type scale · semantic roles</Overline>
+                <div className={styles.typeScale}>
+                  {typeScale.map((t) => (
+                    <Specimen
+                      key={t.label}
+                      name={t.label}
+                      value={`${t.size} · ${t.weight} · ${t.track}`}
+                    >
+                      <p className={`${t.cls} text-color-primary`}>{SAMPLE}</p>
+                    </Specimen>
+                  ))}
+                </div>
               </div>
             </ScrollAnimation>
 
             <ScrollAnimation>
-              <div className={styles.charBlock}>
+              <div className={styles.group}>
+                <Overline>In running text · type-body</Overline>
+                <p className={`type-body text-color-secondary ${styles.runningText}`}>
+                  Type is the hero. Set in BDO Grotesk across two weights, every role pairs a
+                  size with its line-height and tracking so paragraphs hold a calm, even rhythm
+                  at any length — the negative tracking tightens display sizes without ever
+                  pinching body copy, which keeps long reading comfortable and unhurried.
+                </p>
+              </div>
+            </ScrollAnimation>
+
+            <ScrollAnimation>
+              <div className={styles.group}>
                 <Overline>Character set · BDO Grotesk</Overline>
                 <div className={styles.charGrid}>
                   {GLYPHS.map((g, i) => (
-                    <div
-                      key={i}
-                      className={`glass-item ${styles.charCell}`}
-                    >
+                    <div key={i} className={`glass-item ${styles.charCell}`}>
                       <span className={`text-color-primary ${styles.charGlyph}`}>{g}</span>
                     </div>
                   ))}
@@ -408,12 +493,13 @@ function StyleGuide() {
             <ScrollAnimation>
               <SectionHeading id="color" overline="Foundations" title="Color">
                 Two tiers — a primitive neutral ramp, mapped to semantic roles (surface, text,
-                border) that invert between light and dark, plus one green accent and a set of
-                feedback colours. Nothing is hard-coded.
+                border) that invert between light and dark, plus one warm-orange accent and a set
+                of feedback colours. Nothing is hard-coded.
               </SectionHeading>
             </ScrollAnimation>
 
-            <div className={styles.colorStack}>
+            <div className={styles.colorBands}>
+            <div className={styles.colorBand}>
               {/* Primitives — neutral ramp */}
               <ScrollAnimation>
                 <div>
@@ -426,7 +512,8 @@ function StyleGuide() {
                           copyKey={`neutral-${step}`}
                           copied={copied}
                           onCopy={copy}
-                          swatchStyle={{ backgroundColor: `var(--neutral-${step})`, border: '1px solid var(--border-color-secondary)' }}
+                          faceClassName={styles.swatchHairline}
+                          swatchStyle={{ backgroundColor: `var(--neutral-${step})` }}
                         />
                         <span className={`font-mono text-color-primary ${styles.swatchStep}`}>{step}</span>
                         <span className={`font-mono text-color-tertiary ${styles.swatchHex}`}>{hex}</span>
@@ -448,17 +535,13 @@ function StyleGuide() {
                           copyKey={`brand-${step}`}
                           copied={copied}
                           onCopy={copy}
-                          swatchStyle={{ backgroundColor: `var(--brand-${step})`, border: '1px solid var(--border-color-secondary)' }}
+                          faceClassName={styles.swatchHairline}
+                          swatchStyle={{ backgroundColor: `var(--brand-${step})` }}
                         />
                         <span className={`font-mono text-color-primary ${styles.swatchStep}`}>{step}</span>
                         <span className={`font-mono text-color-tertiary ${styles.swatchHex}`}>{hex}</span>
                       </div>
                     ))}
-                  </div>
-                  <div className={styles.accentRow}>
-                    <span className={`bg-accent ${styles.accentDotSm}`} />
-                    <span className={`font-mono text-color-primary ${styles.accentMono}`}>accent</span>
-                    <span className={`font-mono text-color-tertiary ${styles.accentMono}`}>brand-500 / 600 (themed)</span>
                   </div>
                 </div>
               </ScrollAnimation>
@@ -475,11 +558,11 @@ function StyleGuide() {
                           copyKey={`tl-${s}`}
                           copied={copied}
                           onCopy={copy}
+                          faceClassName={styles.swatchHairline}
                           swatchStyle={{
                             backgroundColor: 'var(--neutral-800)',
                             backgroundImage: `linear-gradient(var(--transparent-light-${s}), var(--transparent-light-${s})), repeating-conic-gradient(var(--neutral-600) 0% 25%, var(--neutral-900) 0% 50%)`,
                             backgroundSize: 'auto, 12px 12px',
-                            border: '1px solid var(--border-color-secondary)',
                           }}
                         />
                         <span className={`font-mono text-color-primary ${styles.swatchStep}`}>{s}</span>
@@ -502,11 +585,11 @@ function StyleGuide() {
                           copyKey={`td-${s}`}
                           copied={copied}
                           onCopy={copy}
+                          faceClassName={styles.swatchHairline}
                           swatchStyle={{
                             backgroundColor: 'var(--neutral-100)',
                             backgroundImage: `linear-gradient(var(--transparent-dark-${s}), var(--transparent-dark-${s})), repeating-conic-gradient(var(--neutral-300) 0% 25%, var(--neutral-0) 0% 50%)`,
                             backgroundSize: 'auto, 12px 12px',
-                            border: '1px solid var(--border-color-secondary)',
                           }}
                         />
                         <span className={`font-mono text-color-primary ${styles.swatchStep}`}>{s}</span>
@@ -530,7 +613,8 @@ function StyleGuide() {
                             copyKey={`${ramp.key}-${step}`}
                             copied={copied}
                             onCopy={copy}
-                            swatchStyle={{ backgroundColor: `var(--${ramp.key}-${step})`, border: '1px solid var(--border-color-secondary)' }}
+                            faceClassName={styles.swatchHairline}
+                            swatchStyle={{ backgroundColor: `var(--${ramp.key}-${step})` }}
                           />
                           <span className={`font-mono text-color-primary ${styles.swatchStep}`}>{step}</span>
                           <span className={`font-mono text-color-tertiary ${styles.swatchHex}`}>{ramp.hexes[i]}</span>
@@ -540,6 +624,30 @@ function StyleGuide() {
                   </div>
                 </ScrollAnimation>
               ))}
+            </div>
+
+            <div className={styles.colorBand}>
+              {/* Accent — its own lone specimen moment */}
+              <ScrollAnimation>
+                <div>
+                  <Overline>Accent · the one warm colour</Overline>
+                  <div className={styles.accentStage}>
+                    <span className={`bg-accent ${styles.accentBlock}`} />
+                    <div className={styles.accentInfo}>
+                      <span className={`text-color-primary ${styles.colorTitle}`}>Brand · Orange</span>
+                      <p className={`text-color-secondary ${styles.accentBlurb}`}>
+                        The single owned accent — themed for contrast (brand-500 dark / brand-600
+                        light). All other colour comes from project imagery; the chrome stays
+                        monochrome plus this one warm signal.
+                      </p>
+                      <div className={styles.accentTokens}>
+                        <MonoMeta>bg-accent</MonoMeta>
+                        <MonoMeta>brand-500 · #F26A2E</MonoMeta>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ScrollAnimation>
 
               {/* Semantic roles → Surfaces */}
               <ScrollAnimation>
@@ -548,7 +656,7 @@ function StyleGuide() {
                   <div className={styles.threeCol}>
                     {surfaces.map((s) => (
                       <div key={s.token} className={styles.colorItem}>
-                        <div className={`${s.cls} ${styles.colorSwatchLg}`} />
+                        <div className={`${s.cls} ${styles.colorSwatchLg} ${styles.swatchHairline}`} />
                         <ColorLabel {...s} />
                       </div>
                     ))}
@@ -559,7 +667,7 @@ function StyleGuide() {
               {/* Text */}
               <ScrollAnimation>
                 <div>
-                  <Overline>Text</Overline>
+                  <Overline>Semantic · text</Overline>
                   <div className={styles.threeCol}>
                     {texts.map((s) => (
                       <div key={s.token} className={styles.colorItem}>
@@ -573,36 +681,19 @@ function StyleGuide() {
                 </div>
               </ScrollAnimation>
 
-              {/* Borders + accent */}
+              {/* Borders */}
               <ScrollAnimation>
-                <div className={styles.bordersAccentGrid}>
-                  <div>
-                    <Overline>Borders</Overline>
-                    <div className={styles.threeCol}>
-                      {borders.map((s) => (
-                        <div key={s.title} className={styles.colorItem}>
-                          <div className={`bg-surface-color-primary ${styles.borderSwatch}`}>
-                            <div className={`${s.cls} ${styles.borderInner}`} />
-                          </div>
-                          <ColorLabel {...s} />
+                <div>
+                  <Overline>Semantic · borders</Overline>
+                  <div className={styles.threeCol}>
+                    {borders.map((s) => (
+                      <div key={s.title} className={styles.colorItem}>
+                        <div className={`bg-surface-color-secondary ${styles.borderSwatch}`}>
+                          <div className={`${s.cls} ${styles.borderInner}`} />
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <Overline>Accent</Overline>
-                    <div className={styles.accentCol}>
-                      <div className={`bg-surface-color-primary ${styles.accentSwatch}`}>
-                        <span className={`bg-accent pulse-glow ${styles.accentDotLg}`} />
+                        <ColorLabel {...s} />
                       </div>
-                      <div className={styles.colorLabel}>
-                        <span className={`text-color-primary ${styles.colorTitle}`}>
-                          Brand · Orange
-                        </span>
-                        <MonoMeta>bg-accent</MonoMeta>
-                        <MonoMeta className="text-color-secondary">brand-500 · #F26A2E</MonoMeta>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
               </ScrollAnimation>
@@ -619,7 +710,7 @@ function StyleGuide() {
                           copyKey={f.token}
                           copied={copied}
                           onCopy={copy}
-                          faceClassName={`${f.border} ${f.soft} ${styles.feedbackSwatch}`}
+                          faceClassName={`${f.soft} ${styles.feedbackSwatch}`}
                         >
                           <span className={`${f.text} ${styles.feedbackTitle}`}>{f.title}</span>
                         </CopySwatch>
@@ -633,6 +724,7 @@ function StyleGuide() {
                   </div>
                 </div>
               </ScrollAnimation>
+            </div>
             </div>
           </section>
 
@@ -705,35 +797,37 @@ function StyleGuide() {
             </ScrollAnimation>
 
             <ScrollAnimation>
-              <div className={styles.blurGrid}>
-                {[
-                  ['--glass-blur-sm', '8px'],
-                  ['--glass-blur-md', '16px'],
-                  ['--glass-blur-lg', '24px'],
-                  ['--glass-saturate', '180%'],
-                ].map(([name, val]) => (
-                  <div key={name} className={styles.blurCard}>
-                    <p className={`text-color-primary ${styles.blurVal}`}>{val}</p>
-                    <MonoMeta>{name}</MonoMeta>
-                  </div>
-                ))}
+              <div className={styles.group}>
+                <Overline>Blur &amp; saturation tokens</Overline>
+                <div className={styles.blurGrid}>
+                  {[
+                    ['--glass-blur-sm', '8px'],
+                    ['--glass-blur-md', '16px'],
+                    ['--glass-blur-lg', '24px'],
+                    ['--glass-saturate', '180%'],
+                  ].map(([name, val]) => (
+                    <Specimen key={name} surface="surface-3" name={name}>
+                      <p className={`text-color-primary ${styles.blurVal}`}>{val}</p>
+                    </Specimen>
+                  ))}
+                </div>
               </div>
             </ScrollAnimation>
 
             {/* Elevation / shadow scale */}
             <ScrollAnimation>
-              <div className={styles.elevationBlock}>
+              <div className={styles.group}>
                 <Overline>Elevation · shadow scale</Overline>
                 <p className={`text-color-secondary ${styles.elevationLead}`}>
                   For solid (non-glass) surfaces. Theme-aware — tight and subtle in light, deeper
                   and softer in dark.
                 </p>
-                <div className={styles.elevationStage}>
+                <div className={`surface-3 ${styles.elevationStage}`}>
                   <div className={styles.elevationGrid}>
                     {elevation.map((e) => (
                       <div key={e.token} className={styles.colorItem}>
                         <div
-                          className={`bg-surface-color-primary ${styles.elevationCard}`}
+                          className={`surface-1 ${styles.elevationCard}`}
                           style={{ boxShadow: `var(${e.token})` }}
                         />
                         <div className={styles.colorLabel}>
@@ -757,10 +851,25 @@ function StyleGuide() {
             </ScrollAnimation>
 
             <ScrollAnimation>
-              <div>
-                <Overline>Spacing scale</Overline>
+              <div className={styles.group}>
+                <Overline>Spacing scale · component rhythm</Overline>
                 <div className={styles.spacingList}>
-                  {spacingScale.map((s) => (
+                  {spacingScale.filter((s) => s.px < 128).map((s) => (
+                    <div key={s.name} className={styles.spacingRow}>
+                      <div className={`bg-accent ${styles.spacingBar}`} style={{ width: `${s.px}px` }} />
+                      <MonoMeta className="text-color-secondary">{s.name}</MonoMeta>
+                      <MonoMeta>{s.px}px</MonoMeta>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </ScrollAnimation>
+
+            <ScrollAnimation>
+              <div className={styles.group}>
+                <Overline>Section rhythm · sparse large end</Overline>
+                <div className={styles.spacingList}>
+                  {spacingScale.filter((s) => s.px >= 128).map((s) => (
                     <div key={s.name} className={styles.spacingRow}>
                       <div className={`bg-accent ${styles.spacingBar}`} style={{ width: `${s.px}px` }} />
                       <MonoMeta className="text-color-secondary">{s.name}</MonoMeta>
@@ -776,19 +885,19 @@ function StyleGuide() {
           <section>
             <ScrollAnimation>
               <SectionHeading id="radius" overline="Foundations" title="Radius">
-                A small, deliberate set of corner radii.
+                A small, deliberate set of corner radii — tight by design.
               </SectionHeading>
             </ScrollAnimation>
 
             <ScrollAnimation>
-              <div>
+              <div className={styles.group}>
                 <Overline>Radius scale</Overline>
                 <div className={styles.radiusGrid}>
                   {radiusScale.map((r) => (
                     <div key={r.name} className={styles.radiusItem}>
                       <div
-                        className={`bg-surface-color-secondary ${styles.radiusSwatch}`}
-                        style={{ borderRadius: r.val === 'full' ? '9999px' : r.val }}
+                        className={`surface-3 ${styles.radiusSwatch}`}
+                        style={{ borderRadius: r.css }}
                       />
                       <div className={styles.radiusMetaRow}>
                         <MonoMeta className="text-color-secondary">{r.name}</MonoMeta>
@@ -797,6 +906,10 @@ function StyleGuide() {
                     </div>
                   ))}
                 </div>
+                <p className={`font-mono text-color-tertiary ${styles.radiusNote}`}>
+                  --radius-lg / xl / 2xl all clamp to 8px (the 2026 tight cap). Cards, panels,
+                  bars and images cap at 8; the pill is reserved for circular elements + chips.
+                </p>
               </div>
             </ScrollAnimation>
           </section>
@@ -812,28 +925,22 @@ function StyleGuide() {
 
             <ScrollAnimation>
               <div className={styles.twoCol}>
-                <div>
+                <div className={styles.group}>
                   <Overline>Duration</Overline>
-                  <div className={styles.motionTokenList}>
+                  <div className={`surface-2 ${styles.motionTokenList}`}>
                     {durations.map((d) => (
-                      <div
-                        key={d.name}
-                        className={styles.motionTokenRow}
-                      >
+                      <div key={d.name} className={styles.motionTokenRow}>
                         <MonoMeta className="text-color-secondary">{d.name}</MonoMeta>
                         <MonoMeta>{d.ms}</MonoMeta>
                       </div>
                     ))}
                   </div>
                 </div>
-                <div>
+                <div className={styles.group}>
                   <Overline>Easing</Overline>
-                  <div className={styles.motionTokenList}>
+                  <div className={`surface-2 ${styles.motionTokenList}`}>
                     {easings.map((e) => (
-                      <div
-                        key={e.name}
-                        className={styles.motionTokenRow}
-                      >
+                      <div key={e.name} className={styles.motionTokenRow}>
                         <MonoMeta className="text-color-secondary">{e.name}</MonoMeta>
                         <MonoMeta>cubic-bezier({e.curve})</MonoMeta>
                       </div>
@@ -938,30 +1045,22 @@ function StyleGuide() {
                 </div>
 
                 {/* Owned motion layer — live staggered reveal */}
-                <div style={{ marginTop: 'var(--space-24)' }}>
+                <div className={styles.motionSubBlock}>
                   <span className={`font-mono text-color-secondary ${styles.motionLabel}`}>
                     Presets · the owned motion layer (&lt;Reveal&gt; + &lt;Stagger&gt;)
                   </span>
-                  <Stagger
-                    key={play ? 'on' : 'off'}
-                    style={{ display: 'flex', gap: 'var(--space-12)', marginTop: 'var(--space-16)', flexWrap: 'wrap' }}
-                  >
+                  <Stagger key={play ? 'on' : 'off'} className={styles.revealRow}>
                     {[0, 1, 2, 3, 4, 5].map((i) => (
-                      <Reveal
-                        key={i}
-                        preset="fade-up"
-                        className="bg-accent-soft border-accent"
-                        style={{ width: 56, height: 56, borderRadius: 'var(--radius-lg)', borderWidth: 1, borderStyle: 'solid' }}
-                      />
+                      <Reveal key={i} preset="fade-up" className={`bg-accent-soft ${styles.revealChip}`} />
                     ))}
                   </Stagger>
-                  <span className="type-caption text-color-secondary" style={{ display: 'block', marginTop: 'var(--space-8)' }}>
+                  <span className={`type-caption text-color-secondary ${styles.motionCaption}`}>
                     fade · fade-up · scale-in · stagger · hover-lift · press · scroll-reveal · page-transition — tap Play to replay
                   </span>
                 </div>
 
                 {/* The eight .fx-* presets — discoverable specimens */}
-                <div className={styles.fxBlock}>
+                <div className={styles.motionSubBlock}>
                   <span className={`font-mono text-color-secondary ${styles.motionLabel}`}>
                     Presets · the eight .fx-* utility classes
                   </span>
@@ -976,7 +1075,7 @@ function StyleGuide() {
                             {[0, 1, 2].map((i) => (
                               <span
                                 key={i}
-                                className={`bg-accent-soft border-accent fx-reveal fx-fade-up ${revealed ? 'is-visible' : ''} ${styles.fxStaggerDot}`}
+                                className={`bg-accent-soft fx-reveal fx-fade-up ${revealed ? 'is-visible' : ''} ${styles.fxStaggerDot}`}
                                 style={{ '--i': i }}
                               />
                             ))}
@@ -986,19 +1085,19 @@ function StyleGuide() {
                         stage = (
                           <span
                             tabIndex={0}
-                            className={`bg-accent-soft border-accent ${p.cls} ${styles.fxDot}`}
+                            className={`bg-accent-soft ${p.cls} ${styles.fxDot}`}
                           />
                         )
                       } else if (p.kind === 'enter') {
                         // Re-runs its keyframe whenever Play flips (the grid key remounts it).
                         stage = (
-                          <span className={`bg-accent-soft border-accent ${prefersReduced ? '' : p.cls} ${styles.fxDot}`} />
+                          <span className={`bg-accent-soft ${prefersReduced ? '' : p.cls} ${styles.fxDot}`} />
                         )
                       } else {
                         // reveal family
                         stage = (
                           <span
-                            className={`bg-accent-soft border-accent ${p.cls} ${revealed ? 'is-visible' : ''} ${styles.fxDot}`}
+                            className={`bg-accent-soft ${p.cls} ${revealed ? 'is-visible' : ''} ${styles.fxDot}`}
                           />
                         )
                       }
@@ -1011,7 +1110,7 @@ function StyleGuide() {
                       )
                     })}
                   </div>
-                  <span className="type-caption text-color-secondary" style={{ display: 'block', marginTop: 'var(--space-8)' }}>
+                  <span className={`type-caption text-color-secondary ${styles.motionCaption}`}>
                     Entrance presets replay on Play · hover-lift &amp; press respond to pointer / focus
                   </span>
                 </div>
@@ -1035,6 +1134,7 @@ function StyleGuide() {
                       <Button variant="primary">Primary</Button>
                       <Button variant="secondary">Secondary</Button>
                       <Button variant="accent">Accent</Button>
+                      <Button variant="outline">Outline</Button>
                       <Button variant="glass">Glass</Button>
                       <Button variant="ghost">Ghost</Button>
                     </div>
@@ -1044,6 +1144,12 @@ function StyleGuide() {
                       <Button size="lg">Large</Button>
                       <Button loading>Loading</Button>
                       <Button disabled>Disabled</Button>
+                    </div>
+                    <div className={styles.btnRow}>
+                      <Button variant="primary" iconOnly={<ArrowIcon />} aria-label="Continue" />
+                      <Button variant="secondary" iconOnly={<PlusIcon />} aria-label="Add item" />
+                      <Button variant="outline" iconOnly={<ArrowIcon />} aria-label="Next" />
+                      <Button variant="ghost" iconOnly={<PlusIcon />} aria-label="More options" />
                     </div>
                   </div>
                 </Tile>
@@ -1144,7 +1250,7 @@ function StyleGuide() {
                 calm draw-in motion that snaps to final state under reduced motion.
               </SectionHeading>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-32)' }}>
+              <div className={styles.dataStack}>
                 <StatGrid>
                   <StatCard
                     label="Monthly revenue"
@@ -1173,11 +1279,8 @@ function StyleGuide() {
                   <StatCard label="NPS" value={62} delta={8} deltaLabel="vs last quarter" />
                 </StatGrid>
 
-                <div
-                  className="glass-panel"
-                  style={{ padding: 'var(--space-32)', borderRadius: 'var(--radius-md)' }}
-                >
-                  <p className={`type-overline text-color-tertiary`} style={{ marginBottom: 'var(--space-16)' }}>
+                <div className={`glass-panel ${styles.dataPanel}`}>
+                  <p className={`type-overline text-color-tertiary ${styles.dataPanelLabel}`}>
                     Revenue · last 12 months
                   </p>
                   <TrendChart
@@ -1189,8 +1292,8 @@ function StyleGuide() {
                   />
                 </div>
 
-                <div style={{ maxWidth: '160px' }}>
-                  <p className={`type-overline text-color-tertiary`} style={{ marginBottom: 'var(--space-8)' }}>
+                <div className={styles.sparklineBlock}>
+                  <p className={`type-overline text-color-tertiary ${styles.sparklineLabel}`}>
                     Sparkline
                   </p>
                   <Sparkline data={[8, 12, 10, 16, 14, 20, 18, 26, 30]} height={44} />

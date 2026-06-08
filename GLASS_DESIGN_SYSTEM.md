@@ -42,8 +42,8 @@ classes.
 | Token | Value | Use |
 |---|---|---|
 | `--glass-blur-sm` | `8px` | subtle chips |
-| `--glass-blur-md` | `16px` | bars / chrome |
-| `--glass-blur-lg` | `24px` | panels / overlays |
+| `--glass-blur-md` | `12px` | bars / chrome (16→12 for perf, 2026-06-09) |
+| `--glass-blur-lg` | `16px` | panels / overlays (24→16 for perf, 2026-06-09) |
 | `--glass-saturate` | `180%` | colour pop behind glass |
 | `--glass-noise` | SVG fractal-noise tile | **frosted texture** baked into every glass surface (Apple "Liquid Glass") — applied as a `background-image` blended `soft-light` over the fill on `.glass`/`.glass-panel`; dropped in the solid/a11y fallbacks. NOT a pseudo-element (would collide with the tooltip hover-bridges). Pairs with the global `.grain` film. |
 | `--radius-pill` | `9999px` | the nav bar, pills |
@@ -56,9 +56,10 @@ These swap automatically between light and dark.
 
 | Token | Light | Dark | Meaning |
 |---|---|---|---|
-| `--glass-bg` | `rgba(255,255,255,.60)` | `rgba(38,38,40,.55)` | bar tint |
-| `--glass-bg-strong` | `rgba(255,255,255,.85)` | `rgba(28,28,30,.80)` | panel scrim (text-safe) |
+| `--glass-bg` | `rgba(255,255,255,.46)` | `rgba(58,58,62,.58)` | bar / chip / cell tint (dark lifted from 38,38,40/.55 — was muddy, 2026-06-09) |
+| `--glass-bg-strong` | `rgba(255,255,255,.56)` | `rgba(48,48,52,.66)` | panel scrim (text-safe) — translucent so the mesh frosts through; dark lifted from 28,28,30/.62 (2026-06-09) |
 | `--glass-border` | `rgba(17,17,17,.08)` | `rgba(255,255,255,.10)` | edge stroke |
+| `--glass-sheen` | top-edge light wash | top-edge light wash | **theme-aware sheen** layered with the noise on `.glass`/`.glass-panel` — a subtle light catch on the top edge (2026-06-09) |
 | `--glass-shadow` | soft, light | soft, dark | bar elevation |
 | `--glass-shadow-lg` | deeper | deeper | panel elevation |
 | `--glass-item-hover` | `rgba(17,17,17,.05)` | `rgba(255,255,255,.08)` | row hover |
@@ -188,7 +189,40 @@ the shader frost through). The blur only visibly *pays off* where high-frequency
 content sits behind the glass (nav over scrolling text, dropdowns/tooltips over
 images). Don't chase "more blur" to fix a flat-looking card — lower its opacity.
 
+**The background is now an in-flow, viewport-pinned MESH — so glass CAN frost it (2026-06-09).**
+The fixed WebGL shader (and its grid) has been **REMOVED entirely**. The sole background is
+**`.meshBackdrop`** (`App.module.css`): a soft warm radial-blob mesh, **`position: sticky;
+height: 100vh; margin-bottom: -100vh`** so it sits IN normal flow (and is therefore *sampleable*
+by `backdrop-filter`) yet stays pinned to the viewport; it extends up behind the sticky header
+(`margin-top: -var(--header-height)`) so it fills the viewport to the very top. It is **STATIC —
+no drift** (a transform drift previously scaled its box past the viewport and caused a horizontal
+scrollbar; static is also the perf choice). **Glass now frosts the mesh.**
+
+This was the whole point of moving off `position: fixed`: `backdrop-filter` blurs **in-flow
+content** painted behind the element but **cannot sample a `position: fixed` backdrop** (a fixed
+element composites on its own layer the filter doesn't see) — that was the long-standing "glass
+doesn't frost the background" cause. **Never use a `position: fixed` layer as the blurrable
+backdrop.** And **never frost a sharp grid** — a 2026-06-08 attempt to make every glass surface
+(including small buttons/pills) frost grid lines read busy/chaotic and was rejected; the mesh is
+deliberately *soft* so the frost reads clean. Reiterate: over a smooth/soft backdrop the "frosted"
+read comes from translucency + tint + noise + sheen + the soft inner top-highlight, **not** the
+blur itself.
+
+**Surfaces converted to self-animating reveals** (so frost survives the reveal — the glass element
+IS the `<Reveal>`, never a wrapper): ProjectCard, SkillCard, TestimonialCard, LogoGrid cell, and
+the **Contact `<form>`** (`<Reveal as="form">`, 2026-06-09).
+
 **Diagnosing a dead blur.** Walk the element's ancestor chain and flag any with
 `transform`/`filter`/`will-change`/`contain`/`opacity<1` ≠ none — that's your
 backdrop-root. (`getComputedStyle` per ancestor; in a throttled preview, force
 `element.getAnimations().forEach(a => a.finish())` first to read the settled state.)
+
+**Performance — `backdrop-filter` is a per-element GPU pass (2026-06-09).** Each glass
+surface is a separate blur pass that **re-renders whenever the backdrop changes** (i.e. on
+every scroll frame). So: keep **blur radii moderate** (md 12 / lg 16, lowered from 16/24),
+keep the **background STATIC** (a moving/scaling backdrop forces constant re-blur — another
+reason the mesh doesn't drift), and **don't put `backdrop-filter` on numerous tiny/repeated
+elements.** /about alone had **42 live blur surfaces** (21 of them logo cells) — so
+**`LogoGrid .cell`** (×21) and **`ProjectTag`** were switched to a translucent `--glass-bg`
+tint + `--glass-border` edge **with no `backdrop-filter`** (they still read as glass; the
+`ProjectTag` blur was dead anyway, being nested inside a card). Net: 42 → 21 passes.

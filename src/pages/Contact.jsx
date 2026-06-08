@@ -35,9 +35,19 @@ function Contact() {
           </h1>
         </Reveal>
 
-        {/* Glass form — composes a prefilled email via mailto */}
-        <Reveal preset="fade-up" delay={160}>
-          <form className={`glass-panel ${styles.form}`} onSubmit={handleSubmit}>
+        {/* Glass form — composes a prefilled email via mailto.
+            The form IS the reveal (`as="form"` → m.form) so it animates its OWN
+            opacity/transform; wrapping a glass element in <Reveal> would make the
+            WRAPPER a backdrop-root (opacity<1 + transform) and kill the frost for
+            the whole reveal, then pop it in. Self-animating keeps the frost alive
+            from frame one. See GLASS §8. */}
+        <Reveal
+          as="form"
+          preset="fade-up"
+          delay={160}
+          className={`glass-panel ${styles.form}`}
+          onSubmit={handleSubmit}
+        >
             <div className={styles.field}>
               <label htmlFor="c-name" className={`type-label ${styles.label}`}>
                 Name
@@ -90,7 +100,6 @@ function Contact() {
             <p className={`type-caption text-color-tertiary ${styles.formNote}`}>
               Opens your email app with the message ready to send.
             </p>
-          </form>
         </Reveal>
       </div>
     </section>

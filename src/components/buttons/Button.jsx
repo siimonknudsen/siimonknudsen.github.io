@@ -1,10 +1,21 @@
 /**
  * Button — the design-system action. 8px radius (rounded-lg), tokenised.
  *
- * variant: primary | secondary | accent | glass | ghost   (default primary)
+ * variant: primary | secondary | accent | outline | glass | ghost  (default primary)
+ *   primary  → solid contrast surface (high-emphasis)
+ *   secondary→ solid tertiary surface (neutral)
+ *   accent   → solid warm-orange brand fill
+ *   outline  → transparent fill + translucent glass hairline (theme-aware light edge)
+ *   glass    → frosted .glass .glass-item surface
+ *   ghost    → quiet text-only
  * size:    sm | md | lg                                    (default md)
- * Extras:  iconLeft, iconRight, loading, fullWidth, and `as` (polymorphic —
- *          e.g. as={Link} to="/..." or as="a" href="...").
+ *   Heights: sm 32 · md 40 · lg 48 (tokenised, never hardcoded).
+ * Extras:  iconLeft, iconRight, iconOnly (square — pass an aria-label), loading,
+ *          fullWidth, and `as` (polymorphic — e.g. as={Link} to="/..." or as="a").
+ *
+ * Hover is a COLOUR shift only — no lift/translate, no scale, no glow sweep
+ * (calm-motion DNA). Solid variants additionally darken one step on :active.
+ * Keeps the signature text-roll hover on the label and the accent focus ring.
  */
 
 import styles from './Button.module.css'
@@ -28,6 +39,7 @@ const variantClasses = {
   primary: `bg-surface-color-contrast-primary text-color-contrast-primary ${styles.primary}`,
   secondary: `bg-surface-color-tertiary text-color-primary ${styles.secondary}`,
   accent: `bg-accent ${styles.accent}`,
+  outline: `text-color-primary ${styles.outline}`,
   glass: `glass glass-item text-color-primary ${styles.glass}`,
   ghost: `glass-item text-color-secondary ${styles.ghost}`,
 }
@@ -45,29 +57,44 @@ function Button({
   as: Comp = 'button',
   iconLeft,
   iconRight,
+  // Square icon button — width locks to height, the label is dropped, and an
+  // aria-label is required for an accessible name (warned in dev if missing).
+  iconOnly,
   loading = false,
   fullWidth = false,
   ...props
 }) {
+  if (import.meta.env?.DEV && iconOnly && !props['aria-label'] && !props['aria-labelledby']) {
+    console.warn('Button: an `iconOnly` button needs an `aria-label` for an accessible name.')
+  }
+
   return (
     <Comp
       className={`${base} ${sizeClasses[size] || sizeClasses.md} ${
         variantClasses[variant] || variantClasses.primary
-      } ${fullWidth ? styles.fullWidth : ''} ${className}`}
+      } ${iconOnly ? styles.iconOnly : ''} ${fullWidth ? styles.fullWidth : ''} ${className}`}
       aria-busy={loading || undefined}
       {...props}
     >
       {loading && <Spinner />}
-      {!loading && iconLeft}
-      {/* Text-roll on hover: the label slides up and out while a duplicate
-          rises from below into place. */}
-      <span className={styles.roll}>
-        <span className={styles.rollText}>{children}</span>
-        <span className={styles.rollText} aria-hidden="true">
-          {children}
-        </span>
-      </span>
-      {!loading && iconRight}
+      {iconOnly ? (
+        // Square button: render only the icon (no text-roll), spinner replaces it
+        // while loading.
+        !loading && iconOnly
+      ) : (
+        <>
+          {!loading && iconLeft}
+          {/* Text-roll on hover: the label slides up and out while a duplicate
+              rises from below into place. */}
+          <span className={styles.roll}>
+            <span className={styles.rollText}>{children}</span>
+            <span className={styles.rollText} aria-hidden="true">
+              {children}
+            </span>
+          </span>
+          {!loading && iconRight}
+        </>
+      )}
     </Comp>
   )
 }

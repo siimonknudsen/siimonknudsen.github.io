@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom'
 // eslint-disable-next-line no-unused-vars
 import { m, AnimatePresence, useReducedMotion } from 'motion/react'
 import Media from '../Media'
+import Reveal from '../motion/Reveal'
 import styles from './ImageGrid.module.css'
 
 /**
@@ -79,17 +80,24 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
       <div className={`${styles.grid} ${gridCols[columns] || gridCols[4]} ${gapClasses[gap] || gapClasses[1]}`}>
         {images.map((image, index) =>
           image ? (
-            <button
+            <Reveal
+              as="button"
+              preset="fade-up"
               key={index}
               type="button"
               onClick={() => setOpenIndex(index)}
               aria-label={`Open image ${index + 1}`}
               className={styles.tile}
             >
+              {/* Each tile IS the reveal (fade-up, in-view) so the gallery visibly
+                  animates in on scroll. No <Stagger> — across this many images the
+                  per-child delay would compound into seconds; independent in-view
+                  reveals cascade naturally as you scroll. The tile has no
+                  backdrop-filter, so this adds no blur cost. */}
               <div className={styles.zoom}>
                 <Media src={image} alt={`Image ${index + 1}`} aspect={aspect} rounded="rounded-xl" />
               </div>
-            </button>
+            </Reveal>
           ) : (
             <div key={index} className={`${styles.placeholder} ${phAspect} bg-surface-color-tertiary`} />
           )
@@ -111,7 +119,12 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={reduce ? { duration: 0 } : { duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              onClick={closeLightbox}
+              onClick={(e) => {
+                // Only a click on the backdrop ITSELF closes — never one that
+                // bubbled up from the image or a control. Hardens against the
+                // mobile fast-tap bug where a tap could fall through and close.
+                if (e.target === e.currentTarget) closeLightbox()
+              }}
               role="dialog"
               aria-modal="true"
             >
@@ -130,23 +143,29 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
               </svg>
             </button>
 
-            {/* Prev / Next + image + counter — stopPropagation so clicks don't close */}
-            <div className={styles.stage} onClick={(e) => e.stopPropagation()}>
-              {/* Horizontal row: arrow + image + arrow, each separated by a 16px gap */}
-              <div className={styles.row}>
-                {realIndices.length > 1 && (
-                  <button
-                    type="button"
-                    className={`${styles.ctrl} ${styles.nav}`}
-                    onClick={goPrev}
-                    aria-label="Previous image"
-                  >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </button>
-                )}
+            {/* Prev / Next — pinned to the viewport edges (position: fixed), so
+                they stay put regardless of the current image's size or load
+                state. (They used to be in-flow flex items hugging the image, so a
+                not-yet-loaded image collapsed the row, slid the arrows inward, and
+                a fast second tap fell through to the backdrop and closed the
+                lightbox — the mobile bug.) Each stops propagation too. */}
+            {realIndices.length > 1 && (
+              <button
+                type="button"
+                className={`${styles.ctrl} ${styles.nav} ${styles.navPrev}`}
+                onClick={goPrev}
+                aria-label="Previous image"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            )}
 
+            {/* Stage holds the image + counter (stopPropagation is a backstop to
+                the backdrop's own target check above). */}
+            <div className={styles.stage} onClick={(e) => e.stopPropagation()}>
+              <div className={styles.row}>
                 <m.img
                   key={openIndex}
                   src={openSrc}
@@ -156,25 +175,25 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
                   animate={{ opacity: 1, scale: 1 }}
                   transition={reduce ? { duration: 0 } : { duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
                 />
-
-                {realIndices.length > 1 && (
-                  <button
-                    type="button"
-                    className={`${styles.ctrl} ${styles.nav}`}
-                    onClick={goNext}
-                    aria-label="Next image"
-                  >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </button>
-                )}
               </div>
 
               <p className={`${styles.counter} type-caption`}>
                 {realIndices.indexOf(openIndex) + 1} of {realIndices.length}
               </p>
             </div>
+
+            {realIndices.length > 1 && (
+              <button
+                type="button"
+                className={`${styles.ctrl} ${styles.nav} ${styles.navNext}`}
+                onClick={goNext}
+                aria-label="Next image"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            )}
             </m.div>
           )}
         </AnimatePresence>,

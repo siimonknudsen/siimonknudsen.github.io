@@ -78,9 +78,11 @@
   width: 100%;
   aspect-ratio: 1 / 1;
   overflow: hidden;
+  /* Translucent tint + edge only — NO backdrop-filter. There are up to ~21 of
+     these on the About page; live-blurring each was a major perf cost (21 GPU
+     passes re-rendering on scroll) for a frost that the logo itself mostly covers.
+     The tint + border still read as a glass tile over the mesh. */
   background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
-  -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
 }
@@ -90,10 +92,18 @@
   height: 100%;
   object-fit: contain;
   border-radius: var(--radius-sm);
-  opacity: 0.7;
+  opacity: 0.72;
   transition-property: opacity;
   transition-duration: var(--dur-fast);
   transition-timing-function: var(--ease-standard);
+}
+
+/* Logos are baked as WHITE silhouettes on transparent (the opaque dark plates
+   were hiding the frosted-glass cell). White suits dark mode; flip to dark for
+   light mode so they read on the light glass. Theme-aware, like the rest of the
+   glass system. */
+:global(html:not(.dark)) .logo {
+  filter: invert(1);
 }
 
 .logo:hover {
