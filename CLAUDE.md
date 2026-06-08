@@ -7,8 +7,10 @@ Simon is a **product designer, non-technical re: code/git** — handle all git/t
 explain in plain language, never assume he'll edit code.
 
 Stack: React 19 + Vite 7 + React Router 7 · CSS Modules (no Tailwind) · two-tier
-design tokens in `src/index.css` · owned motion (CSS + WAAPI + View Transitions, no
-GSAP/Framer) · deploys on push to `main` (GitHub Actions → GitHub Pages).
+design tokens in `src/index.css` · motion = CSS + WAAPI + View Transitions for the base
+layer **plus Motion (Framer, the `motion` pkg) for spring/feel** — the library-free line
+was crossed consciously for spring physics + AnimatePresence exits (see DESIGN_KNOWLEDGE
+§4.11; lazy-loaded via `LazyMotion`) · deploys on push to `main` (GitHub Actions → Pages).
 
 **Golden rules (the ones I keep relearning — obey first):** ① `pkill -f "vite preview"`
 before any restart. ② Verify in-browser (`preview_eval`) before claiming anything works
