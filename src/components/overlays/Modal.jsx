@@ -1,5 +1,9 @@
 import { useEffect, useId, useRef } from 'react'
 import { createPortal } from 'react-dom'
+// `m` is used only as the JSX element <m.div>; ESLint's no-unused-vars doesn't
+// count JSX member usage (same workaround as Reveal.jsx).
+// eslint-disable-next-line no-unused-vars
+import { m, AnimatePresence, useReducedMotion } from 'motion/react'
 import styles from './Modal.module.css'
 
 /**
@@ -37,6 +41,7 @@ function Modal({ isOpen, onClose, children, title, className = '' }) {
   const dialogRef = useRef(null)
   const previouslyFocused = useRef(null)
   const titleId = useId()
+  const reduce = useReducedMotion()
 
   // Escape to close + simple focus trap (Tab / Shift+Tab cycle within dialog).
   useEffect(() => {
@@ -102,23 +107,44 @@ function Modal({ isOpen, onClose, children, title, className = '' }) {
     }
   }, [isOpen])
 
-  if (!isOpen) return null
+  // Calm fade for the scrim; fade + slight rise/scale for the dialog. Same
+  // transition in and out (reduced motion → instant). AnimatePresence keeps the
+  // tree mounted long enough to play the EXIT on close — the one thing the old
+  // CSS layer couldn't do (it just vanished).
+  const T = reduce ? { duration: 0 } : { duration: 0.3, ease: [0.16, 1, 0.3, 1] }
+  const scrimV = { closed: { opacity: 0 }, open: { opacity: 1 } }
+  const dialogV = reduce
+    ? { closed: { opacity: 0 }, open: { opacity: 1 } }
+    : {
+        closed: { opacity: 0, y: 8, scale: 0.98 },
+        open: { opacity: 1, y: 0, scale: 1 },
+      }
 
   return createPortal(
-    <div className={styles.overlay}>
-      {/* Scrim — click-away to close */}
-      <div className={`${styles.scrim} bg-scrim`} onClick={() => onClose?.()} aria-hidden="true" />
+    <AnimatePresence>
+      {isOpen && (
+        <m.div className={styles.overlay} key="modal" initial="closed" animate="open" exit="closed">
+          {/* Scrim — click-away to close */}
+          <m.div
+            className={`${styles.scrim} bg-scrim`}
+            variants={scrimV}
+            transition={T}
+            onClick={() => onClose?.()}
+            aria-hidden="true"
+          />
 
-      {/* Dialog card — top-level, no transformed ancestor so .glass-panel blur renders */}
-      <div
-        ref={dialogRef}
-        className={`${styles.dialog} glass-panel ${className}`}
-        role="dialog"
-        aria-modal="true"
-        aria-label={title ? undefined : 'Dialog'}
-        aria-labelledby={title ? titleId : undefined}
-        tabIndex={-1}
-      >
+          {/* Dialog card — top-level, no transformed ancestor so .glass-panel blur renders */}
+          <m.div
+            ref={dialogRef}
+            className={`${styles.dialog} glass-panel ${className}`}
+            variants={dialogV}
+            transition={T}
+            role="dialog"
+            aria-modal="true"
+            aria-label={title ? undefined : 'Dialog'}
+            aria-labelledby={title ? titleId : undefined}
+            tabIndex={-1}
+          >
         <button
           type="button"
           className={`${styles.close} focus-ring-glass`}
@@ -136,9 +162,11 @@ function Modal({ isOpen, onClose, children, title, className = '' }) {
           </h2>
         )}
 
-        <div className={styles.body}>{children}</div>
-      </div>
-    </div>,
+            <div className={styles.body}>{children}</div>
+          </m.div>
+        </m.div>
+      )}
+    </AnimatePresence>,
     document.body
   )
 }

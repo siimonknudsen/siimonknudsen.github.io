@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
+// `m` is used only as the JSX element <m.div>/<m.img>; ESLint's no-unused-vars
+// doesn't count JSX member usage (same workaround as Reveal.jsx).
+// eslint-disable-next-line no-unused-vars
+import { m, AnimatePresence, useReducedMotion } from 'motion/react'
 import Media from '../Media'
 import styles from './ImageGrid.module.css'
 
@@ -9,7 +13,7 @@ import styles from './ImageGrid.module.css'
  */
 function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }) {
   const [openIndex, setOpenIndex] = useState(null)
-  const [closing, setClosing] = useState(false)
+  const reduce = useReducedMotion()
 
   // Indices of the "real" (truthy) images, used for navigation + counting.
   const realIndices = images
@@ -18,14 +22,9 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
 
   const openSrc = openIndex !== null ? images[openIndex] : null
 
-  // Animate the close before unmounting (matches the CSS exit duration).
-  const closeLightbox = () => {
-    setClosing(true)
-    window.setTimeout(() => {
-      setOpenIndex(null)
-      setClosing(false)
-    }, 260)
-  }
+  // Just clear the open index — AnimatePresence plays the exit before unmount
+  // (replaces the old manual `closing` + setTimeout choreography).
+  const closeLightbox = () => setOpenIndex(null)
 
   // Move to the prev/next real image, wrapping around (skips falsy entries).
   const goRelative = (delta) => {
@@ -97,19 +96,25 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
         )}
       </div>
 
-      {openSrc &&
-        createPortal(
-          <div
-            className={`${styles.lightbox} ${closing ? styles.lightboxClosing : ''}`}
-            style={{
-              backgroundColor: 'var(--overlay-scrim)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-            }}
-            onClick={closeLightbox}
-            role="dialog"
-            aria-modal="true"
-          >
+      {createPortal(
+        <AnimatePresence>
+          {openSrc && (
+            <m.div
+              key="lightbox"
+              className={styles.lightbox}
+              style={{
+                backgroundColor: 'var(--overlay-scrim)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={reduce ? { duration: 0 } : { duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              onClick={closeLightbox}
+              role="dialog"
+              aria-modal="true"
+            >
             {/* Close */}
             <button
               type="button"
@@ -142,7 +147,15 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
                   </button>
                 )}
 
-                <img key={openIndex} src={openSrc} alt="" className={styles.lightboxImg} />
+                <m.img
+                  key={openIndex}
+                  src={openSrc}
+                  alt=""
+                  className={styles.lightboxImg}
+                  initial={reduce ? false : { opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={reduce ? { duration: 0 } : { duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+                />
 
                 {realIndices.length > 1 && (
                   <button
@@ -162,9 +175,11 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
                 {realIndices.indexOf(openIndex) + 1} of {realIndices.length}
               </p>
             </div>
-          </div>,
-          document.body
-        )}
+            </m.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   )
 }

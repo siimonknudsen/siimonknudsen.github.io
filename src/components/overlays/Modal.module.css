@@ -14,7 +14,7 @@
 .scrim {
   position: absolute;
   inset: 0;
-  animation: scrim-in var(--dur-base) var(--ease-decelerate) both;
+  /* Enter/exit fade driven by Framer Motion (see Modal.jsx). */
 }
 
 /* The dialog card. .glass-panel supplies bg / blur / border / shadow.
@@ -27,7 +27,7 @@
   overflow-y: auto;
   border-radius: var(--radius-2xl);
   padding: var(--space-32);
-  animation: dialog-in var(--dur-base) var(--ease-decelerate) both;
+  /* Enter/exit (fade + slight rise/scale) driven by Framer Motion (see Modal.jsx). */
 }
 
 .close {
@@ -65,35 +65,6 @@
 
 .body {
   color: var(--text-color-secondary);
-}
-
-@keyframes scrim-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes dialog-in {
-  from {
-    opacity: 0;
-    transform: translateY(var(--space-8)) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* Reduced motion → appear instantly (global --dur-* already collapse to ~0,
-   but null the transform too so there is no positional jump). */
-@media (prefers-reduced-motion: reduce) {
-  .scrim,
-  .dialog {
-    animation: none;
-  }
 }
 
 /* Small screens — keep comfortable margins via the overlay padding. */
