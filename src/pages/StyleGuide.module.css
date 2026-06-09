@@ -146,6 +146,45 @@
   box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--text-color-primary) 8%, transparent);
 }
 
+/* Light ⇄ Dark role mapping — each row shows a semantic role's light value and
+   dark value side by side, so the two-tier inversion is shown, not just stated. */
+.mappingList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  margin-top: var(--space-16);
+}
+.mappingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-12);
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-md);
+}
+.mappingMeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.mappingChips {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+.mappingChip {
+  width: var(--space-24);
+  height: var(--space-24);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+.mappingArrow {
+  color: var(--text-color-tertiary);
+  font-size: var(--text-sm);
+  margin: 0 var(--space-4);
+}
+
 /* ── Copy-on-click swatch ───────────────────────────────────────── */
 
 .copySwatch {
@@ -362,6 +401,61 @@
 @media (prefers-reduced-motion: reduce) {
   .tocLink,
   .tocLink::before {
+    transition: none;
+  }
+}
+
+/* ── Mobile in-page nav (shown < 1280px, where the sticky sidebar is hidden) ──
+   A small sticky glass disclosure — the nav exception to the no-backdrop-on-
+   scrolling-surfaces rule (same as the header), kept small + static. */
+.mobileToc {
+  display: block;
+  position: sticky;
+  top: calc(var(--header-height) + var(--space-8));
+  z-index: 5;
+  margin-bottom: var(--space-32);
+  border-radius: var(--radius-md);
+  padding: 0 var(--space-16) var(--space-4);
+  background-color: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border);
+}
+@media (min-width: 1280px) {
+  .mobileToc {
+    display: none;
+  }
+}
+.mobileTocSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  list-style: none;
+  padding: var(--space-12) 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+.mobileTocSummary::-webkit-details-marker {
+  display: none;
+}
+.mobileTocChevron {
+  color: var(--text-color-tertiary);
+  flex-shrink: 0;
+  transition: transform var(--dur-base) var(--ease-standard);
+}
+.mobileToc[open] .mobileTocChevron {
+  transform: rotate(180deg);
+}
+.mobileTocBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+  padding: var(--space-8) 0 var(--space-12);
+}
+@media (prefers-reduced-motion: reduce) {
+  .mobileTocChevron {
     transition: none;
   }
 }
@@ -798,6 +892,52 @@
   letter-spacing: var(--tracking-tight);
 }
 
+/* Blur tokens shown as REAL frost: swatches sit over a busy colour backdrop and
+   each applies its blur/saturate token, so the steps visibly differ. Static
+   backdrop + small swatches = perf-safe (GLASS §7). */
+.blurStage {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-12);
+  padding: var(--space-16);
+  margin-top: var(--space-16);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background:
+    radial-gradient(60% 80% at 18% 22%, var(--accent) 0%, transparent 58%),
+    radial-gradient(55% 75% at 82% 28%, #2e9e8f 0%, transparent 60%),
+    radial-gradient(60% 80% at 60% 90%, #3b6fe0 0%, transparent 60%),
+    linear-gradient(120deg, #d8602b, #1a1a1f);
+}
+@media (min-width: 640px) {
+  .blurStage {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.blurSwatch {
+  position: relative;
+  z-index: 1;
+  min-height: 96px;
+  border-radius: var(--radius-sm);
+  padding: var(--space-12);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  background: var(--transparent-light-16);
+  border: 1px solid var(--transparent-light-24);
+}
+.blurSwatchName {
+  font-size: var(--text-2xs);
+  color: var(--neutral-0);
+}
+.blurSwatchVal {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--neutral-0);
+}
+
 .elevationLead {
   font-size: var(--text-sm);
   line-height: 1.5;
@@ -856,13 +996,20 @@
 .spacingRow {
   display: flex;
   align-items: center;
-  gap: var(--space-16);
+  flex-wrap: wrap; /* wide bars + labels + usage wrap instead of overflowing on mobile */
+  gap: var(--space-8) var(--space-16);
 }
 
 .spacingBar {
   height: var(--space-16);
   border-radius: var(--radius-sm);
   flex-shrink: 0;
+}
+
+/* Usage hint, pushed to the row's right edge so it reads as a quiet column. */
+.spacingUse {
+  margin-left: auto;
+  text-align: right;
 }
 
 .radiusGrid {
@@ -1013,6 +1160,29 @@
   flex-shrink: 0;
   white-space: nowrap;
 }
+
+/* Easing curve plot — draws the actual cubic-bezier shape (time → progress) so
+   each easing is *shown*, not just printed. Sits left of the animated track. */
+.easingCurve {
+  flex-shrink: 0;
+  overflow: visible; /* overshoot curves may bow past the box */
+}
+.easingAxis {
+  stroke: var(--glass-border);
+  stroke-width: 1;
+}
+.easingRef {
+  stroke: var(--glass-border);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.55;
+}
+.easingPath {
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 @media (min-width: 640px) {
   .trackCurve {
     display: inline;
@@ -1153,6 +1323,157 @@
 }
 
 /* ── Components section ─────────────────────────────────────────── */
+
+/* Per-component documented sections (the library). Each component is its own
+   anchored section: name + one-line purpose → staged demo → optional terse
+   guidelines. Spacing WITHIN a component is tight (24); the gap BETWEEN
+   components is owned by the section rhythm (.content > section > * + *). */
+.componentSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+  scroll-margin-top: 112px;
+}
+.componentHead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.componentName {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+}
+@media (min-width: 640px) {
+  .componentName {
+    font-size: var(--text-3xl);
+  }
+}
+.componentPurpose {
+  font-size: var(--text-base);
+  line-height: 1.45;
+  max-width: 60ch;
+  margin: 0;
+}
+.componentDemo {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+}
+
+/* A labeled sub-group inside a component demo (e.g. "States" under the variants). */
+.demoSub {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+.demoSubLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* Tasteful Do / Don't — two tonal cards (no hard red/green borders). The "Do"
+   mark is the warm accent; "Avoid" is a muted neutral, so meaning never relies
+   on colour alone (it's also labelled + a different glyph). */
+.doDont {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-12);
+}
+@media (min-width: 640px) {
+  .doDont {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.ddCard {
+  border-radius: var(--radius-md);
+  padding: var(--space-20);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+.ddMark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--accent);
+}
+.ddMarkAvoid {
+  color: var(--text-color-tertiary);
+}
+.ddExample {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+  min-height: var(--space-40);
+}
+.ddCaption {
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  margin: 0;
+}
+/* Labeled live examples — auto-fill so a few small specimens don't stretch to
+   full width; each Tile carries its own glass canvas + caption. */
+.demoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-12);
+}
+.mediaGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-12);
+}
+@media (min-width: 640px) {
+  .mediaGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+/* Terse usage guidelines — a small accent tick per line, calm and editorial. */
+.guidelines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+.guidelinesLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  margin: 0;
+}
+.guidelinesList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  max-width: 64ch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.guideline {
+  position: relative;
+  padding-left: var(--space-20);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+.guideline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+}
 
 .componentsGrid {
   display: grid;

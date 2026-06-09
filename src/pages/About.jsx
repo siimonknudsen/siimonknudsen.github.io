@@ -7,6 +7,7 @@ import ImageGrid from '../components/grids/ImageGrid'
 import SkillCard from '../components/cards/SkillCard'
 import PrinciplesList from '../components/about/PrinciplesList'
 import Button from '../components/buttons/Button'
+import { AVATAR_SRC, onAvatarError } from '../lib/avatar'
 import styles from './About.module.css'
 
 // Inline download icon for the intro CTA — currentColor, no external deps.
@@ -126,7 +127,8 @@ function About() {
             <ScrollAnimation immediate delay={500}>
               <div className={styles.portrait}>
                 <img
-                  src={`${import.meta.env.BASE_URL}simon-virtual.png`}
+                  src={AVATAR_SRC}
+                  onError={onAvatarError}
                   alt="Simon Knudsen"
                   className={styles.portraitImg}
                 />

@@ -236,6 +236,15 @@
   transform: none;
   transition-delay: 0.08s;
 }
+/* Reveal EVERY row on open (robust). Adding a spec row (e.g. "Business model")
+   must never leave a later row stuck hidden — that's what dropped the Website
+   row and left empty space. The nth-of-type rules below only add the one-by-one
+   stagger delay on top of this. */
+.companyChip:hover .ttRow,
+.companyChip:focus-within .ttRow {
+  opacity: 1;
+  transform: none;
+}
 .companyChip:hover .ttRow:nth-of-type(1),
 .companyChip:focus-within .ttRow:nth-of-type(1) {
   opacity: 1;
@@ -259,6 +268,14 @@
   opacity: 1;
   transform: none;
   transition-delay: 0.4s;
+}
+.companyChip:hover .ttRow:nth-of-type(5),
+.companyChip:focus-within .ttRow:nth-of-type(5) {
+  transition-delay: 0.48s;
+}
+.companyChip:hover .ttRow:nth-of-type(6),
+.companyChip:focus-within .ttRow:nth-of-type(6) {
+  transition-delay: 0.56s;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -41,9 +41,14 @@ const ROUTE_TITLES = {
 // Keyed by pathname so the gentle fade-in (.page-enter) re-runs on each navigation.
 function AnimatedRoutes() {
   const location = useLocation()
-  // Skip the curtain wipe on the very first paint; only play it on
-  // subsequent client-side navigations.
+  // Skip the curtain wipe on the very first paint, and play it ONLY on a real
+  // pathname change. RULE: a same-page anchor link (e.g. the hero "View projects"
+  // → #projects, or an About-menu item while already on /about) must NOT trigger
+  // the page-switch animation — it should just smooth-scroll to the anchor
+  // (handled by ScrollToTop). So we compare against the previous PATHNAME and
+  // ignore hash-only changes.
   const firstRender = useRef(true)
+  const prevPathname = useRef(location.pathname)
 
   // Keep the tab title meaningful per route (ProjectPage overrides via usePageTitle).
   useEffect(() => {
@@ -53,18 +58,17 @@ function AnimatedRoutes() {
     }
   }, [location.pathname])
 
-  // Render the wipe for this navigation, then flip the flag off so the
-  // first load stays untouched. Read before flipping so the panel still
-  // mounts on the *next* navigation (the first real route change).
-  // Intentional: reading the ref during render to decide whether to play the
-  // wipe on this navigation. The flag is flipped in the effect below, so the
-  // first paint is skipped and every later navigation plays. Safe because the
-  // value only ever goes true→false once and the effect re-syncs per route.
+  // Play the wipe only when the PATHNAME actually changed (a real route switch) —
+  // not on the first paint, and not on hash-only navigation (same-page anchors).
+  // Reading the refs during render is intentional and deterministic here; the
+  // effect below re-syncs them after commit (deps include hash so prevPathname
+  // stays current even across hash-only navigations).
   // eslint-disable-next-line react-hooks/refs
-  const playWipe = !firstRender.current
+  const playWipe = !firstRender.current && location.pathname !== prevPathname.current
   useEffect(() => {
     firstRender.current = false
-  }, [location.pathname])
+    prevPathname.current = location.pathname
+  }, [location.pathname, location.hash])
 
   return (
     <>

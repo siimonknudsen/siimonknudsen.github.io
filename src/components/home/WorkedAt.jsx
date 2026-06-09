@@ -28,6 +28,7 @@ const COMPANIES = [
     website: 'lenus.io',
     logoScale: 1, // per-logo optical balance (these logos differ in proportion)
     period: '2025 — Present',
+    model: 'B2B2C',
   },
   {
     name: 'Beefit',
@@ -37,6 +38,7 @@ const COMPANIES = [
     website: 'beefit.io',
     logoScale: 1.12, // optical balance — see logoScale rule in the COMPANIES note
     period: '2024 — 2025',
+    model: 'B2B2C',
   },
   {
     name: 'Zliide',
@@ -46,6 +48,7 @@ const COMPANIES = [
     website: '', // Zliide no longer exists
     logoScale: 0.7,
     period: '2023 — 2024',
+    model: 'B2B2C',
   },
   {
     name: 'Adtraction',
@@ -55,6 +58,7 @@ const COMPANIES = [
     website: 'adtraction.com',
     logoScale: 0.9,
     period: '2021 — 2023',
+    model: 'B2B',
   },
 ]
 
@@ -108,6 +112,12 @@ function WorkedAt({ companies = COMPANIES, revealDelay = 0 }) {
                       <div className={styles.ttRow}>
                         <dt>Industry</dt>
                         <dd>{company.industry}</dd>
+                      </div>
+                    )}
+                    {company.model && (
+                      <div className={styles.ttRow}>
+                        <dt>Business model</dt>
+                        <dd>{company.model}</dd>
                       </div>
                     )}
                     {company.period && (

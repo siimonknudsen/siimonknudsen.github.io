@@ -128,17 +128,12 @@
   padding-right: var(--space-12);
 }
 
-.footerLink {
-  font-size: 13px;
-  font-weight: var(--weight-medium);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-4);
-  transition: opacity var(--dur-base) var(--ease-standard);
-}
-
-.footerLink:hover {
-  opacity: 0.7;
+/* Dropdown footer CTA — the shared ghost <Button> (gets the text-roll + the glass
+   hover fill from the Button component). Pulled flush-left by the container's
+   padding so the label lands exactly where the old plain link text sat (the
+   button's own 12px left padding now provides that inset). */
+.footerCta {
+  margin-left: calc(-1 * var(--space-12));
 }
 
 /* ── About menu ─────────────────────────────────────────────────── */
@@ -201,6 +196,14 @@
   height: var(--space-12);
   transform: rotate(-90deg);
   opacity: 0.5;
+}
+
+/* About-menu rows are now the ghost <Button> (text-roll + glass hover fill).
+   Full-width rows with the label left and the chevron right — override the
+   button's centered content. The compound selector (0,2,0) beats Button's
+   `.base` justify-content (0,1,0) without !important, regardless of CSS order. */
+.aboutList .aboutItemBtn {
+  justify-content: space-between;
 }
 
 /* ── Contact menu ───────────────────────────────────────────────── */

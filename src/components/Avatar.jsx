@@ -1,3 +1,4 @@
+import { AVATAR_SRC, onAvatarError } from '../lib/avatar'
 import styles from './Avatar.module.css'
 
 function Avatar({ name, title, size = 'small' }) {
@@ -7,7 +8,8 @@ function Avatar({ name, title, size = 'small' }) {
     <div className={`${styles.root} ${isLarge ? styles.large : ''}`}>
       <div className={`${styles.thumb} bg-surface-color-tertiary`}>
         <img
-          src={`${import.meta.env.BASE_URL}simon-virtual.png`}
+          src={AVATAR_SRC}
+          onError={onAvatarError}
           alt={name}
           className={styles.image}
         />

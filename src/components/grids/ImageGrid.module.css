@@ -154,37 +154,18 @@
   }
 }
 
-/* Prev / Next — pinned to the viewport edges, vertically centred, so they stay
-   put regardless of the current image's size or load state. (Were in-flow flex
-   items hugging the image; a swapping / still-loading image reflowed them inward
-   and fast taps fell through to the backdrop — the mobile close-by-accident bug.) */
+/* Prev / Next flank the image INSIDE the row (in-flow flex items), 16px from it
+   each side via .row's gap. flex-shrink:0 holds them at full size so the image
+   shrinks to fit between them. (Previously pinned to the viewport edges to dodge
+   a tap-through close bug; that's now guarded in JS — see ImageGrid.jsx — so the
+   arrows live beside the image again.) Press feedback = the generic .ctrl:active
+   scale(0.94); no centring transform to preserve anymore. */
 .nav {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
+  flex-shrink: 0;
   width: 44px;
   height: 44px;
   border-radius: var(--radius-pill);
   z-index: 3;
-}
-.navPrev {
-  left: var(--space-12);
-}
-.navNext {
-  right: var(--space-12);
-}
-@media (min-width: 640px) {
-  .navPrev {
-    left: var(--space-24);
-  }
-  .navNext {
-    right: var(--space-24);
-  }
-}
-/* Press feedback must keep the centring translate — compound selector (0,3,0)
-   beats the generic .ctrl:active scale (0,2,0) regardless of source order. */
-.ctrl.nav:active {
-  transform: translateY(-50%) scale(0.94);
 }
 
 /* Counter below the image */

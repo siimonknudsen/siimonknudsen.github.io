@@ -3,7 +3,6 @@ import ScrollAnimation from '../components/animations/ScrollAnimation'
 import useSpotlight from '../hooks/useSpotlight'
 import Button from '../components/buttons/Button'
 import Media from '../components/Media'
-import ShaderBackground from '../components/shader/ShaderBackground'
 import ProjectCard from '../components/projects/ProjectCard'
 import Badge from '../components/Badge'
 import Input from '../components/forms/Input'
@@ -210,6 +209,49 @@ function PlusIcon() {
   )
 }
 
+/* Plots a cubic-bezier easing as its actual CURVE (time → progress), so the
+   shape is *shown*, not just printed as numbers — and it reads even when motion
+   is paused (preview / reduced-motion). x = time 0→1, y = progress 0→1 (SVG y
+   is inverted). Overshoot curves (y outside 0–1) are allowed to bow past the
+   box via overflow:visible. */
+function EasingCurve({ curve, size = 40 }) {
+  const [x1, y1, x2, y2] = String(curve).split(',').map((n) => parseFloat(n))
+  const S = size
+  const path = `M 0 ${S} C ${x1 * S} ${S - y1 * S} ${x2 * S} ${S - y2 * S} ${S} 0`
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox={`0 0 ${size} ${size}`}
+      aria-hidden="true"
+      className={styles.easingCurve}
+    >
+      {/* baseline + start axis (faint) */}
+      <line x1="0" y1={S} x2={S} y2={S} className={styles.easingAxis} />
+      <line x1="0" y1="0" x2="0" y2={S} className={styles.easingAxis} />
+      {/* diagonal "linear" reference + the actual curve */}
+      <line x1="0" y1={S} x2={S} y2="0" className={styles.easingRef} />
+      <path d={path} fill="none" className={styles.easingPath} />
+    </svg>
+  )
+}
+
+/* Where each spacing step earns its keep — a usage hint shown beside the value,
+   so the scale reads as a system of roles, not just numbers. */
+const SPACING_USE = {
+  4: 'hairline gaps',
+  8: 'tight stacks',
+  12: 'control padding',
+  16: 'default gap',
+  24: 'card padding',
+  32: 'field spacing',
+  48: 'below the nav',
+  64: 'between groups',
+  128: 'between sections',
+  164: 'page end',
+  200: 'hero whitespace',
+}
+
 /* The unifying device — a specimen card. Live sample on top, ONE muted mono metadata
    row beneath (name left / values right). Surface = .glass-panel carrying the cursor
    spotlight (.fx-spotlight), or a tonal surface-2/3 fill where glass would stack. No border. */
@@ -330,6 +372,40 @@ function CopySwatch({ value, copyKey, copied, onCopy, className = '', faceClassN
   )
 }
 
+/* A documented component entry — the repeatable unit of the library, following
+   the per-component doc pattern shared by Polaris / Material / Geist: lead with
+   the component NAME + a one-line present-tense PURPOSE, show the live thing
+   STAGED (labeled examples on tonal/glass canvases — never a hard box), then a
+   few terse, imperative GUIDELINES (optional; only where they add real signal).
+   Each is an anchored <section> so the sticky index can track it. */
+function ComponentSection({ id, name, purpose, guidelines, children }) {
+  return (
+    <section id={id} className={styles.componentSection}>
+      <ScrollAnimation>
+        <div className={styles.componentHead}>
+          <h3 className={`text-color-primary ${styles.componentName}`}>{name}</h3>
+          <p className={`text-color-secondary ${styles.componentPurpose}`}>{purpose}</p>
+        </div>
+      </ScrollAnimation>
+      <ScrollAnimation>
+        <div className={styles.componentDemo}>{children}</div>
+      </ScrollAnimation>
+      {guidelines && guidelines.length > 0 && (
+        <ScrollAnimation>
+          <div className={styles.guidelines}>
+            <p className={`font-mono text-color-tertiary ${styles.guidelinesLabel}`}>Guidelines</p>
+            <ul className={styles.guidelinesList}>
+              {guidelines.map((g, i) => (
+                <li key={i} className={`text-color-secondary ${styles.guideline}`}>{g}</li>
+              ))}
+            </ul>
+          </div>
+        </ScrollAnimation>
+      )}
+    </section>
+  )
+}
+
 /* ── Page ───────────────────────────────────────────────────────── */
 
 // Sidebar nav, grouped like a top-tier DS index (Foundations → Library) so the
@@ -344,7 +420,14 @@ const TOC = [
     ['motion', 'Motion'],
   ]],
   ['Library', [
-    ['components', 'Components'],
+    ['buttons', 'Buttons'],
+    ['badges', 'Badges & tags'],
+    ['inputs', 'Form inputs'],
+    ['avatar', 'Avatar'],
+    ['theme-toggle', 'Theme toggle'],
+    ['location', 'Location'],
+    ['media', 'Media'],
+    ['cards', 'Cards'],
     ['data', 'Data display'],
   ]],
 ]
@@ -359,8 +442,11 @@ function StyleGuide() {
   return (
     <>
       {/* Cover */}
+      {/* No page-specific background here — the cover uses ONLY the global mesh
+          backdrop (App shell), same as the front page. (A cover-only accent bloom
+          used to sit here; it glowed below the header but not behind it, reading
+          as an inconsistent "background starts under the nav" seam.) */}
       <section className={styles.cover}>
-        <div aria-hidden="true" className={styles.coverBloom} />
         <div className={styles.coverInner}>
           {/* Page hero — reveal on mount (immediate), not on scroll: it's above
               the fold on load, so a scroll trigger can leave it faded. */}
@@ -370,8 +456,9 @@ function StyleGuide() {
               Design System
             </h1>
             <p className={`text-color-secondary ${styles.coverLead}`}>
-              The visual language behind this portfolio — the typography, color, frosted-glass
-              materials, and components that keep everything consistent across light and dark.
+              The system behind the work. Confident and minimal — depth from light, never boxes;
+              one warm accent on a neutral field; calm motion. Every token, material and component,
+              consistent across light and dark.
             </p>
             <div className={styles.coverTags}>
               {['BDO Grotesk', 'Light / Dark', 'Frosted glass', 'Design tokens'].map((t) => (
@@ -389,6 +476,38 @@ function StyleGuide() {
 
       {/* Body with sticky index */}
       <div className={styles.body}>
+        {/* Mobile in-page nav — the sticky sidebar is hidden < 1280px, so on small
+            screens a collapsible disclosure carries the same grouped index. Native
+            <details> (no JS); each link closes it on tap. */}
+        <details className={styles.mobileToc}>
+          <summary className={styles.mobileTocSummary}>
+            <span className="font-mono text-color-tertiary">On this page</span>
+            <svg className={styles.mobileTocChevron} width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </summary>
+          <div className={styles.mobileTocBody}>
+            {TOC.map(([group, items]) => (
+              <div key={group} className={styles.tocGroup}>
+                <p className={`text-color-tertiary ${styles.tocGroupLabel}`}>{group}</p>
+                <ul className={styles.tocList}>
+                  {items.map(([id, label]) => (
+                    <li key={id}>
+                      <a
+                        href={`#${id}`}
+                        className={`text-color-secondary ${styles.tocLink}`}
+                        onClick={(e) => e.currentTarget.closest('details')?.removeAttribute('open')}
+                      >
+                        {label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </details>
+
         {/* Sticky table of contents — active-section tracking */}
         <nav className={styles.toc} aria-label="On this page">
           <p className={`font-mono text-color-tertiary ${styles.tocHeading}`}>
@@ -508,6 +627,33 @@ function StyleGuide() {
                 border) that invert between light and dark, plus one warm-orange accent and a set
                 of feedback colours. Nothing is hard-coded.
               </SectionHeading>
+            </ScrollAnimation>
+
+            <ScrollAnimation>
+              <div className={styles.group}>
+                <Overline>Light ⇄ Dark mapping</Overline>
+                <p className={`text-color-secondary ${styles.sectionLead}`}>
+                  One role, two values — components reference the role, never a raw colour, so the
+                  whole UI inverts cleanly. Light value, then dark.
+                </p>
+                <div className={styles.mappingList}>
+                  {[...surfaces, ...texts].map((r) => (
+                    <div key={r.token} className={`surface-2 ${styles.mappingRow}`}>
+                      <div className={styles.mappingMeta}>
+                        <span className={`text-color-primary ${styles.colorTitle}`}>{r.title}</span>
+                        <MonoMeta>{r.token}</MonoMeta>
+                      </div>
+                      <div className={styles.mappingChips}>
+                        <span className={`${styles.mappingChip} ${styles.swatchHairline}`} style={{ background: r.light }} />
+                        <MonoMeta>{r.light}</MonoMeta>
+                        <span className={styles.mappingArrow} aria-hidden="true">⇄</span>
+                        <span className={`${styles.mappingChip} ${styles.swatchHairline}`} style={{ background: r.dark }} />
+                        <MonoMeta>{r.dark}</MonoMeta>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </ScrollAnimation>
 
             <div className={styles.colorBands}>
@@ -811,16 +957,25 @@ function StyleGuide() {
             <ScrollAnimation>
               <div className={styles.group}>
                 <Overline>Blur &amp; saturation tokens</Overline>
-                <div className={styles.blurGrid}>
+                <p className={`text-color-secondary ${styles.sectionLead}`}>
+                  Shown frosting a busy backdrop so each step actually reads — sm is a whisper,
+                  lg a heavy frost; saturate keeps colour alive through the blur.
+                </p>
+                <div className={styles.blurStage}>
                   {[
-                    ['--glass-blur-sm', '8px'],
-                    ['--glass-blur-md', '16px'],
-                    ['--glass-blur-lg', '24px'],
-                    ['--glass-saturate', '180%'],
-                  ].map(([name, val]) => (
-                    <Specimen key={name} surface="surface-3" name={name}>
-                      <p className={`text-color-primary ${styles.blurVal}`}>{val}</p>
-                    </Specimen>
+                    ['--glass-blur-sm', '8px', 'blur(var(--glass-blur-sm))'],
+                    ['--glass-blur-md', '16px', 'blur(var(--glass-blur-md))'],
+                    ['--glass-blur-lg', '24px', 'blur(var(--glass-blur-lg))'],
+                    ['--glass-saturate', '180%', 'blur(var(--glass-blur-sm)) saturate(var(--glass-saturate))'],
+                  ].map(([name, val, filter]) => (
+                    <div
+                      key={name}
+                      className={styles.blurSwatch}
+                      style={{ backdropFilter: filter, WebkitBackdropFilter: filter }}
+                    >
+                      <span className={`font-mono ${styles.blurSwatchName}`}>{name}</span>
+                      <span className={`font-mono ${styles.blurSwatchVal}`}>{val}</span>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -871,6 +1026,11 @@ function StyleGuide() {
                       <div className={`bg-accent ${styles.spacingBar}`} style={{ width: `${s.px}px` }} />
                       <MonoMeta className="text-color-secondary">{s.name}</MonoMeta>
                       <MonoMeta>{s.px}px</MonoMeta>
+                      {SPACING_USE[s.px] && (
+                        <MonoMeta className={`text-color-tertiary ${styles.spacingUse}`}>
+                          {SPACING_USE[s.px]}
+                        </MonoMeta>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -886,6 +1046,11 @@ function StyleGuide() {
                       <div className={`bg-accent ${styles.spacingBar}`} style={{ width: `${s.px}px` }} />
                       <MonoMeta className="text-color-secondary">{s.name}</MonoMeta>
                       <MonoMeta>{s.px}px</MonoMeta>
+                      {SPACING_USE[s.px] && (
+                        <MonoMeta className={`text-color-tertiary ${styles.spacingUse}`}>
+                          {SPACING_USE[s.px]}
+                        </MonoMeta>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -922,6 +1087,34 @@ function StyleGuide() {
                   --radius-lg / xl / 2xl all clamp to 8px (the 2026 tight cap). Cards, panels,
                   bars and images cap at 8; the pill is reserved for circular elements + chips.
                 </p>
+              </div>
+            </ScrollAnimation>
+
+            <ScrollAnimation>
+              <div className={styles.group}>
+                <Overline>Everything clamps to 8px</Overline>
+                <p className={`text-color-secondary ${styles.sectionLead}`}>
+                  Three differently-named tokens, one corner. The larger steps resolve to the
+                  same 8px cap — so nothing on the site rounds harder than this.
+                </p>
+                <div className={styles.radiusGrid}>
+                  {[
+                    ['--radius-lg', 'lg → 8'],
+                    ['--radius-xl', 'xl → 8'],
+                    ['--radius-2xl', '2xl → 8'],
+                  ].map(([token, label]) => (
+                    <div key={token} className={styles.radiusItem}>
+                      <div
+                        className={`surface-3 ${styles.radiusSwatch}`}
+                        style={{ borderRadius: `var(${token})` }}
+                      />
+                      <div className={styles.radiusMetaRow}>
+                        <MonoMeta className="text-color-secondary">{token}</MonoMeta>
+                        <MonoMeta>{label}</MonoMeta>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </ScrollAnimation>
           </section>
@@ -981,6 +1174,7 @@ function StyleGuide() {
                   <div className={styles.trackList}>
                     {easings.map((e) => (
                       <div key={e.name} className={styles.trackRow}>
+                        <EasingCurve curve={e.curve} />
                         <span className={`font-mono text-color-secondary ${styles.trackName}`}>{e.name}</span>
                         <div className={styles.track}>
                           <span
@@ -1130,90 +1324,198 @@ function StyleGuide() {
             </ScrollAnimation>
           </section>
 
-          {/* Components */}
-          <section>
+          {/* ── Library: every component documented in its own section
+              (name → one-line purpose → live staged examples → terse guidelines),
+              following the per-component doc pattern of Polaris / Material / Geist. ── */}
+          <section className={styles.librarySection}>
             <ScrollAnimation>
-              <SectionHeading id="components" overline="Library" title="Components">
-                The reusable pieces these pages are built from.
+              <SectionHeading overline="Library" title="Components">
+                The reusable pieces these pages are built from — each shown live,
+                with its variants and states. Examples sit on the frosted-glass
+                material: depth from light, never hard borders.
               </SectionHeading>
             </ScrollAnimation>
 
-            <ScrollAnimation>
-              <div className={styles.componentsGrid}>
-                <Tile label="Buttons" className={styles.colSpanFull}>
-                  <div className={styles.tileFill}>
-                    <div className={styles.btnRow}>
-                      <Button variant="primary">Primary</Button>
-                      <Button variant="secondary">Secondary</Button>
-                      <Button variant="accent">Accent</Button>
-                      <Button variant="outline">Outline</Button>
-                      <Button variant="glass">Glass</Button>
-                      <Button variant="ghost">Ghost</Button>
-                    </div>
-                    <div className={styles.btnRow}>
-                      <Button size="sm">Small</Button>
-                      <Button size="md">Medium</Button>
-                      <Button size="lg">Large</Button>
-                      <Button loading>Loading</Button>
-                      <Button disabled>Disabled</Button>
-                    </div>
-                    <div className={styles.btnRow}>
-                      <Button variant="primary" iconOnly={<ArrowIcon />} aria-label="Continue" />
-                      <Button variant="secondary" iconOnly={<PlusIcon />} aria-label="Add item" />
-                      <Button variant="outline" iconOnly={<ArrowIcon />} aria-label="Next" />
-                      <Button variant="ghost" iconOnly={<PlusIcon />} aria-label="More options" />
-                    </div>
+            <ComponentSection
+              id="buttons"
+              name="Buttons"
+              purpose="Trigger an action — submit a form, open a dialog, or move to the next step."
+              guidelines={[
+                'Use one primary button per view — it marks the single most important action.',
+                'Label with a verb: Save, Send, View — never “Click here”.',
+                'Step down to outline, glass or ghost for secondary and tertiary actions.',
+              ]}
+            >
+              <div className={styles.demoGrid}>
+                <Tile label="Primary"><Button variant="primary">Save changes</Button></Tile>
+                <Tile label="Secondary"><Button variant="secondary">Cancel</Button></Tile>
+                <Tile label="Accent"><Button variant="accent">Get started</Button></Tile>
+                <Tile label="Outline"><Button variant="outline">Learn more</Button></Tile>
+                <Tile label="Glass"><Button variant="glass">Contact</Button></Tile>
+                <Tile label="Ghost"><Button variant="ghost">Dismiss</Button></Tile>
+                <Tile label="Sizes">
+                  <div className={styles.btnRow}>
+                    <Button size="sm">Small</Button>
+                    <Button size="md">Medium</Button>
+                    <Button size="lg">Large</Button>
                   </div>
                 </Tile>
-                <Tile label="Tags / Chips">
-                  <div className={styles.tagRow}>
-                    <Badge size="md">UX Design</Badge>
-                    <Badge size="md">UI Design</Badge>
-                    <Badge size="md">Design System</Badge>
-                  </div>
-                </Tile>
-                <Tile label="Badges">
-                  <div className={styles.tagRow}>
-                    <Badge variant="solid">Featured</Badge>
-                    <Badge variant="outline">Available</Badge>
-                    <Badge variant="active">Archived</Badge>
-                    <Badge tone="accent">New</Badge>
-                  </div>
-                </Tile>
-                <Tile label="Form input" className={styles.colSpan2Sm}>
-                  <div className={styles.inputCol}>
-                    <Input label="Email" type="email" placeholder="you@example.com" hint="We'll never share it." />
-                    <Input label="Message" multiline placeholder="Tell me about your project…" error="This field is required." />
-                  </div>
-                </Tile>
-                <Tile label="Theme toggle">
-                  <ThemeToggle />
-                </Tile>
-                <Tile label="Avatar">
-                  <Avatar name="Simon Knudsen" title="Product Designer" size="small" />
-                </Tile>
-                <Tile label="Location" className={styles.colSpan2Sm}>
-                  <Location />
-                </Tile>
-                <Tile label="Media · image">
-                  <Media src="/projects/apple-home-app/images/hero" alt="" aspect="aspect-video" rounded="rounded-xl" />
-                </Tile>
-                <Tile label="Hero background · shader" className={styles.colSpanFull}>
-                  <div className={styles.shaderStage}>
-                    <ShaderBackground
-                      colors={['#d8602b', '#09090a', '#160d09', '#7c3618']}
-                      speed={0.05}
-                    />
+                <Tile label="Loading"><Button loading>Saving</Button></Tile>
+                <Tile label="Disabled"><Button disabled>Unavailable</Button></Tile>
+                <Tile label="Icon only">
+                  <div className={styles.btnRow}>
+                    <Button variant="primary" iconOnly={<ArrowIcon />} aria-label="Continue" />
+                    <Button variant="ghost" iconOnly={<PlusIcon />} aria-label="Add item" />
                   </div>
                 </Tile>
               </div>
-            </ScrollAnimation>
+              <div className={styles.demoSub}>
+                <p className={`font-mono text-color-tertiary ${styles.demoSubLabel}`}>States</p>
+                <div className={styles.demoGrid}>
+                  <Tile label="Default"><Button variant="primary">Button</Button></Tile>
+                  <Tile label="Hover">
+                    <Button variant="primary" style={{ backgroundColor: 'color-mix(in oklch, var(--surface-color-contrast-primary), var(--surface-color-primary) 14%)' }}>Button</Button>
+                  </Tile>
+                  <Tile label="Focus">
+                    <Button variant="primary" style={{ boxShadow: '0 0 0 2px var(--surface-color-primary), 0 0 0 4px var(--accent)' }}>Button</Button>
+                  </Tile>
+                  <Tile label="Disabled"><Button variant="primary" disabled>Button</Button></Tile>
+                </div>
+              </div>
+              <div className={styles.demoSub}>
+                <p className={`font-mono text-color-tertiary ${styles.demoSubLabel}`}>Best practice</p>
+                <div className={styles.doDont}>
+                  <div className={`surface-2 ${styles.ddCard}`}>
+                    <p className={`font-mono ${styles.ddMark}`}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      Do
+                    </p>
+                    <div className={styles.ddExample}>
+                      <Button variant="primary">Save</Button>
+                      <Button variant="ghost">Cancel</Button>
+                    </div>
+                    <p className={`text-color-secondary ${styles.ddCaption}`}>
+                      One primary action per view — it marks the single most important step.
+                    </p>
+                  </div>
+                  <div className={`surface-2 ${styles.ddCard}`}>
+                    <p className={`font-mono ${styles.ddMark} ${styles.ddMarkAvoid}`}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+                      </svg>
+                      Avoid
+                    </p>
+                    <div className={styles.ddExample}>
+                      <Button variant="primary">Save</Button>
+                      <Button variant="primary">Send</Button>
+                      <Button variant="primary">Share</Button>
+                    </div>
+                    <p className={`text-color-secondary ${styles.ddCaption}`}>
+                      Competing primaries — nothing reads as the one main action.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </ComponentSection>
 
-            <ScrollAnimation>
+            <ComponentSection
+              id="badges"
+              name="Badges & tags"
+              purpose="Label and categorize — a status, a tag, or a small count."
+              guidelines={[
+                'Keep labels to one or two words.',
+                'Reserve the accent tone for genuinely new or featured items.',
+              ]}
+            >
+              <div className={styles.demoGrid}>
+                <Tile label="Solid"><Badge variant="solid">Featured</Badge></Tile>
+                <Tile label="Outline"><Badge variant="outline">Available</Badge></Tile>
+                <Tile label="Active"><Badge variant="active">Archived</Badge></Tile>
+                <Tile label="Accent tone"><Badge tone="accent">New</Badge></Tile>
+                <Tile label="Tags · medium">
+                  <div className={styles.tagRow}>
+                    <Badge size="md">UX Design</Badge>
+                    <Badge size="md">UI Design</Badge>
+                  </div>
+                </Tile>
+              </div>
+            </ComponentSection>
+
+            <ComponentSection
+              id="inputs"
+              name="Form inputs"
+              purpose="Collect text from people — with a label, a hint, and inline validation."
+              guidelines={[
+                'Always pair an input with a visible label.',
+                'Show errors inline, beneath the field, in plain language.',
+              ]}
+            >
+              <div className={styles.inputCol}>
+                <Input label="Email" type="email" placeholder="you@example.com" hint="We'll never share it." />
+                <Input label="Message" multiline placeholder="Tell me about your project…" error="This field is required." />
+              </div>
+            </ComponentSection>
+
+            <ComponentSection
+              id="avatar"
+              name="Avatar"
+              purpose="Represent a person — a photo (or initials) paired with a name and role."
+            >
+              <div className={styles.demoGrid}>
+                <Tile label="Photo + name">
+                  <Avatar name="Simon Knudsen" title="Product Designer" size="small" />
+                </Tile>
+              </div>
+            </ComponentSection>
+
+            <ComponentSection
+              id="theme-toggle"
+              name="Theme toggle"
+              purpose="Switch between light and dark — a segmented control with a circular view-transition reveal."
+            >
+              <div className={styles.demoGrid}>
+                <Tile label="Light / Dark"><ThemeToggle /></Tile>
+              </div>
+            </ComponentSection>
+
+            <ComponentSection
+              id="location"
+              name="Location"
+              purpose="Show where I'm based and the local time — a quiet, live status."
+            >
+              <div className={styles.demoGrid}>
+                <Tile label="Live"><Location /></Tile>
+              </div>
+            </ComponentSection>
+
+            <ComponentSection
+              id="media"
+              name="Media"
+              purpose="Display images responsively — lazy-loaded, revealed on scroll, capped to an 8px radius."
+              guidelines={[
+                'Give every image descriptive alt text; decorative ones take empty alt.',
+                'Corners stay at 8px — the project-wide radius cap.',
+              ]}
+            >
+              <div className={styles.mediaGrid}>
+                <Tile label="16:9">
+                  <Media src="/projects/apple-home-app/images/hero" alt="" aspect="aspect-video" rounded="rounded-xl" />
+                </Tile>
+                <Tile label="1:1">
+                  <Media src="/projects/apple-home-app/images/hero" alt="" aspect="aspect-square" rounded="rounded-xl" />
+                </Tile>
+              </div>
+            </ComponentSection>
+
+            <ComponentSection
+              id="cards"
+              name="Cards"
+              purpose="Content surfaces on the frosted glass — project, testimonial, and skill cards."
+            >
               <div className={styles.cardBlock}>
-                <p className={`font-mono text-color-secondary ${styles.cardLabel}`}>
-                  Project card
-                </p>
+                <p className={`font-mono text-color-secondary ${styles.cardLabel}`}>Project card</p>
                 <div className={styles.projectCardWrap}>
                   <ProjectCard
                     id="zliide-app"
@@ -1223,14 +1525,9 @@ function StyleGuide() {
                   />
                 </div>
               </div>
-            </ScrollAnimation>
-
-            <ScrollAnimation>
               <div className={styles.cardsPair}>
                 <div>
-                  <p className={`font-mono text-color-secondary ${styles.cardLabel}`}>
-                    Testimonial card
-                  </p>
+                  <p className={`font-mono text-color-secondary ${styles.cardLabel}`}>Testimonial card</p>
                   <TestimonialCard
                     logo={null}
                     recommender="Morten Møgelmose"
@@ -1240,28 +1537,24 @@ function StyleGuide() {
                   />
                 </div>
                 <div>
-                  <p className={`font-mono text-color-secondary ${styles.cardLabel}`}>
-                    Skill card
-                  </p>
+                  <p className={`font-mono text-color-secondary ${styles.cardLabel}`}>Skill card</p>
                   <SkillCard
                     title="Design Systems"
                     description="Establishing a consistent design language and guidelines to ensure cohesive brand experiences, streamlining development, and scaling across products."
                   />
                 </div>
               </div>
-            </ScrollAnimation>
-          </section>
+            </ComponentSection>
 
-          {/* Data display — KPI / stats / charts kit */}
-          <section>
-            <ScrollAnimation>
-              <SectionHeading id="data" overline="Library" title="Data display">
-                KPIs, stats and trend charts — hand-rolled SVG, zero dependencies,
-                driven entirely by the tokens. Depth from the glass surface, spotlight
-                glow and whitespace (no borders); accent gradients fade to transparent;
-                calm draw-in motion that snaps to final state under reduced motion.
-              </SectionHeading>
-
+            <ComponentSection
+              id="data"
+              name="Data display"
+              purpose="KPIs, trends and sparklines — hand-rolled SVG, zero dependencies, driven entirely by the tokens."
+              guidelines={[
+                'Depth comes from the glass surface and whitespace — no borders.',
+                'Draw-in motion snaps straight to the final state under reduced motion.',
+              ]}
+            >
               <div className={styles.dataStack}>
                 <StatGrid>
                   <StatCard
@@ -1311,7 +1604,7 @@ function StyleGuide() {
                   <Sparkline data={[8, 12, 10, 16, 14, 20, 18, 26, 30]} height={44} />
                 </div>
               </div>
-            </ScrollAnimation>
+            </ComponentSection>
           </section>
         </div>
       </div>

@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import Button from './buttons/Button'
+import { AVATAR_SRC, onAvatarError } from '../lib/avatar'
 import Location from './Location'
 import ThemeToggle from './ThemeToggle'
 import { allProjects, allArchiveProjects } from './projects/ProjectGrid'
@@ -105,13 +107,17 @@ function ProjectsMenu({ onNavigate }) {
         ))}
       </div>
       <div className={`border-t border-glass ${styles.menuFooterSingle}`}>
-        <Link
+        <Button
+          as={Link}
           to="/"
           onClick={onNavigate}
-          className={`text-color-primary ${styles.footerLink}`}
+          variant="ghost"
+          size="sm"
+          iconRight={<span aria-hidden="true">→</span>}
+          className={styles.footerCta}
         >
-          View all projects <span aria-hidden="true">→</span>
-        </Link>
+          View all projects
+        </Button>
       </div>
     </>
   )
@@ -132,13 +138,17 @@ function ArchiveMenu({ onNavigate }) {
         ))}
       </div>
       <div className={`border-t border-glass ${styles.menuFooter}`}>
-        <Link
+        <Button
+          as={Link}
           to="/archive"
           onClick={onNavigate}
-          className={`text-color-primary ${styles.footerLink}`}
+          variant="ghost"
+          size="sm"
+          iconRight={<span aria-hidden="true">→</span>}
+          className={styles.footerCta}
         >
-          View full archive <span aria-hidden="true">→</span>
-        </Link>
+          View full archive
+        </Button>
       </div>
     </>
   )
@@ -150,7 +160,8 @@ function AboutMenu({ onNavigate }) {
       <div className={styles.aboutHeader}>
         <span className={`bg-surface-color-tertiary ${styles.aboutAvatar}`}>
           <img
-            src={`${import.meta.env.BASE_URL}simon-virtual.png`}
+            src={AVATAR_SRC}
+                  onError={onAvatarError}
             alt="Simon Knudsen"
             className={styles.avatarImg}
           />
@@ -164,25 +175,33 @@ function AboutMenu({ onNavigate }) {
       </div>
       <div className={`border-t border-glass ${styles.aboutList}`}>
         {aboutSections.map((s) => (
-          <Link
+          <Button
             key={s.to}
+            as={Link}
             to={s.to}
             onClick={onNavigate}
-            className={`glass-item text-color-secondary hover:text-color-primary ${styles.aboutItem}`}
+            variant="ghost"
+            size="sm"
+            fullWidth
+            iconRight={<Chevron className={styles.aboutChevron} />}
+            className={styles.aboutItemBtn}
           >
             {s.label}
-            <Chevron className={styles.aboutChevron} />
-          </Link>
+          </Button>
         ))}
       </div>
       <div className={`border-t border-glass ${styles.menuFooterSingle}`}>
-        <Link
+        <Button
+          as={Link}
           to="/about"
           onClick={onNavigate}
-          className={`text-color-primary ${styles.footerLink}`}
+          variant="ghost"
+          size="sm"
+          iconRight={<span aria-hidden="true">→</span>}
+          className={styles.footerCta}
         >
-          Read full story <span aria-hidden="true">→</span>
-        </Link>
+          Read full story
+        </Button>
       </div>
     </>
   )
@@ -445,7 +464,8 @@ function Header() {
             <Link to="/" className={`focus-ring ${styles.brand}`} aria-label="Simon Knudsen — home">
               <span className={`bg-surface-color-tertiary ${styles.brandAvatar}`}>
                 <img
-                  src={`${import.meta.env.BASE_URL}simon-virtual.png`}
+                  src={AVATAR_SRC}
+                  onError={onAvatarError}
                   alt="Simon Knudsen"
                   className={styles.avatarImg}
                 />

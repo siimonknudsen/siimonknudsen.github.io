@@ -18,7 +18,7 @@ or is broken — trust his eyes over my assumptions. ③ Do EVERY part of a mult
 request. ④ Never commit/push unless asked (fresh "push" per batch). ⑤ Never fabricate his
 real data — flag placeholders and ask.
 
-**Conventions (don't undo):** tight radius — cards/panels/images **≤8px** (radius scale capped at 8 in `index.css`; pills excepted). Glass cards use the **cursor spotlight** (`useSpotlight` hook + global `.fx-spotlight`, theme-aware `--glass-glow`), **never a hover `translateY` lift**. Light-mode glass is intentionally translucent (0.66/0.46) so it frosts; keep glass surfaces on the `glass`/`glass-panel` classes (semantic tokens, never hardcoded), working in both themes.
+**Conventions (don't undo):** tight radius — cards/panels/images **≤8px** (radius scale capped at 8 in `index.css`; pills excepted). Glass cards use the **cursor spotlight** (`useSpotlight` hook + global `.fx-spotlight`, theme-aware `--glass-glow`), **never a hover `translateY` lift**. Light-mode glass is intentionally translucent (0.66/0.46) so it frosts; keep glass surfaces on the `glass`/`glass-panel` classes (semantic tokens, never hardcoded), working in both themes. **Same-page anchors never page-switch:** an anchor/hash link to a section on the *current* page must just **smooth-scroll** (via `ScrollToTop`) — it must **not** trigger the curtain wipe / `page-enter-nav`. The wipe plays **only on a real `pathname` change** (`App.jsx` `AnimatedRoutes` compares `location.pathname` to the previous one; hash-only navs are ignored).
 
 **Repo map:** pages → `src/pages/` · components → `src/components/` (`home/`, `projects/`,
 `buttons/`, `cards/`, `grids/`, `motion/`) · tokens + globals → `src/index.css` · shell +
