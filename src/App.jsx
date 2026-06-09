@@ -7,14 +7,39 @@ import Home from './pages/Home'
 // the initial bundle. Home stays eager (it's the landing page). The global
 // shader/header/footer remain mounted during navigation, so a null Suspense
 // fallback is seamless (no layout flash).
-const ProjectPage = lazy(() => import('./pages/ProjectPage'))
-const Archive = lazy(() => import('./pages/Archive'))
-const About = lazy(() => import('./pages/About'))
-const Contact = lazy(() => import('./pages/Contact'))
-const StyleGuide = lazy(() => import('./pages/StyleGuide'))
-const Playground = lazy(() => import('./pages/Playground'))
-const MotionLab = lazy(() => import('./pages/MotionLab'))
-const NotFound = lazy(() => import('./pages/NotFound'))
+// Each route chunk's import is a NAMED function so it can be both lazy-rendered
+// AND prefetched on idle (see the warm-cache effect in App). Prefetching after
+// first paint makes later navigations instant — the chunk is already cached —
+// for a little idle bandwidth up front (Simon's "longer first load, snappier
+// after" ask). The browser caches the content-hashed chunks across visits too.
+const importProjectPage = () => import('./pages/ProjectPage')
+const importArchive = () => import('./pages/Archive')
+const importAbout = () => import('./pages/About')
+const importContact = () => import('./pages/Contact')
+const importStyleGuide = () => import('./pages/StyleGuide')
+const importPlayground = () => import('./pages/Playground')
+const importMotionLab = () => import('./pages/MotionLab')
+const importNotFound = () => import('./pages/NotFound')
+
+const ProjectPage = lazy(importProjectPage)
+const Archive = lazy(importArchive)
+const About = lazy(importAbout)
+const Contact = lazy(importContact)
+const StyleGuide = lazy(importStyleGuide)
+const Playground = lazy(importPlayground)
+const MotionLab = lazy(importMotionLab)
+const NotFound = lazy(importNotFound)
+
+// The routes a visitor is most likely to reach (nav + footer + project cards),
+// prefetched on idle. (Playground / MotionLab / NotFound are rare — left on
+// demand so the idle warm-up stays lean.)
+const PREFETCH_IMPORTS = [
+  importArchive,
+  importAbout,
+  importContact,
+  importProjectPage,
+  importStyleGuide,
+]
 
 // Lazily pull in Motion's animation feature set so it stays out of the initial
 // bundle (the `m` components stay tiny until this resolves).
@@ -104,6 +129,20 @@ function App() {
   // If the visitor accepted analytics on a previous visit, resume Clarity.
   useEffect(() => {
     initConsent()
+  }, [])
+
+  // Warm the cache: prefetch the likely-next route chunks once the browser is
+  // idle after first paint, so page-to-page navigation is instant (no per-page
+  // chunk fetch). Idle + cancellable, so it never competes with the initial
+  // render or first interaction.
+  useEffect(() => {
+    const warm = () => PREFETCH_IMPORTS.forEach((load) => load().catch(() => {}))
+    if (typeof window.requestIdleCallback === 'function') {
+      const id = window.requestIdleCallback(warm, { timeout: 3000 })
+      return () => window.cancelIdleCallback?.(id)
+    }
+    const id = window.setTimeout(warm, 1800)
+    return () => window.clearTimeout(id)
   }, [])
 
   return (

@@ -130,13 +130,22 @@
 /* Company logo — pinned to the card's top-left corner. */
 .stackLogo {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: var(--space-20);
+  left: var(--space-20);
   z-index: 1;
   display: inline-flex;
-  padding: var(--space-32);
+  align-items: center;
+  /* On-media glass CHIP around the wordmark (Simon's ask — was a bare white logo,
+     lost over light imagery). The card top has no scrim, so a gentle dark wash
+     backs the white wordmark so it reads over light OR dark photos; the faint
+     light edge gives the frosted-glass read. Theme-independent (it's over the
+     photo) and NO backdrop-filter — the card scales on scroll (rule #7). The logo
+     size is unchanged (svg below). */
+  padding: var(--space-8) var(--space-12);
+  border-radius: var(--radius-md);
+  background: var(--transparent-dark-40);
+  border: 1px solid var(--transparent-light-24);
   color: var(--text-on-media);
-  opacity: 0.92;
 }
 .stackLogo svg {
   display: block;
@@ -196,7 +205,8 @@
     gap: var(--space-16);
   }
   .stackLogo {
-    padding: var(--space-48);
+    top: var(--space-32);
+    left: var(--space-32);
   }
 }
 
