@@ -8,7 +8,14 @@ UI/a11y/motion best practices + taste references) in
 [GLASS_DESIGN_SYSTEM.md](GLASS_DESIGN_SYSTEM.md). Tokens are defined in
 [`src/index.css`](src/index.css) and exposed to Tailwind in
 [`tailwind.config.js`](tailwind.config.js). A live reference renders at
-**`/design-system`**.
+**`/design-system`** — it opens with the design **manifesto** (four voiced
+principles), then **Foundations** (typography as a descending **specimen ladder**;
+colour — incl. a **light ⇄ dark side-by-side** + computed **contrast pills**;
+materials/glass, spacing, radius, motion, **accessibility**), a **component library**
+where the flagship components (Button, Input) carry a labelled **anatomy** diagram,
+and a **Patterns** section (components composed — glass + cursor spotlight, on-media
+chrome). Values render live (copy-to-clipboard swatches, `tabular-nums` spec columns)
+and survive both themes. See DESIGN_LOG §0 for the build history.
 
 > **No Tailwind (2026-06).** Tailwind was removed entirely; components are styled with
 > co-located **CSS Modules** (`*.module.css`) that consume the tokens below. The global

@@ -13,6 +13,7 @@ import { StatCard, StatGrid, Sparkline, TrendChart } from '../components/charts'
 import Avatar from '../components/Avatar'
 import Location from '../components/Location'
 import ThemeToggle from '../components/ThemeToggle'
+import { useTheme } from '../contexts/ThemeContext'
 import styles from './StyleGuide.module.css'
 
 /* ── Data ───────────────────────────────────────────────────────── */
@@ -169,6 +170,36 @@ const elevation = [
   { name: 'shadow-xl', token: '--shadow-xl' },
 ]
 
+// Resolved values per theme (mirror the semantic tokens — surfaces/texts/brand
+// above) so the Light ⇄ Dark preview can render BOTH themes at once on a page
+// that's only ever in one. The dark tokens live on `html.dark`, so a nested
+// subtree can't flip them — these constants are the honest stand-in.
+const THEME_VALUES = {
+  light: { surface: '#FFFFFF', surface2: '#F5F5F5', textP: '#000000', textS: '#525252', accent: '#DB5320', onAccent: '#FFFFFF' },
+  dark: { surface: '#000000', surface2: '#1A1A1A', textP: '#FFFFFF', textS: '#A3A3A3', accent: '#F26A2E', onAccent: '#FFFFFF' },
+}
+
+// WCAG contrast — computed, never guessed (rule #8). sRGB relative luminance →
+// ratio → AA/AAA label. Used for the contrast pills on colour + text swatches.
+function relLuminance(hex) {
+  const h = hex.replace('#', '')
+  const f = h.length === 3 ? h.split('').map((x) => x + x).join('') : h
+  const ch = [0, 2, 4].map((i) => parseInt(f.slice(i, i + 2), 16) / 255)
+  const lin = ch.map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)))
+  return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2]
+}
+function contrastRatio(a, b) {
+  const L1 = relLuminance(a), L2 = relLuminance(b)
+  return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05)
+}
+// `large` relaxes to the 3:1 threshold (large text / UI components / graphics).
+function wcagLabel(ratio, large = false) {
+  if (ratio >= 7) return 'AAA'
+  if (ratio >= 4.5) return 'AA'
+  if (ratio >= 3) return large ? 'AA' : 'AA Large'
+  return 'Low'
+}
+
 /* ── Building blocks ────────────────────────────────────────────── */
 
 function Overline({ children }) {
@@ -252,25 +283,40 @@ const SPACING_USE = {
   200: 'hero whitespace',
 }
 
-/* The unifying device — a specimen card. Live sample on top, ONE muted mono metadata
-   row beneath (name left / values right). Surface = .glass-panel carrying the cursor
-   spotlight (.fx-spotlight), or a tonal surface-2/3 fill where glass would stack. No border. */
-function Specimen({ children, name, value, surface = 'glass-panel', className = '', sampleClassName = '' }) {
-  const onMouseMove = useSpotlight()
-  const isGlass = surface === 'glass-panel'
+/* A labeled anatomy diagram — the component shown large with small numbered accent
+   markers at each part and an ordered legend beside it. The clearest "documented,
+   not just shown" signal (the Carbon / Spectrum device). Markers are placed by %,
+   and the legend carries the real spec, so it reads even if a dot is approximate.
+   `vertical` lays the legend under a narrower stage (for stacked components). */
+function Anatomy({ stage, parts, vertical = false }) {
   return (
-    <div
-      onMouseMove={isGlass ? onMouseMove : undefined}
-      className={`${surface} group ${styles.specimen} ${className}`}
-    >
-      {isGlass && <span aria-hidden="true" className="fx-spotlight" />}
-      <div className={`${styles.specimenSample} ${sampleClassName}`}>{children}</div>
-      {(name || value) && (
-        <div className={styles.specimenMeta}>
-          <span className="font-mono text-color-tertiary">{name}</span>
-          {value && <span className="font-mono text-color-tertiary">{value}</span>}
+    <div className={`${styles.anatomy} ${vertical ? styles.anatomyVertical : ''}`}>
+      <div className={`glass-panel ${styles.anatomyStage}`}>
+        <div className={styles.anatomySpecimen}>
+          {stage}
+          {parts.map((p) => (
+            <span
+              key={p.n}
+              aria-hidden="true"
+              className={`font-mono ${styles.anatomyDot}`}
+              style={{ top: p.top, left: p.left }}
+            >
+              {p.n}
+            </span>
+          ))}
         </div>
-      )}
+      </div>
+      <ol className={styles.anatomyLegend}>
+        {parts.map((p) => (
+          <li key={p.n} className={styles.anatomyLegendItem}>
+            <span className={`font-mono ${styles.anatomyLegendNum}`}>{p.n}</span>
+            <span className={styles.anatomyLegendText}>
+              <span className={`text-color-primary ${styles.anatomyLegendName}`}>{p.label}</span>
+              <span className={`text-color-tertiary ${styles.anatomyLegendDesc}`}>{p.desc}</span>
+            </span>
+          </li>
+        ))}
+      </ol>
     </div>
   )
 }
@@ -286,12 +332,64 @@ function Tile({ label, children, className = '' }) {
   )
 }
 
+/* A glass panel carrying the signature cursor spotlight — used in the Patterns
+   section to show the composed material + interaction (not a static chip). */
+function SpotlightCard({ children }) {
+  const onMouseMove = useSpotlight()
+  return (
+    <div onMouseMove={onMouseMove} className={`glass-panel group ${styles.patternCard}`}>
+      <span aria-hidden="true" className="fx-spotlight" />
+      <div className={styles.patternCardInner}>{children}</div>
+    </div>
+  )
+}
+
 function ColorLabel({ title, token, light, dark }) {
   return (
     <div className={styles.colorLabel}>
       <span className={`text-color-primary ${styles.colorTitle}`}>{title}</span>
       <MonoMeta>{token}</MonoMeta>
       <MonoMeta className="text-color-secondary">L {light} · D {dark}</MonoMeta>
+    </div>
+  )
+}
+
+/* A computed WCAG contrast pill — ratio + AA/AAA, derived from the two hexes
+   (rule #8: shown, never guessed). `large` uses the 3:1 large-text/UI threshold. */
+function ContrastPill({ fg, bg, large = false }) {
+  const ratio = contrastRatio(fg, bg)
+  const label = wcagLabel(ratio, large)
+  const pass = label !== 'Low'
+  return (
+    <span
+      className={`font-mono ${styles.contrastPill} ${pass ? styles.contrastPass : styles.contrastLow}`}
+      title={`${ratio.toFixed(2)}:1 contrast`}
+    >
+      {ratio.toFixed(2)}:1 · {label}
+    </span>
+  )
+}
+
+/* Light ⇄ Dark, side by side — the same mini-composition rendered from each
+   theme's resolved values, so the semantic inversion is *shown* as a feature
+   (the system survives both modes). Inline values mirror the tokens. */
+function ThemePreview({ name, t }) {
+  return (
+    <div className={styles.themeHalf} style={{ background: t.surface }}>
+      <div className={styles.themeHalfHead}>
+        <span className="font-mono" style={{ color: t.textS }}>{name}</span>
+        <ContrastPill fg={t.textS} bg={t.surface2} />
+      </div>
+      <div className={styles.themeCard} style={{ background: t.surface2 }}>
+        <span className={styles.themeCardTitle} style={{ color: t.textP }}>Human-centered by design</span>
+        <span className={styles.themeCardBody} style={{ color: t.textS }}>
+          One role, two values — a component references the role, never a raw colour.
+        </span>
+        <div className={styles.themeCardRow}>
+          <span className={styles.themeCardBtn} style={{ background: t.accent, color: t.onAccent }}>Get started</span>
+          <span className={styles.themeCardChip} style={{ background: t.surface, color: t.textS }}>Tag</span>
+        </div>
+      </div>
     </div>
   )
 }
@@ -418,6 +516,7 @@ const TOC = [
     ['spacing', 'Spacing'],
     ['radius', 'Radius'],
     ['motion', 'Motion'],
+    ['accessibility', 'Accessibility'],
   ]],
   ['Library', [
     ['buttons', 'Buttons'],
@@ -430,6 +529,9 @@ const TOC = [
     ['cards', 'Cards'],
     ['data', 'Data display'],
   ]],
+  ['Patterns', [
+    ['patterns', 'Patterns'],
+  ]],
 ]
 const TOC_IDS = TOC.flatMap(([, items]) => items.map(([id]) => id))
 
@@ -438,6 +540,10 @@ function StyleGuide() {
   const prefersReduced = useReducedMotion()
   const { copied, copy } = useCopy()
   const activeSection = useActiveSection(TOC_IDS)
+  const { theme } = useTheme()
+  // Resolved values for the CURRENT theme — drives the (theme-aware) contrast
+  // pills on the accent + text swatches so the ratio matches what's rendered.
+  const tv = THEME_VALUES[theme === 'dark' ? 'dark' : 'light']
 
   return (
     <>
@@ -456,10 +562,27 @@ function StyleGuide() {
               Design System
             </h1>
             <p className={`text-color-secondary ${styles.coverLead}`}>
-              The system behind the work. Confident and minimal — depth from light, never boxes;
-              one warm accent on a neutral field; calm motion. Every token, material and component,
+              The system behind the work — every token, material and component,
               consistent across light and dark.
             </p>
+            {/* The principles, pulled out of prose into a voiced manifesto — the
+                editorial hook and the clearest signal of intent (few, opinionated,
+                memorable). No boxes; a quiet mono index, depth from light. */}
+            <ol className={styles.principles}>
+              {[
+                'Depth from light — never from borders.',
+                'One warm accent on a neutral field.',
+                'Type is the hero; whitespace is the frame.',
+                'Motion stays calm — it settles, never grabs.',
+              ].map((p, i) => (
+                <li key={p} className={styles.principle}>
+                  <span className={`font-mono ${styles.principleNum}`}>
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className={`text-color-primary ${styles.principleText}`}>{p}</span>
+                </li>
+              ))}
+            </ol>
             <div className={styles.coverTags}>
               {['BDO Grotesk', 'Light / Dark', 'Frosted glass', 'Design tokens'].map((t) => (
                 <span
@@ -579,15 +702,23 @@ function StyleGuide() {
             <ScrollAnimation>
               <div className={styles.group}>
                 <Overline>Type scale · semantic roles</Overline>
-                <div className={styles.typeScale}>
+                {/* The canonical specimen ladder: the live glyphs at true size on
+                    the left, the spec (token · size/leading · weight · tracking) as
+                    a quiet right-aligned mono column. Rows part on a hairline — no
+                    boxes. Largest → smallest, so the page demonstrates its own scale. */}
+                <div className={styles.typeLadder}>
                   {typeScale.map((t) => (
-                    <Specimen
-                      key={t.label}
-                      name={t.label}
-                      value={`${t.size} · ${t.weight} · ${t.track}`}
-                    >
-                      <p className={`${t.cls} text-color-primary`}>{SAMPLE}</p>
-                    </Specimen>
+                    <div key={t.label} className={styles.typeLadderRow}>
+                      <span className={`${t.cls} text-color-primary ${styles.typeLadderSample}`}>
+                        {SAMPLE}
+                      </span>
+                      <span className={styles.typeLadderSpec}>
+                        <span className="font-mono text-color-secondary">{t.label}</span>
+                        <span className="font-mono text-color-tertiary">
+                          {t.size} · {t.weight} · {t.track}
+                        </span>
+                      </span>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -652,6 +783,20 @@ function StyleGuide() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            </ScrollAnimation>
+
+            <ScrollAnimation>
+              <div className={styles.group}>
+                <Overline>Light ⇄ Dark · in context</Overline>
+                <p className={`text-color-secondary ${styles.sectionLead}`}>
+                  The same composition in both themes — surface, text hierarchy and the one accent,
+                  each pulled from its semantic role. The contrast pill is computed, not guessed.
+                </p>
+                <div className={styles.themeSplit}>
+                  <ThemePreview name="Light" t={THEME_VALUES.light} />
+                  <ThemePreview name="Dark" t={THEME_VALUES.dark} />
                 </div>
               </div>
             </ScrollAnimation>
@@ -801,6 +946,7 @@ function StyleGuide() {
                       <div className={styles.accentTokens}>
                         <MonoMeta>bg-accent</MonoMeta>
                         <MonoMeta>brand-500 · #F26A2E</MonoMeta>
+                        <ContrastPill fg={tv.accent} bg={tv.surface} large />
                       </div>
                     </div>
                   </div>
@@ -831,6 +977,9 @@ function StyleGuide() {
                       <div key={s.token} className={styles.colorItem}>
                         <div className={`bg-surface-color-secondary ${styles.textSwatch}`}>
                           <span className={`${s.cls} ${styles.textSwatchAg}`}>Ag</span>
+                          <span className={styles.swatchPillTR}>
+                            <ContrastPill fg={theme === 'dark' ? s.dark : s.light} bg={tv.surface2} />
+                          </span>
                         </div>
                         <ColorLabel {...s} />
                       </div>
@@ -1324,6 +1473,65 @@ function StyleGuide() {
             </ScrollAnimation>
           </section>
 
+          {/* Accessibility — a cross-cutting foundation (it governs contrast, focus,
+              motion & targets). Commitments + a real keyboard map, verified against the
+              components: native buttons/inputs, the segmented theme toggle, the chart
+              tooltips, the lightbox's Escape/Arrow handlers. */}
+          <section>
+            <ScrollAnimation>
+              <SectionHeading id="accessibility" overline="Foundations" title="Accessibility">
+                Built to be used by everyone — legible contrast, visible focus, full keyboard
+                operation, and motion that respects personal settings.
+              </SectionHeading>
+            </ScrollAnimation>
+
+            <ScrollAnimation>
+              <div className={styles.group}>
+                <Overline>Commitments</Overline>
+                <div className={styles.a11yGrid}>
+                  {[
+                    ['Contrast', 'Text meets WCAG AA — 4.5:1 for body copy, 3:1 for large text and UI.'],
+                    ['Focus', 'Every interactive element shows a two-tone focus-visible ring.'],
+                    ['Reduced motion', 'prefers-reduced-motion is honored throughout — entrances snap to their final state.'],
+                    ['Hit targets', 'Interactive controls keep a comfortable target of at least 44px.'],
+                    ['Keyboard', 'The whole site is operable without a mouse, in a logical reading order.'],
+                    ['Meaning', 'Labels, roles and alt text carry intent — never colour alone.'],
+                  ].map(([t, d]) => (
+                    <div key={t} className={`surface-2 ${styles.a11yCard}`}>
+                      <span className={`text-color-primary ${styles.a11yCardTitle}`}>{t}</span>
+                      <span className={`text-color-secondary ${styles.a11yCardDesc}`}>{d}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </ScrollAnimation>
+
+            <ScrollAnimation>
+              <div className={styles.group}>
+                <Overline>Keyboard map</Overline>
+                <div className={`surface-2 ${styles.a11yTable}`}>
+                  {[
+                    ['Buttons & links', 'Tab', 'Move focus'],
+                    ['', 'Enter / Space', 'Activate'],
+                    ['Theme toggle', 'Tab', 'Focus each option'],
+                    ['', 'Enter / Space', 'Switch theme'],
+                    ['Form inputs', 'Tab', 'Move between fields'],
+                    ['', 'Type', 'Edit — errors link via aria-describedby'],
+                    ['Data display', 'Tab / hover', 'Reveal the point’s tooltip'],
+                    ['Lightbox', 'Esc', 'Close'],
+                    ['', '← / →', 'Previous / next image'],
+                  ].map(([ctx, key, action], i) => (
+                    <div key={i} className={`${styles.a11yRow} ${!ctx ? styles.a11yRowCont : ''}`}>
+                      <span className={`text-color-primary ${styles.a11yCtx}`}>{ctx}</span>
+                      <kbd className={`font-mono ${styles.a11yKey}`}>{key}</kbd>
+                      <span className={`text-color-secondary ${styles.a11yAction}`}>{action}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </ScrollAnimation>
+          </section>
+
           {/* ── Library: every component documented in its own section
               (name → one-line purpose → live staged examples → terse guidelines),
               following the per-component doc pattern of Polaris / Material / Geist. ── */}
@@ -1368,6 +1576,27 @@ function StyleGuide() {
                     <Button variant="ghost" iconOnly={<PlusIcon />} aria-label="Add item" />
                   </div>
                 </Tile>
+              </div>
+              <div className={styles.demoSub}>
+                <p className={`font-mono text-color-tertiary ${styles.demoSubLabel}`}>Anatomy</p>
+                <Anatomy
+                  stage={
+                    <Button
+                      variant="primary"
+                      size="lg"
+                      iconRight={<ArrowIcon />}
+                      style={{ boxShadow: '0 0 0 2px var(--surface-color-primary), 0 0 0 4px var(--accent)' }}
+                    >
+                      Continue
+                    </Button>
+                  }
+                  parts={[
+                    { n: 1, label: 'Container', desc: 'Padded surface — the full hit target.', top: '50%', left: '-4%' },
+                    { n: 2, label: 'Label', desc: 'A verb that names the action.', top: '128%', left: '40%' },
+                    { n: 3, label: 'Icon slot', desc: 'Optional leading or trailing glyph.', top: '-28%', left: '82%' },
+                    { n: 4, label: 'Focus ring', desc: 'Two-tone ring, shown on keyboard focus.', top: '-28%', left: '104%' },
+                  ]}
+                />
               </div>
               <div className={styles.demoSub}>
                 <p className={`font-mono text-color-tertiary ${styles.demoSubLabel}`}>States</p>
@@ -1455,6 +1684,22 @@ function StyleGuide() {
               <div className={styles.inputCol}>
                 <Input label="Email" type="email" placeholder="you@example.com" hint="We'll never share it." />
                 <Input label="Message" multiline placeholder="Tell me about your project…" error="This field is required." />
+              </div>
+              <div className={styles.demoSub}>
+                <p className={`font-mono text-color-tertiary ${styles.demoSubLabel}`}>Anatomy</p>
+                <Anatomy
+                  vertical
+                  stage={
+                    <div className={styles.anatomyInput}>
+                      <Input label="Email" type="email" placeholder="you@example.com" hint="We'll never share it." />
+                    </div>
+                  }
+                  parts={[
+                    { n: 1, label: 'Label', desc: 'Always visible — names the field.', top: '6%', left: '-8%' },
+                    { n: 2, label: 'Field', desc: 'The input surface and hit target — shows muted placeholder text until typed.', top: '50%', left: '-8%' },
+                    { n: 3, label: 'Hint', desc: 'Quiet help, linked via aria-describedby.', top: '94%', left: '-8%' },
+                  ]}
+                />
               </div>
             </ComponentSection>
 
@@ -1605,6 +1850,53 @@ function StyleGuide() {
                 </div>
               </div>
             </ComponentSection>
+          </section>
+
+          {/* Patterns — components composed. Systems thinking, not just parts: the
+              signature glass card + cursor spotlight, and on-media chrome over a photo. */}
+          <section>
+            <ScrollAnimation>
+              <SectionHeading id="patterns" overline="Patterns" title="Patterns">
+                Where the pieces combine. A couple of signature compositions — proof the parts
+                were built to work together, not just to sit in a grid.
+              </SectionHeading>
+            </ScrollAnimation>
+
+            <ScrollAnimation>
+              <div className={styles.patternGrid}>
+                <div className={styles.patternBlock}>
+                  <p className={`font-mono text-color-secondary ${styles.cardLabel}`}>Glass card · cursor spotlight</p>
+                  <SpotlightCard>
+                    <h3 className={`text-color-primary ${styles.patternCardTitle}`}>Frosted glass</h3>
+                    <p className={`text-color-secondary ${styles.patternCardBody}`}>
+                      Move your cursor across this panel — a soft warm glow follows the pointer
+                      (the useSpotlight hook + the global fx-spotlight, theme-aware). Depth from
+                      light; never a hover lift.
+                    </p>
+                    <div className={styles.patternTagRow}>
+                      <Badge variant="solid" size="sm">.glass-panel</Badge>
+                      <Badge variant="solid" size="sm">useSpotlight</Badge>
+                    </div>
+                  </SpotlightCard>
+                </div>
+
+                <div className={styles.patternBlock}>
+                  <p className={`font-mono text-color-secondary ${styles.cardLabel}`}>On-media chrome</p>
+                  <div className={styles.onMedia}>
+                    <Media src="/projects/apple-home-app/images/hero" alt="" aspect="aspect-video" rounded="rounded-xl" />
+                    <span className={styles.onMediaScrim} aria-hidden="true" />
+                    <div className={styles.onMediaContent}>
+                      <span className={styles.onMediaImpact}><strong>+38%</strong> revenue</span>
+                      <h3 className={styles.onMediaTitle}>Text over imagery</h3>
+                      <p className={styles.onMediaBody}>
+                        Chrome over photos uses the on-media tokens, never theme glass — the card
+                        scales on scroll, so there is no backdrop-filter to break.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ScrollAnimation>
           </section>
         </div>
       </div>
