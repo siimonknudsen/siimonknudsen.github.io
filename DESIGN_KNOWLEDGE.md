@@ -368,9 +368,21 @@ Quick map from principle → our implementation (keeps the knowledge actionable)
   - **Full-bleed lifestyle/product cards** like "UltrahumanX Membership" (metallic card on black) + "Women's Health" (warm portrait) — image fills the card, headline + button bottom-left.
   - B&W cut-out portrait treatment like [marckuiper about](https://www.marckuiper.com/framer-designer-developer) for the About page.
 
-### 6.6 Why these work — taste analysis (the *why*, not just the *what*)
-> The point of this section: so I apply the **underlying principles** to Simon's site, not copy surface details.
-> If a new idea violates the shared DNA below, it's probably wrong; if it honours it, it'll likely fit.
+### 6.6 Why these work — DNA, the Taste Fingerprint & per-reference dossiers
+> **This is Simon's portable taste model** — a plain-language understanding of how he wants designs to
+> work, written to be reused on this *and future* projects (it's just markdown — carry the file over).
+> Apply the **underlying patterns**, not the surface details. Three layers: the **shared DNA** (timeless
+> principles) → the **Taste Fingerprint** (concrete, evidence-tagged mechanics, sharpened as examples
+> accrue) → **per-reference dossiers** (full detail).
+>
+> **The method — for every design Simon shares (also CLAUDE.md §5 / rule #10):** study it and write a
+> dossier across **8 dimensions — ① Typography ② Layout & composition ③ Spacing & rhythm ④ Visual
+> treatment & imagery ⑤ Color *strategy* (how it's used, not the hue) ⑥ Motion ⑦ Signature devices
+> ⑧ the transferable pattern (the lesson)** — then **re-derive the Taste Fingerprint** so it stays the
+> sharpest one-glance model. **Learn the *way* a design works, NOT its colors** — a hue is the least
+> transferable thing; *how* color is used is the pattern (Seed is green, our site is warm-orange — the
+> mechanic is identical). If an idea violates the DNA/Fingerprint it's probably wrong; if it honours them
+> it'll likely fit. **Never fabricate specifics you can't verify** (rule #8) — flag unknowns instead.
 
 #### The shared DNA (what every reference above has in common)
 1. **One idea per view.** Each screen has a single, obvious focal point (a headline, a product shot, a wordmark). Everything else is demoted. The eye never has to choose where to look first. This is why they feel *calm* and *expensive* rather than busy.
@@ -382,15 +394,75 @@ Quick map from principle → our implementation (keeps the knowledge actionable)
 7. **Imagery does the emotional work; the UI stays quiet around it.** When a beautiful photo/3D render is present, the surrounding chrome goes minimal so the image is the hero. They never compete.
 8. **Motion is subtle, eased, purposeful.** Slow reveals, parallax, a line that fills — decelerated easing, nothing bouncy or springy or attention-grabbing. Motion supports the content; it's never the point.
 
-#### Per-reference breakdown
-- **seed.com** — *Calm, light, frosted-glass premium.* Works because of soft contrast (off-white surfaces, gentle shadows), translucency that creates depth without harsh lines, and lots of air. Lesson: in light mode, depth comes from subtle layering + blur, not heavy borders.
-- **marckuiper.com (hero)** — *Statement type on a living background.* Works because the giant headline + tiny nav is pure hierarchy: nothing competes with the message. The animated shader adds life/depth but stays low-contrast behind the text so legibility holds. No card needed because the type is strong enough to own the space. Lesson: if the type is big and confident, it doesn't need a container.
-- **marckuiper.com/about** — *Personal, editorial.* Huge centred headline establishes voice; the B&W cut-out portrait (no background) keeps it graphic and on-brand, and floating tool-icon chips add personality + tell you *what he does* without a paragraph. Works because it's confident and human at once. Lesson: a portrait can be a design element if it's treated (cut-out / graded), not a snapshot.
-- **marckuiper.com/services (cards)** — *Depth via gradient glow.* Dark cards with a directional blue→black glow read as lit objects, not boxes; pill tags chunk info scannably; tons of internal padding. Works because the glow gives hierarchy/depth with zero borders. Lesson: a corner gradient glow + big internal padding = premium card with almost no ornament.
-- **nekohealth.com (intro loader)** — *Branded restraint.* A wordmark + a single filling line on a plain field. Works because it does exactly one thing, slowly and precisely; the emptiness + the one moving element feels deliberate and luxurious. Lesson: restraint *is* the design — one element, done precisely, beats a busy spinner.
-- **ultrahuman.com/blood-vision (bento + data cards)** — *Rich grid with real substance.* The bento mixes cell sizes so the grid has rhythm (big hero cell + smaller supporting cells), each cell carries a beautiful visual or real data, and dark cards with subtle inner gradients give depth. The biomarker chips/data tables make it feel *credible*, not just pretty. Lesson: vary cell size for rhythm; let real content (data, product) be the texture.
-- **volander.studio/project/peaq (case study)** — *The deliverable becomes the design.* Works because it doesn't *describe* the work, it *shows* it: the colour palette is presented as proportional labelled blocks (so the palette itself is the visual), and the whole identity is one art-directed 3D collage rather than a dull grid of flat screenshots. Animated type specimens make the typography feel alive. The sticky side-nav (Project/Challenge/Outcome/Credits) gives a long page a quiet spine. Lesson: present project artefacts *as* designed objects (proportional colour blocks, perspective collages, animated specimens, framed spec sheets) — don't just drop flat screenshots in a column. Two more devices worth stealing: **interleaving big headline type with a scattered photo grid** so type and image share one composition (works for an About/team or hero), and **showing a design system as its own foundation spec sheets** (type scale, icon set, spacing bars) — which fits Simon perfectly since the site already *has* a real token system to put on display.
-- **ultrahuman.com (imagery)** — *Cinematic, premium, varied but coherent.* The blue-silhouette concept shot (annotated callouts) turns information into an image; the editorial M1 portrait uses dramatic dark lighting + low-placed text; the 3D frosted-glass icons feel tactile and modern; full-bleed lifestyle cards let the photo fill the frame with text bottom-left. They differ in subject but share **dark moody grading, high contrast, and a single subject per frame** — that consistency is what makes a varied gallery feel like one brand. Lesson: pick a grading/lighting signature and apply it across every image so variety still reads as one voice.
+#### The Taste Fingerprint — the learned model (self-updating; re-derive when a reference is added)
+> The concrete, recurring **mechanics** across every dossier, each tagged with the references that prove
+> it. The DNA above is the *abstract* layer; this is the *evidenced, specific* layer — and the part that
+> sharpens with each new example. Ranked roughly by how central each is to Simon's taste.
+
+1. **Big light/medium statement type carries the page** — large display, **sentence case, tracked tight**, low-ish weight; size+weight contrast does all the hierarchy so little else is needed. → *Seed ("Sustainably delivered, monthly."), Marc hero, Laura, Volander.*
+2. **One brand hue, used tonally over one neutral ground** — near-monochrome; color behaves as **material/light/atmosphere**, not decoration; the accent is rationed to the single most important word/action. **(Translate the hue → our warm-orange-on-neutral; the mechanic is what transfers.)** → *Seed (green on cream), Marc (dark), Stripe.*
+3. **Depth from light, never borders** — frosted glass, tonal panels, soft shadow, gradient glow do all separation; no hard 1px boxes. → *Seed (glass feature panel + tonal cards), Apple Liquid Glass, Neko, Marc.*
+4. **Generous editorial whitespace; one idea per view** — macro air between sections vs tight micro gaps within groups; a single obvious focal point per screen. → *Seed, Marc, Volander, Neko.*
+5. **Full-bleed imagery does the emotional work; chrome goes quiet over it** — photo/render is the hero; text rides a glass scrim, never competing. → *Seed (lifestyle hero + glass panel), Ultrahuman.*
+6. **Turn the product/info into an *explained object*** — annotation callout lines + short labels on a hero render (capsule cross-section; biomarker silhouette) = science-meets-design credibility. → *Seed (ViaCap capsule), Ultrahuman (silhouette).*
+7. **Restraint — ~2 weights, limited palette, subtract** — constraints read as intentional, systematic, premium. → *all.*
+8. **A slim persistent CTA / section nav as the long-page spine** — one quiet sticky bar or side-rail gives a long scroll structure without clutter. → *Seed (bottom "Start Now" bar), Volander (side nav).*
+9. **Present artefacts *as designed objects*** — proportional labelled colour blocks, framed spec sheets, animated specimens, **itemized lists with real product thumbnails as bullet markers** — show, don't describe. → *Volander, Seed (kit-contents list).*
+10. **Soft, rounded container language** — pill nav, generously-rounded panels/cards, full-round product imagery; nothing sharp or boxy. → *Seed (pill floating nav + rounded cards), our ≤8px+pill scale.*
+11. **Single-weight line icons, used sparingly** as quiet labels for feature columns — never filled or colourful. → *Seed (4 feature icons), editorial systems.*
+12. **Motion is slow, eased, felt-before-noticed** — decelerated reveals, a filling line, a clean settle; nothing bouncy or attention-grabbing. → *Neko (filling line), Marc, Marimba, our reveals.*
+
+#### Reference dossiers (the 8 dimensions above)
+
+**seed.com — DS-01® Daily Synbiotic product page** · *Calm, light, science-meets-editorial premium. The original north star, re-studied 2026 from the live page (screenshots).* **This is the closest external match to where the portfolio is already heading — the reference for the light/editorial/glass register.**
+- **Typography** — a clean grotesque sans (geometric-leaning; exact face unconfirmed — reads Söhne/ABC-Diatype class), set **medium weight, large, sentence case, tracked tight**. Section heads ("Sustainably delivered, monthly." · "Feel the difference of a truly healthy gut." · "Unlike many probiotics, DS-01® makes it to the gut alive.") own each screen; body is small and quiet — the big size jump does the hierarchy. ® marks set as small superscripts; ~1.05–1.15 display leading.
+- **Layout** — a contained editorial column on a soft ground, built from **rounded panels**: a two-up card row (Welcome Kit ↔ Sustainable Refills), a full-bleed lifestyle hero with an overlaid glass feature-panel, a dark feature panel pairing a product render with an annotated capsule diagram. Asymmetric image↔text/list splits; one idea per section.
+- **Spacing/rhythm** — comfortable and airy: big padding inside the rounded panels, generous gaps between sections, content never touches edges; the contents lists stack tight *within* but sit far from neighbours (clear within/between ratio).
+- **Visuals/imagery** — moody naturalistic **product + lifestyle photography** (kit against denim, hands creasing a refill pouch, woman outdoors), an **aerial/topographic green texture** behind a product jar, and a **3D capsule cross-section mid-dissolve**. Crisp premium grading; one green-tonal world. **Single-weight line icons** label the four feature columns.
+- **Color strategy (HOW)** — a **single dominant brand hue (deep green) used tonally across the entire experience** (dark-green panels, mid-green imagery, off-white/cream ground; white-on-green / green-on-cream type). Monochrome + one neutral; color is the *material/atmosphere*, not paint. **Maps 1:1 to our warm-orange-on-neutral — identical mechanic, different hue.**
+- **Motion** — not fully observable from stills; the brand register is calm/eased (the dissolving-capsule render implies a slow effect). Treat as slow, considered, non-bouncy.
+- **Signature devices** — (a) **pill-shaped translucent floating nav**; (b) **sticky bottom CTA bar** (product thumb + name left, "Start Now" pill right) = the long-page spine; (c) **frosted-glass overlay panel** holding 4 icon+label+blurb feature columns over the lifestyle photo (on-media legibility via glass, not a box); (d) **annotated capsule diagram** (callout lines → "Prebiotic Outer Capsule / Probiotic Inner Capsule") turning the product into an explained object; (e) **itemized contents list using real product thumbnails as the bullet markers**, each with a supply sub-line; (f) quiet **"Learn More →"** text link, not a loud button.
+- **Transferable pattern** — *A whole page can run on one brand hue used tonally over a neutral ground, with depth entirely from light (glass + tonal panels, zero borders); big tight sentence-case type carries each section; full-bleed photography is the emotion and a glass panel makes text legible over it; the product is sold by turning it into an explained, annotated object; and a slim persistent CTA bar gives the long scroll its spine.*
+
+**marckuiper.com — hero & /about** · *Statement type on a living background; personal & editorial.*
+- **Typography** — giant headline (~80px), confident, owns the space against a tiny nav — pure size hierarchy. About: huge centred headline establishes voice.
+- **Layout** — full-bleed; headline + 2 buttons set **directly on the background, no card**. About: centred headline + B&W cut-out portrait below + floating tool-icon chips.
+- **Visuals** — animated shader hero kept **low-contrast behind the text** so legibility holds; the **treated B&W cut-out portrait** is a graphic element, not a snapshot.
+- **Color strategy** — dark, atmospheric; the shader is pure color-as-light.
+- **Motion** — the shader adds life without competing; calm.
+- **Devices** — transparent nav over the hero; a "currently working for [logo]" footnote; tool-icon chips that say *what he does* without a paragraph.
+- **Transferable pattern** — *If the type is big and confident it needs no container; a treated (cut-out/graded) portrait is a design element.* (Hero card removed on our site because of this.)
+
+**marckuiper.com/services — cards** · *Depth via gradient glow.*
+- **Layout/Visuals** — dark cards with a directional corner **blue→black glow** read as lit objects, not boxes; pill tags chunk info scannably; tons of internal padding.
+- **Color strategy** — the glow is color-as-light; zero borders.
+- **Transferable pattern** — *A corner gradient glow + big internal padding = a premium card with almost no ornament.*
+
+**nekohealth.com — intro loader** · *Branded restraint.*
+- **Layout/Visuals** — centred wordmark on a plain neutral field + one thin horizontal line that **fills as the page loads**, then reveals the site. Vast emptiness; one moving element.
+- **Motion** — slow, precise line-fill — the whole point is doing one thing slowly and exactly.
+- **Transferable pattern** — *Restraint IS the design — one element done precisely beats a busy spinner.* (Adapted as our intro loader.)
+
+**ultrahuman.com/blood-vision — bento + imagery** · *Rich grid with real substance; cinematic, varied-but-coherent imagery.*
+- **Layout** — a **bento grid mixing cell sizes** (big hero cell + smaller supporting) for rhythm; each cell a beautiful visual or real data.
+- **Visuals** — **dark moody high-contrast grading, single subject per frame**: a blue-lit silhouette with **annotated biomarker callouts** ([01] Metabolic…), editorial product portraits (low-placed text), 3D frosted-glass icons, full-bleed lifestyle cards (text bottom-left).
+- **Color strategy** — dark ground + subtle inner card gradients (color-as-light); one consistent grade unifies varied images.
+- **Devices** — biomarker chips / data tables for credibility; annotated concept imagery; bento.
+- **Transferable pattern** — *Vary cell size for rhythm; let real content (data/product) be the texture; pick one grading signature so a varied gallery still reads as one brand; turn information into an annotated image.*
+
+**volander.studio/project/peaq — case study** · *The deliverable becomes the design.*
+- **Layout** — long page with a quiet **sticky side-nav** (Project · Challenge · Outcome · Credits) as a spine; big headline type **interleaved with a scattered photo grid** so type + image share one composition.
+- **Visuals** — palette shown as **proportional, labelled colour blocks** (the palette *is* the layout); a whole identity captured in one art-directed **3D collage** of guideline pages; **animated type specimens**; design-system **foundation spec sheets** (type scale, icon set, spacing bars) shown as framed artefacts.
+- **Motion** — considered, editorial — specimens animate in to *present* the work.
+- **Transferable pattern** — *Present artefacts AS designed objects (proportional colour blocks, perspective collages, animated specimens, framed spec sheets) — show, don't describe. Fits our real token system perfectly.*
+
+**laugon.com (Laura Gonzalez) — hero** · *Bold, editorial, human.* ⏳ wants a real treated B&W portrait to work.
+- **Layout/Typography** — full-bleed B&W portrait with the person's **name set ENORMOUS over it** (the photo shows through / sits behind the letters); role line bottom-right; minimal top nav.
+- **Transferable pattern** — *A portrait + giant name fused into one composition reads bold and human — needs a real treated full-bleed photo (a memoji won't carry it).*
+
+**marimba.design — page transition** · *Calm cover→reveal.*
+- **Motion** — a polished, relaxed page-switch where the incoming page settles cleanly (exact motion JS-driven — couldn't observe). Aim for that calm quality.
+- **Transferable pattern** — *Page transitions should feel relaxed and settled, never snappy or flashy.*
 
 #### What makes design look cheap / "AI-generated" (the inverse — avoid)
 - Many competing focal points; no clear first-read.

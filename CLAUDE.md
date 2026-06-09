@@ -158,8 +158,12 @@ the benefit of the doubt.
   inspect computed styles. Re-check responsive at mobile when layout-relevant.
 - Deploy = commit + `git push origin main`; confirm with `gh run watch <id> --exit-status`.
 
-## 5. Growing the vision / design system
-- New references from Simon → analyse the *why it works* and add to **DESIGN_KNOWLEDGE §6**
-  (references + per-reference breakdown), and log any new anti-pattern in §6.8.
+## 5. Growing the vision / design system (Simon's self-learning taste model)
+- New design reference from Simon (URL / screenshot / "add this to things I like") → write a full
+  **dossier** in **DESIGN_KNOWLEDGE §6.6** across the **8 dimensions** (① typography ② layout ③ spacing
+  ④ visuals/imagery ⑤ color *strategy*, not the hue ⑥ motion ⑦ signature devices ⑧ the transferable
+  pattern), then **re-derive the Taste Fingerprint** so it stays the sharpest one-glance model. **Learn
+  the *way* a design works, not its colors.** Log any rejection as an anti-pattern in §6.8. §6 is Simon's
+  **portable taste model** — keep it self-contained so it can seed *future* projects, not just this one.
 - Design-system work → extend tokens/components in **DESIGN_SYSTEM.md** + the style guide page,
   keeping the two-tier (primitive → semantic) token model.
