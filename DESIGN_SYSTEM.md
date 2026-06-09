@@ -278,6 +278,16 @@ children with its own 90ms step (`REVEAL_STAGGER_MS` in `revealMotion.js`).
   trigger ~28% in view (`useReveal` IntersectionObserver), once; stagger siblings.
   Glass surfaces must BE the reveal element (never wrapped) so their frost survives —
   see GLASS §8. Components: `<Reveal>` / `<Stagger>` (`<ScrollAnimation>` aliases `<Reveal>`).
+- **First-load entrance** (above-the-fold heroes / trust rows) — use `<Reveal immediate>`,
+  which plays the entrance on **mount** (skips the observer). The hero is on screen at
+  load, so its cascade must be **time-based** (sequenced `delay`s), not scroll-gated —
+  scroll-triggering it leaves anything below the ~72% line stuck invisible (the user
+  never scrolls the hero). Reserve `immediate` for the first screen; everything further
+  down stays default scroll-reveal.
+- **Word-by-word headline** (`<WordReveal>`) — per-word rise; `stepMs` = cadence between
+  words, `delayMs` = start offset, `durationMs` = per-word rise duration (defaults to
+  `--dur-slow`; the cinematic Home hero overrides to **900ms / 120ms step**), `whenInView`
+  = wait for scroll vs. play on mount.
 - **Media reveal** scale `1.03→1` + fade, ~600ms emphasized; hover lift/zoom on cards.
 - **Route transitions** (roadmap) 300–450ms; outgoing accelerate, incoming decelerate.
 - **Theme switch** — View Transitions API "circular reveal" blooming from the toggle

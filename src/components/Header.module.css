@@ -473,12 +473,17 @@
   bottom: 0;
   left: 0;
   border-radius: var(--radius-pill);
-  /* Theme-aware translucent glass tint (not a solid fill); the active state is
-     the resting/current-route fill, swapped to the lighter hover fill below. */
-  background: var(--glass-item-active);
+  /* Theme-aware glass pill (not a solid fill). Active = resting/current-route
+     fill; hover swaps to the softer fill below. LIGHT mode uses a WHITE frost
+     (`--glass-pill-*`) so it reads as glass, not the old flat grey. The sheen
+     gives it a lit top edge = the frosted-glass material. */
+  background-color: var(--glass-pill-active);
+  background-image: var(--glass-sheen);
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
-  -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+  /* No backdrop-filter: the pill is nested in the glass bar (blur would render
+     nothing, GLASS §8) AND it transform-slides between triggers — blurring a
+     moving element is the rule-#7 jank pattern. The white fill + sheen + hairline
+     carry the frosted look without the wasted GPU pass. */
   z-index: 0;
   pointer-events: none;
   /* Slide between triggers (transform/width), fade in/out, and cross-fade the
@@ -488,9 +493,9 @@
     background-color var(--dur-fast) var(--ease-standard);
 }
 
-/* While the cursor is over a trigger, use the lighter glass hover tint. */
+/* While the cursor is over a trigger, use the softer glass hover fill. */
 .navPill[data-mode='hover'] {
-  background: var(--glass-item-hover);
+  background-color: var(--glass-pill-hover);
 }
 
 @media (prefers-reduced-motion: reduce) {

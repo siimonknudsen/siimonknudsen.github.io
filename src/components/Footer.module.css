@@ -3,6 +3,10 @@
   z-index: 1; /* above the global fixed shader */
   width: 100%;
   padding: var(--space-64) var(--page-gutter) var(--space-32);
+  /* Soft 8px lift on the top corners so the footer reads as a panel rising over
+     the page (the page background/mesh shows through the rounded notch). */
+  border-top-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
   /* Frosted glass over the global shader */
   background-color: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));

@@ -6,7 +6,10 @@ import styles from './WordReveal.module.css'
  * (translateY + opacity) using the motion tokens. Honors reduced-motion by
  * rendering instantly. Polymorphic via `as` so it can be an <h1>, <p>, etc.
  *
- * stepMs — per-word delay (defaults to ~50ms).
+ * stepMs — per-word delay / cadence between words (defaults to ~50ms).
+ * durationMs — per-word rise duration. Defaults to the global --dur-slow token;
+ *   pass a larger value (e.g. the cinematic hero) for a slower, more relaxing
+ *   settle without changing the token everywhere.
  * whenInView — when true, the staggered animation waits until the element
  *   scrolls into the viewport (via IntersectionObserver) instead of playing
  *   on mount. Defaults to false, which preserves the original mount behavior.
@@ -14,7 +17,7 @@ import styles from './WordReveal.module.css'
 // Comp is rendered as <Comp> below; ESLint can't see JSX usage without
 // react/jsx-uses-vars, so the destructured rename reads as unused.
 // eslint-disable-next-line no-unused-vars
-function WordReveal({ as: Comp = 'span', text, className = '', stepMs = 50, delayMs = 0, whenInView = false, ...props }) {
+function WordReveal({ as: Comp = 'span', text, className = '', stepMs = 50, delayMs = 0, durationMs, whenInView = false, ...props }) {
   const reduced = useReducedMotion()
   const { ref, isVisible } = useReveal()
   const words = String(text).split(' ')
@@ -35,7 +38,14 @@ function WordReveal({ as: Comp = 'span', text, className = '', stepMs = 50, dela
                   ? styles.wordInner
                   : styles.wordInnerWaiting
             }
-            style={reduced || !play ? undefined : { animationDelay: `${delayMs + i * stepMs}ms` }}
+            style={
+              reduced || !play
+                ? undefined
+                : {
+                    animationDelay: `${delayMs + i * stepMs}ms`,
+                    ...(durationMs ? { animationDuration: `${durationMs}ms` } : null),
+                  }
+            }
           >
             {word}
           </span>

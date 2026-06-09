@@ -58,12 +58,16 @@ const COMPANIES = [
   },
 ]
 
-function WorkedAt({ companies = COMPANIES }) {
+function WorkedAt({ companies = COMPANIES, revealDelay = 0 }) {
   if (!companies.length) return null
 
   return (
     <section className={styles.section} aria-label="Companies I've worked at">
-      <Reveal preset="fade-up" className={styles.inner}>
+      {/* `immediate` plays on MOUNT, not on scroll — the row sits just below the
+          scroll-observer's trigger line on the first screen, so the old scroll
+          trigger left it stuck invisible at load. `revealDelay` lets Home tail it
+          onto the hero cascade (after the CTAs). */}
+      <Reveal preset="fade-up" immediate delay={revealDelay} className={styles.inner}>
         <p className={`type-overline font-mono text-color-tertiary ${styles.label}`}>
           Worked at
         </p>

@@ -13,6 +13,15 @@
   transition:
     transform var(--dur-fast) var(--ease-standard),
     box-shadow var(--dur-fast) var(--ease-standard);
+  /* PERF: these cards both scroll-reveal (Archive, opacity+transform) and
+     scroll-stack with a scale (Home) — re-blurring a backdrop-filter every frame
+     on a large moving surface, across many cards at once, is the dominant jank
+     source (rule #7 / GLASS §8). The mesh behind is smooth, so the blur is
+     invisible anyway: the frosted look comes from the translucent tint +
+     hairline + noise + sheen (all inherited from `glass-panel`). So drop the
+     blur on the card itself — keeps the look, kills the lag. */
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 
 /* No hover "lift" — the cursor spotlight (global .fx-spotlight) is the only

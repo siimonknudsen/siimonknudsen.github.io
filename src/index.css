@@ -319,6 +319,12 @@ html.dark {
   --glass-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 -1px 0 rgba(0, 0, 0, 0.28);
   --glass-item-hover: var(--transparent-light-8);
   --glass-item-active: var(--transparent-light-12);
+  /* Nav "magic pill" fill (Header). DARK: a white translucent frost that lifts
+     off the bar (like the glass-item states). LIGHT mode overrides these to a
+     WHITER frost (see the light block) — a dark overlay there read as flat grey,
+     not glass. */
+  --glass-pill-hover: var(--transparent-light-10);
+  --glass-pill-active: var(--transparent-light-16);
   --glass-solid: #1c1c1e;
   /* Top-edge SHEEN — a soft vertical light wash baked into the glass fill,
      brightest at the top, fading by ~half height. With the 1px inset highlight
@@ -394,6 +400,12 @@ html:not(.dark) {
   --glass-shadow-lg: 0 20px 60px rgba(17, 17, 17, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.90), inset 0 -1px 0 rgba(17, 17, 17, 0.08);
   --glass-item-hover: var(--transparent-dark-4);
   --glass-item-active: var(--transparent-dark-12);
+  /* Nav pill — LIGHT mode: a WHITE frosted fill (not a grey darken). On the
+     translucent-white header bar a dark overlay read as flat grey; a bright
+     white translucent pill + the hairline reads as the glass material Simon
+     wants. Active = brighter/more present; hover = softer. */
+  --glass-pill-hover: var(--transparent-light-60);
+  --glass-pill-active: var(--transparent-light-90);
   --glass-solid: #f4f4f5;
   /* Top-edge SHEEN (light) — a brighter white wash; on translucent light glass
      this reads as a glossy lit top edge (pairs with the strong 1px inset). */

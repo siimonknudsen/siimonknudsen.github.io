@@ -6,7 +6,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - 80px);
+  /* Header-height token (was a stale hardcoded 80px; the header is 88px). */
+  min-height: calc(100vh - var(--header-height));
   max-height: 900px;
   padding: var(--space-24) var(--page-gutter);
   margin-bottom: var(--space-164);

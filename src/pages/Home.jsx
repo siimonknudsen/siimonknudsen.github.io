@@ -57,23 +57,28 @@ function Home() {
         <div className={styles.heroContent}>
           {/* Cinematic first-load cascade: the hero elements enter one-by-one,
               slowly. Kicker first, then the headline flows in word-by-word
-              (slower stagger + a start delay), then the CTAs. Delays are tuned so
-              each item begins after the previous is mostly in. */}
-          <Reveal as="p" preset="fade-up" delay={150} className={`type-body-lg text-color-tertiary ${styles.kicker}`}>
+              (slower rise + wider cadence), then the CTAs. `immediate` plays each
+              on MOUNT (a timed entrance) instead of on scroll — the CTAs sit below
+              the scroll-observer's trigger line on a real laptop viewport, so the
+              old scroll trigger left them stuck invisible (the user never scrolls
+              the hero). Delays are tuned so each item begins as the previous lands. */}
+          <Reveal as="p" preset="fade-up" immediate delay={150} className={`type-body-lg text-color-tertiary ${styles.kicker}`}>
             Simon Knudsen
           </Reveal>
 
-          {/* Headline — word-by-word reveal, slowed + delayed to feel cinematic */}
+          {/* Headline — word-by-word reveal: slower per-word rise (durationMs) and
+              a wider cadence (stepMs) so each word settles calmly, one at a time. */}
           <WordReveal
             as="h1"
             text="Product designer turning complex problems into clear, human experiences"
             delayMs={500}
-            stepMs={70}
+            stepMs={120}
+            durationMs={900}
             className={`text-color-primary ${styles.headline}`}
           />
 
-          {/* Call-to-Action Buttons — last in the cascade */}
-          <Reveal preset="fade-up" delay={1400} className={styles.ctaRow}>
+          {/* Call-to-Action Buttons — last in the cascade, on mount (immediate) */}
+          <Reveal preset="fade-up" immediate delay={1700} className={styles.ctaRow}>
             <Button variant="primary" className={styles.cta} as="a" href="#projects">
               View projects
             </Button>
@@ -84,8 +89,8 @@ function Home() {
         </div>
       </section>
 
-      {/* Worked at — trust row of past companies */}
-      <WorkedAt />
+      {/* Worked at — trust row, tail of the hero cascade (after the CTAs at 1700) */}
+      <WorkedAt revealDelay={2000} />
 
       {/* Projects Section — full-width cards that stack on scroll */}
       <section id="projects" className={styles.projectsSection}>

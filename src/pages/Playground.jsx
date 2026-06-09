@@ -11,7 +11,9 @@ import styles from './Playground.module.css'
 function Playground() {
   return (
     <>
-      <section id="main-content" tabIndex={-1} className={styles.section}>
+      {/* No id="main-content"/tabIndex here — the global <main> (App.jsx) already
+          owns that landmark + skip-link target; duplicating the id is invalid HTML. */}
+      <section className={styles.section}>
         <div className={styles.container}>
           {/* Intro */}
           <Reveal preset="fade-up" as="header" className={styles.intro}>

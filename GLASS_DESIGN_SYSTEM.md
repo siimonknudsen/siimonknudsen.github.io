@@ -64,6 +64,8 @@ These swap automatically between light and dark.
 | `--glass-shadow-lg` | deeper | deeper | panel elevation |
 | `--glass-item-hover` | `rgba(17,17,17,.05)` | `rgba(255,255,255,.08)` | row hover |
 | `--glass-item-active` | `rgba(17,17,17,.08)` | `rgba(255,255,255,.13)` | active/current |
+| `--glass-pill-hover` | `rgba(255,255,255,.60)` | `rgba(255,255,255,.10)` | nav "magic pill" hover — LIGHT is **white frost**, not a grey darken (2026-06-09) |
+| `--glass-pill-active` | `rgba(255,255,255,.90)` | `rgba(255,255,255,.16)` | nav pill selected/current — white frost + `--glass-sheen`, **no `backdrop-filter`** (nested + it slides) |
 | `--glass-solid` | `#f4f4f5` | `#1c1c1e` | accessibility fallback |
 
 ---

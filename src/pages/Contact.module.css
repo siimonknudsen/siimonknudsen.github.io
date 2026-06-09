@@ -1,16 +1,14 @@
 .section {
   width: 100%;
-  /* Top-aligned, padding-driven: content sits a comfortable distance below the
-     nav (not a hero-sized band), generous bottom. */
-  padding: calc(var(--header-height) + var(--space-48)) var(--page-gutter)
-    var(--space-164);
-  margin-top: calc(-1 * var(--header-height));
+  /* Match the Archive page exactly: content sits var(--space-24) below the nav,
+     in normal flow (no negative-margin pull-up — that was seating the heading +
+     form lower than Archive's title). Generous bottom space. */
+  padding: var(--space-24) var(--page-gutter) var(--space-164);
 }
 
 @media (max-width: 640px) {
   .section {
-    padding: calc(var(--header-height) + var(--space-32)) var(--page-gutter)
-      var(--space-80);
+    padding: var(--space-24) var(--page-gutter) var(--space-80);
   }
 }
 

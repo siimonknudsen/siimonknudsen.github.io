@@ -29,6 +29,7 @@ export default function Reveal({
   preset = 'fade-up',
   delay,
   once = true,
+  immediate = false,
   className = '',
   style,
   children,
@@ -36,6 +37,13 @@ export default function Reveal({
 }) {
   const reduce = useReducedMotion()
   const { ref, isVisible } = useReveal({ once })
+  // `immediate` = animate on MOUNT (a timed entrance), not on scroll-intersection.
+  // Use it for above-the-fold first-load content — a hero cascade, the trust row
+  // beneath it — that's already on screen at load. The scroll observer's tuned
+  // rootMargin (-28%) is meant for content further down; for the first screen it
+  // leaves anything below the ~72% line stuck at opacity 0 until the user scrolls
+  // (which, on the hero, they never do). See DESIGN_LOG "Hero entrance: mount, not scroll".
+  const shouldShow = immediate || isVisible
   const MComp = resolveMotion(as)
   const variants = REVEAL_VARIANTS[preset] || REVEAL_VARIANTS['fade-up']
   const d = delay != null ? delay / 1000 : 0
@@ -56,11 +64,13 @@ export default function Reveal({
     // (selected, not created, per render) — so this is a false positive.
     // eslint-disable-next-line react-hooks/static-components
     <MComp
-      ref={ref}
+      // No scroll observer needed when `immediate` — it plays on mount.
+      ref={immediate ? undefined : ref}
       // Reduced motion: render shown immediately so content never depends on
-      // motion to be visible. Otherwise start hidden and spring in on reveal.
+      // motion to be visible. Otherwise start hidden and spring in on reveal
+      // (on scroll-intersection, or on mount when `immediate`).
       initial={reduce ? 'shown' : 'hidden'}
-      animate={isVisible ? 'shown' : 'hidden'}
+      animate={reduce || shouldShow ? 'shown' : 'hidden'}
       variants={variants}
       transition={transition}
       className={className}

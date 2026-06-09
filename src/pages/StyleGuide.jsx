@@ -332,17 +332,23 @@ function CopySwatch({ value, copyKey, copied, onCopy, className = '', faceClassN
 
 /* ── Page ───────────────────────────────────────────────────────── */
 
+// Sidebar nav, grouped like a top-tier DS index (Foundations → Library) so the
+// page reads as a structured reference, not a flat scroll.
 const TOC = [
-  ['typography', 'Typography'],
-  ['color', 'Color'],
-  ['materials', 'Materials'],
-  ['spacing', 'Spacing'],
-  ['radius', 'Radius'],
-  ['motion', 'Motion'],
-  ['components', 'Components'],
-  ['data', 'Data display'],
+  ['Foundations', [
+    ['typography', 'Typography'],
+    ['color', 'Color'],
+    ['materials', 'Materials'],
+    ['spacing', 'Spacing'],
+    ['radius', 'Radius'],
+    ['motion', 'Motion'],
+  ]],
+  ['Library', [
+    ['components', 'Components'],
+    ['data', 'Data display'],
+  ]],
 ]
-const TOC_IDS = TOC.map(([id]) => id)
+const TOC_IDS = TOC.flatMap(([, items]) => items.map(([id]) => id))
 
 function StyleGuide() {
   const [play, setPlay] = useState(false)
@@ -356,7 +362,9 @@ function StyleGuide() {
       <section className={styles.cover}>
         <div aria-hidden="true" className={styles.coverBloom} />
         <div className={styles.coverInner}>
-          <ScrollAnimation>
+          {/* Page hero — reveal on mount (immediate), not on scroll: it's above
+              the fold on load, so a scroll trigger can leave it faded. */}
+          <ScrollAnimation immediate>
             <Overline>Portfolio · 2026</Overline>
             <h1 className={`text-color-primary ${styles.coverTitle}`}>
               Design System
@@ -386,22 +394,27 @@ function StyleGuide() {
           <p className={`font-mono text-color-tertiary ${styles.tocHeading}`}>
             On this page
           </p>
-          <ul className={styles.tocList}>
-            {TOC.map(([id, label]) => {
-              const isActive = activeSection === id
-              return (
-                <li key={id}>
-                  <a
-                    href={`#${id}`}
-                    aria-current={isActive ? 'true' : undefined}
-                    className={`${isActive ? 'text-color-primary' : 'text-color-secondary'} ${styles.tocLink} ${isActive ? styles.tocLinkActive : ''}`}
-                  >
-                    {label}
-                  </a>
-                </li>
-              )
-            })}
-          </ul>
+          {TOC.map(([group, items]) => (
+            <div key={group} className={styles.tocGroup}>
+              <p className={`text-color-tertiary ${styles.tocGroupLabel}`}>{group}</p>
+              <ul className={styles.tocList}>
+                {items.map(([id, label]) => {
+                  const isActive = activeSection === id
+                  return (
+                    <li key={id}>
+                      <a
+                        href={`#${id}`}
+                        aria-current={isActive ? 'true' : undefined}
+                        className={`${isActive ? 'text-color-primary' : 'text-color-secondary'} ${styles.tocLink} ${isActive ? styles.tocLinkActive : ''}`}
+                      >
+                        {label}
+                      </a>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          ))}
         </nav>
 
         <div className={styles.content}>
