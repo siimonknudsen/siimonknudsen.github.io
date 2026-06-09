@@ -1,9 +1,11 @@
 /* Gallery thumbnail grid — auto-fit so tiles wrap to fewer columns instead of
-   squishing on mid-size screens; never narrower than 200px. The cols2/3/4
-   classes now only signal intent; auto-fit derives the actual count from width. */
+   squishing on mid-size screens. Min tile 240px → ~5 columns at 1440–1500px,
+   easing to 4 on smaller laptops and 2–3 on tablets/phones (larger, bolder
+   thumbnails than the old 200px / 6-up). The cols2/3/4 classes only signal
+   intent; auto-fit derives the actual count from width. */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 /* Gap variants */
