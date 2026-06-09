@@ -478,6 +478,10 @@ function Header() {
               <span
                 className={styles.navPill}
                 aria-hidden="true"
+                /* Glass fill follows state: the hover tint while the cursor is
+                   over a trigger, the (slightly stronger) active tint when it's
+                   resting on the current-route trigger. */
+                data-mode={hovered ? 'hover' : 'active'}
                 style={{
                   transform: `translateX(${pillStyle.left}px)`,
                   width: `${pillStyle.width}px`,

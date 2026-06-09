@@ -35,6 +35,58 @@
   margin-bottom: 0;
 }
 
+/* Positioning context for the overlaid brand-logo plate. The hero <Media> is
+   in-flow content here, so a glass plate stacked over it CAN frost the image
+   behind it (unlike glass over the page background). */
+.heroFrame {
+  position: relative;
+}
+
+/* Frosted-glass logo plate — same glass material as the Badge, scaled up into a
+   roomy plate so the (often white / on-media) wordmark reads clearly over a busy
+   hero photo instead of fighting it. Pinned top-left with a comfortable inset. */
+.heroLogo {
+  position: absolute;
+  top: var(--space-24);
+  left: var(--space-24);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Roomy plate — clearly larger than a tag chip's padding. */
+  padding: var(--space-16) var(--space-20);
+  border-radius: var(--radius-md);
+  /* Stronger plate + THEME-AWARE text: the wordmark is currentColor, so use the
+     theme text colour (dark on the light-mode plate, white on the dark-mode
+     plate). `--text-on-media` (always white) was invisible on the light plate. */
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border);
+  color: var(--text-color-primary);
+  /* Keep it from ever spanning a cramped mobile hero edge-to-edge. */
+  max-width: calc(100% - var(--space-32));
+}
+
+.heroLogo svg {
+  display: block;
+  height: calc(28px * var(--logo-scale, 1));
+  width: auto;
+}
+
+/* Tighter inset + slightly smaller wordmark on small screens so the plate never
+   looks cramped or overflows the rounded hero corner. */
+@media (max-width: 639px) {
+  .heroLogo {
+    top: var(--space-16);
+    left: var(--space-16);
+    padding: var(--space-12) var(--space-16);
+  }
+  .heroLogo svg {
+    height: calc(22px * var(--logo-scale, 1));
+  }
+}
+
 .heroPlaceholder {
   width: 100%;
   aspect-ratio: 16 / 9;

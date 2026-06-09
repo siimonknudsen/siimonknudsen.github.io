@@ -55,27 +55,32 @@ function Home() {
       <section className={styles.hero}>
         {/* Content sits directly over the shader — no card, left-aligned. */}
         <div className={styles.heroContent}>
-          {/* Faded name kicker */}
-          <p className={`type-body-lg text-color-tertiary ${styles.kicker}`}>
+          {/* Cinematic first-load cascade: the hero elements enter one-by-one,
+              slowly. Kicker first, then the headline flows in word-by-word
+              (slower stagger + a start delay), then the CTAs. Delays are tuned so
+              each item begins after the previous is mostly in. */}
+          <Reveal as="p" preset="fade-up" delay={150} className={`type-body-lg text-color-tertiary ${styles.kicker}`}>
             Simon Knudsen
-          </p>
+          </Reveal>
 
-          {/* Headline — word-by-word reveal, set large over the shader */}
+          {/* Headline — word-by-word reveal, slowed + delayed to feel cinematic */}
           <WordReveal
             as="h1"
             text="Product designer turning complex problems into clear, human experiences"
+            delayMs={500}
+            stepMs={70}
             className={`text-color-primary ${styles.headline}`}
           />
 
-          {/* Call-to-Action Buttons */}
-          <div className={styles.ctaRow}>
+          {/* Call-to-Action Buttons — last in the cascade */}
+          <Reveal preset="fade-up" delay={1400} className={styles.ctaRow}>
             <Button variant="primary" className={styles.cta} as="a" href="#projects">
               View projects
             </Button>
             <Button variant="glass" className={styles.cta} as={Link} to="/contact">
               Contact
             </Button>
-          </div>
+          </Reveal>
         </div>
       </section>
 

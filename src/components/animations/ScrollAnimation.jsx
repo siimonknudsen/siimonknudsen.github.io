@@ -6,8 +6,10 @@ import Reveal from '../motion/Reveal'
  * Now just renders <Reveal>, so it shares the one site-wide Framer Motion spring
  * reveal — the two systems can never drift apart. Prefer <Reveal> for new work.
  */
-function ScrollAnimation({ children, className = '' }) {
-  return <Reveal className={className}>{children}</Reveal>
+function ScrollAnimation({ children, className = '', ...props }) {
+  // Forward delay/preset/etc. through to Reveal (existing call sites pass none,
+  // so they're unaffected; lets callers stagger via `delay`).
+  return <Reveal className={className} {...props}>{children}</Reveal>
 }
 
 export default ScrollAnimation

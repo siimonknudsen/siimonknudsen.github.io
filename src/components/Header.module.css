@@ -461,21 +461,36 @@
 }
 
 /* Single pill that travels between triggers on hover and rests on the
-   active-route trigger. Positioned via inline transform/width from JS. */
+   active-route trigger; positioned via inline transform/width from JS. It's a
+   small glass pill in the same frosted material as the rest of the glass system
+   (theme-aware translucent tint + blur + a soft hairline + pill radius).
+   NB (GLASS_DESIGN_SYSTEM §8): the bar itself is glass, so this nested
+   backdrop-filter may not visibly blur — the tint + hairline + radius still
+   read as the glass material, so it stays consistent. */
 .navPill {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
-  border-radius: var(--radius-md);
-  /* Transparent (theme-aware) glass tint + blur, not a solid fill. */
+  border-radius: var(--radius-pill);
+  /* Theme-aware translucent glass tint (not a solid fill); the active state is
+     the resting/current-route fill, swapped to the lighter hover fill below. */
   background: var(--glass-item-active);
+  border: 1px solid var(--glass-border);
   backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
   z-index: 0;
   pointer-events: none;
+  /* Slide between triggers (transform/width), fade in/out, and cross-fade the
+     fill calmly as it switches hover↔active — no scale/bounce. */
   transition: transform 380ms var(--ease-emphasized),
-    width 380ms var(--ease-emphasized), opacity 200ms ease;
+    width 380ms var(--ease-emphasized), opacity 200ms ease,
+    background-color var(--dur-fast) var(--ease-standard);
+}
+
+/* While the cursor is over a trigger, use the lighter glass hover tint. */
+.navPill[data-mode='hover'] {
+  background: var(--glass-item-hover);
 }
 
 @media (prefers-reduced-motion: reduce) {

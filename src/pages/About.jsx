@@ -107,7 +107,9 @@ function About() {
       {/* First Section — editorial headline + portrait with floating skill chips */}
       <section id="about-me" className={styles.heroSection}>
         <div className={styles.heroInner}>
-          <Reveal>
+          {/* Cinematic first-load cascade (matches the home hero): headline →
+              portrait → chips one-by-one. */}
+          <Reveal delay={150}>
             <h1 className={`text-color-primary ${styles.aboutHeadline}`}>
               Product designer &amp; systems thinker
             </h1>
@@ -117,7 +119,7 @@ function About() {
               skill chips floating around it on desktop, stacked on mobile. */}
           <div className={styles.portraitStage}>
             <div className={styles.portraitGlow} aria-hidden="true" />
-            <ScrollAnimation>
+            <ScrollAnimation delay={500}>
               <div className={styles.portrait}>
                 <img
                   src={`${import.meta.env.BASE_URL}simon-virtual.png`}
@@ -128,12 +130,12 @@ function About() {
             </ScrollAnimation>
 
             <div className={styles.chips}>
-              <span className={`glass ${styles.chip} ${styles.chipA}`}>Figma</span>
-              <span className={`glass ${styles.chip} ${styles.chipB}`}>UX Design</span>
-              <span className={`glass ${styles.chip} ${styles.chipC}`}>UI Design</span>
-              <span className={`glass ${styles.chip} ${styles.chipD}`}>Design Systems</span>
-              <span className={`glass ${styles.chip} ${styles.chipE}`}>Frontend</span>
-              <span className={`glass ${styles.chip} ${styles.chipF}`}>Prototyping</span>
+              <Reveal as="span" preset="fade-up" delay={800} className={`glass ${styles.chip} ${styles.chipA}`}>Figma</Reveal>
+              <Reveal as="span" preset="fade-up" delay={920} className={`glass ${styles.chip} ${styles.chipB}`}>UX Design</Reveal>
+              <Reveal as="span" preset="fade-up" delay={1040} className={`glass ${styles.chip} ${styles.chipC}`}>UI Design</Reveal>
+              <Reveal as="span" preset="fade-up" delay={1160} className={`glass ${styles.chip} ${styles.chipD}`}>Design Systems</Reveal>
+              <Reveal as="span" preset="fade-up" delay={1280} className={`glass ${styles.chip} ${styles.chipE}`}>Frontend</Reveal>
+              <Reveal as="span" preset="fade-up" delay={1400} className={`glass ${styles.chip} ${styles.chipF}`}>Prototyping</Reveal>
             </div>
           </div>
 

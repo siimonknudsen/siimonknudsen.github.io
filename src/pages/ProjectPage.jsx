@@ -8,7 +8,28 @@ import OutcomeGrid from '../components/case/OutcomeGrid'
 import ProcessStep from '../components/case/ProcessStep'
 import usePageTitle from '../hooks/usePageTitle'
 import { loadProjectContent, getDefaultProjectContent } from '../data/projectContentLoader'
+import { ZliideLogo, AdtractionLogo, LenusLogo } from '../components/home/WorkedAtLogos'
 import styles from './ProjectPage.module.css'
+
+// Which company each project was done at → its logo, mirrored from ProjectGrid
+// so the hero can overlay the same brand wordmark the card stack uses. Optical
+// scale balances the differently-proportioned wordmarks at one visual size.
+const COMPANY_LOGO = { zliide: ZliideLogo, adtraction: AdtractionLogo, lenus: LenusLogo }
+const COMPANY_NAME = { zliide: 'Zliide', adtraction: 'Adtraction', lenus: 'Lenus' }
+const COMPANY_SCALE = { zliide: 0.7, adtraction: 0.9, lenus: 1 }
+const PROJECT_COMPANY = {
+  'zliide-app': 'zliide',
+  'zliide-website': 'zliide',
+  'zliide-dashboard': 'zliide',
+  'apple-home-app': null,
+  'adservice-website': 'adtraction',
+  'leadplatform-website': 'adtraction',
+  'ekstrabladet-comparison': 'adtraction',
+  'telia-campaign': 'adtraction',
+  'talkmore-campaign': 'adtraction',
+  'benergy-campaign': 'adtraction',
+  'aarstiderne-campaign': 'adtraction',
+}
 
 function ProjectPage() {
   const { id } = useParams()
@@ -86,14 +107,30 @@ function ProjectPage() {
 
           {content.heroImage ? (
             <Reveal preset="scale-in">
-              <Media
-                src={content.heroImage}
-                alt={title}
-                aspect="auto"
-                rounded="rounded-2xl"
-                priority
-                className={styles.hero}
-              />
+              <div className={styles.heroFrame}>
+                <Media
+                  src={content.heroImage}
+                  alt={title}
+                  aspect="auto"
+                  rounded="rounded-2xl"
+                  priority
+                  className={styles.hero}
+                />
+                {(() => {
+                  const key = PROJECT_COMPANY[project.id]
+                  const Logo = key && COMPANY_LOGO[key]
+                  return Logo ? (
+                    <span
+                      className={styles.heroLogo}
+                      role="img"
+                      aria-label={`${COMPANY_NAME[key]} project`}
+                      style={{ '--logo-scale': COMPANY_SCALE[key] ?? 1 }}
+                    >
+                      <Logo />
+                    </span>
+                  ) : null
+                })()}
+              </div>
             </Reveal>
           ) : (
             <div

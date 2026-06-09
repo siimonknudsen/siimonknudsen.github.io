@@ -1,14 +1,15 @@
 .section {
   width: 100%;
-  /* Same padding rhythm as the hero (below the nav), generous bottom. */
-  padding: calc(var(--header-height) + var(--space-128)) var(--page-gutter)
+  /* Top-aligned, padding-driven: content sits a comfortable distance below the
+     nav (not a hero-sized band), generous bottom. */
+  padding: calc(var(--header-height) + var(--space-48)) var(--page-gutter)
     var(--space-164);
   margin-top: calc(-1 * var(--header-height));
 }
 
 @media (max-width: 640px) {
   .section {
-    padding: calc(var(--header-height) + var(--space-64)) var(--page-gutter)
+    padding: calc(var(--header-height) + var(--space-32)) var(--page-gutter)
       var(--space-80);
   }
 }
