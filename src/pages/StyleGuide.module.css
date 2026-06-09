@@ -241,9 +241,15 @@
 
 /* ── Cover ──────────────────────────────────────────────────────── */
 
+/* Cover + body share ONE container (same max-width, centring, gutter) so the
+   "On this page" rail aligns flush-left with the cover text, and everything uses
+   the full available width. */
 .cover {
   position: relative;
   overflow: hidden;
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
   padding-left: var(--page-gutter);
   padding-right: var(--page-gutter);
   padding-top: var(--space-64);
@@ -275,9 +281,8 @@
 
 .coverInner {
   position: relative;
-  max-width: 72rem;
-  margin-left: auto;
-  margin-right: auto;
+  /* Fills the cover's padded box (the cover owns the max-width + centring now),
+     so the cover text sits flush-left with the body's "On this page" rail. */
 }
 
 .coverTitle {
@@ -314,7 +319,7 @@
 /* ── Body + sticky index ────────────────────────────────────────── */
 
 .body {
-  max-width: 72rem;
+  max-width: var(--container-max);
   margin-left: auto;
   margin-right: auto;
   padding-left: var(--page-gutter);
@@ -324,7 +329,7 @@
 @media (min-width: 1280px) {
   .body {
     display: grid;
-    grid-template-columns: 200px 1fr; /* widened spine */
+    grid-template-columns: 1fr 3fr; /* ¼ nav · ¾ content */
     gap: var(--space-80);
   }
 }

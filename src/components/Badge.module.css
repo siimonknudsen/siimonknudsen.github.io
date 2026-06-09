@@ -20,8 +20,16 @@
 
 /* ── Variants ─────────────────────────────────────────────── */
 
+/* solid + active wear the FULL frosted-glass material — translucent tint PLUS
+   the top-edge sheen + fractal noise (the `background-image` layers that make
+   .glass read as frosted, not flat). Use background-COLOR, never the `background`
+   shorthand, or it wipes the sheen/noise. The blur is often nested-dead (badges
+   sit inside glass cards/tiles, GLASS §8), so the sheen + tint + noise + hairline
+   are what carry the glass look — and they do, regardless of nesting. */
 .solid {
-  background: var(--glass-bg);
+  background-color: var(--glass-bg);
+  background-image: var(--glass-sheen), var(--glass-noise);
+  background-blend-mode: normal, soft-light;
   -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
   backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
 }
@@ -31,7 +39,9 @@
 }
 
 .active {
-  background: var(--glass-item-active);
+  background-color: var(--glass-item-active);
+  background-image: var(--glass-sheen), var(--glass-noise);
+  background-blend-mode: normal, soft-light;
   -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
   backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
 }
@@ -47,8 +57,9 @@
   border-color: var(--accent-soft);
 }
 
-/* Accent + solid/active blend the soft tint into the glass fill. */
+/* Accent + solid/active blend the soft tint into the glass fill (colour only,
+   so the sheen/noise from .solid/.active survive). */
 .accent.solid,
 .accent.active {
-  background: var(--accent-soft);
+  background-color: var(--accent-soft);
 }

@@ -52,7 +52,10 @@
   z-index: 1;
   width: 240px;
   height: 240px;
-  border-radius: var(--radius-3xl);
+  /* Max roundness — a full circle on the square portrait, matching the circular
+     header/footer avatars (the pill radius is the documented exception to the
+     8px cap, reserved for circular elements like this). */
+  border-radius: var(--radius-pill);
   overflow: hidden;
   flex-shrink: 0;
 }
