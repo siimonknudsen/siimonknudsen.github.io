@@ -5,7 +5,7 @@
    weight axis 300–900. The site's primary typeface. */
 @font-face {
   font-family: 'BDO Grotesk';
-  src: url('/fonts/BDOGrotesk-VF.woff2') format('woff2');
+  src: url('/fonts/BDOGrotesk-VF-balanced.woff2') format('woff2');
   font-weight: 300 900;
   font-style: normal;
   font-display: swap;
@@ -18,7 +18,12 @@
      ascent 906 / descent 177. line-gap 294 keeps `line-height: normal` at its
      original ~1.38 (most text uses explicit line-heights, unaffected). This
      supersedes per-component `text-box-trim`. Descent is held at the 177
-     descender ink so g/j/p/y never clip. See DESIGN_LOG / DESIGN_SYSTEM. */
+     descender ink so g/j/p/y never clip. See DESIGN_LOG / DESIGN_SYSTEM.
+     ⚠ WebKit (ALL iPhone browsers + desktop Safari) ignores these override
+     descriptors — so the SAME metrics are baked into the font binary itself
+     (hhea + OS/2 typo tables, "-balanced" file). The overrides below are kept
+     as matching duplicates for Chrome/Firefox; if the metrics ever change,
+     re-bake the binary too (fontTools — see DECISIONS.md). */
   ascent-override: 90.6%;
   descent-override: 17.7%;
   line-gap-override: 29.4%;
@@ -744,10 +749,6 @@ html:not(.dark) {
     }
   }
 
-  /* Project Card Image Wrapper */
-  .project-card-image-wrapper {
-    position: relative;
-  }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -968,22 +969,6 @@ html:not(.dark) {
 }
 .skip-link:focus {
   transform: translateY(0);
-}
-
-/* Slim, theme-aware scrollbar for scrollable glass panels */
-.scroll-slim {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-color-secondary) transparent;
-}
-.scroll-slim::-webkit-scrollbar {
-  width: 6px;
-}
-.scroll-slim::-webkit-scrollbar-thumb {
-  background-color: var(--border-color-secondary);
-  border-radius: 9999px;
-}
-.scroll-slim::-webkit-scrollbar-track {
-  background-color: transparent;
 }
 
 /* ── Motion accessibility ──────────────────────────────────────

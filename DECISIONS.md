@@ -7,6 +7,59 @@ detail). Format is lightweight ADR (Architecture Decision Record).
 
 ---
 
+## 2026-06 — Font vertical metrics baked into the binary (iPhone fix)
+
+The `@font-face` `ascent/descent/line-gap-override` centring fix (2026-06-07) is
+**not supported by WebKit** — i.e. all iPhone browsers + desktop Safari — so phones
+still rendered BDO Grotesk's native top-heavy box (text sat high in buttons/badges).
+Fix: baked the identical balanced metrics (ascent 906 / descent −177 / line-gap 294,
+per 1000 UPM) into the font file with **fontTools** — `hhea` (what WebKit reads) +
+`OS/2` typo + `USE_TYPO_METRICS`; `usWin` raised to glyph extents (no clipping). New
+file **`public/fonts/BDOGrotesk-VF-balanced.woff2`** (rename = cache-bust), preload +
+`@font-face` src updated, CSS overrides kept as matching duplicates for Chrome/Firefox.
+Verified: raw binary metrics (no CSS) measure identical to the override rendering.
+**Rule: metrics re-tune ⇒ re-bake the binary + rename.** Rebake recipe: venv with
+`fonttools` + `brotli`, set the three tables, save with `flavor='woff2'`.
+
+---
+
+## 2026-06 — Performance pass (zero visual change)
+
+Full senior-engineer audit (3 parallel review agents: runtime, bundle, assets) then
+applied everything pixel-identical. The codebase was already strong (route splitting,
+LazyMotion, CSS-var scroll handlers, shader pausing) — these were the real levers:
+
+- **WebP image pipeline** — all project JPG/PNGs converted via `scripts/optimize-images.mjs`
+  (sharp, devDep; photos q82 / UI-screenshot PNGs q90): `public/projects` 9.0 → 5.8 MB.
+  `Media.jsx` format chain now tries `.webp` first; content.json refs rewritten. Two
+  byte-identical hero duplicates removed (apple-home, zliide-dashboard `image1` →
+  reference `hero.webp`). **Rerun the script whenever new project images land.**
+- **Dropdown thumbnails** — header menus fetched full 2000px heroes for ~64px rows
+  (~1.9 MB per Archive-menu open). Script now emits a 320px `thumb.webp` per project
+  (4–10 KB); `ProjectThumb` uses it (hero.webp fallback). Measured: 70 KB total.
+- **`assetsInlineLimit: 1024`** (vite.config) — stops base64-inlining logo PNGs into
+  the About chunk (60 → 28 KB raw; gzip 27 → 9.9 KB) and restores their lazy-loading.
+- **Runtime hygiene** — `Location` stores the formatted HH:MM string (was: re-render
+  every second, ×2 instances, forever); `Media`'s IntersectionObserver disconnects for
+  images once in view (videos keep it for autoplay-pause); `fetchPriority="high"` on
+  priority Media (case-study hero LCP); Header resize handlers rAF-coalesced with
+  equal-value bails; `ScrollToTop` hash-timeout now cleaned up.
+- **`noMedia` flag** (project data → ProjectCard/WorkRow/Media `src=null`) — projects
+  without imagery (aarstiderne) render the same placeholder with **zero** requests
+  (was: 4 sequential 404s each). Unreferenced `jyllandsposten-comparison` stub deleted.
+- **Dead code** — parked-`PrinciplesList` import dropped from About (file kept);
+  verified-unused CSS removed (`.scroll-slim`, `.project-card-image-wrapper`, StyleGuide/
+  ProjectPage/Header module leftovers). **Kept deliberately:** utilities that complete
+  documented token families (`.surface-4`, contrast + danger sets) — API consistency
+  over ~0.3 KB; parked components (they tree-shake out anyway); StyleGuide stays in the
+  idle-prefetch list (Simon's "snappy after first load" call); font subsetting rejected
+  (glyph-coverage risk vs ~50 KB).
+
+Verified in-browser on the production build: all pages, menus (70 KB thumb total),
+WebP-first single-request loads, zero 404s, zero console errors.
+
+---
+
 ## 2026-06 — Deferred roadmap items finished (second swarm)
 
 Completed the items previously deferred: **testimonials rework** (Home — featured
