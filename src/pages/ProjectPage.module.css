@@ -25,10 +25,19 @@
 
 .title {
   margin-bottom: var(--space-8);
+  /* Even out the line lengths of the multi-line title (no lonely last word). */
+  text-wrap: balance;
 }
 
 .description {
   max-width: 52rem;
+  /* "pretty" = no orphan last-line word, minimal reflow (best for prose). */
+  text-wrap: pretty;
+}
+
+/* Lede paragraphs (Problem + Process intros) — orphan-free wrapping. */
+.lede {
+  text-wrap: pretty;
 }
 
 .hero {
@@ -200,6 +209,7 @@
 .prose {
   margin: 0;
   max-width: 100%;
+  text-wrap: pretty;
 }
 
 .lede,

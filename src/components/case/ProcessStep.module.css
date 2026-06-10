@@ -35,10 +35,12 @@
 
 .title {
   margin: 0;
+  text-wrap: balance;
 }
 
 .body {
   margin: 0;
+  text-wrap: pretty;
 }
 
 .media {

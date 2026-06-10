@@ -196,14 +196,10 @@
 /* (Client/brand logo tiles now get their frosted-glass surface directly on
    LogoGrid's `.cell` — see LogoGrid.module.css.) */
 
+/* Identical to the Home testimonials grid (auto-fit) so both pages match 1:1. */
 .testimonialsGrid {
   display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
   gap: var(--space-24);
-}
-
-@media (min-width: 768px) {
-  .testimonialsGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  align-items: stretch;
 }

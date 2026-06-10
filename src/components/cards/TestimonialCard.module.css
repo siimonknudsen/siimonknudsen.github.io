@@ -66,6 +66,8 @@
 
 .para {
   margin: 0;
+  /* Orphan-free wrapping for the quote paragraphs (same on Home + About). */
+  text-wrap: pretty;
 }
 
 .foot {
