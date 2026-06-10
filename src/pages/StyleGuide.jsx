@@ -51,7 +51,7 @@ const texts = [
 
 const borders = [
   { title: 'Border · On Primary', token: '--border-color-on-primary', light: '#E5E5E5', dark: '#1E1E1E', cls: 'border-color-on-primary' },
-  { title: 'Border · Primary', token: '--border-color-primary', light: '#1E1E1E', dark: '#1E1E1E', cls: 'border-color-primary' },
+  { title: 'Border · Primary', token: '--border-color-primary', light: '#E5E5E5', dark: '#1E1E1E', cls: 'border-color-primary' },
   { title: 'Border · Secondary', token: '--border-color-secondary', light: '#D4D4D4', dark: '#404040', cls: 'border-color-secondary' },
 ]
 

@@ -385,7 +385,10 @@ html:not(.dark) {
   --text-color-primary: var(--neutral-1000);
   --text-color-secondary: var(--neutral-600);
   --text-color-tertiary: var(--neutral-500);
-  --border-color-primary: var(--neutral-850);
+  /* Soft editorial hairline — was neutral-850 (#1e1e1e), a near-black line on
+     white that read as a hard border (against the "depth from light" DNA).
+     neutral-200 keeps primary subtler than secondary, mirroring dark mode. */
+  --border-color-primary: var(--neutral-200);
   --border-color-secondary: var(--neutral-300);
   --border-color-on-primary: var(--neutral-200);
   /* Contrast tokens — opposite-mode surfaces/text */
