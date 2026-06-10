@@ -12,7 +12,7 @@
     "Design System",
     "Frontend Development"
   ],
-  "heroImage": "images/hero.jpg",
+  "heroImage": "images/hero.webp",
   "problem": "The Zliide company website wasn't pulling its weight. It lacked a clear value proposition and had navigation issues that broke user journeys, dragging down engagement and conversion.",
   "challenge": "The Zliide company website needed a redesign to improve user engagement and conversion rates. The existing site lacked a clear value proposition and had navigation issues that hindered user journeys.",
   "solution": "Redesigned the website with a focus on clear value proposition and streamlined user journeys. The redesign resulted in a 35% increase in conversion rates and improved user engagement metrics across all key pages.",
@@ -50,7 +50,7 @@
   "content": [
     {
       "type": "image",
-      "src": "images/image1.jpg"
+      "src": "images/image1.webp"
     }
   ]
 }

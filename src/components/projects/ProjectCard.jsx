@@ -11,7 +11,7 @@ import styles from './ProjectCard.module.css'
 // frost alive through the reveal instead of a wrapper killing it.
 const MotionLink = m.create(Link)
 
-function ProjectCard({ id, title, description, tags = [], impact, delay }) {
+function ProjectCard({ id, title, description, tags = [], impact, delay, noMedia = false }) {
   const onSpotlight = useSpotlight()
   return (
     // The glass <Link> IS the reveal (animates its own opacity/transform) so its
@@ -31,7 +31,9 @@ function ProjectCard({ id, title, description, tags = [], impact, delay }) {
       {/* Image frame — clips the inner zoom on hover */}
       <div className={styles.frame}>
         <div className={styles.zoom}>
-          <Media src={`/projects/${id}/images/hero`} alt={title} aspect="aspect-video" rounded="rounded-xl" />
+          {/* noMedia: same tokenised placeholder frame, zero image requests
+              (a missing hero used to 404 through every format). */}
+          <Media src={noMedia ? null : `/projects/${id}/images/hero`} alt={title} aspect="aspect-video" rounded="rounded-xl" />
         </div>
       </div>
 

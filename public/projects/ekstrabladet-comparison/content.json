@@ -13,7 +13,7 @@
     "Marketing Design",
     "Frontend Development"
   ],
-  "heroImage": "images/hero.jpg",
+  "heroImage": "images/hero.webp",
   "problem": "Ekstra Bladet, a publisher partner of the affiliate company Adservice, wanted to turn its large audience into revenue. The opening: a comparison solution that helped readers compare popular services and earned affiliate income from their choices.",
   "challenge": "Adservice is an affiliate company that connects advertisers and publishers. Ekstra Bladet was one of our publishers which wanted to generate revenue with their large traffic, through a comparison solution.",
   "solution": "A comparison website and campaign material were designed resulting in several subpages of different popular services such as internet, eletricity, telephone subscriptions and streaming services.",
@@ -51,7 +51,7 @@
   "content": [
     {
       "type": "image",
-      "src": "images/image1.jpg"
+      "src": "images/image1.webp"
     }
   ]
 }

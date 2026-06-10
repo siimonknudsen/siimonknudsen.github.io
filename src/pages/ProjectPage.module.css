@@ -153,22 +153,6 @@
   font-weight: var(--weight-medium);
 }
 
-.railOutcome {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.railMetric {
-  margin: var(--space-2) 0 0;
-  line-height: 1;
-}
-
-.railOutcomeLabel {
-  margin: 0;
-  max-width: 28ch;
-}
-
 /* TOC sidebar removed in the single-column layout. */
 .railNav {
   display: none;

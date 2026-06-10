@@ -1,24 +1,28 @@
 import { useState, useEffect } from 'react'
 import styles from './Location.module.css'
 
+const formatTime = (date) =>
+  date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+
 function Location({ location = "Aarhus, Denmark" }) {
-  const [currentTime, setCurrentTime] = useState(new Date());
+  // Store the formatted HH:MM string, not the Date — the 1s tick then only
+  // re-renders when the displayed minute actually changes (same string bails).
+  const [currentTime, setCurrentTime] = useState(() => formatTime(new Date()));
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentTime(new Date());
+      setCurrentTime((prev) => {
+        const next = formatTime(new Date());
+        return next === prev ? prev : next;
+      });
     }, 1000);
 
     return () => clearInterval(timer);
   }, []);
-
-  const formatTime = (date) => {
-    return date.toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
-      minute: '2-digit',
-      hour12: false 
-    });
-  };
 
   return (
     <div
@@ -29,7 +33,7 @@ function Location({ location = "Aarhus, Denmark" }) {
       <span className={styles.group}>
         <span>{location}</span>
         <span aria-hidden="true" className={styles.sep}>·</span>
-        <span className={styles.time}>{formatTime(currentTime)}</span>
+        <span className={styles.time}>{currentTime}</span>
       </span>
     </div>
   )

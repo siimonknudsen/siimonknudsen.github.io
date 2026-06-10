@@ -343,23 +343,6 @@
   }
 }
 
-/* A single soft atmospheric accent bloom (replaces the graph-paper grid) — a
-   low-chroma radial of --accent fading to transparent, with a radial mask so it
-   dissolves into the page. Depth from light, no boxes. */
-.coverBloom {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    60% 80% at 22% 8%,
-    color-mix(in oklab, var(--accent) 22%, transparent) 0%,
-    color-mix(in oklab, var(--accent) 9%, transparent) 38%,
-    transparent 72%
-  );
-  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 25% 0%, black, transparent 78%);
-  mask-image: radial-gradient(ellipse 85% 75% at 25% 0%, black, transparent 78%);
-  pointer-events: none;
-}
-
 .coverInner {
   position: relative;
   /* Fills the cover's padded box (the cover owns the max-width + centring now),
@@ -1047,24 +1030,6 @@
   line-height: 1.4;
 }
 
-.blurGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-16);
-  margin-top: var(--space-16);
-}
-@media (min-width: 640px) {
-  .blurGrid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.blurVal {
-  font-size: var(--text-2xl);
-  font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-tight);
-}
-
 /* Blur tokens shown as REAL frost: swatches sit over a busy colour backdrop and
    each applies its blur/saturate token, so the steps visibly differ. Static
    backdrop + small swatches = perf-safe (GLASS §7). */
@@ -1648,50 +1613,6 @@
   background: var(--accent);
 }
 
-.componentsGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-24); /* loosened from 16 */
-}
-@media (min-width: 640px) {
-  .componentsGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (min-width: 1024px) {
-  .componentsGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.colSpan2Sm {
-}
-@media (min-width: 640px) {
-  .colSpan2Sm {
-    grid-column: span 2 / span 2;
-  }
-}
-
-.colSpanFull {
-}
-@media (min-width: 640px) {
-  .colSpanFull {
-    grid-column: span 2 / span 2;
-  }
-}
-@media (min-width: 1024px) {
-  .colSpanFull {
-    grid-column: span 3 / span 3;
-  }
-}
-
-.tileFill {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-16);
-  width: 100%;
-}
-
 .btnRow {
   display: flex;
   flex-wrap: wrap;
@@ -1712,14 +1633,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-16);
-}
-
-.shaderStage {
-  position: relative;
-  width: 100%;
-  height: 144px;
-  border-radius: var(--radius-md);
-  overflow: hidden;
 }
 
 .cardBlock {

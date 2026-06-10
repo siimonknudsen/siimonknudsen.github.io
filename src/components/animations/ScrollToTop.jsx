@@ -6,16 +6,17 @@ function ScrollToTop() {
 
   useEffect(() => {
     if (hash) {
-      // Small delay to ensure the page has rendered
-      setTimeout(() => {
+      // Small delay to ensure the page has rendered. Cleared on re-navigation
+      // so a stale scroll can't fire against the next page.
+      const t = setTimeout(() => {
         const element = document.querySelector(hash)
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' })
         }
       }, 100)
-    } else {
-      window.scrollTo(0, 0)
+      return () => clearTimeout(t)
     }
+    window.scrollTo(0, 0)
   }, [pathname, hash])
 
   return null

@@ -12,7 +12,7 @@
     "Design System",
     "Marketing Design"
   ],
-  "heroImage": "images/hero.jpg",
+  "heroImage": "images/hero.webp",
   "problem": "b.energy, an advertiser working with the affiliate company Adservice, wanted to generate more leads. The plan was to channel that demand through Adservice's gamification concept, LeadPlatform.",
   "challenge": "Adservice is an affiliate company that connects advertisers and publishers. b.energy was one of our advertisers which wanted to generate more leads through our gamification concept \"LeadPlatform\".",
   "solution": "A campaign website and campaign material were designed resulting in 25.000+ visitiors and and a 50%+ conversion rate.",
@@ -50,7 +50,7 @@
   "content": [
     {
       "type": "image",
-      "src": "images/image1.jpg"
+      "src": "images/image1.webp"
     }
   ]
 }

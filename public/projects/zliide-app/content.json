@@ -15,7 +15,7 @@
     "User Testing",
     "QA Testing"
   ],
-  "heroImage": "images/hero.jpg",
+  "heroImage": "images/hero.webp",
   "problem": "Zliide is a technology company that seeks to reinvent the fashion industry by making physical retail stores more digital with solutions and features such as assisted-checkout, in-store ordering and informative dashboards. The existing in-store ordering experience left shoppers stranded when an item was out of stock, sending revenue out the door. The task was to improve the current user experience of the in-store ordering app.",
   "challenge": "The task was to improve the current user experience of the in-store ordering app, with a particular focus on reducing out-of-stock situations and the lost sales they caused.",
   "solution": "The concept was enhanced through feedback gathered from brand stakeholders, store employees, and store customers. The new flow let shoppers order out-of-stock items on the spot, and new Figma design system components and tokens were added while others were updated to support it.",
@@ -57,15 +57,15 @@
   "content": [
     {
       "type": "image",
-      "src": "images/image1.png"
+      "src": "images/image1.webp"
     },
     {
       "type": "image",
-      "src": "images/image2.png"
+      "src": "images/image2.webp"
     },
     {
       "type": "image",
-      "src": "images/image3.png"
+      "src": "images/image3.webp"
     },
     {
       "type": "image",

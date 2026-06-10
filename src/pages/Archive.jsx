@@ -22,6 +22,7 @@ function Archive() {
                 description={project.description}
                 tags={project.tags}
                 delay={(index % 2) * 80}
+                noMedia={project.noMedia}
               />
             ))}
           </div>

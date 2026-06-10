@@ -9,7 +9,8 @@ import styles from './Media.module.css'
  *
  * Props:
  *  - src      image source. With an extension it's used as-is; without one,
- *             the format fallback tries .jpg/.jpeg/.png/.webp (project heroes).
+ *             the format fallback tries .webp/.jpg/.jpeg/.png (project heroes).
+ *             Pass null to render just the placeholder frame (no requests).
  *  - video    string src, or { mp4, webm }. When set, renders a <video>.
  *  - poster   poster image for video.
  *  - alt      alt text.
@@ -19,7 +20,9 @@ import styles from './Media.module.css'
  *  - hoverPlay play video on hover instead of when it scrolls into view.
  */
 
-const IMAGE_FORMATS = ['.jpg', '.jpeg', '.png', '.webp']
+// .webp first — all project imagery ships as WebP now; the rest are
+// self-healing fallbacks for any stragglers.
+const IMAGE_FORMATS = ['.webp', '.jpg', '.jpeg', '.png']
 const EXT_RE = /\.(jpg|jpeg|png|webp|gif|avif|svg)$/i
 
 // Map the legacy class-string props to real CSS values (no Tailwind).
@@ -63,7 +66,14 @@ function Media({
     const el = wrapRef.current
     if (!el) return
     const io = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
+      ([entry]) => {
+        setInView(entry.isIntersecting)
+        // Images only consume `inView` once (it latches `revealed`), so stop
+        // observing after the first entry — no re-renders on every band
+        // crossing for the rest of the scroll session. Videos keep observing:
+        // autoplay must pause when they leave the viewport.
+        if (entry.isIntersecting && !isVideo) io.disconnect()
+      },
       // Positive preload margin: start loading/revealing ~300px before the
       // media scrolls into view so there are no dark gaps at the viewport edge.
       // (Reveal is latched separately via `revealed`, so it never re-hides.)
@@ -71,7 +81,7 @@ function Media({
     )
     io.observe(el)
     return () => io.disconnect()
-  }, [priority])
+  }, [priority, isVideo])
 
   // Autoplay video when in view (unless hoverPlay); pause otherwise.
   useEffect(() => {
@@ -190,6 +200,7 @@ function Media({
             src={imgSrc}
             alt={alt}
             loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : undefined}
             decoding="async"
             onLoad={() => setLoaded(true)}
             onError={handleImgError}

@@ -182,15 +182,6 @@
   padding-top: var(--space-8);
 }
 
-.aboutItem {
-  border-radius: var(--radius-lg);
-  padding: var(--space-8) var(--space-12);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: var(--text-sm);
-}
-
 .aboutChevron {
   width: var(--space-12);
   height: var(--space-12);

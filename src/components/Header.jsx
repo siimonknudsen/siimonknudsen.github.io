@@ -9,8 +9,6 @@ import styles from './Header.module.css'
 
 /* ── Content powering the dropdowns ─────────────────────────────── */
 
-const IMAGE_FORMATS = ['.jpg', '.jpeg', '.png', '.webp']
-
 const featuredProjects = allProjects.slice(0, 4)
 
 const aboutSections = [
@@ -23,20 +21,28 @@ const aboutSections = [
 
 /* ── Small building blocks ──────────────────────────────────────── */
 
-function ProjectThumb({ id, alt }) {
-  const [formatIndex, setFormatIndex] = useState(0)
+function ProjectThumb({ id, alt, noMedia = false }) {
+  // Menu rows render ~64px thumbs — fetch the dedicated ~10 KB thumb.webp, not
+  // the full 2000px hero (which cost ~1.9 MB per Archive-menu open). Falls back
+  // to the hero once for any project without a generated thumb; `noMedia` skips
+  // the request entirely for projects that have no imagery.
+  const candidates = [
+    `/projects/${id}/images/thumb.webp`,
+    `/projects/${id}/images/hero.webp`,
+  ]
+  const [srcIndex, setSrcIndex] = useState(0)
   const [failed, setFailed] = useState(false)
   return (
     <span className={`bg-surface-color-tertiary ${styles.thumb}`}>
-      {!failed && (
+      {!noMedia && !failed && (
         <img
-          src={`/projects/${id}/images/hero${IMAGE_FORMATS[formatIndex]}`}
+          src={candidates[srcIndex]}
           alt={alt}
           loading="lazy"
           className={styles.thumbImg}
           onError={() =>
-            formatIndex < IMAGE_FORMATS.length - 1
-              ? setFormatIndex(formatIndex + 1)
+            srcIndex < candidates.length - 1
+              ? setSrcIndex(srcIndex + 1)
               : setFailed(true)
           }
         />
@@ -53,14 +59,14 @@ function MenuLabel({ children }) {
   )
 }
 
-function WorkRow({ id, title, subtitle, onNavigate }) {
+function WorkRow({ id, title, subtitle, onNavigate, noMedia }) {
   return (
     <Link
       to={`/project/${id}`}
       onClick={onNavigate}
       className={`glass-item ${styles.workRow}`}
     >
-      <ProjectThumb id={id} alt={title} />
+      <ProjectThumb id={id} alt={title} noMedia={noMedia} />
       <span className={styles.workMeta}>
         <span className={`text-color-primary ${styles.workTitle}`}>
           {title}
@@ -134,6 +140,7 @@ function ArchiveMenu({ onNavigate }) {
             title={p.title}
             subtitle={p.tags.slice(0, 2).join(' · ')}
             onNavigate={onNavigate}
+            noMedia={p.noMedia}
           />
         ))}
       </div>
@@ -371,16 +378,24 @@ function Header() {
     }
   }, [open, menuKey])
 
-  // Keep the panel anchored if the window resizes while open
+  // Keep the panel anchored if the window resizes while open. rAF-coalesced:
+  // resize fires in bursts (window drags, iOS URL-bar collapse mid-scroll),
+  // one layout read + state set per frame is plenty.
   useEffect(() => {
+    let raf = 0
     const onResize = () => {
-      if (open && menuKey) {
+      if (!open || !menuKey) return
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
         const left = positionFor(menuKey)
         if (left != null) setPanelLeft(left)
-      }
+      })
     }
     window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', onResize)
+    }
   }, [open, menuKey])
 
   useEffect(() => () => closeTimer.current && clearTimeout(closeTimer.current), [])
@@ -405,18 +420,31 @@ function Header() {
       const targetKey = hovered ?? activeRouteKey
       const target = targetKey ? triggerRefs.current[targetKey] : null
       if (!nav || !target) {
-        setPillStyle((s) => ({ ...s, opacity: 0 }))
+        // Bail when already hidden — resize bursts shouldn't re-render the
+        // Header for a pill that isn't visible.
+        setPillStyle((s) => (s.opacity === 0 ? s : { ...s, opacity: 0 }))
         return
       }
-      setPillStyle({
-        left: target.offsetLeft,
-        width: target.offsetWidth,
-        opacity: 1,
-      })
+      const { offsetLeft: left, offsetWidth: width } = target
+      setPillStyle((s) =>
+        s.left === left && s.width === width && s.opacity === 1
+          ? s
+          : { left, width, opacity: 1 }
+      )
     }
+    // Initial position stays synchronous (pre-paint, no flash); only the
+    // resize handler is rAF-coalesced.
     positionPill()
-    window.addEventListener('resize', positionPill)
-    return () => window.removeEventListener('resize', positionPill)
+    let raf = 0
+    const onResize = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(positionPill)
+    }
+    window.addEventListener('resize', onResize)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', onResize)
+    }
   }, [hovered, activeRouteKey, location.pathname])
 
   // Mobile menu: lock body scroll while open and close on Escape.

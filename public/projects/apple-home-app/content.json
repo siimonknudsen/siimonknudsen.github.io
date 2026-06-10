@@ -11,7 +11,7 @@
     "UI Design",
     "User Research"
   ],
-  "heroImage": "images/hero.jpg",
+  "heroImage": "images/hero.webp",
   "problem": "Apple Home is one of the most well-liked smart home apps, but it still leaves room for improvement. With no constraints on the brief, I set out to tackle two things at once: the everyday friction points in the existing app, and the missing link between smart homes and sustainability — users had no easy way to see how much water, heat, and electricity their home was actually consuming.",
   "challenge": "One of the most well-liked smart home apps is Apple Home. Comparatively speaking, they still have a lot of room for improvement. I was required to develop a digital concept for which I had no limitations. This allowed me to focus on sustainability in combination with smart home apps. The challenge was possible because of the conceptual idea that normal home appliance products were provided with technology that allowed users to track their consumption of each home appliance product.",
   "solution": "The new app solution addresses user friction points that are currently present in the Apple Home app. For example, the room-changing flow and animations have been improved, and new default backgrounds have been added for each room to improve accessibility, readability, and contrast. The new consumption feature gives users a quick overview of their home's water, heat, and electricity usage. Additional user testing is necessary to verify the app’s viability and the current user experience of the features in the app.",
@@ -53,44 +53,44 @@
   "content": [
     {
       "type": "image",
-      "src": "images/image1.jpg"
+      "src": "images/hero.webp"
     },
     {
       "type": "image",
-      "src": "images/image2.jpg"
+      "src": "images/image2.webp"
     },
     {
       "type": "image",
-      "src": "images/image3.jpg"
+      "src": "images/image3.webp"
     }
   ],
   "appScreens": [
     {
-      "src": "images/app1.png"
+      "src": "images/app1.webp"
     },
     {
-      "src": "images/app2.png"
+      "src": "images/app2.webp"
     },
     {
-      "src": "images/app3.png"
+      "src": "images/app3.webp"
     },
     {
-      "src": "images/app4.png"
+      "src": "images/app4.webp"
     },
     {
-      "src": "images/app5.png"
+      "src": "images/app5.webp"
     },
     {
-      "src": "images/app6.png"
+      "src": "images/app6.webp"
     },
     {
-      "src": "images/app7.png"
+      "src": "images/app7.webp"
     },
     {
-      "src": "images/app8.png"
+      "src": "images/app8.webp"
     },
     {
-      "src": "images/app9.png"
+      "src": "images/app9.webp"
     }
   ]
 }

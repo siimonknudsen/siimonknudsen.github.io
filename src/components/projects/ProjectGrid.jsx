@@ -104,7 +104,10 @@ export const archiveProjects = [
     id: 'aarstiderne-campaign',
     title: "Aarstiderne Campaign",
     description: "Designed the campaign website and campaign material for Aarstiderne affiliate campaign at Adservice.",
-    tags: ["UX Design", "UI Design", "Design System", "Marketing Design"]
+    tags: ["UX Design", "UI Design", "Design System", "Marketing Design"],
+    // No imagery exists for this project yet — skips the hero/thumb requests
+    // (they used to 404 through every format) but keeps the placeholder frame.
+    noMedia: true
   },
 ]
 

@@ -12,7 +12,7 @@
     "Design System",
     "Frontend Development"
   ],
-  "heroImage": "images/hero.jpg",
+  "heroImage": "images/hero.webp",
   "problem": "The Adservice website felt dated and inconsistent. Mismatched design patterns, slow load times, and poor mobile responsiveness undercut the brand and made the experience harder than it needed to be.",
   "challenge": "The Adservice website needed a complete redesign to modernize the brand and improve user experience. The existing site had inconsistent design patterns, slow load times, and poor mobile responsiveness.",
   "solution": "Complete redesign with a new design system that created consistency across all pages while improving load times and mobile responsiveness. The modern, clean design improved content hierarchy and streamlined contact forms.",
