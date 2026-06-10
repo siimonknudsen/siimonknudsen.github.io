@@ -39,6 +39,8 @@ routes → `src/App.jsx` · analytics/consent → `src/lib/consent.js`.
 - **DESIGN_LOG.md** — every design decision by page→section→component. **Check it before
   changing an existing thing** (it says why it's that way) and **update it after** design changes.
 - **DECISIONS.md** — architecture decisions.
+- **TODO.md** — open items (mostly waiting on Simon's input/assets). Check at session
+  start; prune when done.
 
 **Before any visual/motion change:** skim §6.7 (vision), §6.8 (anti-patterns), §6.9
 (priorities), and the relevant §7 craft section. If an idea violates the §6 DNA, it's
