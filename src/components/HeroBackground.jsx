@@ -3,12 +3,12 @@ import { useTheme } from '../contexts/ThemeContext'
 import styles from './HeroBackground.module.css'
 
 // Mesh "gradient-grid" — four corner points [top-left, top-right, bottom-left,
-// bottom-right]. Diagonal green→teal blooms over dark (light: soft mint over white).
-// Warm "ember" blooms that harmonize with the orange brand accent.
-// [top-left, top-right, bottom-left, bottom-right]
+// bottom-right]. Neutral achromatic tints only (Simon: black & white background,
+// no warm/orange wash) — a barely-there near-black / near-white drift for subtle
+// life behind the hero, sitting under the neutral mesh at 0.5 opacity.
 const PALETTE = {
-  dark: ['#d8602b', '#09090a', '#160d09', '#7c3618'],
-  light: ['#ffe1cf', '#ffffff', '#fbf3ee', '#ffd2b2'],
+  dark: ['#1a1a1a', '#0a0a0a', '#0a0a0a', '#161616'],
+  light: ['#f4f4f4', '#ffffff', '#ffffff', '#f2f2f2'],
 }
 
 /**
