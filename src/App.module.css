@@ -56,28 +56,28 @@
   background-repeat: no-repeat;
 }
 
-/* Dark-mode mesh — neutral near-black (Simon: drop the warm/orange wash, keep it
-   simple black & white). A whisper of achromatic light gives depth + enough
-   texture for glass to frost; no hue. */
+/* Dark-mode mesh — FLAT near-black (Simon: "even flatter, pure white/black").
+   No blobs, no texture — a single solid field. #0a0a0a reads as black but is
+   gentler than pure #000 (avoids OLED smear + harsh max-contrast edges); swap
+   to #000 here if literal pure black is wanted. Glass now frosts a flat colour
+   → it reads via its own translucency/tint, which is enough (GLASS §8). */
 :global(html.dark) .meshBackdrop {
   --mesh-base: #0a0a0a;
-  --mesh-a: rgba(255, 255, 255, 0.028); /* soft light, top-left */
+  --mesh-a: transparent;
   --mesh-b: transparent;
-  --mesh-c: rgba(255, 255, 255, 0.018); /* faint light, bottom-right */
-  --mesh-d: rgba(0, 0, 0, 0.45);        /* shadow pool, bottom-left */
-  --mesh-e: rgba(255, 255, 255, 0.022); /* centre lift */
+  --mesh-c: transparent;
+  --mesh-d: transparent;
+  --mesh-e: transparent;
 }
 
-/* Light-mode mesh — clean white with the faintest achromatic shade so glass
-   still frosts a real (neutral) gradient and the field isn't clinically flat.
-   No warm/peach wash. */
+/* Light-mode mesh — FLAT pure white. No blobs, no texture. */
 :global(html:not(.dark)) .meshBackdrop {
   --mesh-base: #ffffff;
-  --mesh-a: rgba(0, 0, 0, 0.020);  /* soft shade, top-left */
+  --mesh-a: transparent;
   --mesh-b: transparent;
-  --mesh-c: rgba(0, 0, 0, 0.016);  /* soft shade, bottom-right */
+  --mesh-c: transparent;
   --mesh-d: transparent;
-  --mesh-e: rgba(0, 0, 0, 0.008);  /* barely-there centre */
+  --mesh-e: transparent;
 }
 
 /* Static by design — no drift. A transform drift on this sticky, viewport-sized

@@ -3,12 +3,12 @@ import { useTheme } from '../contexts/ThemeContext'
 import styles from './HeroBackground.module.css'
 
 // Mesh "gradient-grid" — four corner points [top-left, top-right, bottom-left,
-// bottom-right]. Neutral achromatic tints only (Simon: black & white background,
-// no warm/orange wash) — a barely-there near-black / near-white drift for subtle
-// life behind the hero, sitting under the neutral mesh at 0.5 opacity.
+// bottom-right]. FLAT: all four corners share one colour so the shader renders a
+// solid field with no gradient/drift (Simon: "even flatter, pure white/black").
+// Matches the flat mesh base — dark #0a0a0a, light #ffffff.
 const PALETTE = {
-  dark: ['#1a1a1a', '#0a0a0a', '#0a0a0a', '#161616'],
-  light: ['#f4f4f4', '#ffffff', '#ffffff', '#f2f2f2'],
+  dark: ['#0a0a0a', '#0a0a0a', '#0a0a0a', '#0a0a0a'],
+  light: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
 }
 
 /**
