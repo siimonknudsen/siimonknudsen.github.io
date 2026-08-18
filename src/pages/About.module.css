@@ -66,7 +66,10 @@
   object-fit: cover;
 }
 
-/* Soft brand glow behind the portrait — "colour as light" */
+/* Soft neutral glow behind the portrait — achromatic "light, not colour" now
+   that the palette is black & white (Simon: neutralize the orange halo). Reads
+   as a gentle white bloom in dark mode; effectively invisible on white, which
+   is fine — the field stays clean. */
 .portraitGlow {
   position: absolute;
   z-index: 0;
@@ -74,7 +77,7 @@
   height: 420px;
   max-width: 90vw;
   border-radius: var(--radius-pill);
-  background: radial-gradient(circle, var(--accent-soft, rgba(242, 106, 46, 0.18)), transparent 68%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.06), transparent 68%);
   filter: blur(8px);
   pointer-events: none;
 }
