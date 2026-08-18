@@ -299,8 +299,12 @@ children with its own 90ms step (`REVEAL_STAGGER_MS` in `revealMotion.js`).
   = wait for scroll vs. play on mount.
 - **Media reveal** scale `1.03→1` + fade, ~600ms emphasized; hover lift/zoom on cards.
 - **Route transitions** (roadmap) 300–450ms; outgoing accelerate, incoming decelerate.
-- **Theme switch** — View Transitions API "circular reveal" blooming from the toggle
-  (`ThemeToggle`), 500ms decelerate; colour-crossfade fallback where unsupported;
+- **Theme switch** — calm full-page **colour cross-fade** via the View Transitions API
+  (`ThemeToggle`): a snapshot of the old theme dissolves into the new one (covering
+  gradients, glass + the hero shader uniformly), **320ms** standard-ease
+  (`::view-transition-old/new(root)` in `index.css`). Reads as "instant, but buttery" —
+  no geometric wipe (the old circular reveal was retired as too showy for the editorial
+  DNA). Per-property colour-transition fallback where View Transitions are unsupported;
   instant under reduced-motion.
 
 ### Accessibility

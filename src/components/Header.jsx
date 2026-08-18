@@ -11,6 +11,11 @@ import styles from './Header.module.css'
 
 const featuredProjects = allProjects.slice(0, 4)
 
+// Floor for the shared dropdown panel width (px, incl. the 26px card chrome).
+// Lifts the naturally-narrow About (~207) and Contact (~266) menus to a roomier,
+// more confident size; Projects/Archive size to content above this.
+const MIN_PANEL_WIDTH = 300
+
 const aboutSections = [
   { label: 'About me', to: '/about#about-me' },
   { label: 'Companies', to: '/about#companies' },
@@ -314,6 +319,10 @@ function Header() {
   const closeTimer = useRef(null)
   // Measures the (content-sized) panel so we can clamp it on-screen after open.
   const panelRef = useRef(null)
+  // The intrinsically-sized menu body + the glass card, measured to drive the
+  // panel's animated px width (see the width layout effect below).
+  const menuContentRef = useRef(null)
+  const panelCardRef = useRef(null)
 
   const isActive = (path) => location.pathname === path
   const closeMobileMenu = () => {
@@ -326,14 +335,19 @@ function Header() {
   // panel can't use `transform: translateX(-50%)` to self-centre (a transform on
   // the wrapper would kill `backdrop-filter` on the glass panelCard inside). The
   // panel sizes to its content, so we measure its rendered width via panelRef.
-  const positionFor = (key) => {
+  const positionFor = (key, widthOverride) => {
     const wrap = wrapperRef.current
     const trig = triggerRefs.current[key]
     if (!wrap || !trig) return null
     const wb = wrap.getBoundingClientRect()
     const tb = trig.getBoundingClientRect()
     const center = tb.left - wb.left + tb.width / 2
-    const w = panelRef.current ? panelRef.current.offsetWidth : 0
+    const w =
+      widthOverride != null
+        ? widthOverride
+        : panelRef.current
+          ? panelRef.current.offsetWidth
+          : 0
     // Pre-measure: approximate the left edge (re-clamped once width is known).
     if (!w) return Math.round(center)
     const pad = 8
@@ -366,16 +380,36 @@ function Header() {
     setOpen(false)
   }
 
-  // Re-clamp once the panel has rendered its (content-sized) width for this
-  // menu, so the on-screen clamping uses the real measured width.
+  // Pin an explicit px width on the panel so it can TRANSITION between menu sizes
+  // (intrinsic `max-content` can't be animated, which is why the width used to
+  // snap). We measure the intrinsically-sized menu body (`menuContent`, which
+  // ignores the card's %-width so its `offsetWidth` is the true natural width),
+  // add the card's chrome, clamp to [MIN_PANEL_WIDTH, max-width], and write the
+  // px onto the panel. The card fills that px via `width:100%`, so the frosted
+  // surface glides. Width is set imperatively (React never manages
+  // `panel.style.width`), so it survives re-renders and the transition baseline
+  // stays the previously-painted px → old→new glides smoothly.
   useLayoutEffect(() => {
-    if (open && menuKey) {
-      const left = positionFor(menuKey)
-      // Intentional: re-clamp the panel against its real measured width after
-      // layout. useLayoutEffect runs pre-paint, so this won't flash.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      if (left != null) setPanelLeft(left)
-    }
+    const panel = panelRef.current
+    const content = menuContentRef.current
+    const card = panelCardRef.current
+    if (!open || !menuKey || !panel || !content || !card) return
+    const cs = getComputedStyle(card)
+    const chrome =
+      parseFloat(cs.paddingLeft) +
+      parseFloat(cs.paddingRight) +
+      parseFloat(cs.borderLeftWidth) +
+      parseFloat(cs.borderRightWidth)
+    const natural = content.offsetWidth + chrome
+    const maxPx = Math.min(window.innerWidth * 0.92, 560)
+    const target = Math.round(
+      Math.min(Math.max(natural, MIN_PANEL_WIDTH), maxPx)
+    )
+    panel.style.width = `${target}px`
+    const left = positionFor(menuKey, target)
+    // Intentional pre-paint re-clamp using the real measured width. useLayoutEffect
+    // runs before paint, so neither the width write nor this flashes.
+    if (left != null) setPanelLeft(left)
   }, [open, menuKey])
 
   // Keep the panel anchored if the window resizes while open. rAF-coalesced:
@@ -618,11 +652,11 @@ function Header() {
             className={`${styles.panel} ${open ? styles.panelOpen : styles.panelClosed}`}
           >
             <div className={styles.panelInner}>
-              <div className={`glass-panel ${styles.panelCard}`}>
+              <div ref={panelCardRef} className={`glass-panel ${styles.panelCard}`}>
                 {/* Keyed by menuKey so switching menus cross-fades + re-runs
                     the staggered item reveal. */}
                 {ActiveBody && (
-                  <div key={menuKey} className={styles.menuContent}>
+                  <div key={menuKey} ref={menuContentRef} className={styles.menuContent}>
                     <ActiveBody onNavigate={closeNow} active={open} />
                   </div>
                 )}

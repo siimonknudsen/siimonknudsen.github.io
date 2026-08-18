@@ -562,12 +562,14 @@
      inside. So it's positioned by left-EDGE from JS (centred there) instead, and
      open/close animates opacity only — no transform anywhere in the chain. */
   z-index: 50;
-  /* Width fits the widest row of the current menu (no fixed px), capped so it
-     never runs off-screen on small viewports. */
+  /* `max-content` is only the pre-measure fallback: intrinsic keywords can't be
+     transitioned, so JS measures each menu's natural width and sets an explicit
+     px `width` inline (clamped to [MIN_PANEL_WIDTH, max-width]). That px value is
+     what lets the panel + card GLIDE between menu sizes instead of snapping. */
   width: max-content;
   max-width: min(92vw, 560px);
-  /* `left` transition so the panel glides between triggers (Projects → Archive
-     → …); width adapts to content instead of closing/reopening. */
+  /* `left` + `width` transitions so the panel glides between triggers
+     (Projects → Archive → …) AND smoothly resizes between their widths. */
   transition: opacity 220ms ease-out,
     left 420ms var(--ease-emphasized), width 420ms var(--ease-emphasized);
 }
@@ -591,14 +593,22 @@
 
 .panelInner {
   padding-top: 10px;
+  width: 100%;
 }
 
 .panelCard {
   border-radius: var(--radius-xl);
   padding: var(--space-12);
+  /* Fill the (JS-measured, animating) panel width so the frosted card glides
+     smoothly between menu sizes instead of snapping — see `.panel`. */
+  width: 100%;
   /* The single-column Archive menu (~11 items) can get tall — cap the height
-     and let it scroll gracefully instead of running off-screen. */
+     and let it scroll gracefully instead of running off-screen. `overflow-x`
+     clips the content while the card is mid-width-animation (e.g. growing from
+     About→Archive) so nothing spills past the rounded edge; the card's own
+     drop-shadow lives outside the box and is NOT clipped by this. */
   max-height: 70vh;
+  overflow-x: hidden;
   overflow-y: auto;
 }
 
@@ -606,6 +616,12 @@
    On open (and on every menu switch, via the keyed remount) the content
    cross-fades in and the rows rise one-by-one — slow and relaxed. */
 .menuContent {
+  /* Intrinsically sized (so JS can measure each menu's natural width to drive
+     the animated panel px), with a floor so narrow menus (About/Contact) render
+     roomy and their full-width rows fill the card instead of hugging the left.
+     274 + 26px card chrome ≈ the 300px MIN_PANEL_WIDTH floor in Header.jsx. */
+  width: max-content;
+  min-width: 274px;
   animation: menuContentIn 420ms var(--ease-decelerate) both;
 }
 

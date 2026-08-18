@@ -22,15 +22,17 @@ function MoonIcon() {
 }
 
 /**
- * Segmented light/dark control. Switching animates with a View Transitions
- * "circular reveal" that blooms from the clicked button, with a colour
- * cross-fade fallback and full prefers-reduced-motion support.
+ * Segmented light/dark control. Switching animates with a calm, full-page
+ * colour cross-fade via View Transitions — a snapshot of the old theme dissolves
+ * into the new one (covering gradients, glass and the hero shader uniformly),
+ * with a CSS colour-transition fallback and full prefers-reduced-motion support.
+ * Timing/easing of the dissolve live on ::view-transition-old/new(root) in index.css.
  */
 function ThemeToggle() {
   const { theme, setTheme } = useTheme()
   const isDark = theme === 'dark'
 
-  const switchTo = (next, event) => {
+  const switchTo = (next) => {
     if (next === theme) return
 
     const root = document.documentElement
@@ -51,38 +53,22 @@ function ThemeToggle() {
       return
     }
 
-    // No View Transitions support → brief colour cross-fade.
+    // No View Transitions support → brief per-property colour cross-fade.
     if (!document.startViewTransition) {
       root.classList.add('theme-anim')
       apply()
-      window.setTimeout(() => root.classList.remove('theme-anim'), 1200)
+      window.setTimeout(() => root.classList.remove('theme-anim'), 400)
       return
     }
 
-    // Circular reveal from the clicked control.
-    const x = event?.clientX ?? window.innerWidth
-    const y = event?.clientY ?? 0
-    const endRadius = Math.hypot(
-      Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y)
-    )
-
-    const transition = document.startViewTransition(() => apply())
-    transition.ready.then(() => {
-      root.animate(
-        {
-          clipPath: [
-            `circle(0px at ${x}px ${y}px)`,
-            `circle(${endRadius}px at ${x}px ${y}px)`,
-          ],
-        },
-        {
-          duration: 1200,
-          easing: 'cubic-bezier(0.33, 0, 0.2, 1)',
-          pseudoElement: '::view-transition-new(root)',
-        }
-      )
-    })
+    // Smooth full-page cross-fade: the browser dissolves the old theme snapshot
+    // into the new one. No geometry — reads as "instant, but buttery".
+    const vt = document.startViewTransition(apply)
+    // A rapid re-toggle (or a non-rendered/hidden document) skips the in-flight
+    // transition, rejecting its promises — swallow so it never surfaces as an
+    // unhandled rejection. The class/state is already applied either way.
+    vt.ready?.catch(() => {})
+    vt.finished?.catch(() => {})
   }
 
   return (
@@ -99,7 +85,7 @@ function ThemeToggle() {
       />
       <button
         type="button"
-        onClick={(e) => switchTo('light', e)}
+        onClick={() => switchTo('light')}
         aria-label="Light mode"
         aria-pressed={!isDark}
         className={`${styles.btn} ${
@@ -110,7 +96,7 @@ function ThemeToggle() {
       </button>
       <button
         type="button"
-        onClick={(e) => switchTo('dark', e)}
+        onClick={() => switchTo('dark')}
         aria-label="Dark mode"
         aria-pressed={isDark}
         className={`${styles.btn} ${

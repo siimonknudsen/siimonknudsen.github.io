@@ -56,27 +56,28 @@
   background-repeat: no-repeat;
 }
 
-/* Dark-mode mesh — warm ember blooms over near-black, harmonising with the
-   orange brand accent. Kept low-chroma/low-alpha so it reads atmospheric, not
-   loud, yet gives glass enough texture to frost. */
+/* Dark-mode mesh — neutral near-black (Simon: drop the warm/orange wash, keep it
+   simple black & white). A whisper of achromatic light gives depth + enough
+   texture for glass to frost; no hue. */
 :global(html.dark) .meshBackdrop {
-  --mesh-base: #0b0b0c;
-  --mesh-a: rgba(242, 106, 46, 0.20);  /* brand-500 warm bloom, top-left */
-  --mesh-b: rgba(124, 54, 24, 0.26);   /* deep ember, top-right */
-  --mesh-c: rgba(219, 83, 32, 0.18);   /* brand-600, bottom-right */
-  --mesh-d: rgba(58, 22, 12, 0.55);    /* brand-950 shadow pool, bottom-left */
-  --mesh-e: rgba(40, 30, 26, 0.40);    /* warm neutral centre lift */
+  --mesh-base: #0a0a0a;
+  --mesh-a: rgba(255, 255, 255, 0.028); /* soft light, top-left */
+  --mesh-b: transparent;
+  --mesh-c: rgba(255, 255, 255, 0.018); /* faint light, bottom-right */
+  --mesh-d: rgba(0, 0, 0, 0.45);        /* shadow pool, bottom-left */
+  --mesh-e: rgba(255, 255, 255, 0.022); /* centre lift */
 }
 
-/* Light-mode mesh — pale warm washes over white; soft enough to keep type
-   contrast, present enough that translucent glass frosts a real colour. */
+/* Light-mode mesh — clean white with the faintest achromatic shade so glass
+   still frosts a real (neutral) gradient and the field isn't clinically flat.
+   No warm/peach wash. */
 :global(html:not(.dark)) .meshBackdrop {
-  --mesh-base: #fbf7f4;
-  --mesh-a: rgba(254, 204, 174, 0.55); /* brand-200 peach, top-left */
-  --mesh-b: rgba(255, 244, 238, 0.90); /* brand-50 near-white, top-right */
-  --mesh-c: rgba(252, 171, 124, 0.40); /* brand-300, bottom-right */
-  --mesh-d: rgba(255, 230, 214, 0.70); /* brand-100, bottom-left */
-  --mesh-e: rgba(250, 250, 250, 0.60); /* neutral centre lift */
+  --mesh-base: #ffffff;
+  --mesh-a: rgba(0, 0, 0, 0.020);  /* soft shade, top-left */
+  --mesh-b: transparent;
+  --mesh-c: rgba(0, 0, 0, 0.016);  /* soft shade, bottom-right */
+  --mesh-d: transparent;
+  --mesh-e: rgba(0, 0, 0, 0.008);  /* barely-there centre */
 }
 
 /* Static by design — no drift. A transform drift on this sticky, viewport-sized

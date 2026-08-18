@@ -1718,7 +1718,7 @@ function StyleGuide() {
             <ComponentSection
               id="theme-toggle"
               name="Theme toggle"
-              purpose="Switch between light and dark — a segmented control with a circular view-transition reveal."
+              purpose="Switch between light and dark — a segmented control with a calm full-page colour cross-fade (View Transitions)."
             >
               <div className={styles.demoGrid}>
                 <Tile label="Light / Dark"><ThemeToggle /></Tile>

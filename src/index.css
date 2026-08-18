@@ -879,7 +879,8 @@ html:not(.dark) {
   border-color: var(--glass-border);
 }
 
-/* CSS fallback for the hero ShaderBackground (no-WebGL): a calm static gradient. */
+/* CSS fallback for the hero ShaderBackground (no-WebGL): a calm, neutral static
+   surface (no warm/orange wash — matches the black & white mesh). */
 .shader-bg-fallback {
   position: absolute;
   inset: 0;
@@ -887,9 +888,6 @@ html:not(.dark) {
   height: 100%;
   overflow: hidden;
   background-color: var(--surface-color-primary);
-  background-image:
-    radial-gradient(60% 50% at 25% 30%, var(--accent-soft), transparent 70%),
-    radial-gradient(55% 45% at 80% 72%, var(--glass-item-hover), transparent 72%);
 }
 
 /* Accent (status / highlight) — the one owned brand colour */
@@ -1000,12 +998,15 @@ html:not(.dark) {
 }
 
 /* ── Theme switch animation ────────────────────────────────────
-   View Transitions "circular reveal" (driven from ThemeToggle):
-   the new theme blooms out from the toggle like ink. We disable the
-   default cross-fade so the clip-path animation reads cleanly. */
+   Calm full-page cross-fade (driven from ThemeToggle): a snapshot of the old
+   theme dissolves into the new one. We keep the UA's default fade keyframes and
+   just tune the timing — slow enough to read as smooth, short enough to feel
+   near-instant. `mix-blend-mode: normal` avoids the default plus-lighter
+   blending so mid-fade colours don't wash out. */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation: none;
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   mix-blend-mode: normal;
 }
 ::view-transition-old(root) {
