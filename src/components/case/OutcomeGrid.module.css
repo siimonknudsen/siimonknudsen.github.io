@@ -4,9 +4,10 @@
   gap: var(--space-32);
   padding: var(--space-32);
   border-radius: var(--radius-2xl);
-  /* Flat solid band: tonal secondary surface, no glass/border/shadow. */
-  background-color: var(--surface-color-secondary);
-  box-shadow: none;
+  /* Card surface + subtle shadow (theme-aware): white + soft shadow in light,
+     tonal surface in dark. No glass/border. */
+  background-color: var(--surface-card-bg);
+  box-shadow: var(--surface-card-shadow);
 }
 
 @media (min-width: 640px) {

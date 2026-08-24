@@ -6,9 +6,10 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  /* Flat solid card: tonal secondary surface, no border, no shadow. */
-  background-color: var(--surface-color-secondary);
-  box-shadow: none;
+  /* Card surface + subtle shadow (theme-aware): white + soft shadow in light,
+     tonal surface in dark. No border. */
+  background-color: var(--surface-card-bg);
+  box-shadow: var(--surface-card-shadow);
 }
 
 .title {

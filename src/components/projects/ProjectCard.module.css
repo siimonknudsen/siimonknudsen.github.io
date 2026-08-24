@@ -10,10 +10,10 @@
   height: 100%;
   padding: var(--space-12);
   border-radius: var(--radius-xl);
-  /* Flat solid card: tonal secondary surface, no glass/border/shadow —
-     matches the testimonial + skill cards. */
-  background-color: var(--surface-color-secondary);
-  box-shadow: none;
+  /* Card surface + subtle shadow (theme-aware): white + soft shadow in light,
+     tonal surface in dark. No glass/border. Matches the other cards. */
+  background-color: var(--surface-card-bg);
+  box-shadow: var(--surface-card-shadow);
   transition: transform var(--dur-fast) var(--ease-standard);
   /* PERF: these cards both scroll-reveal (Archive, opacity+transform) and
      scroll-stack with a scale (Home) — re-blurring a backdrop-filter every frame

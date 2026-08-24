@@ -259,7 +259,8 @@
 
 .breakoutMedia {
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-xl);
+  /* Subtle card shadow (matches the content cards), not the heavy --shadow-xl. */
+  box-shadow: var(--surface-card-shadow);
   overflow: hidden;
 }
 

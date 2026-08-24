@@ -287,6 +287,11 @@ html.dark {
   --surface-color-primary: var(--neutral-1000);
   --surface-color-secondary: var(--neutral-900);
   --surface-color-tertiary: var(--neutral-800);
+  /* Content-card surface + shadow (theme-aware). DARK: keep the tonal secondary
+     surface with no shadow — a black-on-black card + dark shadow would be
+     invisible (the light card+shadow treatment only works on the white ground). */
+  --surface-card-bg: var(--surface-color-secondary);
+  --surface-card-shadow: none;
   /* Tonal elevation ramp (Material 3 / Linear) — depth from a lightening tone,
      NOT a heavier shadow or a border. Higher step = closer to the viewer. On
      dark, "raised" lifts toward grey from the near-black base. Reserve shadow /
@@ -377,6 +382,16 @@ html:not(.dark) {
   --surface-color-primary: var(--neutral-0);
   --surface-color-secondary: var(--neutral-100);
   --surface-color-tertiary: var(--neutral-200);
+  /* Content-card surface + shadow (light): pure white + a clean MULTI-LAYER
+     "stacked" shadow. One downward light source, offset+blur growing geometrically
+     (0.5→2→5→12), alpha decreasing per layer (Ahlin/Comeau method) → a soft,
+     realistic penumbra instead of one flat blur. Kept subtle (max α .035). */
+  --surface-card-bg: var(--surface-color-primary);
+  --surface-card-shadow:
+    0 0.5px 1px rgba(0, 0, 0, 0.035),
+    0 2px 4px rgba(0, 0, 0, 0.03),
+    0 5px 10px rgba(0, 0, 0, 0.025),
+    0 12px 24px rgba(0, 0, 0, 0.02);
   /* Tonal elevation ramp (Material 3 / Linear) — on light, "raised" deepens
      subtly off pure white. Gentle steps so raised surfaces read as elevation,
      not dirt. Reserve shadow / glow / glass for only the topmost layer. */
