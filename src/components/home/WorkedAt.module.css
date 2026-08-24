@@ -129,6 +129,12 @@
   max-width: 280px;
   padding: var(--space-12);
   border-radius: var(--radius-xl);
+  /* Match the header dropdown's glass exactly — same bg tint (`--glass-bg`, not
+     the stronger panel tint) + 20px blur. (Border/shadow/sheen already match via
+     `.glass-panel`.) */
+  background-color: var(--glass-bg);
+  -webkit-backdrop-filter: blur(20px) saturate(var(--glass-saturate));
+  backdrop-filter: blur(20px) saturate(var(--glass-saturate));
   text-align: left;
   /* hidden until hover/focus */
   opacity: 0;

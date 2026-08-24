@@ -12,10 +12,18 @@ import styles from './TestimonialCard.module.css'
 function TestimonialCard({ logo, logoNode, recommender, title, company, text, delay }) {
   const hasLogo = logoNode || logo
   const paragraphs = Array.isArray(text) ? text : [text]
+  // Placeholder avatar: initials from the recommender's name (no fabricated photo).
+  const initials = (recommender || '')
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase()
 
   return (
-    // Flat solid card — a tonal secondary surface (no glass, no border, no
-    // shadow): reads as a distinct panel against the page ground in both themes.
+    // Flat solid card — a tonal secondary surface (no glass, no border): reads as
+    // a distinct panel against the page ground. Sizing/spacing mirrors Propane.
     <Reveal as="figure" delay={delay} className={styles.card}>
         {/* Single restrained accent touch — an oversized quotation glyph. */}
         <span aria-hidden="true" className={styles.quoteMark}>&ldquo;</span>
@@ -30,23 +38,25 @@ function TestimonialCard({ logo, logoNode, recommender, title, company, text, de
 
         <blockquote className={styles.quote}>
           {paragraphs.map((p, i) => (
-            <p
-              key={i}
-              className={`type-body text-color-secondary ${styles.para}`}
-            >
+            <p key={i} className={`text-color-secondary ${styles.para}`}>
               {p}
             </p>
           ))}
         </blockquote>
 
         <figcaption className={styles.foot}>
-          <span className={`type-subtitle text-color-primary ${styles.name}`}>
-            {recommender}
+          <span className={styles.avatar} aria-hidden="true">
+            {initials}
           </span>
-          <span className={`type-body-sm text-color-tertiary ${styles.meta}`}>
-            {title}
-            {title && company ? ' · ' : ''}
-            {company}
+          <span className={styles.footMeta}>
+            <span className={`text-color-primary ${styles.name}`}>
+              {recommender}
+            </span>
+            <span className={`text-color-secondary ${styles.meta}`}>
+              {title}
+              {title && company ? ' · ' : ''}
+              {company}
+            </span>
           </span>
         </figcaption>
     </Reveal>

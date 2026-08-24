@@ -78,7 +78,8 @@
   width: 100%;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  background-color: var(--surface-color-secondary);
+  background-color: var(--surface-card-bg);
+  box-shadow: var(--surface-card-shadow);
   border-radius: var(--radius-md);
 }
 
