@@ -195,11 +195,13 @@ Conventions: card padding 24 (`p-6`), section rhythm 80 (`mb-20`), tight stacks 
   to 8px** — cards, panels, bars, images cap at **8px** (use sm/md for new work).
   `--radius-pill` (full) is for **circular elements** (avatars, theme toggle, hamburger,
   the floating nav bar) **and chips/tags** (see below).
-- **Chips / tags** are **glass pills**: `--radius-pill`, translucent `--glass-bg` fill +
-  `backdrop-filter` blur (`--glass-blur-sm`) + `--glass-border` hairline — theme-aware,
-  same frosted material as the rest of the glass system (not a flat solid fill).
-- **Cards** (project, testimonial, skill, archive) use the **`.glass-panel`** frosted
-  surface + hover lift; project images zoom on hover.
+- **Chips / tags** (`Badge`) are **flat solid pills**: `--radius-pill` + a solid
+  `--surface-color-tertiary` fill (one tonal step off the card) — **no glass, no border,
+  no shadow** (de-glassed 2026-08). Accent chips use `--accent-soft`.
+- **Cards** (project, testimonial, skill, archive, impact band, logo tiles) are **flat
+  solid tonal surfaces** — a solid `--surface-color-secondary` fill, **no glass, no
+  border, no shadow, no hover glow** (de-glassed 2026-08). Project images still zoom on
+  hover, and sit at a smaller concentric radius (`sm` inside the card's `xl`).
 
 ### Elevation (shadow scale)
 Theme-aware shadows for **solid** (non-glass) surfaces — tight & subtle in light,

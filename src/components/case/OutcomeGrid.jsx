@@ -12,7 +12,7 @@ import styles from './OutcomeGrid.module.css'
 function OutcomeGrid({ outcomes }) {
   if (!outcomes || outcomes.length === 0) return null
   return (
-    <Stagger className={`glass-panel border-glass ${styles.grid}`}>
+    <Stagger className={styles.grid}>
       {outcomes.map((o, i) => (
         <Reveal key={i} preset="fade-up" className={styles.cell}>
           <OutcomeStat metric={o.metric} label={o.label} note={o.note} />

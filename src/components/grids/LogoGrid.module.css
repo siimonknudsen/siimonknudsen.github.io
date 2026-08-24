@@ -72,18 +72,13 @@
   gap: var(--space-16);
 }
 
-/* Logo cell — frosted glass tile (theme-aware, real backdrop blur). Static
-   element, so the blur is safe (no scrolling/scaling ancestor). */
+/* Logo cell — the standard flat content surface (tonal secondary), matching the
+   cards; no glass, no border, no shadow. */
 .cell {
   width: 100%;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  /* Translucent tint + edge only — NO backdrop-filter. There are up to ~21 of
-     these on the About page; live-blurring each was a major perf cost (21 GPU
-     passes re-rendering on scroll) for a frost that the logo itself mostly covers.
-     The tint + border still read as a glass tile over the mesh. */
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  background-color: var(--surface-color-secondary);
   border-radius: var(--radius-md);
 }
 

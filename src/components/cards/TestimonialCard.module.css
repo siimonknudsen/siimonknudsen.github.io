@@ -8,16 +8,19 @@
   gap: var(--space-24);
   height: 100%;
   margin: 0;
+  /* Flat solid card: tonal secondary surface, no border, no shadow. */
+  background-color: var(--surface-color-secondary);
+  box-shadow: none;
 }
 
-/* Spotlight glow is the first child at z-index:0; lift real content above it. */
-.card > *:not(:first-child) {
+/* Keep the real content above the decorative (absolute) quote glyph. */
+.card > *:not(.quoteMark) {
   position: relative;
   z-index: 1;
 }
 
-/* Oversized decorative quotation glyph — the section's single warm-accent touch,
-   kept low-opacity so it reads as atmosphere, not decoration.
+/* Oversized decorative quotation glyph — a quiet greyscale touch (neutral, not
+   the warm accent), kept low-opacity so it reads as atmosphere, not decoration.
    Compound selector (.card .quoteMark) so its `absolute` beats the
    `.card > *:not(:first-child) { position: relative }` lift rule above — otherwise
    the glyph drops into flow and pads ~105px of dead space onto the card top. */
@@ -28,8 +31,8 @@
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 5rem;
   line-height: 1;
-  color: var(--accent);
-  opacity: 0.22;
+  color: var(--text-color-tertiary);
+  opacity: 0.4;
   pointer-events: none;
   user-select: none;
 }

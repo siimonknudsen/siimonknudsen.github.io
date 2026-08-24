@@ -1,4 +1,5 @@
 import { useEffect, useRef, lazy, Suspense } from 'react'
+import { createPortal } from 'react-dom'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { LazyMotion } from 'motion/react'
 import Home from './pages/Home'
@@ -98,11 +99,16 @@ function AnimatedRoutes() {
   return (
     <>
       {/* Curtain wipe — keyed by pathname so it remounts and replays on
-          every navigation. Sweeps up over the viewport, then off the top. */}
+          every navigation. Sweeps up over the viewport, then off the top.
+          Portaled to <body> so its z-index (1500) competes at the ROOT stacking
+          context — otherwise it's trapped inside <main> (a z-index:1 context, so
+          the mesh can sit at -1) and the later-in-DOM Footer (z-index:1) paints
+          over it during the transition. */}
       {/* playWipe is derived from the render-time ref read justified above. */}
       {/* eslint-disable-next-line react-hooks/refs */}
-      {playWipe && (
-        <div key={location.pathname} className={styles.wipe} aria-hidden="true" />
+      {playWipe && createPortal(
+        <div key={location.pathname} className={styles.wipe} aria-hidden="true" />,
+        document.body
       )}
       {/* eslint-disable-next-line react-hooks/refs */}
       <div key={location.pathname} className={playWipe ? 'page-enter-nav' : 'page-enter'}>

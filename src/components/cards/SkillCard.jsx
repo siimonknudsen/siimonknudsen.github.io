@@ -1,5 +1,4 @@
 import Reveal from '../motion/Reveal'
-import useSpotlight from '../../hooks/useSpotlight'
 import styles from './SkillCard.module.css'
 
 /**
@@ -9,11 +8,9 @@ import styles from './SkillCard.module.css'
  * isolate the backdrop and make the blur "pop in" late.
  */
 function SkillCard({ title, description }) {
-  const onSpotlight = useSpotlight()
-
   return (
-    <Reveal className={`group glass-panel ${styles.card}`} onMouseMove={onSpotlight}>
-      <span aria-hidden="true" className="fx-spotlight" />
+    // Flat solid card — tonal secondary surface, no glass/border/shadow.
+    <Reveal className={styles.card}>
       <h3 className={`type-subtitle text-color-primary ${styles.title}`}>
         {title}
       </h3>

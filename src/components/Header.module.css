@@ -96,18 +96,23 @@
 .workGridScroll {
   max-height: 46vh;
   overflow-y: scroll;
-  /* Firefox */
+  /* Bleed to the card's absolute right edge (cancel the card's padding on the
+     right) so the scrollbar sits flush to the panel edge, while the rows keep
+     their inset via the matching padding. */
+  margin-right: calc(-1 * var(--space-12));
+  padding-right: var(--space-12);
+  /* Firefox — thumb uses the glass hover tint (not the heavier default border). */
   scrollbar-width: thin;
-  scrollbar-color: var(--border-color-secondary) transparent;
+  scrollbar-color: var(--glass-item-hover) transparent;
 }
 .workGridScroll::-webkit-scrollbar {
-  width: 8px;
+  width: 2px;
 }
 .workGridScroll::-webkit-scrollbar-track {
   background: transparent;
 }
 .workGridScroll::-webkit-scrollbar-thumb {
-  background: var(--border-color-secondary);
+  background: var(--glass-item-hover);
   border-radius: var(--radius-pill);
 }
 
@@ -333,6 +338,9 @@
   gap: var(--space-8);
   padding: var(--space-8);
   position: relative;
+  /* Navbar-specific: a heavier 20px frost (overrides `.glass`'s 12px md blur). */
+  -webkit-backdrop-filter: blur(20px) saturate(var(--glass-saturate));
+  backdrop-filter: blur(20px) saturate(var(--glass-saturate));
 }
 
 /* Left — brand */
@@ -406,11 +414,10 @@
   font-size: var(--text-sm);
   font-weight: var(--weight-regular);
   padding: var(--space-8) var(--space-16);
-  border-radius: var(--radius-md);
   white-space: nowrap;
-  /* Sit above the sliding pill so the label stays legible. */
-  position: relative;
-  z-index: 1;
+  /* Text-only trigger — no background pill or border; the label colour shifts
+     secondary→primary on hover/active (utility classes). Smooth that shift. */
+  transition: color var(--dur-fast) var(--ease-standard);
 }
 
 /* Keyboard focus — soft accent glow (no hard outline), matching the glass
@@ -451,50 +458,6 @@
   }
   .trigger:hover .rollText {
     transform: none;
-  }
-}
-
-/* Single pill that travels between triggers on hover and rests on the
-   active-route trigger; positioned via inline transform/width from JS. It's a
-   small glass pill in the same frosted material as the rest of the glass system
-   (theme-aware translucent tint + blur + a soft hairline + pill radius).
-   NB (GLASS_DESIGN_SYSTEM §8): the bar itself is glass, so this nested
-   backdrop-filter may not visibly blur — the tint + hairline + radius still
-   read as the glass material, so it stays consistent. */
-.navPill {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  border-radius: var(--radius-pill);
-  /* Theme-aware glass pill (not a solid fill). Active = resting/current-route
-     fill; hover swaps to the softer fill below. LIGHT mode uses a WHITE frost
-     (`--glass-pill-*`) so it reads as glass, not the old flat grey. The sheen
-     gives it a lit top edge = the frosted-glass material. */
-  background-color: var(--glass-pill-active);
-  background-image: var(--glass-sheen);
-  border: 1px solid var(--glass-border);
-  /* No backdrop-filter: the pill is nested in the glass bar (blur would render
-     nothing, GLASS §8) AND it transform-slides between triggers — blurring a
-     moving element is the rule-#7 jank pattern. The white fill + sheen + hairline
-     carry the frosted look without the wasted GPU pass. */
-  z-index: 0;
-  pointer-events: none;
-  /* Slide between triggers (transform/width), fade in/out, and cross-fade the
-     fill calmly as it switches hover↔active — no scale/bounce. */
-  transition: transform 380ms var(--ease-emphasized),
-    width 380ms var(--ease-emphasized), opacity 200ms ease,
-    background-color var(--dur-fast) var(--ease-standard);
-}
-
-/* While the cursor is over a trigger, use the softer glass hover fill. */
-.navPill[data-mode='hover'] {
-  background-color: var(--glass-pill-hover);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .navPill {
-    transition: none;
   }
 }
 
@@ -599,6 +562,12 @@
 .panelCard {
   border-radius: var(--radius-xl);
   padding: var(--space-12);
+  /* Match the header bar's glass EXACTLY — same bg tint (`--glass-bg`, not the
+     stronger panel tint) and same 20px blur — so the bar + dropdown read as one
+     continuous glass surface. Overrides `.glass-panel`'s defaults. */
+  background-color: var(--glass-bg);
+  -webkit-backdrop-filter: blur(20px) saturate(var(--glass-saturate));
+  backdrop-filter: blur(20px) saturate(var(--glass-saturate));
   /* Fill the (JS-measured, animating) panel width so the frosted card glides
      smoothly between menu sizes instead of snapping — see `.panel`. */
   width: 100%;

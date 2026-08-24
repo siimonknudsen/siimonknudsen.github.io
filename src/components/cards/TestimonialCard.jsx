@@ -1,5 +1,4 @@
 import Reveal from '../motion/Reveal'
-import useSpotlight from '../../hooks/useSpotlight'
 import styles from './TestimonialCard.module.css'
 
 /**
@@ -13,13 +12,11 @@ import styles from './TestimonialCard.module.css'
 function TestimonialCard({ logo, logoNode, recommender, title, company, text, delay }) {
   const hasLogo = logoNode || logo
   const paragraphs = Array.isArray(text) ? text : [text]
-  const onSpotlight = useSpotlight()
 
   return (
-    // The glass <figure> IS the reveal so its frost survives the reveal (a
-    // wrapper's opacity/transform would isolate the backdrop & kill the blur).
-    <Reveal as="figure" delay={delay} className={`group glass-panel ${styles.card}`} onMouseMove={onSpotlight}>
-      <span aria-hidden="true" className="fx-spotlight" />
+    // Flat solid card — a tonal secondary surface (no glass, no border, no
+    // shadow): reads as a distinct panel against the page ground in both themes.
+    <Reveal as="figure" delay={delay} className={styles.card}>
         {/* Single restrained accent touch — an oversized quotation glyph. */}
         <span aria-hidden="true" className={styles.quoteMark}>&ldquo;</span>
 

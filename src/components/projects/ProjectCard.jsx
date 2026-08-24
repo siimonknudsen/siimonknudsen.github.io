@@ -3,7 +3,6 @@ import { m } from 'motion/react'
 import TagRow from './TagRow'
 import Reveal from '../motion/Reveal'
 import Media from '../Media'
-import useSpotlight from '../../hooks/useSpotlight'
 import styles from './ProjectCard.module.css'
 
 // Motion-wrapped <Link>, created ONCE at module scope (never during render) so
@@ -12,22 +11,17 @@ import styles from './ProjectCard.module.css'
 const MotionLink = m.create(Link)
 
 function ProjectCard({ id, title, description, tags = [], impact, delay, noMedia = false }) {
-  const onSpotlight = useSpotlight()
   return (
-    // The glass <Link> IS the reveal (animates its own opacity/transform) so its
-    // backdrop-filter frost stays alive through the reveal — a wrapper would
-    // isolate & kill it. revealWrap (height:100%) folds onto it for grid stretch.
+    // Flat solid card — a tonal secondary surface (no glass/border/shadow),
+    // matching the testimonial + skill cards. revealWrap (height:100%) folds
+    // onto it for grid stretch.
     <Reveal
       as={MotionLink}
       to={`/project/${id}`}
-      onMouseMove={onSpotlight}
       preset="fade-up"
       delay={delay}
-      className={`group glass-panel ${styles.card} ${styles.revealWrap}`}
+      className={`${styles.card} ${styles.revealWrap}`}
     >
-      {/* Cursor spotlight (specular sheen) — shared global utility */}
-      <span aria-hidden="true" className="fx-spotlight" />
-
       {/* Image frame — clips the inner zoom on hover */}
       <div className={styles.frame}>
         <div className={styles.zoom}>
