@@ -8,6 +8,18 @@ All tokens live in [`src/index.css`](src/index.css). Components consume them via
 the `.glass`, `.glass-panel`, and `.glass-item` classes — never hard-coded blur
 or rgba values.
 
+> **⚠️ 2026-08 update — glass is now CHROME-ONLY (supersedes specifics below).**
+> The flat-B&W pass pulled glass off content. **Cards** (project/testimonial/skill/
+> impact/logo tiles) and **chips/tags** are no longer glass — they're **flat solid
+> tonal surfaces** (`--surface-color-secondary` / chips `--surface-color-tertiary`),
+> no border/shadow. **Glass is reserved for floating chrome**: the header bar + its
+> dropdowns, tooltips, modals. On those, the **outer 1px border and the inset
+> top-edge highlight were removed** (they read as hard lines on the flat ground) —
+> glass is now tint + blur + soft sheen + a **small** drop-shadow (`--glass-shadow-lg`
+> = `0 4px 16px`). The **header bar and its dropdowns share one glass** (`--glass-bg`
+> + 20px blur; light = white @ 60%). Read the sections below as the *mechanism*; these
+> current values/consumers win where they conflict.
+
 ---
 
 ## 1. Principles (why it's built this way)

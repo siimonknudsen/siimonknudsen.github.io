@@ -10,9 +10,11 @@
   height: 100%;
   padding: var(--space-12);
   border-radius: var(--radius-xl);
-  transition:
-    transform var(--dur-fast) var(--ease-standard),
-    box-shadow var(--dur-fast) var(--ease-standard);
+  /* Flat solid card: tonal secondary surface, no glass/border/shadow —
+     matches the testimonial + skill cards. */
+  background-color: var(--surface-color-secondary);
+  box-shadow: none;
+  transition: transform var(--dur-fast) var(--ease-standard);
   /* PERF: these cards both scroll-reveal (Archive, opacity+transform) and
      scroll-stack with a scale (Home) — re-blurring a backdrop-filter every frame
      on a large moving surface, across many cards at once, is the dominant jank
@@ -32,7 +34,9 @@
   position: relative;
   z-index: 1;
   overflow: hidden;
-  border-radius: var(--radius-md);
+  /* Concentric radii: the inner image sits smaller than the card's `xl` (8px)
+     radius — `sm` (4px) — so nested corners don't read as equal/off. */
+  border-radius: var(--radius-sm);
 }
 
 .zoom {

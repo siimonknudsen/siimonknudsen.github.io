@@ -19,7 +19,9 @@
      CTAs at its true vertical middle. min-height (not fixed) so short screens grow
      instead of clipping; symmetric padding keeps it balanced. The global mesh
      already shows behind the header, so the hero needn't reach under it. */
-  min-height: calc(100vh - var(--header-height));
+  /* Fill the area below the header, but CAP at 1024px so the hero doesn't grow
+     oversized on very tall/large screens (content just centres within the cap). */
+  min-height: min(calc(100vh - var(--header-height)), 1024px);
   padding: var(--space-48) var(--page-gutter);
   box-sizing: border-box;
 }

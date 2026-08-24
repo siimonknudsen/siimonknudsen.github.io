@@ -4,6 +4,9 @@
   gap: var(--space-32);
   padding: var(--space-32);
   border-radius: var(--radius-2xl);
+  /* Flat solid band: tonal secondary surface, no glass/border/shadow. */
+  background-color: var(--surface-color-secondary);
+  box-shadow: none;
 }
 
 @media (min-width: 640px) {

@@ -308,13 +308,8 @@ function Header() {
   const [open, setOpen] = useState(false)
   const [menuKey, setMenuKey] = useState(null)
   const [panelLeft, setPanelLeft] = useState(0)
-  // Which trigger the cursor is over (drives the sliding nav pill).
-  const [hovered, setHovered] = useState(null)
-  // {left, width, opacity} for the sliding nav pill.
-  const [pillStyle, setPillStyle] = useState({ left: 0, width: 0, opacity: 0 })
 
   const wrapperRef = useRef(null)
-  const navRef = useRef(null)
   const triggerRefs = useRef({})
   const closeTimer = useRef(null)
   // Measures the (content-sized) panel so we can clamp it on-screen after open.
@@ -434,53 +429,6 @@ function Header() {
 
   useEffect(() => () => closeTimer.current && clearTimeout(closeTimer.current), [])
 
-  // The nav trigger matching the current route (Contact is never a route, so
-  // it's never the resting target). Used as the pill's default position.
-  const activeRouteKey =
-    location.pathname === '/'
-      ? 'projects'
-      : location.pathname === '/archive'
-        ? 'archive'
-        : location.pathname === '/about'
-          ? 'about'
-          : null
-
-  // Position the sliding nav pill under the hovered trigger, or — when nothing
-  // is hovered — under the active-route trigger. If neither exists (e.g. on a
-  // project page with no hover), fade the pill out.
-  useLayoutEffect(() => {
-    const positionPill = () => {
-      const nav = navRef.current
-      const targetKey = hovered ?? activeRouteKey
-      const target = targetKey ? triggerRefs.current[targetKey] : null
-      if (!nav || !target) {
-        // Bail when already hidden — resize bursts shouldn't re-render the
-        // Header for a pill that isn't visible.
-        setPillStyle((s) => (s.opacity === 0 ? s : { ...s, opacity: 0 }))
-        return
-      }
-      const { offsetLeft: left, offsetWidth: width } = target
-      setPillStyle((s) =>
-        s.left === left && s.width === width && s.opacity === 1
-          ? s
-          : { left, width, opacity: 1 }
-      )
-    }
-    // Initial position stays synchronous (pre-paint, no flash); only the
-    // resize handler is rAF-coalesced.
-    positionPill()
-    let raf = 0
-    const onResize = () => {
-      cancelAnimationFrame(raf)
-      raf = requestAnimationFrame(positionPill)
-    }
-    window.addEventListener('resize', onResize)
-    return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener('resize', onResize)
-    }
-  }, [hovered, activeRouteKey, location.pathname])
-
   // Mobile menu: lock body scroll while open and close on Escape.
   useEffect(() => {
     if (!isMobileMenuOpen) return
@@ -542,42 +490,21 @@ function Header() {
               </span>
             </Link>
 
-            {/* Center — nav triggers (absolutely centred in the bar).
-                Close is scheduled on leaving the whole nav region (not each
-                button) so moving across the gaps keeps the menu open and the
-                last-hovered trigger stays highlighted. */}
+            {/* Center — nav triggers (absolutely centred in the bar). Triggers
+                are text-only: colour shifts secondary→primary on hover/active,
+                no background pill or border. Close is scheduled on leaving the
+                whole nav region (not each button) so moving across the gaps
+                keeps the menu open. */}
             <div
-              ref={navRef}
               className={styles.nav}
               onMouseEnter={cancelClose}
-              onMouseLeave={() => {
-                scheduleClose()
-                setHovered(null)
-              }}
+              onMouseLeave={scheduleClose}
             >
-              {/* Single pill that slides between triggers as you hover, and
-                  rests on the active-route trigger otherwise. */}
-              <span
-                className={styles.navPill}
-                aria-hidden="true"
-                /* Glass fill follows state: the hover tint while the cursor is
-                   over a trigger, the (slightly stronger) active tint when it's
-                   resting on the current-route trigger. */
-                data-mode={hovered ? 'hover' : 'active'}
-                style={{
-                  transform: `translateX(${pillStyle.left}px)`,
-                  width: `${pillStyle.width}px`,
-                  opacity: pillStyle.opacity,
-                }}
-              />
               {navItems.map((item) => {
                 const isOpenItem = open && menuKey === item.key
                 const shared = {
                   ref: (el) => (triggerRefs.current[item.key] = el),
-                  onMouseEnter: () => {
-                    openMenu(item.key)
-                    setHovered(item.key)
-                  },
+                  onMouseEnter: () => openMenu(item.key),
                   onFocus: () => openMenu(item.key),
                   onBlur: scheduleClose,
                   className: triggerClass(item.active, isOpenItem),

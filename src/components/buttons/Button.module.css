@@ -94,11 +94,11 @@
 }
 
 .primary:hover {
-  background-color: color-mix(in oklch, var(--surface-color-contrast-primary), var(--surface-color-primary) 14%) !important;
+  background-color: color-mix(in oklch, var(--surface-color-contrast-primary), var(--surface-color-primary) 20%) !important;
 }
 
 .primary:active {
-  background-color: color-mix(in oklch, var(--surface-color-contrast-primary), var(--surface-color-primary) 26%) !important;
+  background-color: color-mix(in oklch, var(--surface-color-contrast-primary), var(--surface-color-primary) 32%) !important;
 }
 
 .secondary {
@@ -119,11 +119,11 @@
 }
 
 .accent:hover {
-  background-color: color-mix(in oklch, var(--accent), #000 12%) !important;
+  background-color: color-mix(in oklch, var(--accent), #000 16%) !important;
 }
 
 .accent:active {
-  background-color: color-mix(in oklch, var(--accent), #000 22%) !important;
+  background-color: color-mix(in oklch, var(--accent), #000 26%) !important;
 }
 
 /* Outline — transparent fill with a TRANSLUCENT glass hairline (theme-aware:
@@ -135,25 +135,24 @@
   border: 1px solid var(--glass-border);
 }
 
-.outline:hover {
-  background-color: var(--glass-item-hover);
-}
-
-.outline:active {
-  background-color: var(--glass-item-active);
-}
-
-/* glass + ghost variants get their hover background from the shared
-   .glass-item rule in index.css (a subtle translucent fill). The active
-   (pressed) deepen also comes from --glass-item-active. */
-
-.glass:active,
-.ghost:active {
-  background-color: var(--glass-item-active);
+/* Translucent variants (outline · glass · ghost) — a clearly visible hover
+   fill. The default `.glass-item` wash (~8%) was too faint to read as a change,
+   so bump to the stronger `--glass-item-active` tint on hover; ghost also lifts
+   its label to primary. */
+.outline:hover,
+.glass:hover,
+.ghost:hover {
+  background-color: var(--glass-item-active) !important;
 }
 
 .ghost:hover {
   color: var(--text-color-primary) !important;
+}
+
+.outline:active,
+.glass:active,
+.ghost:active {
+  background-color: color-mix(in oklch, var(--glass-item-active), var(--text-color-primary) 10%) !important;
 }
 
 /* Text-roll on hover — the label rolls up and a duplicate rises from below.

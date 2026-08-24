@@ -163,7 +163,7 @@
   --space-200: 200px;
 
   /* — Layout — */
-  --container-max: 1920px; /* page content max width */
+  --container-max: 1440px; /* page content max width */
   --page-gutter: var(--space-24); /* horizontal breathing room — responsive: 24 mobile → 40 → 64 desktop (overrides below) */
   --header-height: 88px; /* sticky header footprint — used to slide the hero shader up behind the nav (slight overshoot guarantees full coverage) */
 
@@ -308,20 +308,22 @@ html.dark {
   --text-color-contrast-primary: var(--neutral-1000);
   --text-color-contrast-secondary: var(--neutral-600);
   --text-color-contrast-tertiary: var(--neutral-500);
-  /* Frosted glass (dark) — tint LIFTED off near-black so dark glass reads as
-     frosted, not muddy. Was 38,38,40/.55 + 28,28,30/.62: too dark + too
-     transparent over the dim mesh → low contrast, flat. Nudged lighter & a hair
-     more opaque (still translucent so the mesh frosts through), and the inner
-     top highlight strengthened below for the Apple "lit top edge". Keeps text
-     legible. (Token architecture unchanged — values only.) */
-  --glass-bg: rgba(58, 58, 62, 0.58);
-  --glass-bg-strong: rgba(48, 48, 52, 0.66);
+  /* Frosted glass (dark). Darkened for the flat black ground: the old values
+     (58,58,62/.58 + 48,48,52/.66) were lifted to frost the warm mesh, but on the
+     flat near-black canvas they composited to a too-bright grey (Simon). These
+     sit just above the #0a0a0a ground — chrome (`--glass-bg`) ≈ #1c1c1e,
+     panels/cards (`--glass-bg-strong`) ≈ #19191c — still translucent, with the
+     sheen + hairline carrying the frosted read. */
+  --glass-bg: rgba(40, 40, 44, 0.6);
+  --glass-bg-strong: rgba(32, 32, 36, 0.68);
   --glass-border: var(--transparent-light-12);
   /* Inset top line = the soft INNER TOP HIGHLIGHT (light catching the top edge);
      inset bottom line = grounding shadow. Highlight bumped (.07→.14, .08→.16)
      so dark glass gets a crisp lit edge that sells the frost. */
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 -1px 0 rgba(0, 0, 0, 0.22);
-  --glass-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 -1px 0 rgba(0, 0, 0, 0.28);
+  /* Drop-shadow only — the inset "lit top edge" highlight read as a white border
+     line on the panel top (Simon); removed. */
+  --glass-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --glass-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.45);
   --glass-item-hover: var(--transparent-light-8);
   --glass-item-active: var(--transparent-light-12);
   /* Nav "magic pill" fill (Header). DARK: a white translucent frost that lifts
@@ -398,14 +400,17 @@ html:not(.dark) {
   --text-color-contrast-primary: var(--neutral-0);
   --text-color-contrast-secondary: var(--neutral-400);
   --text-color-contrast-tertiary: var(--neutral-300);
-  /* Frosted glass (light) — lower opacity than before (was 0.60/0.85) so the
-     warm shader actually blurs *through* the surface and reads as glass instead
-     of a flat white box. Dark text stays legible on the still-substantial fill. */
-  --glass-bg: rgba(255, 255, 255, 0.46);
-  --glass-bg-strong: rgba(255, 255, 255, 0.56);
+  /* Frosted glass (light). Chrome (`--glass-bg`) = pure white @ 60% (Simon) —
+     clear glass that mostly reveals frosted content on scroll (also drives the
+     About skill chips / StatBand+StatCard tiles / badges, same `.glass` material).
+     Panels/cards (`--glass-bg-strong`) stay a subtle off-white ≈ #e9e9ec so text
+     surfaces keep a legible fill. */
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-bg-strong: rgba(230, 230, 235, 0.88);
   --glass-border: var(--transparent-dark-8);
-  --glass-shadow: 0 8px 32px rgba(17, 17, 17, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.80), inset 0 -1px 0 rgba(17, 17, 17, 0.06);
-  --glass-shadow-lg: 0 20px 60px rgba(17, 17, 17, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.90), inset 0 -1px 0 rgba(17, 17, 17, 0.08);
+  /* Drop-shadow only — inset "lit top edge" highlight removed (see dark block). */
+  --glass-shadow: 0 2px 8px rgba(17, 17, 17, 0.08);
+  --glass-shadow-lg: 0 4px 16px rgba(17, 17, 17, 0.10);
   --glass-item-hover: var(--transparent-dark-4);
   --glass-item-active: var(--transparent-dark-12);
   /* Nav pill — LIGHT mode: a WHITE frosted fill (not a grey darken). On the
@@ -762,11 +767,13 @@ html:not(.dark) {
    .glass-item   → interactive rows inside glass (hover / active)
    ───────────────────────────────────────────────────────────── */
 @layer utilities {
+  /* No outer hairline border — the glass rim read as too distinctive on the flat
+     ground (Simon). Elevation now comes from the drop-shadow alone. (`--glass-border`
+     is retained for internal `border-glass` section dividers.) */
   .glass {
     background-color: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
-    border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
   }
 
@@ -774,7 +781,6 @@ html:not(.dark) {
     background-color: var(--glass-bg-strong);
     backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
-    border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow-lg);
   }
 
@@ -820,6 +826,11 @@ html:not(.dark) {
    + `overflow: hidden` and carry the `group` class; feed pointer coords into
    --mx/--my via the useSpotlight hook (onMouseMove). Theme-aware via --glass-glow. */
 .fx-spotlight {
+  /* Retired: the cursor-spotlight glow (accent-tinted in light mode) was the
+     last hover-glow affordance; removed site-wide for the flat B&W direction —
+     no orange bloom on any card. Kept the rule inert so any lingering markup or
+     the useSpotlight hook is a no-op. */
+  display: none;
   position: absolute;
   inset: 0;
   z-index: 0;
