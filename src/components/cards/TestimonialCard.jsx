@@ -38,7 +38,7 @@ function TestimonialCard({ logo, logoNode, recommender, title, company, text, de
 
         <blockquote className={styles.quote}>
           {paragraphs.map((p, i) => (
-            <p key={i} className={`text-color-secondary ${styles.para}`}>
+            <p key={i} className={`type-body text-color-secondary ${styles.para}`}>
               {p}
             </p>
           ))}
@@ -49,10 +49,10 @@ function TestimonialCard({ logo, logoNode, recommender, title, company, text, de
             {initials}
           </span>
           <span className={styles.footMeta}>
-            <span className={`text-color-primary ${styles.name}`}>
+            <span className="type-label text-color-primary">
               {recommender}
             </span>
-            <span className={`text-color-secondary ${styles.meta}`}>
+            <span className="type-label text-color-secondary">
               {title}
               {title && company ? ' · ' : ''}
               {company}

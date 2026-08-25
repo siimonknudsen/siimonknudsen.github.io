@@ -207,6 +207,13 @@ Conventions: card padding 24 (`p-6`), section rhythm 80 (`mb-20`), tight stacks 
 Theme-aware shadows for **solid** (non-glass) surfaces — tight & subtle in light,
 deeper & softer in dark. Glass surfaces keep their own `shadow-glass` / `shadow-glass-lg`.
 
+**`sm`–`xl` are LAYERED stacks** (2026-08): each token is a *stack* of shadows — one
+downward light source, offset+blur growing geometrically, alpha decreasing per layer
+(Tobias Ahlin / Josh Comeau method) — for a soft realistic penumbra instead of one flat
+blur. `xs` stays a single hairline. Content cards reference the small step via
+`--surface-card-shadow` (= `--shadow-sm` in light; **none** in dark, where a black-on-black
+card + dark shadow would be invisible and the tonal surface carries it instead).
+
 | Token | Tailwind | Use |
 |---|---|---|
 | `--shadow-xs` | `shadow-xs` | hairline lift (inputs, chips) |
