@@ -20,11 +20,12 @@
 
 /* ── Variants ─────────────────────────────────────────────── */
 
-/* Flat chip — a solid tonal surface (surface-tertiary), NOT glass (Simon: the
-   frosted fill + hairline read too glassy). It sits one tonal step off the
-   card's secondary surface so it still reads as a distinct chip; no border. */
+/* Flat chip — a solid tonal surface, NOT glass (Simon: the frosted fill + hairline
+   read too glassy). `--chip-surface` sits one tonal step OFF the card in each theme
+   (light: secondary, one step down from the white card; dark: tertiary, one step
+   LIGHTER than the secondary card) so tags stay visible; no border. */
 .solid {
-  background-color: var(--surface-color-tertiary);
+  background-color: var(--chip-surface);
   border-color: transparent;
 }
 

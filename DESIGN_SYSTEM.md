@@ -196,8 +196,11 @@ Conventions: card padding 24 (`p-6`), section rhythm 80 (`mb-20`), tight stacks 
   `--radius-pill` (full) is for **circular elements** (avatars, theme toggle, hamburger,
   the floating nav bar) **and chips/tags** (see below).
 - **Chips / tags** (`Badge`) are **flat solid pills**: `--radius-pill` + a solid
-  `--surface-color-tertiary` fill (one tonal step off the card) — **no glass, no border,
-  no shadow** (de-glassed 2026-08). Accent chips use `--accent-soft`.
+  **`--chip-surface`** fill — a theme-split token that sits **one tonal step OFF the
+  card in each mode**: light = `secondary` (one step down from the white card); dark =
+  `tertiary` (one step **lighter** than the secondary card, so tags stay visible on the
+  dark card) — **no glass, no border, no shadow** (de-glassed 2026-08). Accent chips
+  use `--accent-soft`.
 - **Cards** (project, testimonial, skill, archive, impact band, logo tiles) are **flat
   solid tonal surfaces** — a solid `--surface-color-secondary` fill, **no glass, no
   border, no shadow, no hover glow** (de-glassed 2026-08). Project images still zoom on
@@ -210,7 +213,10 @@ deeper & softer in dark. Glass surfaces keep their own `shadow-glass` / `shadow-
 **`sm`–`xl` are LAYERED stacks** (2026-08): each token is a *stack* of shadows — one
 downward light source, offset+blur growing geometrically, alpha decreasing per layer
 (Tobias Ahlin / Josh Comeau method) — for a soft realistic penumbra instead of one flat
-blur. `xs` stays a single hairline. Content cards reference the small step via
+blur. Each stack **also leads with one subtle UPWARD (negative-Y) layer** so the top edge
+is enclosed too (white-card-on-white-page would otherwise lose its top) — kept at roughly
+half the alpha of the bottom layers so light still reads as coming from above (all four
+sides, not equal). `xs` stays a single hairline. Content cards reference the small step via
 `--surface-card-shadow` (= `--shadow-sm` in light; **none** in dark, where a black-on-black
 card + dark shadow would be invisible and the tonal surface carries it instead).
 
