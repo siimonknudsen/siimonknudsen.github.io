@@ -106,6 +106,15 @@
   .heroInner {
     max-width: 100%;
   }
+  /* 32px ran to five lines on a 430px screen and pushed the lead and CTAs most
+     of a screen down. One rung down the scale (24, with its own leading and
+     tracking — both are calibrated per size) gets it to three or four without
+     leaving the type system. */
+  .headline {
+    font-size: var(--text-2xl);
+    line-height: 28px;
+    letter-spacing: var(--tracking-24-tight);
+  }
   .projects {
     gap: var(--space-64);
   }

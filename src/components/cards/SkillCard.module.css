@@ -79,15 +79,21 @@
    card steps down a rung on the type scale (20→16 title, 16→12 body), tightens
    its padding, and drops the fixed ratio for a min-height — grid stretch keeps
    the pair in a row level with each other. */
+/* ── Phones: one per row, and short ───────────────────────────────────────
+   Full width means the copy gets a real measure back (~45 characters instead
+   of ~24), which lets it run to two lines instead of five — so the card can be
+   far shorter and three to four land on a screen at once, instead of two.
+   200px, not less: 168 measured 5.2 per screen — past what was asked, and it
+   squeezed the photo into a strip behind the text. */
 @media (max-width: 640px) {
   .card {
     aspect-ratio: auto;
-    min-height: 260px;
-    padding: var(--space-12);
+    min-height: 200px;
+    padding: var(--space-16);
   }
 
   .body {
-    gap: var(--space-8);
+    gap: var(--space-4);
   }
 
   .title {
@@ -99,10 +105,10 @@
   }
 
   .description {
-    font-size: var(--text-xs);
-    line-height: 18px;
-    letter-spacing: var(--tracking-12-base);
-    /* Same rule at the phone measure, where the copy runs to five lines. */
-    min-height: calc(5 * 18px);
+    font-size: var(--text-sm);
+    line-height: 20px;
+    letter-spacing: var(--tracking-14-base);
+    /* Reserve the longest at this measure so the titles still line up. */
+    min-height: calc(2 * 20px);
   }
 }
