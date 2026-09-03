@@ -39,7 +39,7 @@
   margin: 0;
   color: var(--text-color-secondary);
   font-size: var(--text-sm);
-  line-height: 18px;
+  line-height: 20px;
   letter-spacing: var(--tracking-base);
   text-wrap: pretty;
 }

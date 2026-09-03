@@ -1556,7 +1556,7 @@ function StyleGuide() {
                       variant="primary"
                       size="lg"
                       iconRight={<ArrowIcon />}
-                      style={{ boxShadow: '0 0 0 2px var(--surface-color-primary), 0 0 0 4px var(--accent)' }}
+                      style={{ boxShadow: '0 0 0 2px var(--surface-color-primary), 0 0 0 4px var(--focus-ring)' }}
                     >
                       Continue
                     </Button>
@@ -1577,7 +1577,7 @@ function StyleGuide() {
                     <Button variant="primary" style={{ backgroundColor: 'color-mix(in oklch, var(--surface-color-contrast-primary), var(--surface-color-primary) 14%)' }}>Button</Button>
                   </Tile>
                   <Tile label="Focus">
-                    <Button variant="primary" style={{ boxShadow: '0 0 0 2px var(--surface-color-primary), 0 0 0 4px var(--accent)' }}>Button</Button>
+                    <Button variant="primary" style={{ boxShadow: '0 0 0 2px var(--surface-color-primary), 0 0 0 4px var(--focus-ring)' }}>Button</Button>
                   </Tile>
                   <Tile label="Disabled"><Button variant="primary" disabled>Button</Button></Tile>
                 </div>

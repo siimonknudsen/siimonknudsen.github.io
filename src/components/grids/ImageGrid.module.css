@@ -29,7 +29,7 @@
 
 .tile:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--accent);
+  box-shadow: 0 0 0 2px var(--focus-ring);
 }
 
 .zoom {
@@ -135,7 +135,7 @@
 
 .ctrl:focus-visible {
   outline: none;
-  box-shadow: var(--glass-shadow), 0 0 0 2px var(--accent);
+  box-shadow: var(--glass-shadow), 0 0 0 2px var(--focus-ring);
 }
 
 /* Close — top-right of the viewport */

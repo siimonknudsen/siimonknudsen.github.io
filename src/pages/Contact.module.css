@@ -80,14 +80,14 @@
 }
 .input:focus {
   outline: none;
-  border-color: color-mix(in oklch, var(--accent) 60%, var(--glass-border));
-  box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 25%, transparent);
+  border-color: color-mix(in oklch, var(--focus-ring) 70%, var(--glass-border));
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--focus-ring) 35%, transparent);
 }
 
 .textarea {
   resize: vertical;
   min-height: 120px;
-  line-height: 1.5;
+  line-height: 24px;
 }
 
 .submit {
