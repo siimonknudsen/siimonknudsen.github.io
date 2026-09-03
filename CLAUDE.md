@@ -12,6 +12,9 @@ layer **plus Motion (Framer, the `motion` pkg) for spring/feel** — the library
 was crossed consciously for spring physics + AnimatePresence exits (see DESIGN_KNOWLEDGE
 §4.11; lazy-loaded via `LazyMotion`) · deploys on push to `main` (GitHub Actions → Pages).
 
+**Shipping:** code changes go on a branch → PR → merge to `main` (which deploys
+via GitHub Actions). Never commit straight to `main`.
+
 **Golden rules (the ones I keep relearning — obey first):** ① `pkill -f "vite preview"`
 before any restart. ② Verify in-browser (`preview_eval`) before claiming anything works
 or is broken — trust his eyes over my assumptions. ③ Do EVERY part of a multi-item
