@@ -55,7 +55,7 @@
   font-family: var(--font-sans);
   font-size: var(--text-base);
   font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-snug);
+  letter-spacing: var(--tracking-16-snug);
 }
 
 /* ── Interactive hover/focus layer ─────────────────────────────── */
@@ -85,7 +85,7 @@
   font-size: var(--text-sm);
   font-weight: var(--weight-medium);
   font-variant-numeric: tabular-nums;
-  letter-spacing: var(--tracking-base);
+  letter-spacing: var(--tracking-14-base);
   white-space: nowrap;
   pointer-events: none;
   transition: opacity var(--dur-fast) var(--ease-standard);

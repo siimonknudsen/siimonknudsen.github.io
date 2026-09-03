@@ -36,7 +36,7 @@
   border-radius: var(--radius-pill);
   font: inherit;
   font-size: var(--text-sm);
-  letter-spacing: var(--tracking-base);
+  letter-spacing: var(--tracking-14-base);
   color: var(--text-color-secondary);
   background: var(--glass-item-hover);
   border: 1px solid var(--glass-border);

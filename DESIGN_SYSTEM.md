@@ -156,6 +156,13 @@ deliberate exception.
 | `.type-caption` | 12/16 · Medium | meta, captions |
 | `.type-overline` | 12 · Medium · uppercase *(code-only)* | eyebrows / kickers |
 
+**Every role is Medium (500), every line height and letter spacing is a pixel
+token.** Tracking tokens are named `--tracking-<size>-<step>` (size × percent,
+precomputed) and mirror the Figma `Tracking/*` variables one-for-one — Figma
+resolves a bound letter-spacing variable as PIXELS, so a percentage can't be
+tokenised there and both sides use px. Fluid `clamp()` type on this page is the
+one exception and keeps an em value.
+
 **Seven sizes, no more: 12 · 14 · 16 · 18 · 20 · 24 · 32.** That's exactly what
 the Figma pages use — 12/14/16 for body and UI, 18/20 for larger content, 24/32
 for headings. The 10px, 40px and 48px steps were retired in the 2026-09 audit

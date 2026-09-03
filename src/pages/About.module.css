@@ -19,7 +19,7 @@
   font-size: var(--text-base);
   font-weight: var(--weight-medium);
   line-height: 24px;
-  letter-spacing: var(--tracking-snug);
+  letter-spacing: var(--tracking-16-snug);
 }
 
 /* ── Intro ──────────────────────────────────────────────────────────────────
@@ -68,7 +68,7 @@
   font-size: var(--text-base);
   font-weight: var(--weight-medium);
   line-height: 24px;
-  letter-spacing: var(--tracking-snug);
+  letter-spacing: var(--tracking-16-snug);
   text-wrap: pretty;
 }
 
@@ -109,7 +109,7 @@
   color: var(--text-color-secondary);
   font-size: var(--text-sm);
   line-height: 20px;
-  letter-spacing: var(--tracking-base);
+  letter-spacing: var(--tracking-14-base);
 }
 
 /* ── Skills ─────────────────────────────────────────────────────────────── */

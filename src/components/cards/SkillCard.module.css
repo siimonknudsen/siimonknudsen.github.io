@@ -49,7 +49,7 @@
   font-size: var(--text-xl);
   font-weight: var(--weight-medium);
   line-height: 24px;
-  letter-spacing: var(--tracking-snug);
+  letter-spacing: var(--tracking-20-snug);
 }
 
 .description {
@@ -58,6 +58,6 @@
   font-size: var(--text-base);
   font-weight: var(--weight-medium);
   line-height: 24px;
-  letter-spacing: var(--tracking-snug);
+  letter-spacing: var(--tracking-16-snug);
   text-wrap: pretty;
 }

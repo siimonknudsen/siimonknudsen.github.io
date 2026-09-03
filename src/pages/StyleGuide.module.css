@@ -41,7 +41,7 @@
 .sectionTitle {
   font-size: var(--text-3xl);
   font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-tight);
+  letter-spacing: var(--tracking-32-tight);
   margin-top: var(--space-12);
   margin-bottom: var(--space-16);
 }
@@ -206,7 +206,7 @@
   z-index: 1;
   font-size: var(--text-xs);
   text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--tracking-12-wide);
 }
 
 .colorLabel {
@@ -302,7 +302,7 @@
   align-items: center;
   justify-content: center;
   font-size: var(--text-xs);
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--tracking-12-wide);
   text-transform: uppercase;
   color: var(--neutral-0);
   background: var(--transparent-dark-60);
@@ -344,7 +344,7 @@
   font-size: clamp(3rem, 7vw, 5rem); /* tops ~80px */
   line-height: clamp(50px, 7.3vw, 84px);
   font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-tight);
+  letter-spacing: -0.04em; /* fluid clamp() size — relative tracking */
   margin-top: var(--space-16);
   margin-bottom: var(--space-24);
 }
@@ -382,7 +382,7 @@
   font-size: clamp(1.125rem, 0.9rem + 1vw, 1.5rem);
   line-height: clamp(24px, 1.2rem + 1vw, 32px);
   font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-tight);
+  letter-spacing: -0.04em; /* fluid clamp() size — relative tracking */
 }
 
 .coverTags {
@@ -590,7 +590,7 @@
   font-size: 88px;
   line-height: 88px;
   font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-tight);
+  letter-spacing: -0.04em; /* fluid clamp() size — relative tracking */
 }
 
 .typeAaRow {
@@ -943,7 +943,7 @@
   padding-bottom: var(--space-6);
   font-size: var(--text-xs);
   text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--tracking-12-wide);
 }
 
 .materialItemRow {
@@ -1232,7 +1232,7 @@
 .motionLabel {
   font-size: var(--text-xs);
   text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--tracking-12-wide);
 }
 
 .playButton {
@@ -1470,7 +1470,7 @@
 .componentName {
   font-size: var(--text-2xl);
   font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-tight);
+  letter-spacing: var(--tracking-24-tight);
   margin: 0;
 }
 @media (min-width: 640px) {
@@ -1500,7 +1500,7 @@
 .demoSubLabel {
   font-size: var(--text-xs);
   text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--tracking-12-wide);
 }
 
 /* Tasteful Do / Don't — two tonal cards (no hard red/green borders). The "Do"
@@ -1530,7 +1530,7 @@
   margin: 0;
   font-size: var(--text-xs);
   text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--tracking-12-wide);
   color: var(--accent);
 }
 .ddMarkAvoid {
@@ -1632,7 +1632,7 @@
 .cardLabel {
   font-size: var(--text-xs);
   text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--tracking-12-wide);
   margin-bottom: var(--space-16);
 }
 
@@ -1831,7 +1831,7 @@
   gap: var(--space-12);
   font-size: var(--text-xs);
   text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--tracking-12-wide);
 }
 .themeCard {
   border-radius: var(--radius-md);
@@ -1843,7 +1843,7 @@
 .themeCardTitle {
   font-size: var(--text-xl);
   font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-tight);
+  letter-spacing: var(--tracking-20-tight);
   line-height: 24px;
 }
 .themeCardBody {
@@ -1904,7 +1904,7 @@
 .patternCardTitle {
   font-size: var(--text-xl);
   font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-tight);
+  letter-spacing: var(--tracking-20-tight);
   margin: 0;
 }
 .patternCardBody {
@@ -1970,7 +1970,7 @@
   margin: 0;
   font-size: var(--text-xl);
   font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-tight);
+  letter-spacing: var(--tracking-20-tight);
   color: var(--text-on-media);
 }
 .onMediaBody {

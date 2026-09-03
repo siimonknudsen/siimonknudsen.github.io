@@ -391,13 +391,13 @@
   font-size: var(--text-sm);
   font-weight: var(--weight-medium);
   line-height: 18px;
-  letter-spacing: var(--tracking-tight);
+  letter-spacing: var(--tracking-14-tight);
 }
 
 .brandRole {
   font-size: var(--text-xs);
   line-height: 16px;
-  letter-spacing: var(--tracking-tight);
+  letter-spacing: var(--tracking-12-tight);
 }
 
 /* Center — nav triggers */
@@ -446,8 +446,9 @@
 }
 .rollText {
   display: block;
-  /* Control leading (see `.type-ui-14`) — also the roll's travel distance. */
+  /* Control type (see `.type-ui-14`); the leading is also the roll's travel. */
   line-height: 14px;
+  letter-spacing: var(--tracking-14-snug);
   transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
   will-change: transform;
 }

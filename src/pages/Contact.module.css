@@ -71,7 +71,7 @@
   color: var(--text-color-primary);
   font: inherit;
   font-size: var(--text-base);
-  letter-spacing: var(--tracking-snug);
+  letter-spacing: var(--tracking-16-snug);
   transition: border-color var(--dur-fast) var(--ease-standard),
     box-shadow var(--dur-fast) var(--ease-standard);
 }

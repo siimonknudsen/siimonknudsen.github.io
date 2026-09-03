@@ -238,7 +238,7 @@
   margin: 0 0 var(--space-8);
   font-size: var(--text-base);
   font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-snug);
+  letter-spacing: var(--tracking-16-snug);
   color: var(--text-color-primary);
 }
 
@@ -261,7 +261,7 @@
 .ttRow dt {
   font-size: var(--text-sm);
   line-height: 18px;
-  letter-spacing: var(--tracking-base);
+  letter-spacing: var(--tracking-14-base);
   color: var(--text-color-secondary);
 }
 
@@ -269,7 +269,7 @@
   margin: 0;
   font-size: var(--text-sm);
   line-height: 18px;
-  letter-spacing: var(--tracking-base);
+  letter-spacing: var(--tracking-14-base);
   color: var(--text-color-primary);
 }
 
