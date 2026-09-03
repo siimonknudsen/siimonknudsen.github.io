@@ -18,7 +18,7 @@ function Playground() {
           {/* Intro */}
           <Reveal preset="fade-up" as="header" className={styles.intro}>
             <p className="type-overline text-accent">PLAYGROUND</p>
-            <h1 className="type-display text-color-primary">Experiments &amp; craft</h1>
+            <h1 className="type-heading text-color-primary">Experiments &amp; craft</h1>
             <p className={`type-body text-color-secondary ${styles.lede}`}>
               This site is hand-built from the studs up — a bespoke design system,
               no Tailwind, a custom WebGL shader behind the hero, and an owned
@@ -39,7 +39,7 @@ function Playground() {
                 />
               </div>
               <div className={styles.cardBody}>
-                <h2 className="type-title text-color-primary">Cursor-reactive shader</h2>
+                <h2 className="type-body-xl text-color-primary">Cursor-reactive shader</h2>
                 <p className="type-body-sm text-color-secondary">
                   A dependency-free fragment shader. Move your cursor across the
                   frame — the gradient swirls toward the pointer, eased so it glides
@@ -51,7 +51,7 @@ function Playground() {
             {/* (b) Motion demo */}
             <Reveal preset="fade-up" className={`glass-panel ${styles.card}`}>
               <div className={styles.cardBody}>
-                <h2 className="type-title text-color-primary">Staggered reveals</h2>
+                <h2 className="type-body-xl text-color-primary">Staggered reveals</h2>
                 <p className="type-body-sm text-color-secondary">
                   The owned motion layer — CSS presets driven by a tiny hook. Each
                   tile below cascades in on its own delay.
@@ -75,7 +75,7 @@ function Playground() {
             {/* (c) Glass lab */}
             <Reveal preset="fade-up" className={`glass-panel ${styles.card}`}>
               <div className={styles.cardBody}>
-                <h2 className="type-title text-color-primary">Glass lab</h2>
+                <h2 className="type-body-xl text-color-primary">Glass lab</h2>
                 <p className="type-body-sm text-color-secondary">
                   Two frosted recipes over the same gradient — see how
                   <code className={styles.code}>.glass</code> and
@@ -97,7 +97,7 @@ function Playground() {
             <Reveal preset="fade-up" className={styles.card}>
               <Link to="/design-system" className={`glass-panel ${styles.linkCard} focus-ring`}>
                 <div className={styles.cardBody}>
-                  <h2 className="type-title text-color-primary">The full system</h2>
+                  <h2 className="type-body-xl text-color-primary">The full system</h2>
                   <p className="type-body-sm text-color-secondary">
                     Tokens, type roles, colour ramps, glass, motion presets and
                     every component, documented in one place.

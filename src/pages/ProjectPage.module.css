@@ -69,6 +69,13 @@
   overflow: hidden;
   aspect-ratio: 1256 / 700;
   border-radius: var(--radius-sm);
+  background-color: var(--surface-color-secondary);
+}
+
+/* The image fits INSIDE the frame — it meets whichever edge it reaches first
+   and is never cropped. */
+.frame img {
+  object-fit: contain;
 }
 
 /* Content plates keep their natural ratio — the case imagery is full-page

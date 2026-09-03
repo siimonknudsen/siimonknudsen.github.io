@@ -144,19 +144,21 @@ deliberate exception.
 
 | Role class | Size/Leading · Weight | Use |
 |---|---|---|
-| `.type-display` | 48 · Medium *(code-only)* | hero / page display |
-| `.type-display-sm` | 40 · Medium *(code-only)* | large display |
 | `.type-heading` | 32/36 · Medium | page headings |
 | `.type-heading-sm` | 24/26 · Medium | section headings |
-| `.type-title` | 20 · Medium *(code-only)* | card / block titles |
-| `.type-subtitle` | 18 · Medium *(code-only)* | sub-headings |
-| `.type-body-xl` | 20/24 · Medium | largest body |
+| `.type-body-xl` | 20/24 · Medium | largest body, card titles |
 | `.type-body-lg` | 18/24 · Medium | lead paragraphs |
-| `.type-body` | 16/20 · **Medium** | body |
-| `.type-body-sm` | 14/18 · Medium | secondary body |
+| `.type-body` | 16/20 · Medium | body |
+| `.type-body-sm` | 14/18 · Medium | secondary body, links, UI |
 | `.type-label` | 14/1.2 · Medium | buttons, UI labels |
 | `.type-caption` | 12/16 · Medium | meta, captions |
 | `.type-overline` | 12 · Medium · uppercase *(code-only)* | eyebrows / kickers |
+
+**Seven sizes, no more: 12 · 14 · 16 · 18 · 20 · 24 · 32.** That's exactly what
+the Figma pages use — 12/14/16 for body and UI, 18/20 for larger content, 24/32
+for headings. The 10px, 40px and 48px steps were retired in the 2026-09 audit
+(nothing in the designs used them), along with `type-title` and `type-subtitle`,
+which duplicated `body-xl` and `body-lg`.
 
 **Vertical metrics are overridden on the `@font-face`** (the global "type looks centred" fix). BDO Grotesk ships a top-heavy box (native ascent 800 / descent 177 / cap 729 per 1000 em) so its letters sit ~5.5% high in any box — visible in every centred UI label and as uneven space above text. We rebalance at the source: **`ascent-override: 90.6%` / `descent-override: 17.7%` / `line-gap-override: 29.4%`**, chosen so `ascent − descent = cap-height` (caps centre in any line-box) while `line-height: normal` stays ~1.38 and descenders never clip. Consequence: the balanced content-box is **1.083em**, so **multi-line display type must not go below `line-height: 1.1`** (the display roles are floored there). See DESIGN_LOG → Global.
 

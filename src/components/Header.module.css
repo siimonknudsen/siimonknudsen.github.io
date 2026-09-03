@@ -17,7 +17,7 @@
 
 .menuLabel {
   padding: var(--space-4) var(--space-12) 10px;
-  font-size: 11px;
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.14em;
 }
@@ -209,7 +209,7 @@
 }
 
 .contactTitle {
-  font-size: 15px;
+  font-size: var(--text-base);
   font-weight: var(--weight-medium);
   line-height: 1.375;
 }
@@ -250,7 +250,7 @@
 }
 
 .contactMetaTitle {
-  font-size: 13px;
+  font-size: var(--text-sm);
   font-weight: var(--weight-medium);
   line-height: 1.25;
 }

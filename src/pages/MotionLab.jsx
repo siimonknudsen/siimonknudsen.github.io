@@ -56,7 +56,7 @@ function CardBody({ item }) {
   return (
     <>
       <span className={`type-overline text-color-tertiary ${styles.kicker}`}>{item.k}</span>
-      <h3 className={`type-title text-color-primary ${styles.cardTitle}`}>{item.t}</h3>
+      <h3 className={`type-body-xl text-color-primary ${styles.cardTitle}`}>{item.t}</h3>
       <p className={`type-body text-color-secondary ${styles.cardDesc}`}>{item.d}</p>
     </>
   )
@@ -108,7 +108,7 @@ export default function MotionLab() {
   return (
     <div className={styles.page}>
       <header className={styles.head}>
-        <h1 className="type-display text-color-primary">Motion lab</h1>
+        <h1 className="type-heading text-color-primary">Motion lab</h1>
         <p className="type-body-lg text-color-secondary">
           Same content, revealed two ways. <strong>Left</strong> is the current CSS reveal
           (0.9s even fade — the baseline). <strong>Right</strong> is the new Motion spring —

@@ -30,7 +30,7 @@ function Contact() {
     <section className={styles.section}>
       <div className={styles.inner}>
         <Reveal preset="fade-up">
-          <h1 className={`type-display text-color-primary ${styles.headline}`}>
+          <h1 className={`type-heading text-color-primary ${styles.headline}`}>
             Get in touch with me
           </h1>
         </Reveal>

@@ -11,7 +11,7 @@
 /* Sizes (kept in their own classes so they never collide with the base) */
 .sm {
   padding: var(--space-2) var(--space-8);
-  font-size: var(--text-2xs);
+  font-size: var(--text-xs);
 }
 .md {
   padding: var(--space-6) var(--space-12);

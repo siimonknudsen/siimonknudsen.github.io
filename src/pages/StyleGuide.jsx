@@ -24,12 +24,8 @@ const SAMPLE = 'Human-centered by design'
 // weight + tracking. The roles Figma defines carry its exact px leading; the
 // ones marked "code" have no Figma variable yet.
 const typeScale = [
-  { label: 'type-display', cls: 'type-display', size: '48 / 52', weight: 'Medium', track: '−5%' },
-  { label: 'type-display-sm', cls: 'type-display-sm', size: '40 / 1.1 · code', weight: 'Medium', track: '−4%' },
   { label: 'type-heading', cls: 'type-heading', size: '32 / 36', weight: 'Medium', track: '−4%' },
   { label: 'type-heading-sm', cls: 'type-heading-sm', size: '24 / 26', weight: 'Medium', track: '−4%' },
-  { label: 'type-title', cls: 'type-title', size: '20 / 1.2 · code', weight: 'Medium', track: '−3%' },
-  { label: 'type-subtitle', cls: 'type-subtitle', size: '18 / 1.3 · code', weight: 'Medium', track: '−3%' },
   { label: 'type-body-xl', cls: 'type-body-xl', size: '20 / 24', weight: 'Medium', track: '−3%' },
   { label: 'type-body-lg', cls: 'type-body-lg', size: '18 / 24', weight: 'Medium', track: '−3%' },
   { label: 'type-body', cls: 'type-body', size: '16 / 20', weight: 'Medium', track: '−3%' },
@@ -37,7 +33,6 @@ const typeScale = [
   { label: 'type-label', cls: 'type-label', size: '14 / 1.2', weight: 'Medium', track: '−3%' },
   { label: 'type-caption', cls: 'type-caption', size: '12 / 16', weight: 'Medium', track: '−2.5%' },
   { label: 'type-overline', cls: 'type-overline', size: '12 / 1 · code', weight: 'Medium', track: '+8% · uppercase' },
-  { label: 'type-micro', cls: 'type-micro', size: '10 / 1.3 · code', weight: 'Medium', track: '−2.5%' },
 ]
 
 const surfaces = [

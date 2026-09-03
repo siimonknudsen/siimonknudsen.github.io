@@ -12,7 +12,7 @@ function NotFound() {
     <div className={styles.wrap}>
       <div className={styles.inner}>
         <p className={`type-overline text-accent ${styles.overline}`}>Error 404</p>
-        <h1 className={`type-display-sm text-color-primary ${styles.heading}`}>
+        <h1 className={`type-heading text-color-primary ${styles.heading}`}>
           This page wandered off.
         </h1>
         <p className={`type-body text-color-secondary ${styles.lead}`}>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 // `m` is used only as the JSX element <m.div>/<m.img>; ESLint's no-unused-vars
 // doesn't count JSX member usage (same workaround as Reveal.jsx).
@@ -61,12 +61,22 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
     '1/1': styles.aspect11,
   }
 
+  // The keyboard handler owns its own stepping logic so the effect depends only
+  // on primitives (the open index and a key for the image list) — no callback
+  // identities to chase, and no re-subscribing on every render.
+  const realKey = realIndices.join(',')
   useEffect(() => {
     if (openIndex === null) return
+    const list = realKey ? realKey.split(',').map(Number) : []
+    const step = (delta) => {
+      if (list.length === 0) return
+      const pos = list.indexOf(openIndex)
+      setOpenIndex(list[(pos + delta + list.length) % list.length])
+    }
     const onKey = (e) => {
-      if (e.key === 'Escape') closeLightbox()
-      else if (e.key === 'ArrowLeft') goPrev()
-      else if (e.key === 'ArrowRight') goNext()
+      if (e.key === 'Escape') setOpenIndex(null)
+      else if (e.key === 'ArrowLeft') step(-1)
+      else if (e.key === 'ArrowRight') step(1)
     }
     document.addEventListener('keydown', onKey)
     // Lock the page behind the lightbox (same as the mobile menu) — on a phone
@@ -77,7 +87,7 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = prevOverflow
     }
-  }, [openIndex])
+  }, [openIndex, realKey])
 
   const aspect = aspectClasses[aspectRatio] || aspectClasses['9/16']
   const phAspect = placeholderAspect[aspectRatio] || placeholderAspect['9/16']

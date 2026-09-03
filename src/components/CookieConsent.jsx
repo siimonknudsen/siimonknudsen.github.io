@@ -48,7 +48,7 @@ function CookieConsent() {
       aria-labelledby="cookie-consent-title"
       aria-describedby="cookie-consent-desc"
     >
-      <h2 id="cookie-consent-title" className={`type-title ${styles.title}`}>
+      <h2 id="cookie-consent-title" className={`type-body-xl ${styles.title}`}>
         I use <span aria-hidden="true">🍪</span> cookies
       </h2>
       <p id="cookie-consent-desc" className={`type-body-sm ${styles.body}`}>

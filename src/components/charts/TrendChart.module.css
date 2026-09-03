@@ -53,7 +53,7 @@
 
 .endLabel {
   font-family: var(--font-sans);
-  font-size: 15px;
+  font-size: var(--text-base);
   font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-snug);
 }

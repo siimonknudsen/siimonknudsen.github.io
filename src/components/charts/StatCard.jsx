@@ -75,7 +75,7 @@ function StatCard({
       </div>
 
       <span
-        className={`type-display-sm ${accent ? 'text-accent' : 'text-color-primary'} ${styles.value}`}
+        className={`type-heading ${accent ? 'text-accent' : 'text-color-primary'} ${styles.value}`}
       >
         {display}
       </span>

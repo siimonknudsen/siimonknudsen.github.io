@@ -16,7 +16,7 @@ function Avatar({ name, title, size = 'small' }) {
       </div>
       <div className={styles.meta}>
         <span className={`${isLarge ? 'type-heading-sm' : 'type-label'} text-color-primary`}>{name}</span>
-        <span className={`${isLarge ? 'type-display' : 'type-caption'} text-color-secondary`}>{title}</span>
+        <span className={`${isLarge ? 'type-heading' : 'type-caption'} text-color-secondary`}>{title}</span>
       </div>
     </div>
   )
