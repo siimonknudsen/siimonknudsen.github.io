@@ -44,7 +44,7 @@ const variantClasses = {
   ghost: `glass-item text-color-secondary ${styles.ghost}`,
 }
 
-const base = `${styles.base} type-label`
+const base = `${styles.base} type-ui-14`
 
 function Button({
   children,

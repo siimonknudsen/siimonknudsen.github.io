@@ -150,7 +150,9 @@ deliberate exception.
 | `.type-body-lg` | 18/24 · Medium | lead paragraphs |
 | `.type-body` | 16/20 · Medium | body |
 | `.type-body-sm` | 14/18 · Medium | secondary body, links, UI |
-| `.type-label` | 14/1.2 · Medium | buttons, UI labels |
+| `.type-ui-14` | 14/**100%** · Medium | control labels — buttons, nav |
+| `.type-ui-12` | 12/**100%** · Medium | control labels — chips, badges |
+| `.type-label` | 14/1.2 · Medium | legacy label role |
 | `.type-caption` | 12/16 · Medium | meta, captions |
 | `.type-overline` | 12 · Medium · uppercase *(code-only)* | eyebrows / kickers |
 
@@ -159,6 +161,12 @@ the Figma pages use — 12/14/16 for body and UI, 18/20 for larger content, 24/3
 for headings. The 10px, 40px and 48px steps were retired in the 2026-09 audit
 (nothing in the designs used them), along with `type-title` and `type-subtitle`,
 which duplicated `body-xl` and `body-lg`.
+
+**Controls have their own two roles.** Buttons, chips, badges and nav items use
+`type-ui-14` / `type-ui-12` — same sizes as the body roles but at **100%
+leading**, so the control's height and padding own its box and the line box
+never fights them. When switching a control to these, compensate the padding to
+keep the drawn height (a 24px chip is 6 + 12 + 6, not 4 + 16 + 4).
 
 **Vertical metrics are overridden on the `@font-face`** (the global "type looks centred" fix). BDO Grotesk ships a top-heavy box (native ascent 800 / descent 177 / cap 729 per 1000 em) so its letters sit ~5.5% high in any box — visible in every centred UI label and as uneven space above text. We rebalance at the source: **`ascent-override: 90.6%` / `descent-override: 17.7%` / `line-gap-override: 29.4%`**, chosen so `ascent − descent = cap-height` (caps centre in any line-box) while `line-height: normal` stays ~1.38 and descenders never clip. Consequence: the balanced content-box is **1.083em**, so **multi-line display type must not go below `line-height: 1.1`** (the display roles are floored there). See DESIGN_LOG → Global.
 

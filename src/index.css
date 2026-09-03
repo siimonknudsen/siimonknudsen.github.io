@@ -636,6 +636,20 @@ html:not(.dark) {
     letter-spacing: var(--tracking-base);
     text-wrap: pretty;
   }
+  /* Control roles — buttons, chips, badges, nav items. 100% leading: the
+     component's height and padding own the box, never the line box. */
+  .type-ui-14 {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    letter-spacing: var(--tracking-snug);
+  }
+  .type-ui-12 {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    letter-spacing: var(--tracking-base);
+  }
   .type-label {
     font-size: var(--text-sm);
     font-weight: var(--weight-medium);
