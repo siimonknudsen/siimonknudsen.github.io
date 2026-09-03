@@ -101,8 +101,8 @@
   padding-bottom: var(--space-8);
   border-radius: 6px;
   line-height: 18px;
-  transition: color 150ms var(--ease-standard),
-    transform 220ms var(--ease-standard);
+  transition: color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-quick) var(--ease-standard);
 }
 
 /* Underline that grows from the left on hover */
@@ -117,7 +117,7 @@
   opacity: 0.55;
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 240ms var(--ease-standard);
+  transition: transform var(--dur-quick) var(--ease-standard);
 }
 
 .link:hover {

@@ -25,8 +25,8 @@
   border-radius: var(--radius-pill);
   box-shadow: var(--shadow-xs);
   transition-property: transform;
-  transition-duration: 300ms;
-  transition-timing-function: ease-out;
+  transition-duration: var(--dur-base);
+  transition-timing-function: var(--ease-standard);
 }
 
 .btn {
@@ -37,9 +37,9 @@
   height: var(--space-28);
   width: var(--space-28);
   border-radius: var(--radius-pill);
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
+  transition-property: color, background-color;
+  transition-timing-function: var(--motion-ui-ease);
+  transition-duration: var(--motion-ui-dur);
 }
 
 /* Touch: the segments read at 28px but need a finger-sized hit area, so each

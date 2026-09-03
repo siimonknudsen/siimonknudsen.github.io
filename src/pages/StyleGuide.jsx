@@ -91,6 +91,7 @@ const spacingScale = [
   { name: '16', px: 64 },
   { name: '20', px: 80 },
   { name: '32', px: 128 },
+  { name: '40', px: 160 },
   { name: '41', px: 164 },
   { name: '50', px: 200 },
 ]
@@ -272,9 +273,10 @@ const SPACING_USE = {
   32: 'field spacing',
   48: 'below the nav',
   64: 'between groups',
-  128: 'between sections',
-  164: 'page end',
-  200: 'hero whitespace',
+  128: 'large blocks',
+  160: 'legacy section rhythm',
+  164: 'unused',
+  200: 'between sections · page end',
 }
 
 /* A labeled anatomy diagram — the component shown large with small numbered accent

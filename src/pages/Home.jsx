@@ -2,14 +2,21 @@ import { Link } from 'react-router-dom'
 import ProjectCard from '../components/projects/ProjectCard'
 import Button from '../components/buttons/Button'
 import TestimonialCard from '../components/cards/TestimonialCard'
+import TestimonialCarousel from '../components/home/TestimonialCarousel'
 import WorkedAt from '../components/home/WorkedAt'
 import WordReveal from '../components/home/WordReveal'
 import { Reveal } from '../components/motion'
 import { allProjects } from '../data/projects'
 import { TESTIMONIALS } from '../data/testimonials'
+import useMediaQuery from '../hooks/useMediaQuery'
 import styles from './Home.module.css'
 
 function Home() {
+  // Phones get a swipeable carousel instead of the stacked column — three long
+  // quotes end to end is a lot of scrolling for one section. Rendered as an
+  // either/or (not CSS-hidden) so the quotes appear once in the DOM.
+  const isPhone = useMediaQuery('(max-width: 767px)')
+
   return (
     <>
       {/* Hero — statement type, a short lead and the two CTAs, all left-aligned
@@ -21,7 +28,7 @@ function Home() {
                 and a wider cadence (stepMs) so each word settles calmly. */}
             <WordReveal
               as="h1"
-              text="Product designer turning complex problems into clear, human experiences."
+              text="Product designer with five years of experience across health tech, retail and adtech."
               delayMs={300}
               stepMs={90}
               durationMs={900}
@@ -29,10 +36,9 @@ function Home() {
             />
 
             <Reveal as="p" preset="fade-up" immediate delay={900} className={styles.lead}>
-              I&apos;m a Product Designer who&apos;s passionate about human psychology within
-              digital products. I&apos;m experienced in crafting beautiful and user friendly
-              designs that solves real business problems. I&apos;m specialized within UX Design,
-              UI Design &amp; Design Systems.
+              I take products from user research through UI, prototyping and testing to
+              shipped front-end code — and build the design systems that keep them
+              consistent, so ideas reach users faster and arrive intact.
             </Reveal>
 
             {/* `immediate` plays on MOUNT (a timed entrance) instead of on scroll —
@@ -76,19 +82,23 @@ function Home() {
       <section id="testimonials" className={styles.section}>
         <div className={styles.container}>
           <h2 className={styles.sectionHeading}>Testimonials</h2>
-          <div className={styles.testimonials}>
-            {TESTIMONIALS.map((t) => (
-              <TestimonialCard
-                key={t.recommender}
-                logo={t.logo}
-                logoNode={t.logoNode}
-                recommender={t.recommender}
-                title={t.title}
-                company={t.company}
-                text={t.text}
-              />
-            ))}
-          </div>
+          {isPhone ? (
+            <TestimonialCarousel items={TESTIMONIALS} />
+          ) : (
+            <div className={styles.testimonials}>
+              {TESTIMONIALS.map((t) => (
+                <TestimonialCard
+                  key={t.recommender}
+                  logo={t.logo}
+                  logoNode={t.logoNode}
+                  recommender={t.recommender}
+                  title={t.title}
+                  company={t.company}
+                  text={t.text}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </>

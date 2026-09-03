@@ -87,7 +87,7 @@ shared-file integration:
   Zliide scaffolded as the worked example; other projects need their data filled.
 - **About**: design **principles** section + numbered section indices + tightened skill copy.
 - **Button**: specular hover sweep (primary/accent) + refined lift.
-- **/playground** page (live shader, motion demos, glass lab) + route + footer link.
+- ~~**/playground** page (live shader, motion demos, glass lab) + route + footer link.~~ **Retired 2026-09-03** — page, route, footer link and `components/shader/` all deleted (recoverable from git history).
 - **Global film-grain** overlay (filmic depth; off for reduced-transparency).
 
 Fix during integration: WordReveal collapsed inter-word spaces (overflow-hidden

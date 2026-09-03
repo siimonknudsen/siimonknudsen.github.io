@@ -160,7 +160,7 @@
   /* Clearance every page starts below: the bar's bottom edge + the page
      rhythm's 160, so the air above a page's first content matches the gaps
      between its sections. */
-  --header-clearance: calc(var(--header-inset) + var(--header-bar) + var(--space-160));
+  --header-clearance: calc(var(--header-inset) + var(--header-bar) + var(--space-200));
 
   /* — Radius (4 · 8 · 12 · 16; 2xl/3xl for big frosted panels & hero/case) — */
   /* Tight 2026 aesthetic: cards/panels/images cap at 8px. The larger steps are
@@ -912,7 +912,7 @@ html:not(.dark) {
   border-color: var(--glass-border);
 }
 
-/* CSS fallback for the hero ShaderBackground (no-WebGL): a calm, neutral static
+/* Calm, neutral static
    surface (no warm/orange wash — matches the black & white mesh). */
 .shader-bg-fallback {
   position: absolute;
@@ -964,7 +964,8 @@ html:not(.dark) {
 /* Retired the monospace accent — Simon wants BDO Grotesk everywhere for one
    consistent typeface. The `.font-mono` class is kept (48 call-sites) but now
    renders the sans; it just carries the small "meta/label" sizing+tracking, in
-   BDO. (`--font-mono` token left defined for any genuine future code/`<pre>`.) */
+   BDO. (`--font-mono` token left defined for any genuine future code/`<pre>`;
+   nothing references it since the Playground code block went.) */
 .font-mono { font-family: var(--font-sans); }
 
 /* Modal/overlay scrim backdrop (theme-aware token) */
@@ -1040,8 +1041,8 @@ html:not(.dark) {
    blending so mid-fade colours don't wash out. */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: 320ms;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-duration: var(--dur-base);
+  animation-timing-function: var(--ease-standard);
   mix-blend-mode: normal;
 }
 ::view-transition-old(root) {
@@ -1144,11 +1145,6 @@ html:not(.dark) .grain {
      leaves a containing block that breaks `backdrop-filter` on descendants
      (e.g. the Worked-at tooltip) — and it's a perf best-practice to drop it. */
   will-change: auto;
-}
-
-/* Stagger: a parent sets each child's --i index; <Stagger> injects it. */
-.fx-stagger > * {
-  transition-delay: calc(var(--i, 0) * var(--stagger-1));
 }
 
 /* Hover-lift + press (interaction presets) */

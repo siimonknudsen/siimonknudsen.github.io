@@ -17,6 +17,10 @@ const LABEL_OFFSET_Y = 8
 const EASE = 0.16
 // Keeps the label off the frame's edge when the pointer runs into a corner.
 const EDGE = 12
+// How far back past the flip threshold the pointer must travel before the label
+// flips again. Without it the label chatters between sides while the pointer
+// hovers exactly on the line.
+const FLIP_HYSTERESIS = 24
 
 /**
  * ProjectCard — a 1256/700 image carrying the discipline chips over its
@@ -36,6 +40,13 @@ function ProjectCard({ id, title, description, tags = [], delay, noMedia = false
   // has to be derived from this every frame — not cached per move.
   const pointer = useRef({ x: 0, y: 0 })
   const current = useRef({ x: 0, y: 0 })
+  // Which side of the pointer the label currently sits on. Held in refs (not
+  // state) because it's read and written inside the rAF loop.
+  const flipX = useRef(false)
+  const flipY = useRef(false)
+  // Set on enter so the first frame places the label outright instead of
+  // gliding it in from wherever it was left last time.
+  const seed = useRef(true)
   const hovering = useRef(false)
   const raf = useRef(0)
   const glides = useRef(true)
@@ -47,29 +58,44 @@ function ProjectCard({ id, title, description, tags = [], delay, noMedia = false
     if (!label || !frame || !hovering.current) return
 
     const box = frame.getBoundingClientRect()
-    const tx = pointer.current.x - box.left
-    const ty = pointer.current.y - box.top
-    const c = current.current
-    if (glides.current) {
-      c.x += (tx - c.x) * EASE
-      c.y += (ty - c.y) * EASE
-    } else {
-      c.x = tx
-      c.y = ty
-    }
+    const px = pointer.current.x - box.left
+    const py = pointer.current.y - box.top
+    const w = label.offsetWidth
+    const h = label.offsetHeight
+
     // Placement: above-right of the hotspot by default, because the arrow's
     // body extends down-right — a label there sits under the cursor graphic.
     // Flip to below / left when the pointer nears an edge (the same strategy a
-    // positioning library uses), then clamp as a final guard.
-    const w = label.offsetWidth
-    const h = label.offsetHeight
-    const flipsDown = c.y - LABEL_OFFSET_Y - h < EDGE
-    const flipsLeft = c.x + LABEL_OFFSET_X + w > box.width - EDGE
-    const rawX = flipsLeft ? c.x - LABEL_OFFSET_X - w : c.x + LABEL_OFFSET_X
-    const rawY = flipsDown ? c.y + LABEL_OFFSET_Y : c.y - LABEL_OFFSET_Y - h
-    const x = Math.min(Math.max(rawX, EDGE), Math.max(box.width - w - EDGE, EDGE))
-    const y = Math.min(Math.max(rawY, EDGE), Math.max(box.height - h - EDGE, EDGE))
-    label.style.transform = `translate3d(${x}px, ${y}px, 0)`
+    // positioning library uses). The flip is sticky within FLIP_HYSTERESIS so
+    // it can't oscillate on the threshold.
+    const wantsLeft = px + LABEL_OFFSET_X + w > box.width - EDGE
+    const clearsRight = px + LABEL_OFFSET_X + w < box.width - EDGE - FLIP_HYSTERESIS
+    flipX.current = flipX.current ? !clearsRight : wantsLeft
+
+    const wantsDown = py - LABEL_OFFSET_Y - h < EDGE
+    const clearsUp = py - LABEL_OFFSET_Y - h > EDGE + FLIP_HYSTERESIS
+    flipY.current = flipY.current ? !clearsUp : wantsDown
+
+    const rawX = flipX.current ? px - LABEL_OFFSET_X - w : px + LABEL_OFFSET_X
+    const rawY = flipY.current ? py + LABEL_OFFSET_Y : py - LABEL_OFFSET_Y - h
+    // Clamp as a final guard, then ease the LABEL's own position toward that
+    // target. Easing the placement rather than the pointer is what makes a
+    // corner flip glide across the cursor instead of teleporting: the target
+    // jumps by the label's width, and the label travels there over a few
+    // frames like any other move.
+    const targetX = Math.min(Math.max(rawX, EDGE), Math.max(box.width - w - EDGE, EDGE))
+    const targetY = Math.min(Math.max(rawY, EDGE), Math.max(box.height - h - EDGE, EDGE))
+
+    const c = current.current
+    if (glides.current && !seed.current) {
+      c.x += (targetX - c.x) * EASE
+      c.y += (targetY - c.y) * EASE
+    } else {
+      c.x = targetX
+      c.y = targetY
+      seed.current = false
+    }
+    label.style.transform = `translate3d(${c.x}px, ${c.y}px, 0)`
 
     // Keep the loop alive for as long as the card is hovered: the target moves
     // on scroll and resize too, not only on pointer moves.
@@ -79,8 +105,8 @@ function ProjectCard({ id, title, description, tags = [], delay, noMedia = false
   const handleEnter = (e) => {
     glides.current = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
     pointer.current = { x: e.clientX, y: e.clientY }
-    const box = frameRef.current?.getBoundingClientRect()
-    if (box) current.current = { x: e.clientX - box.left, y: e.clientY - box.top }
+    // Let the first draw() place the label exactly, flips and all.
+    seed.current = true
     hovering.current = true
     if (!raf.current) raf.current = requestAnimationFrame(draw)
   }
@@ -103,7 +129,7 @@ function ProjectCard({ id, title, description, tags = [], delay, noMedia = false
       delay={delay}
       className={styles.card}
     >
-      {/* Image frame — clips the inner zoom on hover */}
+      {/* Image frame — clips the image to the card's rounded corners */}
       <div
         ref={frameRef}
         className={styles.frame}
@@ -111,7 +137,7 @@ function ProjectCard({ id, title, description, tags = [], delay, noMedia = false
         onPointerMove={handleMove}
         onPointerLeave={handleLeave}
       >
-        <div className={styles.zoom}>
+        <div className={styles.media}>
           {/* noMedia: same tokenised placeholder frame, zero image requests
               (a missing hero used to 404 through every format). */}
           <Media

@@ -60,4 +60,49 @@
   line-height: 24px;
   letter-spacing: var(--tracking-16-snug);
   text-wrap: pretty;
+  /* Reserve the longest description's height (3 lines at this leading) so the
+     TITLES land on one line across the row. The copy is bottom-anchored in the
+     frame, so without this a 2-line description pushes its title down while a
+     3-line one holds it up, and the title row goes ragged.
+
+     The text sits TOP-aligned in that reserved box, not bottom: the gap between
+     a title and its description is what binds them as a unit, so it's the one
+     measurement that must never vary. Slack falls at the bottom instead, where
+     there's no shared baseline to break — the card's lower edge is image, not
+     type. Bottom-aligning would hold that edge steady at the cost of a
+     title-to-description gap that changes per card, which reads far louder. */
+  min-height: calc(3 * 24px);
+}
+
+/* ── Phones: two cards per row ─────────────────────────────────────────────
+   At half width the 305/430 frame can't hold the copy at desktop sizes, so the
+   card steps down a rung on the type scale (20→16 title, 16→12 body), tightens
+   its padding, and drops the fixed ratio for a min-height — grid stretch keeps
+   the pair in a row level with each other. */
+@media (max-width: 640px) {
+  .card {
+    aspect-ratio: auto;
+    min-height: 260px;
+    padding: var(--space-12);
+  }
+
+  .body {
+    gap: var(--space-8);
+  }
+
+  .title {
+    font-size: var(--text-base);
+    line-height: 20px;
+    /* Tracking is calibrated per size, so a size change has to bring its own
+       (the base rule's is tuned for 20px). */
+    letter-spacing: var(--tracking-16-snug);
+  }
+
+  .description {
+    font-size: var(--text-xs);
+    line-height: 18px;
+    letter-spacing: var(--tracking-12-base);
+    /* Same rule at the phone measure, where the copy runs to five lines. */
+    min-height: calc(5 * 18px);
+  }
 }

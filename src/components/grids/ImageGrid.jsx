@@ -135,7 +135,10 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
               }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              // Open invites (280ms); close gets out of the way (150ms =
+              // --dur-fast). A dismissal that takes as long as the open reads
+              // sluggish — the per-variant transition splits the two.
+              exit={{ opacity: 0, transition: reduce ? { duration: 0 } : { duration: 0.15, ease: [0.16, 1, 0.3, 1] } }}
               transition={reduce ? { duration: 0 } : { duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
               onClick={(e) => {
                 // Only a click on the backdrop ITSELF closes — never one that
@@ -189,7 +192,7 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
                   src={openSrc}
                   alt=""
                   className={styles.lightboxImg}
-                  initial={reduce ? false : { opacity: 0, scale: 0.98 }}
+                  initial={reduce ? false : { opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={reduce ? { duration: 0 } : { duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
                 />

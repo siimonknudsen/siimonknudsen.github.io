@@ -3,34 +3,12 @@ import { Reveal } from '../components/motion'
 import LogoGrid from '../components/grids/LogoGrid'
 import ImageGrid from '../components/grids/ImageGrid'
 import SkillCard from '../components/cards/SkillCard'
-import Button from '../components/buttons/Button'
 import { AVATAR_SRC, onAvatarError } from '../lib/avatar'
 import skill1 from '../assets/skills/skill-1.webp'
 import skill2 from '../assets/skills/skill-2.webp'
 import skill3 from '../assets/skills/skill-3.webp'
 import skill4 from '../assets/skills/skill-4.webp'
 import styles from './About.module.css'
-
-// Inline download icon for the CV button — currentColor, no external deps.
-function DownloadIcon() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M12 3v12" />
-      <path d="m7 10 5 5 5-5" />
-      <path d="M5 21h14" />
-    </svg>
-  )
-}
 
 // Simon's own roles and dates, newest first. Industry comes from the same
 // source as the companies row.
@@ -54,10 +32,10 @@ const EXPERIENCE = [
     industry: 'Fashion technology',
   },
   {
-    time: 'Jan 2023 — Aug 2024',
+    time: 'Jan 2024 — Jul 2024',
     company: 'Freelance',
-    role: 'Product Designer & Web Developer',
-    industry: '',
+    role: 'Product Designer',
+    industry: 'Freelance',
   },
   {
     time: 'Jul 2021 — Apr 2023',
@@ -71,10 +49,14 @@ const EXPERIENCE = [
 // grid alternates them.
 const SKILL_BACKGROUNDS = [skill1, skill4, skill2, skill3, skill4, skill2, skill3, skill1]
 
+// Deliberately employer-agnostic: an About page outlives any one job, and a bio
+// that leads with the current role reads as a LinkedIn summary and dates itself
+// the moment he moves. Positioning, then range, then how he works — the current
+// role is on the Experience table right below, where it belongs.
 const BIO = [
-  "I'm a Product Designer who's passionate about human psychology within digital products.",
-  "I'm experienced in crafting beautiful and user friendly designs that solves real business problems.",
-  "I'm specialized within UX Design, UI Design & Design Systems.",
+  "I'm a product designer with five years of experience across health tech, fashion retail and affiliate marketing.",
+  "I work end to end — user research and journey mapping, UI, prototyping and user testing, then developer handoff and QA — on consumer apps, the internal tools teams run on, and the platforms behind both.",
+  "I build and maintain the design systems that work sits on, and I write production-ready front-end code — this site included. That's why I care as much about what ships as what's in the file.",
 ]
 
 function About() {
@@ -114,38 +96,46 @@ function About() {
     .sort((a, b) => a.filename.localeCompare(b.filename))
     .map(item => item.url)
 
+  // Written to the pattern hiring managers actually scan for: NAME THE METHODS
+  // AND TOOLS, don't assert value. Two failure modes were in here before — the
+  // original benefits filler ("...ultimately leading to increased retention"),
+  // and a value-claim rewrite that was tighter but still unfalsifiable ("the
+  // difference between a product people tolerate and one they trust"). A named
+  // method is checkable in an interview and doubles as keyword coverage; a
+  // claim about outcomes is neither. Every line here is also evidenced by a
+  // case study or a role on the Experience table.
   const skills = [
     {
       title: 'UX Design',
-      description: 'Crafting intuitive and seamless user experiences through research, wireframing, and user journey mapping to enhance customer satisfaction, ensuring products meet user needs, ultimately leading to increased user retention and loyalty.'
+      description: 'User flows, information architecture and journey mapping — the structure a product needs before anything gets drawn.'
     },
     {
       title: 'UI Design',
-      description: 'Creating visually appealing interfaces that enhance user interaction and engagement, elevating brand perception and user engagement, driving conversion rates and customer satisfaction.'
+      description: 'Layout, type, colour and interaction states, built in Figma as components rather than one-off screens.'
     },
     {
       title: 'Design Systems',
-      description: 'Establishing consistent design language and guidelines to ensure cohesive brand experiences, streamlining development processes, ensuring consistency and scalability across products, reducing time to market and development costs.'
+      description: 'Tokens, components and usage rules, kept in sync with the code that actually implements them.'
     },
     {
       title: 'Prototyping',
-      description: 'Building interactive prototypes to visualize and test design concepts before implementation, minimizing development risks by validating ideas early, saving time and resources while improving the quality of the final product.'
+      description: 'Clickable and coded prototypes for testing flows and interaction detail before engineering commits.'
     },
     {
       title: 'UX Research',
-      description: 'Conducting in-depth research to understand user needs, behaviors, and preferences, providing actionable insights into user behaviors and preferences, enabling companies to make informed decisions and prioritize features that matter most.'
+      description: 'User interviews, journey mapping and behavioural data, turned into decisions a team can act on.'
     },
     {
       title: 'User Testing',
-      description: 'Gathering feedback from real users to validate design decisions and improve usability, identifying usability issues and opportunities for improvement, resulting in higher conversion rates, lower churn, and increased customer satisfaction.'
+      description: 'Moderated and unmoderated sessions on real builds, measured against the task the user came to do.'
     },
     {
       title: 'UX Writing',
-      description: 'Crafting clear and concise content that guides users and enhances their experience, enhancing user comprehension and engagement, leading to clearer communication, improved task completion rates, and reduced support costs.'
+      description: 'Interface copy — labels, empty states, errors and onboarding — written to remove hesitation.'
     },
     {
       title: 'Frontend Development',
-      description: 'Translating design concepts into functional web interfaces using HTML, CSS, and JavaScript, delivering seamless user experiences across devices, improving accessibility, and increasing customer satisfaction and retention.'
+      description: 'React, CSS and design tokens. I implement my own work, so the detail survives to production.'
     }
   ]
 
@@ -173,18 +163,6 @@ function About() {
                 {paragraph}
               </p>
             ))}
-            <div className={styles.bioCta}>
-              <Button
-                as="a"
-                href={`${import.meta.env.BASE_URL}simon-knudsen-cv.pdf`}
-                download
-                variant="secondary"
-                size="sm"
-                iconLeft={<DownloadIcon />}
-              >
-                Download CV (PDF)
-              </Button>
-            </div>
           </Reveal>
         </div>
       </section>

@@ -8,6 +8,15 @@
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
+/* Phones: a 240px floor left room for exactly ONE tile, so a 9/16 portrait
+   filled the whole screen and the gallery read as a stack, not a grid. A 96px
+   floor lands 3-up at 375px and 2-up on the narrowest phones. */
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  }
+}
+
 /* Gap variants */
 .gap1 {
   gap: var(--space-4);

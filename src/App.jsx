@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { LazyMotion } from 'motion/react'
 import Home from './pages/Home'
 // Non-landing routes are code-split: each becomes its own chunk loaded on first
-// visit, so the heavy internal pages (StyleGuide/Playground) no longer ship in
+// visit, so the heavy internal pages (StyleGuide/MotionLab) no longer ship in
 // the initial bundle. Home stays eager (it's the landing page). The global
-// shader/header/footer remain mounted during navigation, so a null Suspense
+// header/footer remain mounted during navigation, so a null Suspense
 // fallback is seamless (no layout flash).
 // Each route chunk's import is a NAMED function so it can be both lazy-rendered
 // AND prefetched on idle (see the warm-cache effect in App). Prefetching after
@@ -18,7 +18,6 @@ const importArchive = () => import('./pages/Archive')
 const importAbout = () => import('./pages/About')
 const importContact = () => import('./pages/Contact')
 const importStyleGuide = () => import('./pages/StyleGuide')
-const importPlayground = () => import('./pages/Playground')
 const importMotionLab = () => import('./pages/MotionLab')
 const importNotFound = () => import('./pages/NotFound')
 
@@ -27,12 +26,11 @@ const Archive = lazy(importArchive)
 const About = lazy(importAbout)
 const Contact = lazy(importContact)
 const StyleGuide = lazy(importStyleGuide)
-const Playground = lazy(importPlayground)
 const MotionLab = lazy(importMotionLab)
 const NotFound = lazy(importNotFound)
 
 // The routes a visitor is most likely to reach (nav + footer + project cards),
-// prefetched on idle. (Playground / MotionLab / NotFound are rare — left on
+// prefetched on idle. (MotionLab / NotFound are rare — left on
 // demand so the idle warm-up stays lean.)
 const PREFETCH_IMPORTS = [
   importArchive,
@@ -61,7 +59,6 @@ const ROUTE_TITLES = {
   '/contact': 'Contact',
   '/style-guide': 'Design System',
   '/design-system': 'Design System',
-  '/playground': 'Playground',
 }
 
 // Keyed by pathname so the gentle fade-in (.page-enter) re-runs on each navigation.
@@ -120,7 +117,6 @@ function AnimatedRoutes() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/style-guide" element={<StyleGuide />} />
         <Route path="/design-system" element={<StyleGuide />} />
-        <Route path="/playground" element={<Playground />} />
         <Route path="/motion-lab" element={<MotionLab />} />
         <Route path="/project/:id" element={<ProjectPage />} />
         <Route path="*" element={<NotFound />} />
