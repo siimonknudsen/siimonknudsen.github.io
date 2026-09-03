@@ -107,7 +107,7 @@ function About() {
   const skills = [
     {
       title: 'UX Design',
-      description: 'User flows, information architecture and journey mapping — the structure a product needs before anything gets drawn.'
+      description: 'User flows, information architecture and journey mapping — the structure a product needs before it is drawn.'
     },
     {
       title: 'UI Design',
