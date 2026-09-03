@@ -51,7 +51,14 @@
    gap) loops seamlessly. */
 @media (max-width: 640px) {
   .marquee {
-    --marquee-gap: var(--space-32);
+    /* Roomier than the desktop row: at phone width the marks pass close to each
+       other, and extra air keeps them reading as separate logos rather than one
+       running strip. The keyframe below derives its travel from this, so the
+       loop stays seamless whatever the gap is. */
+    --marquee-gap: var(--space-48);
+    /* A longer track at the old 24s would have crawled; 20s keeps the pace
+       lively without tipping into the attention-grabbing end. */
+    --marquee-speed: 20s;
     overflow: hidden;
     /* Fade both edges so marks enter and leave instead of being cut off. */
     mask-image: linear-gradient(
@@ -75,7 +82,7 @@
     justify-content: flex-start;
     width: max-content;
     column-gap: var(--marquee-gap);
-    animation: marqueeScroll 24s linear infinite;
+    animation: marqueeScroll var(--marquee-speed) linear infinite;
   }
 
   .duplicate {

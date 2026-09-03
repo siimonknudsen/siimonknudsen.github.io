@@ -28,9 +28,6 @@ function Footer() {
               <Link to="/design-system" className={`type-body-sm text-color-secondary focus-ring ${styles.link}`}>
                 Design system
               </Link>
-              <Link to="/playground" className={`type-body-sm text-color-secondary focus-ring ${styles.link}`}>
-                Playground
-              </Link>
             </div>
           </div>
 

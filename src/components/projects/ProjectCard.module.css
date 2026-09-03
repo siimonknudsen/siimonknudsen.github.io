@@ -17,12 +17,10 @@
   background-color: var(--surface-color-secondary);
 }
 
-.zoom {
+/* Wrapper that sizes the image to the frame. No hover scale: the card's hover
+   affordance is the cursor-following "View project" label alone. */
+.media {
   height: 100%;
-  transition: transform var(--dur-slow) var(--ease-standard);
-}
-.card:hover .zoom {
-  transform: scale(1.04);
 }
 
 /* Disciplines, laid over the image's top-left corner. */

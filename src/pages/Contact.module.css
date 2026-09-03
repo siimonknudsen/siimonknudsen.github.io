@@ -1,23 +1,19 @@
 .section {
   width: 100%;
-  /* The page holds one short form, so the section keeps a tall editorial frame
-     and centres the form in it — otherwise it reads as a stub with a long void
-     under it. (The sticky header sits above in normal flow, so this height is
-     the frame BELOW the nav.) */
-  min-height: 1024px;
+  /* Content-driven height, every size. The old `min-height: 1024px` + centred
+     content made the frame the tallest thing on the site: the page shell
+     ALREADY supplies the air (`--header-clearance` above, 128px before the
+     footer), so the 1024 frame stacked a second, larger void on top of it and
+     pushed the headline most of a screen down.
+     Left content-sized rather than switched to a viewport height: `100vh` is
+     the thing that breaks on phones (the address bar resizes it mid-scroll),
+     and a real `max-height` would clip a form that must never be clipped. The
+     form's natural height comfortably clears a laptop viewport on its own —
+     measured ~800px of 900 at 1440x900 — so bounding it buys nothing and only
+     adds a way to fail. See CLAUDE.md rule 6 on padding-driven layouts. */
   display: grid;
-  align-content: center;
   justify-items: center;
   padding: 0 var(--page-gutter);
-}
-
-@media (max-width: 640px) {
-  .section {
-    /* On a phone the form alone fills the screen — drop the frame and let the
-       content set the height, with even breathing room top and bottom. */
-    min-height: 0;
-    padding: 0 var(--page-gutter);
-  }
 }
 
 .inner {

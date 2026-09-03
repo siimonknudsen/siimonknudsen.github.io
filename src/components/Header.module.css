@@ -542,8 +542,13 @@
   width: max-content;
   max-width: min(92vw, 560px);
   /* `left` + `width` transitions so the panel glides between triggers
-     (Projects → Archive → …) AND smoothly resizes between their widths. */
-  transition: opacity 220ms ease-out,
+     (Projects → Archive → …) AND smoothly resizes between their widths.
+     OPEN is the invitation (--dur-quick); CLOSE gets out of the way faster
+     (--dur-fast) — see `.panelClosed`. `visibility` must be in the transition
+     too: it's a discrete property, so without a lane here it flipped to hidden
+     the instant `.panelClosed` applied and the fade-out never rendered at all. */
+  transition: opacity var(--dur-quick) var(--ease-decelerate),
+    visibility 0s linear 0s,
     left 420ms var(--ease-emphasized), width 420ms var(--ease-emphasized);
 }
 
@@ -562,6 +567,12 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  /* Close: quicker than the open, and `visibility` is held until the fade has
+     finished so the panel actually fades instead of vanishing. No `left`/`width`
+     glide on the way out — a closed panel repositioning should be instant. */
+  transition: opacity var(--dur-fast) var(--ease-decelerate),
+    visibility 0s linear var(--dur-fast),
+    left 0s, width 0s;
 }
 
 .panelInner {

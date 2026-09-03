@@ -1,0 +1,150 @@
+/* ── Testimonials, phone presentation ──────────────────────────────────────
+   A scroll-snap track plus a segmented-pill indicator. Everything here is
+   mobile-only; the desktop 3-up grid is untouched. */
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+}
+
+.track {
+  display: flex;
+  /* Bleed to the screen edges so a slide can sit centred with its neighbours
+     hinted at the sides — the standard cue that there is more to swipe to.
+     The negative margin undoes the section gutter; the padding puts it back
+     as scroll padding so the snap still lands the card inside the column. */
+  margin-inline: calc(var(--page-gutter) * -1);
+  padding-inline: var(--page-gutter);
+  gap: var(--space-16);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--page-gutter);
+  /* Native momentum on iOS. */
+  -webkit-overflow-scrolling: touch;
+  /* The dots ARE the scrollbar here. */
+  scrollbar-width: none;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.track:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--focus-ring);
+  border-radius: var(--radius-md);
+}
+
+.slide {
+  /* One card per view, minus the gutters the track bleeds past. */
+  flex: 0 0 calc(100% - var(--page-gutter) * 2);
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+/* Equal heights: the quotes differ a lot in length, and a track whose height
+   jumped per slide would shove the dots (and the rest of the page) around
+   mid-swipe. */
+.slide > * {
+  height: 100%;
+}
+
+/* ── Indicator ────────────────────────────────────────────────────────────
+   Inactive = a plain dot. Active = a pill that fills over the dwell, so the
+   row carries position and timing at once. */
+.dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+}
+
+.dot {
+  position: relative;
+  display: block;
+  padding: var(--space-8) 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  border-radius: var(--radius-pill);
+}
+
+/* An 8px dot with vertical-only padding measured 8x24 — under the 24x24 floor
+   in WCAG 2.5.8. Widening the button itself would push the dots apart, so the
+   hit area is an invisible overlay instead, the same trick ThemeToggle uses for
+   its 28px segments. Applies on every input type: a dot this small is fiddly
+   with a mouse too. */
+.dot::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+}
+
+.dotTrack {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  width: var(--space-8);
+  height: var(--space-8);
+  border-radius: var(--radius-pill);
+  background-color: var(--text-color-tertiary);
+  opacity: 0.4;
+  /* Width is the shape change; keep it on the same calm UI curve as the rest
+     of the site rather than springing it. */
+  transition:
+    width var(--dur-base) var(--ease-decelerate),
+    opacity var(--dur-base) var(--ease-standard);
+}
+
+.dotActive .dotTrack {
+  width: var(--space-32);
+  opacity: 0.24;
+}
+
+/* The fill is a child that sweeps left→right inside the pill. transform-only,
+   so it stays on the compositor. */
+.dotFill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform: scaleX(0);
+  border-radius: inherit;
+  background-color: var(--text-color-primary);
+}
+
+/* Only run the sweep while autoplay is actually armed; when the reader has
+   taken over, the active pill just reads as solid. */
+.dotFill[data-running='true'] {
+  animation-name: dotSweep;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.dotFill[data-running='false'] {
+  transform: scaleX(1);
+}
+
+@keyframes dotSweep {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    scroll-behavior: auto;
+  }
+  .dotFill {
+    animation: none;
+    transform: scaleX(1);
+  }
+}

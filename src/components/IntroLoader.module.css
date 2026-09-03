@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   background: var(--surface-color-primary);
-  transition: opacity 450ms var(--ease-standard);
+  transition: opacity var(--dur-slow) var(--ease-standard);
 }
 
 /* Fade the whole overlay out to reveal the site */

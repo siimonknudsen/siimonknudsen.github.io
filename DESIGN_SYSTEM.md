@@ -186,7 +186,7 @@ keep the drawn height (a 24px chip is 6 + 12 + 6, not 4 + 16 + 4).
 
 **⚠ The same metrics are ALSO baked into the font binary** (`BDOGrotesk-VF-balanced.woff2`, hhea + OS/2 typo tables via fontTools) because **WebKit — every iPhone browser + desktop Safari — ignores the CSS override descriptors**; without the baked binary, phones render the native top-heavy box. The CSS overrides and the binary carry identical values; **if the metrics are ever re-tuned, change both** (re-bake with fontTools and rename the file to bust caches — see DECISIONS.md 2026-06).
 
-**The monospace accent was retired (2026-06-09)** — Simon wants one typeface, so **BDO Grotesk is now used everywhere on the public site**. The **`.font-mono` utility renders the sans** (it keeps only the small meta sizing/tracking, not a different family), converting all ~48 prior mono usages (overlines, stat labels, design-system metadata) to BDO. The **`--font-mono` token is reserved only for genuine code** (the internal Playground code block). See DESIGN_LOG → Global.
+**The monospace accent was retired (2026-06-09)** — Simon wants one typeface, so **BDO Grotesk is now used everywhere on the public site**. The **`.font-mono` utility renders the sans** (it keeps only the small meta sizing/tracking, not a different family), converting all ~48 prior mono usages (overlines, stat labels, design-system metadata) to BDO. The **`--font-mono` token is reserved only for genuine code**; it has no call sites since the Playground page was retired (2026-09-03). See DESIGN_LOG → Global.
 
 **Underlying primitives:** families BDO Grotesk (`--font-sans`, self-hosted variable, wght 300–900, SIL OFL 1.1) + a monospace stack
 (`--font-mono`, **now reserved for genuine code only** — see above);
