@@ -15,17 +15,11 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-/* columns=5 -> 2 on phones, 3 on large phones/small tablets, 4, then 5.
-   At 5-up on a 375px screen each mark rendered ~20px wide and was unreadable;
-   2-up gives the wordmarks room to actually be recognised. */
+/* columns=5 -> 3 on phones, 4 on tablets, 5 on desktop. (5-up on a 375px screen
+   rendered each mark ~20px wide and unreadable; 2-up was legible but turned a
+   21-logo wall into eleven rows of scrolling, so 3 is the balance point.) */
 .cols5 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-@media (min-width: 480px) {
-  .cols5 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 @media (min-width: 768px) {
@@ -107,12 +101,12 @@
   background-color: var(--surface-color-secondary);
 }
 
-/* Phones: the cell is ~half the width it was, so 24px of padding on each side
-   was taking most of it. Tighten the frame, keep the mark the same. */
+/* Phones: at 3-up the cell is ~98px wide, so 24px of padding a side would take
+   half of it. Tighten the frame so the mark keeps the width it needs to read. */
 @media (max-width: 767px) {
   .cell {
-    padding: var(--space-12);
-    min-height: var(--space-64);
+    padding: var(--space-8);
+    min-height: var(--space-56);
   }
 }
 
