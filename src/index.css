@@ -99,10 +99,10 @@
   --text-xl: 20px;
   --text-2xl: 24px;
   --text-3xl: 32px;
+  /* Medium is the floor and the only weight the system uses; `regular` stays
+     only for the design-system page's own specimen. */
   --weight-regular: 400;
   --weight-medium: 500;
-  --weight-semibold: 600;
-  --weight-bold: 700;
   /* Negative tracking scale. Modern, tight feel; graduated because tight
      tracking aids large display but HURTS legibility at small sizes (see
      DECISIONS). Applied across all .type-* roles; overline stays positive. */
@@ -989,6 +989,7 @@ html:not(.dark) {
   color: var(--accent-contrast);
   font-size: var(--text-sm);
   font-weight: var(--weight-medium);
+  line-height: 14px;
   transform: translateY(-150%);
   transition: transform var(--dur-fast) var(--ease-decelerate);
 }

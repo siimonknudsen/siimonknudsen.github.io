@@ -108,7 +108,7 @@
 /* Text wordmark placeholder — muted, lifts to full colour on hover */
 .wordmark {
   font-size: clamp(1.25rem, 2.4vw, 1.75rem);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-medium);
   letter-spacing: -0.02em;
   color: var(--text-color-tertiary);
   opacity: 0.85;
@@ -237,7 +237,7 @@
 .ttName {
   margin: 0 0 var(--space-8);
   font-size: var(--text-base);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-snug);
   color: var(--text-color-primary);
 }

@@ -446,6 +446,8 @@
 }
 .rollText {
   display: block;
+  /* Control leading (see `.type-ui-14`) — also the roll's travel distance. */
+  line-height: 14px;
   transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
   will-change: transform;
 }
