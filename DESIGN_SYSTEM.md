@@ -138,7 +138,9 @@ fine-tune with `leading-*` only when needed.
 
 The Figma file is the source of truth for the roles it defines — those carry
 its exact px line-heights (2026-09 audit). Roles marked *code-only* have no
-Figma variable yet.
+Figma variable yet. **Medium (500) is the weight floor**: `body` defaults to it
+and no role sits at 400 — the `--weight-regular` token stays only for a
+deliberate exception.
 
 | Role class | Size/Leading · Weight | Use |
 |---|---|---|
@@ -148,12 +150,12 @@ Figma variable yet.
 | `.type-heading-sm` | 24/26 · Medium | section headings |
 | `.type-title` | 20 · Medium *(code-only)* | card / block titles |
 | `.type-subtitle` | 18 · Medium *(code-only)* | sub-headings |
-| `.type-body-xl` | 20/24 · Regular | largest body |
-| `.type-body-lg` | 18/24 · Regular | lead paragraphs |
+| `.type-body-xl` | 20/24 · Medium | largest body |
+| `.type-body-lg` | 18/24 · Medium | lead paragraphs |
 | `.type-body` | 16/20 · **Medium** | body |
-| `.type-body-sm` | 14/18 · Regular | secondary body |
+| `.type-body-sm` | 14/18 · Medium | secondary body |
 | `.type-label` | 14/1.2 · Medium | buttons, UI labels |
-| `.type-caption` | 12/16 · Regular | meta, captions |
+| `.type-caption` | 12/16 · Medium | meta, captions |
 | `.type-overline` | 12 · Medium · uppercase *(code-only)* | eyebrows / kickers |
 
 **Vertical metrics are overridden on the `@font-face`** (the global "type looks centred" fix). BDO Grotesk ships a top-heavy box (native ascent 800 / descent 177 / cap 729 per 1000 em) so its letters sit ~5.5% high in any box — visible in every centred UI label and as uneven space above text. We rebalance at the source: **`ascent-override: 90.6%` / `descent-override: 17.7%` / `line-gap-override: 29.4%`**, chosen so `ascent − descent = cap-height` (caps centre in any line-box) while `line-height: normal` stays ~1.38 and descenders never clip. Consequence: the balanced content-box is **1.083em**, so **multi-line display type must not go below `line-height: 1.1`** (the display roles are floored there). See DESIGN_LOG → Global.

@@ -149,14 +149,14 @@
 .blockLabelLg {
   composes: blockLabel;
   font-size: var(--text-lg);
-  font-weight: var(--weight-regular);
+  font-weight: var(--weight-medium);
   line-height: 24px;
 }
 
 .blockBodyLg {
   composes: blockBody;
   font-size: var(--text-lg);
-  font-weight: var(--weight-regular);
+  font-weight: var(--weight-medium);
   line-height: 24px;
 }
 
@@ -176,7 +176,7 @@
   margin: 0;
   color: var(--text-color-primary);
   font-size: var(--text-lg);
-  font-weight: var(--weight-regular);
+  font-weight: var(--weight-medium);
   line-height: 24px;
   letter-spacing: var(--tracking-snug);
 }

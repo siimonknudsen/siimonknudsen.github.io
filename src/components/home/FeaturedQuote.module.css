@@ -29,7 +29,7 @@
 }
 
 .quote {
-  font-weight: var(--weight-regular);
+  font-weight: var(--weight-medium);
   max-width: 52rem;
   text-wrap: balance;
 }

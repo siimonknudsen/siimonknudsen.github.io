@@ -419,7 +419,7 @@
 
 .trigger {
   font-size: var(--text-sm);
-  font-weight: var(--weight-regular);
+  font-weight: var(--weight-medium);
   padding: var(--space-8) var(--space-16);
   white-space: nowrap;
   /* Text-only trigger — no background pill or border; the label colour shifts

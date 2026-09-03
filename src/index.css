@@ -533,6 +533,9 @@ html:not(.dark) {
 
   body {
     font-family: var(--font-sans);
+    /* Medium is the floor for the whole site — nothing renders at 400 unless a
+       component has a specific reason to. */
+    font-weight: var(--weight-medium);
     background-color: var(--surface-color-primary);
     color: var(--text-color-primary);
     min-height: 100vh;
@@ -664,14 +667,14 @@ html:not(.dark) {
   /* 20/24 regular — the largest body role (Figma `type-body-xl`). */
   .type-body-xl {
     font-size: var(--text-xl);
-    font-weight: var(--weight-regular);
+    font-weight: var(--weight-medium);
     line-height: 24px;
     letter-spacing: var(--tracking-snug);
     text-wrap: pretty;
   }
   .type-body-lg {
     font-size: var(--text-lg);
-    font-weight: var(--weight-regular);
+    font-weight: var(--weight-medium);
     line-height: 24px;
     letter-spacing: var(--tracking-snug);
     text-wrap: pretty;
@@ -685,7 +688,7 @@ html:not(.dark) {
   }
   .type-body-sm {
     font-size: var(--text-sm);
-    font-weight: var(--weight-regular);
+    font-weight: var(--weight-medium);
     line-height: 18px;
     letter-spacing: var(--tracking-base);
     text-wrap: pretty;
@@ -698,7 +701,7 @@ html:not(.dark) {
   }
   .type-caption {
     font-size: var(--text-xs);
-    font-weight: var(--weight-regular);
+    font-weight: var(--weight-medium);
     line-height: 16px;
     letter-spacing: var(--tracking-base);
   }

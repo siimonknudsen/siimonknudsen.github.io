@@ -53,7 +53,8 @@ probably wrong.
 Confident, minimal, **editorial** — atmospheric, not decorative. Big statement type is the
 hero; one clear focal point; lots of negative space. **Depth from light** (shaders, glass,
 glow, soft tinted shadows) — **never hard borders/boxes** (he actively dislikes them). Restrained
-black / white / grey — no brand hue, few weights. **Motion is calm, slow, relaxing** — never
+black / white / grey — no brand hue, few weights, and **Medium (500) is the
+minimum weight** (nothing at 400). **Motion is calm, slow, relaxing** — never
 bouncy/attention-grabbing. Must never read **templated / AI-generated** (no numbered eyebrows,
 no redundant labels, no clutter). **Priority of effort: typography + spacing ≈ 80% → imagery →
 motion (last 20%).** He consistently wants **more breathing room** — when unsure, give whitespace
