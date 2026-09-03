@@ -59,7 +59,7 @@
   color: var(--text-color-secondary);
   font-size: var(--text-base);
   font-weight: var(--weight-medium);
-  line-height: 20px;
+  line-height: 24px;
   letter-spacing: var(--tracking-snug);
   text-wrap: pretty;
 }
@@ -70,12 +70,6 @@
   aspect-ratio: 1256 / 700;
   border-radius: var(--radius-sm);
   background-color: var(--surface-color-secondary);
-}
-
-/* The image fits INSIDE the frame — it meets whichever edge it reaches first
-   and is never cropped. */
-.frame img {
-  object-fit: contain;
 }
 
 /* Content plates keep their natural ratio — the case imagery is full-page
@@ -114,7 +108,7 @@
   margin: 0;
   color: var(--text-color-secondary);
   font-size: var(--text-sm);
-  line-height: 18px;
+  line-height: 20px;
   letter-spacing: var(--tracking-base);
 }
 
@@ -122,7 +116,7 @@
   margin: 0;
   color: var(--text-color-primary);
   font-size: var(--text-sm);
-  line-height: 18px;
+  line-height: 20px;
   letter-spacing: var(--tracking-base);
 }
 
@@ -137,34 +131,20 @@
 .blockLabel {
   margin: 0;
   color: var(--text-color-secondary);
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   font-weight: var(--weight-medium);
   line-height: 20px;
-  letter-spacing: var(--tracking-snug);
+  letter-spacing: var(--tracking-base);
 }
 
 .blockBody {
   margin: 0;
   color: var(--text-color-primary);
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   font-weight: var(--weight-medium);
   line-height: 20px;
-  letter-spacing: var(--tracking-snug);
+  letter-spacing: var(--tracking-base);
   text-wrap: pretty;
-}
-
-.blockLabelLg {
-  composes: blockLabel;
-  font-size: var(--text-lg);
-  font-weight: var(--weight-medium);
-  line-height: 24px;
-}
-
-.blockBodyLg {
-  composes: blockBody;
-  font-size: var(--text-lg);
-  font-weight: var(--weight-medium);
-  line-height: 24px;
 }
 
 /* ── Related projects ───────────────────────────────────────────────────── */

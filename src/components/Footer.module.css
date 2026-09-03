@@ -129,11 +129,11 @@
   transform: scaleX(1);
 }
 
-/* Keyboard focus — soft accent glow (no hard outline), theme-aware. */
+/* Keyboard focus — soft focus glow (no hard outline), theme-aware. */
 .link:focus-visible {
   outline: none;
   box-shadow: 0 0 0 1px var(--glass-border),
-    0 0 0 3px color-mix(in oklch, var(--accent) 45%, transparent);
+    0 0 0 3px color-mix(in oklch, var(--focus-ring) 60%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

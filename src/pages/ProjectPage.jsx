@@ -127,7 +127,7 @@ function ProjectPage() {
                 <Media src={item.src} alt={title} aspect="auto" rounded="none" />
               </Reveal>
             ) : (
-              <TextBlock key={item.key} label={item.note.step} body={item.note.body} size="lg" />
+              <TextBlock key={item.key} label={item.note.step} body={item.note.body} />
             ),
           )}
 
@@ -173,14 +173,14 @@ function ProjectPage() {
 
 /**
  * A labelled block of prose — quiet label above, the copy itself in primary
- * text. `size="lg"` is the 18px variant used for the notes between images.
+ * text.
  */
-function TextBlock({ label, body, size = 'base' }) {
+function TextBlock({ label, body }) {
   if (!body) return null
   return (
     <Reveal preset="fade-up" className={styles.block}>
-      <p className={size === 'lg' ? styles.blockLabelLg : styles.blockLabel}>{label}</p>
-      <p className={size === 'lg' ? styles.blockBodyLg : styles.blockBody}>{body}</p>
+      <p className={styles.blockLabel}>{label}</p>
+      <p className={styles.blockBody}>{body}</p>
     </Reveal>
   )
 }

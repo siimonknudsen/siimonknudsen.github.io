@@ -53,7 +53,7 @@
 
 .sectionLead {
   font-size: var(--text-base);
-  line-height: 1.4;
+  line-height: 22px;
   max-width: 60ch; /* lead paragraphs capped ~60ch */
 }
 
@@ -126,7 +126,7 @@
   background: var(--accent);
   color: var(--neutral-0);
   font-size: var(--text-xs);
-  line-height: 1;
+  line-height: 12px;
   box-shadow: 0 0 0 3px var(--surface-color-primary);
   z-index: 2;
   pointer-events: none;
@@ -159,7 +159,7 @@
   background: var(--accent-soft);
   color: var(--accent);
   font-size: var(--text-xs);
-  line-height: 1;
+  line-height: 12px;
   font-variant-numeric: tabular-nums;
 }
 
@@ -173,12 +173,12 @@
 .anatomyLegendName {
   font-size: var(--text-sm);
   font-weight: var(--weight-medium);
-  line-height: 1.3;
+  line-height: 18px;
 }
 
 .anatomyLegendDesc {
   font-size: var(--text-xs);
-  line-height: 1.4;
+  line-height: 18px;
 }
 
 .tile {
@@ -218,7 +218,7 @@
 .colorTitle {
   font-size: var(--text-sm);
   font-weight: var(--weight-medium);
-  line-height: 1.25;
+  line-height: 18px;
 }
 
 /* A transparency hairline for light swatches that would otherwise vanish on a
@@ -342,7 +342,7 @@
 
 .coverTitle {
   font-size: clamp(3rem, 7vw, 5rem); /* tops ~80px */
-  line-height: 1.04;
+  line-height: clamp(50px, 7.3vw, 84px);
   font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-tight);
   margin-top: var(--space-16);
@@ -351,7 +351,7 @@
 
 .coverLead {
   font-size: var(--text-lg);
-  line-height: 1.4;
+  line-height: 26px;
   max-width: 56ch; /* lead capped ~56ch */
 }
 
@@ -380,7 +380,7 @@
 }
 .principleText {
   font-size: clamp(1.125rem, 0.9rem + 1vw, 1.5rem);
-  line-height: 1.3;
+  line-height: clamp(24px, 1.2rem + 1vw, 32px);
   font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-tight);
 }
@@ -588,7 +588,7 @@
   position: relative;
   z-index: 1;
   font-size: 88px;
-  line-height: 1;
+  line-height: 88px;
   font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-tight);
 }
@@ -758,13 +758,13 @@
 
 .swatchStep {
   font-size: var(--text-xs);
-  line-height: 1;
+  line-height: 12px;
   font-variant-numeric: tabular-nums;
 }
 
 .swatchHex {
   font-size: var(--text-xs);
-  line-height: 1;
+  line-height: 12px;
   font-variant-numeric: tabular-nums;
 }
 
@@ -798,7 +798,7 @@
 
 .accentBlurb {
   font-size: var(--text-sm);
-  line-height: 1.5;
+  line-height: 22px;
   max-width: 48ch;
 }
 
@@ -927,7 +927,7 @@
 
 .materialDesc {
   font-size: var(--text-sm);
-  line-height: 1.4;
+  line-height: 20px;
   margin-top: var(--space-6);
 }
 
@@ -1017,7 +1017,7 @@
 .glassLabCaption {
   position: relative;
   font-size: var(--text-xs);
-  line-height: 1.4;
+  line-height: 18px;
 }
 
 /* Blur tokens shown as REAL frost: swatches sit over a busy colour backdrop and
@@ -1068,7 +1068,7 @@
 
 .elevationLead {
   font-size: var(--text-sm);
-  line-height: 1.5;
+  line-height: 22px;
   max-width: 60ch;
   margin-top: var(--space-8);
 }
@@ -1166,7 +1166,7 @@
 
 .radiusNote {
   font-size: var(--text-xs);
-  line-height: 1.5;
+  line-height: 18px;
   max-width: 60ch;
   margin-top: var(--space-16);
 }
@@ -1394,7 +1394,7 @@
 
 .fxName {
   font-size: var(--text-xs);
-  line-height: 1.3;
+  line-height: 16px;
   word-break: break-word;
 }
 
@@ -1480,7 +1480,7 @@
 }
 .componentPurpose {
   font-size: var(--text-base);
-  line-height: 1.45;
+  line-height: 24px;
   max-width: 60ch;
   margin: 0;
 }
@@ -1545,7 +1545,7 @@
 }
 .ddCaption {
   font-size: var(--text-sm);
-  line-height: 1.45;
+  line-height: 20px;
   margin: 0;
 }
 /* Labeled live examples — auto-fill so a few small specimens don't stretch to
@@ -1590,7 +1590,7 @@
   position: relative;
   padding-left: var(--space-20);
   font-size: var(--text-sm);
-  line-height: 1.5;
+  line-height: 22px;
 }
 .guideline::before {
   content: '';
@@ -1718,7 +1718,7 @@
 }
 .a11yCardDesc {
   font-size: var(--text-sm);
-  line-height: 1.5;
+  line-height: 22px;
 }
 
 /* Keyboard map — a quiet borderless table on a tonal surface. Context · key · what
@@ -1757,7 +1757,7 @@
 }
 .a11yAction {
   font-size: var(--text-sm);
-  line-height: 1.4;
+  line-height: 20px;
 }
 @media (max-width: 639px) {
   .a11yRow {
@@ -1777,7 +1777,7 @@
   padding: 2px var(--space-8);
   border-radius: var(--radius-pill);
   font-size: var(--text-xs);
-  line-height: 1.4;
+  line-height: 18px;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
@@ -1844,11 +1844,11 @@
   font-size: var(--text-xl);
   font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-tight);
-  line-height: 1.2;
+  line-height: 24px;
 }
 .themeCardBody {
   font-size: var(--text-sm);
-  line-height: 1.5;
+  line-height: 22px;
 }
 .themeCardRow {
   display: flex;
@@ -1909,7 +1909,7 @@
 }
 .patternCardBody {
   font-size: var(--text-sm);
-  line-height: 1.6;
+  line-height: 22px;
   margin: 0;
   max-width: 44ch;
 }
@@ -1977,6 +1977,6 @@
   margin: 0;
   max-width: 40ch;
   font-size: var(--text-sm);
-  line-height: 1.5;
+  line-height: 22px;
   color: var(--transparent-light-80);
 }

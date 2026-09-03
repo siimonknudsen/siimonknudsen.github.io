@@ -148,11 +148,11 @@ deliberate exception.
 | `.type-heading-sm` | 24/26 · Medium | section headings |
 | `.type-body-xl` | 20/24 · Medium | largest body, card titles |
 | `.type-body-lg` | 18/24 · Medium | lead paragraphs |
-| `.type-body` | 16/20 · Medium | body |
-| `.type-body-sm` | 14/18 · Medium | secondary body, links, UI |
-| `.type-ui-14` | 14/**100%** · Medium | control labels — buttons, nav |
-| `.type-ui-12` | 12/**100%** · Medium | control labels — chips, badges |
-| `.type-label` | 14/1.2 · Medium | legacy label role |
+| `.type-body` | 16/24 · Medium | body |
+| `.type-body-sm` | 14/20 · Medium | secondary body, links, UI |
+| `.type-ui-14` | 14/**14** · Medium | control labels — buttons, nav |
+| `.type-ui-12` | 12/**12** · Medium | control labels — chips, badges |
+| `.type-label` | 14/18 · Medium | legacy label role |
 | `.type-caption` | 12/16 · Medium | meta, captions |
 | `.type-overline` | 12 · Medium · uppercase *(code-only)* | eyebrows / kickers |
 
@@ -161,6 +161,13 @@ the Figma pages use — 12/14/16 for body and UI, 18/20 for larger content, 24/3
 for headings. The 10px, 40px and 48px steps were retired in the 2026-09 audit
 (nothing in the designs used them), along with `type-title` and `type-subtitle`,
 which duplicated `body-xl` and `body-lg`.
+
+**Every line height is an explicit pixel value on a 2px grid** — no ratios
+anywhere, so leading never drifts with the font size.
+
+**Focus keeps its own hue.** `--focus-ring` (blue-600 light / blue-400 dark) is
+an accessibility affordance, not brand: the monochrome accent would be nearly
+invisible as a ring against black or white ink.
 
 **Controls have their own two roles.** Buttons, chips, badges and nav items use
 `type-ui-14` / `type-ui-12` — same sizes as the body roles but at **100%

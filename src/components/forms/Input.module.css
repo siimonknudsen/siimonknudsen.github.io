@@ -37,8 +37,8 @@
 }
 
 .fieldDefault:focus {
-  border-color: color-mix(in oklch, var(--accent) 60%, var(--glass-border));
-  box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 25%, transparent);
+  border-color: color-mix(in oklch, var(--focus-ring) 70%, var(--glass-border));
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--focus-ring) 35%, transparent);
 }
 
 /* Error state */
