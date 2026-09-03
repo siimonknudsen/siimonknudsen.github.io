@@ -1,6 +1,5 @@
 .section {
   width: 100%;
-  padding: 0 var(--page-gutter);
   /* Sit above the hero's absolutely-positioned bottom fade overlay, which was
      painting over the "Worked at" label (positioned elements cover static ones
      regardless of DOM order). */
@@ -14,31 +13,29 @@
      pad on phones (≤640px), so the bottom gap must follow it down — otherwise
      the section sits 64px above / 128px below on mobile. */
   margin-top: 0;
-  margin-bottom: var(--space-128);
-}
-
-@media (max-width: 640px) {
-  .section {
-    margin-bottom: var(--space-64);
-  }
 }
 
 .inner {
-  max-width: var(--container-max);
+  max-width: var(--content-max);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-24);
 }
 
-.label {
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+.marquee {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-/* Centred flex row so the set of companies sits balanced under the "Worked at"
-   label regardless of count (now four). Wraps to a centred column on mobile. */
+/* Decorative second copy of the set — only used by the phone marquee. */
+.duplicate {
+  display: none;
+}
+
+/* The companies read as one quiet centred row on the page ground — no tiles,
+   no heading (the section's aria-label names it for assistive tech). */
 .logos {
   display: flex;
   flex-wrap: wrap;
@@ -48,17 +45,63 @@
   row-gap: var(--space-20);
 }
 
-/* Phones: a balanced 2×2 grid reads far calmer than a tall single column of
-   four logos. Equal columns + centred items keep the differently-proportioned
-   marks optically aligned. */
+/* Phones: a single row that scrolls itself — the four marks don't fit across a
+   375px screen, and a marquee reads calmer than a 2×2 grid of wordmarks. The
+   track is the set twice over, so translating it by exactly half (plus half a
+   gap) loops seamlessly. */
 @media (max-width: 640px) {
+  .marquee {
+    --marquee-gap: var(--space-32);
+    overflow: hidden;
+    /* Fade both edges so marks enter and leave instead of being cut off. */
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 12%,
+      #000 88%,
+      transparent
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 12%,
+      #000 88%,
+      transparent
+    );
+  }
+
   .logos {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: var(--space-32);
-    row-gap: var(--space-28);
-    justify-items: center;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    width: max-content;
+    column-gap: var(--marquee-gap);
+    animation: marqueeScroll 24s linear infinite;
+  }
+
+  .duplicate {
+    display: flex;
     align-items: center;
+    column-gap: var(--marquee-gap);
+    flex: none;
+  }
+
+  .duplicate .logoWrap {
+    flex: none;
+  }
+
+  /* The tooltip is a pointer affordance — there's no hover on a touch screen,
+     and a card anchored to a moving mark would drift. */
+  .tooltip {
+    display: none;
+  }
+}
+
+@keyframes marqueeScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-50% - var(--marquee-gap) / 2));
   }
 }
 
@@ -82,6 +125,8 @@
 .companyChip {
   position: relative;
   display: inline-flex;
+  /* Never squeeze a wordmark — the phone marquee is a nowrap track. */
+  flex: none;
 }
 
 /* Inline logo (theme-aware via currentColor) */
@@ -201,7 +246,7 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-12);
+  gap: var(--space-8);
 }
 
 /* Stacked spec row (a real box so it can stagger in): muted label above its
@@ -214,16 +259,17 @@
 }
 
 .ttRow dt {
-  font-size: var(--text-2xs);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-label);
-  color: var(--text-color-tertiary);
+  font-size: var(--text-sm);
+  line-height: 18px;
+  letter-spacing: var(--tracking-base);
+  color: var(--text-color-secondary);
 }
 
 .ttRow dd {
   margin: 0;
   font-size: var(--text-sm);
-  letter-spacing: var(--tracking-snug);
+  line-height: 18px;
+  letter-spacing: var(--tracking-base);
   color: var(--text-color-primary);
 }
 
@@ -285,6 +331,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .logos {
+    animation: none;
+  }
+  .marquee {
+    overflow-x: auto;
+  }
   .wordmark,
   .logoWrap {
     transition: none;

@@ -1,140 +1,110 @@
-/* Hero Section — pulled up under the sticky header so the shader fills the
-   full viewport and glows behind the frosted nav bar. The negative top margin
-   reclaims the header's footprint; the matching top padding keeps the content
-   clear of the nav. */
+/* ── Hero ────────────────────────────────────────────────────────────────────
+   Left-aligned statement type in the page's content column, on the page's
+   128px vertical rhythm — the copy and the companies row are one opening,
+   spaced on the same 128 as everything else (and as the air above and below
+   the opening itself). */
 .hero {
   position: relative;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  /* Fill the viewport and VERTICALLY CENTER the hero content (pulled up under the
-     sticky header via the negative top margin). `min-height` (not a fixed height)
-     means short viewports grow instead of clipping; the padding is the minimum
-     clearance under the nav and above the next section, so justify-content can
-     centre the content when there's room. */
-  /* Fill the area BELOW the sticky header and CENTRE the content within it — the
-     "section" is the viewport minus the header, so this puts the name/headline/
-     CTAs at its true vertical middle. min-height (not fixed) so short screens grow
-     instead of clipping; symmetric padding keeps it balanced. The global mesh
-     already shows behind the header, so the hero needn't reach under it. */
-  /* Fill the area below the header, but CAP at 1024px so the hero doesn't grow
-     oversized on very tall/large screens (content just centres within the cap). */
-  min-height: min(calc(100vh - var(--header-height)), 1024px);
-  padding: var(--space-48) var(--page-gutter);
-  box-sizing: border-box;
-}
-
-@media (max-width: 640px) {
-  .hero {
-    padding: var(--space-32) var(--page-gutter);
-  }
-}
-
-/* Content column, centred directly over the shader (no card) */
-.heroContent {
-  position: relative;
-  z-index: 10;
-  width: 100%;
-  max-width: var(--container-max);
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: var(--space-20);
-}
-
-/* Faded name kicker above the headline */
-.kicker {
-  margin: 0;
-  opacity: 0.7;
-  letter-spacing: var(--tracking-tight);
-}
-
-/* Hero headline — statement type set straight on the shader */
-.headline {
-  font-weight: var(--weight-medium);
-  font-size: clamp(2rem, 4.4vw, 3.5rem);
-  line-height: 1.12;
-  letter-spacing: -0.05em;
-  max-width: min(18ch, 100%);
-  margin: 0;
-}
-
-/* Call-to-Action Buttons */
-.ctaRow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-16);
-  margin-top: var(--space-8);
-}
-
-/* Equal-width CTAs via CSS, no JS measurement */
-.cta {
-  min-width: 11rem;
-  justify-content: center;
-}
-
-/* Stats Band Section */
-.statsSection {
-  width: 100%;
+  gap: var(--space-160);
   padding: 0 var(--page-gutter);
-  margin-bottom: var(--space-164);
-}
-
-/* Projects Section */
-.projectsSection {
-  width: 100%;
-  padding: var(--space-24) var(--page-gutter);
-  margin-bottom: var(--space-164);
-  /* Land below the sticky header when scrolled to via "View projects". */
-  scroll-margin-top: var(--header-height);
-}
-
-.projectsHeader {
-  margin-bottom: var(--space-40);
-}
-
-.projectsHeading {
-  font-weight: var(--weight-regular);
-}
-
-/* Testimonials Section */
-.testimonialsSection {
-  width: 100%;
-  padding: var(--space-24) var(--page-gutter);
-  margin-bottom: var(--space-164);
 }
 
 .container {
-  max-width: var(--container-max);
+  max-width: var(--content-max);
   margin-left: auto;
   margin-right: auto;
 }
 
-.testimonialsHeader {
-  margin-bottom: var(--space-32);
+.heroInner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-8);
+  /* The measure the hero is drawn to (513 of the 1256 design column). */
+  max-width: calc(513 / 1256 * 100%);
 }
 
-.testimonialsOverline {
-  margin-bottom: var(--space-8);
+.headline {
+  margin: 0;
+  color: var(--text-color-primary);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-medium);
+  line-height: 36px;
+  letter-spacing: var(--tracking-tight);
 }
 
-.testimonialsHeading {
-  font-weight: var(--weight-regular);
+.lead {
+  margin: 0;
+  color: var(--text-color-secondary);
+  font-size: var(--text-sm);
+  line-height: 18px;
+  letter-spacing: var(--tracking-base);
+  text-wrap: pretty;
 }
 
-/* Three testimonials side by side; auto-fit wraps 3→2→1 as width tightens,
-   never squishing a column below 340px. (Only 3 items, so max 3 columns.)
-   min(340px, 100%) lets the column collapse to the container on very narrow
-   phones (≤~388px) instead of forcing horizontal overflow. */
-.testimonialsGrid {
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+}
+
+/* ── Sections ───────────────────────────────────────────────────────────── */
+.section {
+  width: 100%;
+  padding: 0 var(--page-gutter);
+  /* Land below the sticky header when scrolled to via "View projects". */
+  scroll-margin-top: var(--header-height);
+}
+
+.sectionHeading {
+  margin: 0 0 var(--space-24);
+  color: var(--text-color-primary);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-medium);
+  line-height: 26px;
+  letter-spacing: var(--tracking-tight);
+}
+
+/* Full-width project cards, 128px apart — the front page's main rhythm. */
+.projects {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-128);
+}
+
+.testimonials {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
-  gap: var(--space-24);
-  align-items: stretch;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-48);
+  align-items: start;
+}
+
+@media (max-width: 1023px) {
+  .heroInner {
+    max-width: calc(5 / 7 * 100%);
+  }
+  .testimonials {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: var(--space-48);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    gap: var(--space-80);
+  }
+  /* The design's 32px `sm` buttons are a desktop size — give them a finger. */
+  .ctaRow > * {
+    min-height: 44px;
+  }
+  .heroInner {
+    max-width: 100%;
+  }
+  .projects {
+    gap: var(--space-64);
+  }
 }

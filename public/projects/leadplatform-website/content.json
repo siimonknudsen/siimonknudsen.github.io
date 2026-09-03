@@ -29,23 +29,7 @@
       "body": "Took the marketing site from UX and UI design through to frontend implementation."
     }
   ],
-  "outcomes": [
-    {
-      "metric": "+33%",
-      "label": "demo request conversion",
-      "note": "placeholder — confirm"
-    },
-    {
-      "metric": "−16%",
-      "label": "bounce rate",
-      "note": "placeholder — confirm"
-    },
-    {
-      "metric": "+26%",
-      "label": "qualified leads",
-      "note": "placeholder — confirm"
-    }
-  ],
+  "outcomes": [],
   "content": [
     {
       "type": "image",

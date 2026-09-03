@@ -309,11 +309,15 @@
 /* ── Header shell ───────────────────────────────────────────────── */
 
 .header {
-  position: sticky;
+  /* Floats over the page rather than sitting in its flow — every page reserves
+     the space it needs via --header-clearance (see App.module.css .pageShell). */
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 50;
   width: 100%;
-  padding: var(--space-16) var(--space-16) var(--space-8);
+  padding: var(--space-20) var(--space-16) var(--space-8);
 }
 
 @media (min-width: 640px) {
@@ -325,7 +329,10 @@
 
 .wrapper {
   position: relative;
-  max-width: var(--container-max);
+  /* The bar spans exactly the page's content column (its own 8px padding then
+     insets the brand / nav / utils inside that), so its edges line up with the
+     content on every page. */
+  max-width: var(--content-max);
   margin-left: auto;
   margin-right: auto;
 }

@@ -1,127 +1,109 @@
-.revealWrap {
-  height: 100%;
-}
-
 .card {
-  position: relative;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  gap: var(--space-12);
   height: 100%;
-  padding: var(--space-12);
-  border-radius: var(--radius-xl);
-  /* Card surface + subtle shadow (theme-aware): white + soft shadow in light,
-     tonal surface in dark. No glass/border. Matches the other cards. */
-  background-color: var(--surface-card-bg);
-  box-shadow: var(--surface-card-shadow);
-  transition: transform var(--dur-fast) var(--ease-standard);
-  /* PERF: these cards both scroll-reveal (Archive, opacity+transform) and
-     scroll-stack with a scale (Home) — re-blurring a backdrop-filter every frame
-     on a large moving surface, across many cards at once, is the dominant jank
-     source (rule #7 / GLASS §8). The mesh behind is smooth, so the blur is
-     invisible anyway: the frosted look comes from the translucent tint +
-     hairline + noise + sheen (all inherited from `glass-panel`). So drop the
-     blur on the card itself — keeps the look, kills the lag. */
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
 }
 
-/* No hover "lift" — the cursor spotlight (global .fx-spotlight) is the only
-   hover affordance on glass cards now. */
-
-
+/* Image frame — the card's only surface (no panel behind the text). 1256/700
+   is the ratio all project imagery is exported at. */
 .frame {
   position: relative;
-  z-index: 1;
   overflow: hidden;
-  /* Concentric radii: the inner image sits smaller than the card's `xl` (8px)
-     radius — `sm` (4px) — so nested corners don't read as equal/off. */
+  aspect-ratio: 1256 / 700;
   border-radius: var(--radius-sm);
+  /* Tonal plate behind the image — also the whole frame for a project whose
+     imagery doesn't exist yet. */
+  background-color: var(--surface-color-secondary);
 }
 
 .zoom {
+  height: 100%;
   transition: transform var(--dur-slow) var(--ease-standard);
 }
 .card:hover .zoom {
   transform: scale(1.04);
 }
 
-.body {
-  position: relative;
-  z-index: 1;
+/* Disciplines, laid over the image's top-left corner. */
+.chips {
+  position: absolute;
+  top: var(--space-12);
+  left: var(--space-12);
   display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
+  flex-wrap: wrap;
+  gap: var(--space-4);
 }
 
-.impact {
-  align-self: flex-start;
-  display: inline-flex;
-  align-items: baseline;
-  gap: var(--space-6);
-  margin-top: var(--space-16);
-  margin-left: var(--space-4);
+.chip {
   padding: var(--space-4) var(--space-8);
   border-radius: var(--radius-pill);
-  /* Soft glass pill: translucent fill + hairline glass edge (was a hard solid
-     border box). Accent text is set in JSX/inline. */
-  border: 1px solid var(--glass-border);
-  background-color: var(--glass-item-hover);
+  /* On-media chrome: tokenised dark-α + blur, theme-independent (it sits over
+     the photo, not the page). */
+  background-color: var(--transparent-dark-24);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-on-media);
   font-size: var(--text-xs);
+  line-height: 16px;
   letter-spacing: var(--tracking-base);
+  white-space: nowrap;
 }
-.impact strong {
-  font-weight: var(--weight-semibold);
+
+/* Label trailing the pointer across the image (see ProjectCard.jsx). Same
+   on-media chrome as the discipline chips, one step more present. */
+.cursorLabel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  padding: var(--space-6) var(--space-12);
+  border-radius: var(--radius-pill);
+  background-color: var(--transparent-dark-40);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-on-media);
+  font-size: var(--text-xs);
+  line-height: 16px;
+  letter-spacing: var(--tracking-base);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-standard);
+}
+
+.frame:hover .cursorLabel {
+  opacity: 1;
+}
+
+/* Pointer-only: there's nothing to follow on a touch screen. */
+@media (hover: none), (pointer: coarse) {
+  .cursorLabel {
+    display: none;
+  }
 }
 
 .text {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  padding: var(--space-16) var(--space-4) 0;
 }
 
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-8);
-  padding: var(--space-16) var(--space-4) 0;
-  margin-top: auto;
-}
-
-/* Chips collapsed by the overflow logic — removed from layout entirely.
-   Compound selectors (0,2,0) so this beats `.tagSlot`/`.plusTag { display:
-   inline-flex }` regardless of source order — otherwise the later single-class
-   rule wins and nothing ever hides (the phantom "+1" bug). */
-.tagSlot.hiddenChip,
-.plusTag.hiddenChip {
-  display: none;
-}
-
-/* Every tag wrapper (regular + "+N") shares the same box so the chips align
-   identically on the row (the +N was mis-aligned when only it was inline-flex). */
-.tagSlot,
-.plusTag {
-  display: inline-flex;
-  align-items: center;
-}
-
-/* The trailing "+N" overflow chip — slightly muted so it reads as a counter.
-   Combined with .hiddenChip in JSX so it starts hidden (no +1 flash); the
-   measuring effect reveals it only when there are overflowing tags. */
-.plusTag {
-  cursor: default;
-  opacity: 0.75;
-}
-
-/* Hidden-tag list inside the "+N" tooltip — one tag per line, subtle. */
-.plusList {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-.plusListItem {
+.title {
+  margin: 0;
+  color: var(--text-color-primary);
   font-size: var(--text-sm);
-  letter-spacing: var(--tracking-snug);
+  font-weight: var(--weight-regular);
+  line-height: 18px;
+  letter-spacing: var(--tracking-base);
+}
+
+.desc {
+  margin: 0;
   color: var(--text-color-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  line-height: 18px;
+  letter-spacing: var(--tracking-base);
+  text-wrap: pretty;
 }

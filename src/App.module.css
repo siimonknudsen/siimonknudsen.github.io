@@ -4,6 +4,24 @@
   flex-direction: column;
 }
 
+/* Page shell — every page is a column of sections spaced on the 128px rhythm,
+   with the same 160px before the footer. Pages own their own internal spacing
+   and horizontal gutters, never the gaps between their sections. */
+.pageShell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-160);
+  padding-top: var(--header-clearance);
+  padding-bottom: var(--space-160);
+}
+
+@media (max-width: 640px) {
+  .pageShell {
+    gap: var(--space-80);
+    padding-bottom: var(--space-80);
+  }
+}
+
 .main {
   flex: 1 1 auto;
   outline: none;

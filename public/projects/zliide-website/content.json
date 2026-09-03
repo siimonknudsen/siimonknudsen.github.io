@@ -30,23 +30,7 @@
       "body": "Designed the new pages against the design system and implemented them in frontend code."
     }
   ],
-  "outcomes": [
-    {
-      "metric": "+24%",
-      "label": "conversion rate",
-      "note": "placeholder — confirm"
-    },
-    {
-      "metric": "−18%",
-      "label": "bounce rate",
-      "note": "placeholder — confirm"
-    },
-    {
-      "metric": "+31%",
-      "label": "avg. session duration",
-      "note": "placeholder — confirm"
-    }
-  ],
+  "outcomes": [],
   "content": [
     {
       "type": "image",

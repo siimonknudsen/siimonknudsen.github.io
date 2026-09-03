@@ -1,35 +1,17 @@
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import ProjectGrid, { allArchiveProjects } from '../components/projects/ProjectGrid'
+import { allArchiveProjects } from '../data/projects'
+import ProjectCard from '../components/projects/ProjectCard'
 import Media from '../components/Media'
 import ScrollProgress from '../components/ScrollProgress'
 import { Reveal, Stagger } from '../components/motion'
-import OutcomeGrid from '../components/case/OutcomeGrid'
-import ProcessStep from '../components/case/ProcessStep'
 import usePageTitle from '../hooks/usePageTitle'
 import { loadProjectContent, getDefaultProjectContent } from '../data/projectContentLoader'
-import { ZliideLogo, AdtractionLogo, LenusLogo } from '../components/home/WorkedAtLogos'
 import styles from './ProjectPage.module.css'
 
-// Which company each project was done at → its logo, mirrored from ProjectGrid
-// so the hero can overlay the same brand wordmark the card stack uses. Optical
-// scale balances the differently-proportioned wordmarks at one visual size.
-const COMPANY_LOGO = { zliide: ZliideLogo, adtraction: AdtractionLogo, lenus: LenusLogo }
-const COMPANY_NAME = { zliide: 'Zliide', adtraction: 'Adtraction', lenus: 'Lenus' }
-const COMPANY_SCALE = { zliide: 0.7, adtraction: 0.9, lenus: 1 }
-const PROJECT_COMPANY = {
-  'zliide-app': 'zliide',
-  'zliide-website': 'zliide',
-  'zliide-dashboard': 'zliide',
-  'apple-home-app': null,
-  'adservice-website': 'adtraction',
-  'leadplatform-website': 'adtraction',
-  'ekstrabladet-comparison': 'adtraction',
-  'telia-campaign': 'adtraction',
-  'talkmore-campaign': 'adtraction',
-  'benergy-campaign': 'adtraction',
-  'aarstiderne-campaign': 'adtraction',
-}
+// How many images run before a process note is dropped in — the alternating
+// rhythm of the case-study template.
+const IMAGES_PER_NOTE = 2
 
 function ProjectPage() {
   const { id } = useParams()
@@ -68,289 +50,138 @@ function ProjectPage() {
   }
 
   const title = content.title || project.title
+  const details = [
+    { label: 'Client', value: content.client },
+    { label: 'Timeline', value: content.timeline || content.when },
+    { label: 'Industry', value: content.industry },
+    { label: 'Role', value: content.role },
+  ].filter((d) => d.value)
 
-  // Outcome meta (headlineOutcome) temporarily removed from the rail — see meta grid below.
+  const images = (content.content || []).filter((block) => block.type === 'image')
+  const notes = content.process || []
+  const otherProjects = allArchiveProjects.filter((p) => p.id !== id)
 
-  const hasProcess = content.process && content.process.length > 0
-  const hasOutcomes = content.outcomes && content.outcomes.length > 0
-
-  // Section anchors for the rail's little table of contents — only show the
-  // sections that actually have content.
-  const sections = [
-    content.problem || content.challenge ? { id: 'problem', label: 'Problem' } : null,
-    hasProcess || content.solution || (content.content && content.content.length > 0)
-      ? { id: 'process', label: 'Process' }
-      : null,
-    hasOutcomes ? { id: 'impact', label: 'Impact' } : null,
-    content.appScreens && content.appScreens.length > 0
-      ? { id: 'screens', label: 'Screens' }
-      : null,
-  ].filter(Boolean)
+  // Body: images run full width, with a process note landing after every pair.
+  // Whichever list is longer keeps going once the other runs out.
+  const body = []
+  for (let i = 0; i * IMAGES_PER_NOTE < images.length || i < notes.length; i++) {
+    images.slice(i * IMAGES_PER_NOTE, (i + 1) * IMAGES_PER_NOTE).forEach((image, j) => {
+      body.push({ kind: 'image', src: image.src, key: `image-${i}-${j}` })
+    })
+    if (notes[i]) body.push({ kind: 'note', note: notes[i], key: `note-${i}` })
+  }
 
   return (
     <>
       <ScrollProgress />
 
-      {/* Hero */}
-      <section className={styles.heroSection}>
+      <article className={styles.page}>
         <div className={styles.container}>
-          <div className={styles.titleRow}>
-            <Reveal preset="fade-up">
-              <h1 className={`type-display text-color-primary ${styles.title}`}>{title}</h1>
+          {/* Title, hero and the project's facts read as one opening unit
+              (64px apart), then the narrative blocks space out to 128. */}
+          <div className={styles.opening}>
+            <header className={styles.intro}>
+              <Reveal preset="fade-up">
+                <h1 className={styles.title}>{title}</h1>
+              </Reveal>
+              <Reveal preset="fade-up" delay={60}>
+                <p className={styles.lead}>{content.description || project.description}</p>
+              </Reveal>
+            </header>
+
+            <Reveal preset="fade-up" delay={120} className={styles.frame}>
+              <Media
+                src={content.heroImage || `/projects/${id}/images/hero`}
+                alt={title}
+                aspect="fill"
+                rounded="none"
+                priority
+              />
             </Reveal>
-            <Reveal preset="fade-up" delay={60}>
-              <p className={`type-body-lg text-color-secondary ${styles.description}`}>
-                {content.description || project.description}
-              </p>
-            </Reveal>
-          </div>
 
-          {content.heroImage ? (
-            <Reveal preset="scale-in">
-              <div className={styles.heroFrame}>
-                <Media
-                  src={content.heroImage}
-                  alt={title}
-                  aspect="auto"
-                  rounded="rounded-2xl"
-                  priority
-                  className={styles.hero}
-                />
-                {(() => {
-                  const key = PROJECT_COMPANY[project.id]
-                  const Logo = key && COMPANY_LOGO[key]
-                  return Logo ? (
-                    <span
-                      className={styles.heroLogo}
-                      role="img"
-                      aria-label={`${COMPANY_NAME[key]} project`}
-                      style={{ '--logo-scale': COMPANY_SCALE[key] ?? 1 }}
-                    >
-                      <Logo />
-                    </span>
-                  ) : null
-                })()}
-              </div>
-            </Reveal>
-          ) : (
-            <div
-              className={`bg-surface-color-tertiary type-body text-color-secondary ${styles.heroPlaceholder}`}
-            >
-              Project hero image
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Body: sticky meta rail + scrolling content */}
-      <section className={styles.bodySection}>
-        <div className={styles.container}>
-          <div className={styles.layout}>
-            {/* Meta rail (sticky on lg) */}
-            <aside className={styles.rail}>
-              <div className={styles.railInner}>
-                <Reveal preset="fade-up" as="div" className={styles.railMeta}>
-                  <RailItem label="Role" value={content.role} />
-                  <RailItem label="Client" value={content.client} />
-                  <RailItem
-                    label="Team"
-                    value={content.team || (content.responsibilities && content.responsibilities.join(', '))}
-                  />
-                  <RailItem label="Timeline" value={content.timeline || content.when} />
-
-                  {/* Outcome meta item temporarily removed — only Role / Client /
-                      Team / Timeline render in the 4-column meta grid for now. */}
-
-                  {sections.length > 0 && (
-                    <nav className={styles.railNav} aria-label="Case study sections">
-                      {sections.map((s) => (
-                        <a key={s.id} href={`#${s.id}`} className={`type-body-sm ${styles.railLink}`}>
-                          {s.label}
-                        </a>
-                      ))}
-                    </nav>
-                  )}
-                </Reveal>
-              </div>
-            </aside>
-
-            {/* Scrolling content */}
-            <div className={styles.content}>
-              {/* Problem */}
-              {(content.problem || content.challenge) && (
-                <div id="problem" className={styles.block}>
-                  <Reveal preset="fade-up">
-                    <p className={`type-overline text-accent ${styles.kicker}`}>Problem</p>
-                  </Reveal>
-                  <Reveal preset="fade-up" delay={60}>
-                    <p className={`type-body-lg text-color-primary ${styles.lede} ${styles.problemLede}`}>
-                      {content.problem || content.challenge}
-                    </p>
-                  </Reveal>
-                  {/* If we have a dedicated problem, the legacy challenge can still
-                      add supporting context below it. */}
-                  {content.problem && content.challenge && (
-                    <Reveal preset="fade-up" delay={120}>
-                      <p className={`type-body text-color-secondary ${styles.prose}`}>
-                        {content.challenge}
-                      </p>
-                    </Reveal>
-                  )}
-                </div>
-              )}
-
-              {/* Process */}
-              {(hasProcess || content.solution || (content.content && content.content.length > 0)) && (
-                <div id="process" className={styles.block}>
-                  <Reveal preset="fade-up">
-                    <p className={`type-overline text-accent ${styles.kicker}`}>Process</p>
-                  </Reveal>
-
-                  {content.solution && (
-                    <Reveal preset="fade-up" delay={60}>
-                      <p className={`type-body-lg text-color-primary ${styles.lede}`}>
-                        {content.solution}
-                      </p>
-                    </Reveal>
-                  )}
-
-                  {hasProcess && (
-                    <Stagger className={styles.steps}>
-                      {content.process.map((step, i) => (
-                        <Reveal key={i} preset="fade-up">
-                          <ProcessStep index={i} step={step.step} body={step.body} image={step.image} />
-                        </Reveal>
-                      ))}
-                    </Stagger>
-                  )}
-
-                  {/* Legacy ordered content blocks (image / text / bts) */}
-                  {content.content && content.content.length > 0 && (
-                    <div className={styles.contentBlocks}>
-                      {content.content.map((block, index) => {
-                        if (block.type === 'image') {
-                          return (
-                            <Reveal key={index} preset="scale-in" className={styles.breakout}>
-                              <Media
-                                src={block.src}
-                                alt={`${title} — image ${index + 1}`}
-                                aspect="auto"
-                                rounded="rounded-2xl"
-                                className={styles.breakoutMedia}
-                              />
-                            </Reveal>
-                          )
-                        }
-                        if (block.type === 'text') {
-                          return (
-                            <Reveal key={index} preset="fade-up">
-                              <div className={styles.textBlock}>
-                                <p className="type-body text-color-secondary">{block.content}</p>
-                              </div>
-                            </Reveal>
-                          )
-                        }
-                        if (block.type === 'bts') {
-                          return (
-                            <BehindTheScenes key={index} title={block.title} items={block.items} />
-                          )
-                        }
-                        return null
-                      })}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Impact */}
-              {hasOutcomes && (
-                <div id="impact" className={styles.block}>
-                  <Reveal preset="fade-up">
-                    <p className={`type-overline text-accent ${styles.kicker}`}>Impact</p>
-                  </Reveal>
-                  <OutcomeGrid outcomes={content.outcomes} />
-                </div>
-              )}
-
-              {/* App screens */}
-              {content.appScreens && content.appScreens.length > 0 && (
-                <div id="screens" className={styles.block}>
-                  <Reveal preset="fade-up">
-                    <p className={`type-overline text-accent ${styles.kicker}`}>Screens</p>
-                  </Reveal>
-                  <Stagger className={styles.appScreensGrid}>
-                    {content.appScreens.map((screen, index) => (
-                      <Reveal key={index} preset="fade-up" className={styles.appScreenReveal}>
-                        <Media
-                          src={screen.src}
-                          alt={`${title} — app screen ${index + 1}`}
-                          aspect="auto"
-                          rounded="rounded-2xl"
-                          className={styles.appScreen}
-                        />
-                      </Reveal>
+            <div className={styles.meta}>
+              {details.length > 0 && (
+                <Reveal preset="fade-up">
+                  <dl className={styles.details}>
+                    {details.map((detail) => (
+                      <div key={detail.label} className={styles.detail}>
+                        <dt className={styles.detailLabel}>{detail.label}</dt>
+                        <dd className={styles.detailValue}>{detail.value}</dd>
+                      </div>
                     ))}
-                  </Stagger>
-                </div>
+                  </dl>
+                </Reveal>
               )}
+
+              {(content.problem || content.challenge) && (
+                <TextBlock label="Problem" body={content.problem || content.challenge} />
+              )}
+
+              {content.solution && <TextBlock label="Solution" body={content.solution} />}
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Related Projects */}
-      <section className={styles.relatedSection}>
-        <div className={styles.container}>
-          <Reveal preset="fade-up">
-            <h2 className={`type-display text-color-primary ${styles.moreHeading}`}>More Projects</h2>
-          </Reveal>
-          <ProjectGrid excludeProjectId={id} variant="grid" />
+          {body.map((item) =>
+            item.kind === 'image' ? (
+              <Reveal key={item.key} preset="fade-up" className={styles.plate}>
+                <Media src={item.src} alt={title} aspect="auto" rounded="none" />
+              </Reveal>
+            ) : (
+              <TextBlock key={item.key} label={item.note.step} body={item.note.body} size="lg" />
+            ),
+          )}
+
+          {content.appScreens && content.appScreens.length > 0 && (
+            <Stagger className={styles.screens}>
+              {content.appScreens.map((screen, index) => (
+                <Reveal key={index} preset="fade-up">
+                  <Media
+                    src={screen.src}
+                    alt={`${title} — app screen ${index + 1}`}
+                    aspect="auto"
+                    rounded="none"
+                    className={styles.screen}
+                  />
+                </Reveal>
+              ))}
+            </Stagger>
+          )}
+
+          <div className={styles.rule} />
+
+          <section className={styles.related}>
+            <h2 className={styles.relatedHeading}>Projects</h2>
+            <div className={styles.relatedGrid}>
+              {otherProjects.map((other, index) => (
+                <ProjectCard
+                  key={other.id}
+                  id={other.id}
+                  title={other.title}
+                  description={other.description}
+                  tags={other.tags}
+                  delay={(index % 2) * 80}
+                  noMedia={other.noMedia}
+                />
+              ))}
+            </div>
+          </section>
         </div>
-      </section>
+      </article>
     </>
   )
 }
 
-/** A single label/value row in the meta rail. Renders nothing when empty. */
-function RailItem({ label, value }) {
-  if (!value) return null
+/**
+ * A labelled block of prose — quiet label above, the copy itself in primary
+ * text. `size="lg"` is the 18px variant used for the notes between images.
+ */
+function TextBlock({ label, body, size = 'base' }) {
+  if (!body) return null
   return (
-    <div className={styles.railRow}>
-      <p className={`type-overline text-color-tertiary ${styles.railKey}`}>{label}</p>
-      <p className={`type-body-sm text-color-primary ${styles.railVal}`}>{value}</p>
-    </div>
-  )
-}
-
-/** Behind-the-scenes — a lighter, captioned gallery for sketches / iterations. */
-function BehindTheScenes({ title, items }) {
-  if (!items || items.length === 0) return null
-  return (
-    <div className={styles.bts}>
-      <Reveal preset="fade-up">
-        <p className={`type-label text-color-tertiary ${styles.btsHeading}`}>
-          {title || 'Behind the scenes'}
-        </p>
-      </Reveal>
-      <Stagger className={styles.btsGrid}>
-        {items.map((item, i) => (
-          <Reveal key={i} preset="fade-up" className={styles.btsItem}>
-            <Media
-              src={item.src}
-              video={item.video}
-              alt={item.caption || `Behind the scenes ${i + 1}`}
-              aspect={item.aspect || 'aspect-square'}
-              rounded="rounded-xl"
-            />
-            {item.caption && (
-              <p className={`type-caption text-color-tertiary ${styles.btsCaption}`}>
-                {item.caption}
-              </p>
-            )}
-          </Reveal>
-        ))}
-      </Stagger>
-    </div>
+    <Reveal preset="fade-up" className={styles.block}>
+      <p className={size === 'lg' ? styles.blockLabelLg : styles.blockLabel}>{label}</p>
+      <p className={size === 'lg' ? styles.blockBodyLg : styles.blockBody}>{body}</p>
+    </Reveal>
   )
 }
 

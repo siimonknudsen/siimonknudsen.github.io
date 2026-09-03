@@ -1,17 +1,63 @@
+/* Skill card — the inverted surface (black on light, white on dark) with the
+   copy bottom-aligned in a 305/430 frame, per the Figma skill item. */
 .card {
   position: relative;
   overflow: hidden;
-  border-radius: var(--radius-xl);
-  padding: var(--space-20);
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
+  aspect-ratio: 305 / 430;
+  padding: var(--space-20);
+  border-radius: var(--radius-md);
+  /* Sits under the image — also the whole card if one is missing. */
+  background-color: var(--surface-color-contrast-primary);
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
   height: 100%;
-  /* Card surface + subtle shadow (theme-aware): white + soft shadow in light,
-     tonal surface in dark. No border. */
-  background-color: var(--surface-card-bg);
-  box-shadow: var(--surface-card-shadow);
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* Legibility scrim: the images are soft gradients that run light in places, so
+   the on-media type gets a bottom wash rather than trusting the photo. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    var(--transparent-dark-8) 0%,
+    var(--transparent-dark-40) 55%,
+    var(--transparent-dark-60) 100%
+  );
+}
+
+.body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
 }
 
 .title {
-  margin-bottom: var(--space-16);
+  margin: 0;
+  color: var(--text-on-media);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-regular);
+  line-height: 24px;
+  letter-spacing: var(--tracking-snug);
+}
+
+.description {
+  margin: 0;
+  color: var(--neutral-300);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  line-height: 20px;
+  letter-spacing: var(--tracking-snug);
+  text-wrap: pretty;
 }

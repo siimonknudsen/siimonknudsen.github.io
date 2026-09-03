@@ -1,80 +1,82 @@
-import ProjectGrid from '../components/projects/ProjectGrid'
+import { Link } from 'react-router-dom'
+import ProjectCard from '../components/projects/ProjectCard'
 import Button from '../components/buttons/Button'
 import TestimonialCard from '../components/cards/TestimonialCard'
 import WorkedAt from '../components/home/WorkedAt'
 import WordReveal from '../components/home/WordReveal'
 import { Reveal } from '../components/motion'
-import { Link } from 'react-router-dom'
+import { allProjects } from '../data/projects'
 import { TESTIMONIALS } from '../data/testimonials'
 import styles from './Home.module.css'
 
 function Home() {
   return (
     <>
-      {/* Hero Section — content over the global fixed shader (in App shell). */}
+      {/* Hero — statement type, a short lead and the two CTAs, all left-aligned
+          in the page's content column. */}
       <section className={styles.hero}>
-        {/* Content sits directly over the shader — no card, left-aligned. */}
-        <div className={styles.heroContent}>
-          {/* Cinematic first-load cascade: the hero elements enter one-by-one,
-              slowly. Kicker first, then the headline flows in word-by-word
-              (slower rise + wider cadence), then the CTAs. `immediate` plays each
-              on MOUNT (a timed entrance) instead of on scroll — the CTAs sit below
-              the scroll-observer's trigger line on a real laptop viewport, so the
-              old scroll trigger left them stuck invisible (the user never scrolls
-              the hero). Delays are tuned so each item begins as the previous lands. */}
-          <Reveal as="p" preset="fade-up" immediate delay={150} className={`type-body-lg text-color-tertiary ${styles.kicker}`}>
-            Simon Knudsen
-          </Reveal>
+        <div className={styles.container}>
+          <div className={styles.heroInner}>
+            {/* Headline — word-by-word reveal: slower per-word rise (durationMs)
+                and a wider cadence (stepMs) so each word settles calmly. */}
+            <WordReveal
+              as="h1"
+              text="Product designer turning complex problems into clear, human experiences."
+              delayMs={300}
+              stepMs={90}
+              durationMs={900}
+              className={styles.headline}
+            />
 
-          {/* Headline — word-by-word reveal: slower per-word rise (durationMs) and
-              a wider cadence (stepMs) so each word settles calmly, one at a time. */}
-          <WordReveal
-            as="h1"
-            text="Product designer turning complex problems into clear, human experiences"
-            delayMs={500}
-            stepMs={120}
-            durationMs={900}
-            className={`text-color-primary ${styles.headline}`}
-          />
+            <Reveal as="p" preset="fade-up" immediate delay={900} className={styles.lead}>
+              I&apos;m a Product Designer who&apos;s passionate about human psychology within
+              digital products. I&apos;m experienced in crafting beautiful and user friendly
+              designs that solves real business problems. I&apos;m specialized within UX Design,
+              UI Design &amp; Design Systems.
+            </Reveal>
 
-          {/* Call-to-Action Buttons — last in the cascade, on mount (immediate) */}
-          <Reveal preset="fade-up" immediate delay={1700} className={styles.ctaRow}>
-            <Button variant="primary" className={styles.cta} as="a" href="#projects">
-              View projects
-            </Button>
-            <Button variant="glass" className={styles.cta} as={Link} to="/contact">
-              Contact
-            </Button>
-          </Reveal>
+            {/* `immediate` plays on MOUNT (a timed entrance) instead of on scroll —
+                the CTAs sit below the scroll-observer's trigger line, so a scroll
+                trigger would leave them stuck invisible. */}
+            <Reveal preset="fade-up" immediate delay={1200} className={styles.ctaRow}>
+              <Button variant="primary" size="sm" as="a" href="#projects">
+                View projects
+              </Button>
+              <Button variant="secondary" size="sm" as={Link} to="/contact">
+                Contact
+              </Button>
+            </Reveal>
+          </div>
+        </div>
+
+        {/* Worked at — the tail of the hero cascade, and part of the hero
+            opening so it sits the same 128px from the copy above it as the
+            projects sit from it. */}
+        <WorkedAt revealDelay={1500} />
+      </section>
+
+      <section id="projects" className={styles.section}>
+        <div className={styles.container}>
+          <h2 className={styles.sectionHeading}>Projects</h2>
+          <div className={styles.projects}>
+            {allProjects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                id={project.id}
+                title={project.title}
+                description={project.description}
+                tags={project.tags}
+                noMedia={project.noMedia}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Worked at — trust row, tail of the hero cascade (after the CTAs at 1700) */}
-      <WorkedAt revealDelay={2000} />
-
-      {/* Projects Section — full-width cards that stack on scroll */}
-      <section id="projects" className={styles.projectsSection}>
+      <section id="testimonials" className={styles.section}>
         <div className={styles.container}>
-          <Reveal as="header" className={styles.projectsHeader}>
-            <h2 className={`type-display text-color-primary ${styles.projectsHeading}`}>
-              Selected projects
-            </h2>
-          </Reveal>
-        </div>
-        <ProjectGrid variant="stack" />
-      </section>
-
-      {/* Testimonials Section */}
-      <section className={styles.testimonialsSection}>
-        <div className={styles.container}>
-          <Reveal as="header" className={styles.testimonialsHeader}>
-            <h2 className={`type-display text-color-primary ${styles.testimonialsHeading}`}>
-              Testimonials
-            </h2>
-          </Reveal>
-
-          {/* Three full recommendations, side by side */}
-          <div className={styles.testimonialsGrid}>
+          <h2 className={styles.sectionHeading}>Testimonials</h2>
+          <div className={styles.testimonials}>
             {TESTIMONIALS.map((t) => (
               <TestimonialCard
                 key={t.recommender}

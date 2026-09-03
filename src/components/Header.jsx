@@ -4,7 +4,7 @@ import Button from './buttons/Button'
 import { AVATAR_SRC, onAvatarError } from '../lib/avatar'
 import Location from './Location'
 import ThemeToggle from './ThemeToggle'
-import { allProjects, allArchiveProjects } from './projects/ProjectGrid'
+import { allProjects, allArchiveProjects } from '../data/projects'
 import styles from './Header.module.css'
 
 /* ── Content powering the dropdowns ─────────────────────────────── */
@@ -20,7 +20,7 @@ const aboutSections = [
   { label: 'About me', to: '/about#about-me' },
   { label: 'Companies', to: '/about#companies' },
   { label: 'Skills', to: '/about#skills' },
-  { label: 'Testimonials', to: '/about#testimonials' },
+  { label: 'Testimonials', to: '/#testimonials' },
   { label: 'Pictures', to: '/about#pictures' },
 ]
 

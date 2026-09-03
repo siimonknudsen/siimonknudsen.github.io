@@ -30,23 +30,7 @@
       "body": "Took the campaign live to drive traffic and turn visitors into qualified leads."
     }
   ],
-  "outcomes": [
-    {
-      "metric": "1.8M",
-      "label": "reach",
-      "note": "placeholder — confirm"
-    },
-    {
-      "metric": "+32%",
-      "label": "click-through rate",
-      "note": "placeholder — confirm"
-    },
-    {
-      "metric": "21%",
-      "label": "conversion rate",
-      "note": "placeholder — confirm"
-    }
-  ],
+  "outcomes": [],
   "content": [
     {
       "type": "image",

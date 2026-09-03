@@ -31,23 +31,7 @@
       "body": "Produced supporting marketing design and implemented the site in frontend code."
     }
   ],
-  "outcomes": [
-    {
-      "metric": "+29%",
-      "label": "affiliate click-through rate",
-      "note": "placeholder — confirm"
-    },
-    {
-      "metric": "−14%",
-      "label": "bounce rate",
-      "note": "placeholder — confirm"
-    },
-    {
-      "metric": "+38%",
-      "label": "comparison completions",
-      "note": "placeholder — confirm"
-    }
-  ],
+  "outcomes": [],
   "content": [
     {
       "type": "image",

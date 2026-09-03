@@ -20,21 +20,24 @@ import styles from './StyleGuide.module.css'
 
 const SAMPLE = 'Human-centered by design'
 
-// Semantic type styles (the canonical roles). Each bundles size + line-height + weight + tracking.
+// Semantic type styles (the canonical roles). Each bundles size + line-height +
+// weight + tracking. The roles Figma defines carry its exact px leading; the
+// ones marked "code" have no Figma variable yet.
 const typeScale = [
-  { label: 'type-display', cls: 'type-display', size: '48 / 1.1', weight: 'Medium', track: '−4%' },
-  { label: 'type-display-sm', cls: 'type-display-sm', size: '40 / 1.1', weight: 'Medium', track: '−4%' },
-  { label: 'type-heading', cls: 'type-heading', size: '32 / 1.15', weight: 'Medium', track: '−3%' },
-  { label: 'type-heading-sm', cls: 'type-heading-sm', size: '24 / 1.2', weight: 'Medium', track: '−3%' },
-  { label: 'type-title', cls: 'type-title', size: '20 / 1.3', weight: 'Medium', track: '−2%' },
-  { label: 'type-subtitle', cls: 'type-subtitle', size: '18 / 1.4', weight: 'Medium', track: '−2%' },
-  { label: 'type-body-lg', cls: 'type-body-lg', size: '18 / 1.6', weight: 'Regular', track: '−2%' },
-  { label: 'type-body', cls: 'type-body', size: '16 / 1.6', weight: 'Regular', track: '−2%' },
-  { label: 'type-body-sm', cls: 'type-body-sm', size: '14 / 1.5', weight: 'Regular', track: '−1%' },
-  { label: 'type-label', cls: 'type-label', size: '14 / 1.4', weight: 'Medium', track: '−1%' },
-  { label: 'type-caption', cls: 'type-caption', size: '12 / 1.4', weight: 'Regular', track: '−1%' },
-  { label: 'type-overline', cls: 'type-overline', size: '12 / 1.4', weight: 'Medium', track: '+8% · uppercase' },
-  { label: 'type-micro', cls: 'type-micro', size: '10 / 1.3', weight: 'Medium', track: '−1%' },
+  { label: 'type-display', cls: 'type-display', size: '48 / 52', weight: 'Medium', track: '−5%' },
+  { label: 'type-display-sm', cls: 'type-display-sm', size: '40 / 1.1 · code', weight: 'Medium', track: '−4%' },
+  { label: 'type-heading', cls: 'type-heading', size: '32 / 36', weight: 'Medium', track: '−4%' },
+  { label: 'type-heading-sm', cls: 'type-heading-sm', size: '24 / 26', weight: 'Medium', track: '−4%' },
+  { label: 'type-title', cls: 'type-title', size: '20 / 1.2 · code', weight: 'Medium', track: '−3%' },
+  { label: 'type-subtitle', cls: 'type-subtitle', size: '18 / 1.3 · code', weight: 'Medium', track: '−3%' },
+  { label: 'type-body-xl', cls: 'type-body-xl', size: '20 / 24', weight: 'Regular', track: '−3%' },
+  { label: 'type-body-lg', cls: 'type-body-lg', size: '18 / 24', weight: 'Regular', track: '−3%' },
+  { label: 'type-body', cls: 'type-body', size: '16 / 20', weight: 'Medium', track: '−3%' },
+  { label: 'type-body-sm', cls: 'type-body-sm', size: '14 / 18', weight: 'Regular', track: '−2.5%' },
+  { label: 'type-label', cls: 'type-label', size: '14 / 1.2', weight: 'Medium', track: '−3%' },
+  { label: 'type-caption', cls: 'type-caption', size: '12 / 16', weight: 'Regular', track: '−2.5%' },
+  { label: 'type-overline', cls: 'type-overline', size: '12 / 1 · code', weight: 'Medium', track: '+8% · uppercase' },
+  { label: 'type-micro', cls: 'type-micro', size: '10 / 1.3 · code', weight: 'Medium', track: '−2.5%' },
 ]
 
 const surfaces = [
@@ -119,12 +122,6 @@ const radiusScale = [
   { name: '--radius-pill', val: 'full', css: '9999px' },
 ]
 
-// Brand ramp (orange) — the owned brand colour
-const brandRamp = [
-  ['50', '#FFF4EE'], ['100', '#FFE6D6'], ['200', '#FECCAE'], ['300', '#FCAB7C'], ['400', '#F98A4D'],
-  ['500', '#F26A2E'], ['600', '#DB5320'], ['700', '#B43F1B'], ['800', '#8C331A'], ['900', '#5F2614'],
-]
-
 // Transparent alpha ramps (light = white α, dark = black α)
 const transparentSteps = ['2', '4', '8', '12', '16', '24', '40', '60', '80']
 
@@ -175,8 +172,8 @@ const elevation = [
 // that's only ever in one. The dark tokens live on `html.dark`, so a nested
 // subtree can't flip them — these constants are the honest stand-in.
 const THEME_VALUES = {
-  light: { surface: '#FFFFFF', surface2: '#F5F5F5', textP: '#000000', textS: '#525252', accent: '#DB5320', onAccent: '#FFFFFF' },
-  dark: { surface: '#000000', surface2: '#1A1A1A', textP: '#FFFFFF', textS: '#A3A3A3', accent: '#F26A2E', onAccent: '#FFFFFF' },
+  light: { surface: '#FFFFFF', surface2: '#F5F5F5', textP: '#000000', textS: '#525252', accent: '#000000', onAccent: '#FFFFFF' },
+  dark: { surface: '#000000', surface2: '#1A1A1A', textP: '#FFFFFF', textS: '#A3A3A3', accent: '#FFFFFF', onAccent: '#000000' },
 }
 
 // WCAG contrast — computed, never guessed (rule #8). sRGB relative luminance →
@@ -571,7 +568,7 @@ function StyleGuide() {
             <ol className={styles.principles}>
               {[
                 'Depth from light — never from borders.',
-                'One warm accent on a neutral field.',
+                'One neutral field; contrast does the accenting.',
                 'Type is the hero; whitespace is the frame.',
                 'Motion stays calm — it settles, never grabs.',
               ].map((p, i) => (
@@ -755,8 +752,8 @@ function StyleGuide() {
             <ScrollAnimation>
               <SectionHeading id="color" overline="Foundations" title="Color">
                 Two tiers — a primitive neutral ramp, mapped to semantic roles (surface, text,
-                border) that invert between light and dark, plus one warm-orange accent and a set
-                of feedback colours. Nothing is hard-coded.
+                border) that invert between light and dark, plus a set of feedback colours.
+                Nothing is hard-coded.
               </SectionHeading>
             </ScrollAnimation>
 
@@ -817,29 +814,6 @@ function StyleGuide() {
                           onCopy={copy}
                           faceClassName={styles.swatchHairline}
                           swatchStyle={{ backgroundColor: `var(--neutral-${step})` }}
-                        />
-                        <span className={`font-mono text-color-primary ${styles.swatchStep}`}>{step}</span>
-                        <span className={`font-mono text-color-tertiary ${styles.swatchHex}`}>{hex}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </ScrollAnimation>
-
-              {/* Primitives — brand ramp */}
-              <ScrollAnimation>
-                <div>
-                  <Overline>Primitives · brand ramp (orange)</Overline>
-                  <div className={styles.rampGrid}>
-                    {brandRamp.map(([step, hex]) => (
-                      <div key={step} className={styles.swatchCol}>
-                        <CopySwatch
-                          value={hex}
-                          copyKey={`brand-${step}`}
-                          copied={copied}
-                          onCopy={copy}
-                          faceClassName={styles.swatchHairline}
-                          swatchStyle={{ backgroundColor: `var(--brand-${step})` }}
                         />
                         <span className={`font-mono text-color-primary ${styles.swatchStep}`}>{step}</span>
                         <span className={`font-mono text-color-tertiary ${styles.swatchHex}`}>{hex}</span>
@@ -933,19 +907,19 @@ function StyleGuide() {
               {/* Accent — its own lone specimen moment */}
               <ScrollAnimation>
                 <div>
-                  <Overline>Accent · the one warm colour</Overline>
+                  <Overline>Accent · ink</Overline>
                   <div className={styles.accentStage}>
                     <span className={`bg-accent ${styles.accentBlock}`} />
                     <div className={styles.accentInfo}>
-                      <span className={`text-color-primary ${styles.colorTitle}`}>Brand · Orange</span>
+                      <span className={`text-color-primary ${styles.colorTitle}`}>Accent · Ink</span>
                       <p className={`text-color-secondary ${styles.accentBlurb}`}>
-                        The single owned accent — themed for contrast (brand-500 dark / brand-600
-                        light). All other colour comes from project imagery; the chrome stays
-                        monochrome plus this one warm signal.
+                        The accent is the highest-contrast ink for its ground — white on dark,
+                        black on light. All colour comes from project imagery; the chrome stays
+                        monochrome throughout.
                       </p>
                       <div className={styles.accentTokens}>
                         <MonoMeta>bg-accent</MonoMeta>
-                        <MonoMeta>brand-500 · #F26A2E</MonoMeta>
+                        <MonoMeta>neutral-0 dark · neutral-1000 light</MonoMeta>
                         <ContrastPill fg={tv.accent} bg={tv.surface} large />
                       </div>
                     </div>
@@ -1869,7 +1843,7 @@ function StyleGuide() {
                   <SpotlightCard>
                     <h3 className={`text-color-primary ${styles.patternCardTitle}`}>Frosted glass</h3>
                     <p className={`text-color-secondary ${styles.patternCardBody}`}>
-                      Move your cursor across this panel — a soft warm glow follows the pointer
+                      Move your cursor across this panel — a soft glow follows the pointer
                       (the useSpotlight hook + the global fx-spotlight, theme-aware). Depth from
                       light; never a hover lift.
                     </p>

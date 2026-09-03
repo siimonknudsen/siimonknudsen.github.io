@@ -6,342 +6,214 @@
   padding: var(--space-24) var(--page-gutter);
 }
 
+/* ── Page frame ──────────────────────────────────────────────────────────────
+   One column, 128px between blocks — the case-study template. Prose sits in a
+   3-of-7 measure while imagery runs the full 1256px content width. */
+.page {
+  padding: 0 var(--page-gutter);
+}
+
 .container {
-  max-width: var(--container-max);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-128);
+  max-width: var(--content-max);
   margin-left: auto;
   margin-right: auto;
 }
 
-/* ── Hero ───────────────────────────────────────────────────────────── */
-.heroSection {
-  width: 100%;
-  padding: var(--space-24) var(--page-gutter);
-}
-
-.titleRow {
-  margin-top: var(--space-40);
-  margin-bottom: var(--space-32);
-}
-
-.title {
-  margin-bottom: var(--space-8);
-  /* Even out the line lengths of the multi-line title (no lonely last word). */
-  text-wrap: balance;
-}
-
-.description {
-  max-width: 52rem;
-  /* "pretty" = no orphan last-line word, minimal reflow (best for prose). */
-  text-wrap: pretty;
-}
-
-/* Lede paragraphs (Problem + Process intros) — orphan-free wrapping. */
-.lede {
-  text-wrap: pretty;
-}
-
-.hero {
-  margin-bottom: 0;
-}
-
-/* Positioning context for the overlaid brand-logo plate. The hero <Media> is
-   in-flow content here, so a glass plate stacked over it CAN frost the image
-   behind it (unlike glass over the page background). */
-.heroFrame {
-  position: relative;
-}
-
-/* Frosted-glass logo plate — same glass material as the Badge, scaled up into a
-   roomy plate so the (often white / on-media) wordmark reads clearly over a busy
-   hero photo instead of fighting it. Pinned top-left with a comfortable inset. */
-.heroLogo {
-  position: absolute;
-  top: var(--space-24);
-  left: var(--space-24);
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  /* Roomy plate — clearly larger than a tag chip's padding. */
-  padding: var(--space-16) var(--space-20);
-  border-radius: var(--radius-md);
-  /* Stronger plate + THEME-AWARE text: the wordmark is currentColor, so use the
-     theme text colour (dark on the light-mode plate, white on the dark-mode
-     plate). `--text-on-media` (always white) was invisible on the light plate. */
-  /* No backdrop-filter here: this plate is positioned inside a `scale-in`
-     Reveal AND sits over a transform-scaling hero image — a transformed ancestor
-     makes a backdrop-root (frost renders nothing, GLASS §8) and blurring a
-     scaling surface janks (rule #7). The strong translucent fill carries the
-     legibility over the photo on its own (opacity is the lever, not blur). */
-  background: var(--glass-bg-strong);
-  border: 1px solid var(--glass-border);
-  color: var(--text-color-primary);
-  /* Keep it from ever spanning a cramped mobile hero edge-to-edge. */
-  max-width: calc(100% - var(--space-32));
-}
-
-.heroLogo svg {
-  display: block;
-  height: calc(28px * var(--logo-scale, 1));
-  width: auto;
-}
-
-/* Tighter inset + slightly smaller wordmark on small screens so the plate never
-   looks cramped or overflows the rounded hero corner. */
-@media (max-width: 639px) {
-  .heroLogo {
-    top: var(--space-16);
-    left: var(--space-16);
-    padding: var(--space-12) var(--space-16);
-  }
-  .heroLogo svg {
-    height: calc(22px * var(--logo-scale, 1));
-  }
-}
-
-.heroPlaceholder {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: var(--radius-2xl);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ── Body: sticky rail + content ────────────────────────────────────── */
-.bodySection {
-  width: 100%;
-  padding: var(--space-64) var(--page-gutter);
-}
-
-/* Single column for the WHOLE case study — meta header on top, content below.
-   No separate left rail. Capped to a readable measure, left-aligned. */
-/* Container fills 100% of the available width; readability comes from capping
-   the TEXT blocks (below), while media/breakouts can span the full width. */
-.layout {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-48);
-}
-
-.rail {
-  min-width: 0;
-}
-
-/* Meta is a 4-column, single-row grid (Role · Client · Team · Timeline),
-   each cell filling 25% of the width. Outcome temporarily removed. */
-.railMeta {
-  display: grid;
-  /* Mobile + tablet: 2 columns so values like "Lead Product Designer" don't get
-     crushed (4×136px wraps badly at 768). Widens to a single 4-up row only at
-     desktop (≥1024) where each cell is roomy. */
-  grid-template-columns: repeat(2, 1fr);
-  align-items: flex-start;
-  gap: var(--space-24) var(--space-32);
-}
-
-@media (min-width: 1024px) {
-  .railMeta {
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-48);
-  }
-}
-
-.railRow {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.railKey {
-  margin: 0;
-}
-
-.railVal {
-  margin: 0;
-  font-weight: var(--weight-medium);
-}
-
-/* TOC sidebar removed in the single-column layout. */
-.railNav {
-  display: none;
-}
-
-.railLink {
-  color: var(--text-color-secondary);
-  text-decoration: none;
-  width: fit-content;
-  transition: color var(--dur-fast) var(--ease-standard);
-}
-
-.railLink:hover {
-  color: var(--text-color-primary);
-}
-
-/* Content column */
-.content {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-80);
-}
-
-/* Single-column body content — every block and its paragraphs stack
-   vertically and span the full content column (no side-by-side split). */
-.block {
+/* ── Opening (title · hero · facts) ───────────────────────────────────────
+   The hero image sits tight to the copy above and the facts below — they read
+   as one unit before the narrative spaces out to 128. */
+.opening {
   display: flex;
   flex-direction: column;
   gap: var(--space-24);
-  scroll-margin-top: var(--space-80);
-  width: 100%;
 }
 
-.kicker {
-  margin: 0;
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-128);
 }
 
-/* Running prose is held to a readable measure: half the container width on
-   wider screens, full width on mobile/tablet where 50% would be a thin sliver.
-   min(50%, 65ch) floors it so it never overruns a comfortable line length on
-   very wide viewports. Structural rows (meta grid) + media keep their own width. */
-.lede,
-.problemLede,
-.prose {
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  max-width: var(--measure);
+}
+
+.title {
   margin: 0;
-  max-width: 100%;
+  color: var(--text-color-primary);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-medium);
+  line-height: 36px;
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+}
+
+.lead {
+  margin: 0;
+  color: var(--text-color-secondary);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  line-height: 20px;
+  letter-spacing: var(--tracking-snug);
   text-wrap: pretty;
 }
 
-.lede,
-.problemLede {
-  font-weight: var(--weight-medium);
+/* ── Imagery ────────────────────────────────────────────────────────────── */
+.frame {
+  overflow: hidden;
+  aspect-ratio: 1256 / 700;
+  border-radius: var(--radius-sm);
 }
 
-@media (min-width: 768px) {
-  .lede,
-  .problemLede,
-  .prose {
-    max-width: min(50%, 65ch);
-  }
+/* Content plates keep their natural ratio — the case imagery is full-page
+   screenshots, so cropping them to the hero's ratio would show a sliver. */
+.plate {
+  overflow: hidden;
+  border-radius: var(--radius-sm);
 }
 
-/* Process steps */
-.steps {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-40);
+.screens {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-48);
 }
 
-/* Legacy ordered content blocks */
-.contentBlocks {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-32);
-}
-
-/* Legacy ordered text block — same readable cap as the prose above. */
-.textBlock {
-  width: 100%;
-  max-width: 100%;
-}
-
-@media (min-width: 768px) {
-  .textBlock {
-    max-width: min(50%, 65ch);
-  }
-}
-
-/* Full-bleed media breakout — pulls slightly wider than the prose column for
-   editorial rhythm, with the strong radius + shadow. */
-.breakout {
-  width: 100%;
-}
-
-.breakoutMedia {
-  border-radius: var(--radius-md);
-  /* Subtle card shadow (matches the content cards), not the heavy --shadow-xl. */
-  box-shadow: var(--surface-card-shadow);
+.screen {
+  border-radius: var(--radius-sm);
   overflow: hidden;
 }
 
-/* Media spans the full container width now (no negative-margin breakout). */
-
-/* App screens */
-.appScreensGrid {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: var(--space-32);
-  justify-items: center;
+/* ── Details row ────────────────────────────────────────────────────────── */
+.details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-16) var(--space-48);
+  margin: 0;
+  max-width: var(--measure);
 }
 
-@media (min-width: 640px) {
-  .appScreensGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.detail {
+  display: flex;
+  flex-direction: column;
+}
+
+.detailLabel {
+  margin: 0;
+  color: var(--text-color-secondary);
+  font-size: var(--text-sm);
+  line-height: 18px;
+  letter-spacing: var(--tracking-base);
+}
+
+.detailValue {
+  margin: 0;
+  color: var(--text-color-primary);
+  font-size: var(--text-sm);
+  line-height: 18px;
+  letter-spacing: var(--tracking-base);
+}
+
+/* ── Prose blocks ───────────────────────────────────────────────────────── */
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: var(--measure);
+}
+
+.blockLabel {
+  margin: 0;
+  color: var(--text-color-secondary);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  line-height: 20px;
+  letter-spacing: var(--tracking-snug);
+}
+
+.blockBody {
+  margin: 0;
+  color: var(--text-color-primary);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  line-height: 20px;
+  letter-spacing: var(--tracking-snug);
+  text-wrap: pretty;
+}
+
+.blockLabelLg {
+  composes: blockLabel;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-regular);
+  line-height: 24px;
+}
+
+.blockBodyLg {
+  composes: blockBody;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-regular);
+  line-height: 24px;
+}
+
+/* ── Related projects ───────────────────────────────────────────────────── */
+.rule {
+  height: 1px;
+  background-color: var(--surface-color-secondary);
+}
+
+.related {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.relatedHeading {
+  margin: 0;
+  color: var(--text-color-primary);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-regular);
+  line-height: 24px;
+  letter-spacing: var(--tracking-snug);
+}
+
+.relatedGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-48);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+.page {
+  /* Prose measure: 3 of the 7 columns the desktop template is laid out on;
+     full width once there isn't room for a column grid. */
+  --measure: 100%;
+}
+
+@media (min-width: 768px) {
+  .page {
+    --measure: calc(5 / 7 * 100%);
   }
 }
 
 @media (min-width: 1024px) {
-  .appScreensGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .page {
+    --measure: calc(3 / 7 * 100%);
   }
 }
 
-.appScreenReveal {
-  width: 100%;
-  max-width: 492px;
-  display: flex;
-  justify-content: center;
-}
-
-.appScreen {
-  width: 100%;
-}
-
-/* Behind the scenes — lighter captioned gallery */
-.bts {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-20);
-  padding: var(--space-32) 0;
-}
-
-.btsHeading {
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.btsGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-16);
-}
-
-@media (min-width: 640px) {
-  .btsGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+@media (max-width: 767px) {
+  .container,
+  .meta {
+    gap: var(--space-64);
   }
-}
-
-.btsItem {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
-}
-
-.btsCaption {
-  margin: 0;
-}
-
-/* ── Related projects ───────────────────────────────────────────────── */
-.relatedSection {
-  width: 100%;
-  padding: var(--space-24) var(--page-gutter);
-  margin-top: var(--space-128);
-  margin-bottom: var(--space-164);
-}
-
-.moreHeading {
-  font-weight: var(--weight-regular);
-  margin-bottom: var(--space-48);
+  .screens,
+  .relatedGrid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: var(--space-32);
+  }
 }

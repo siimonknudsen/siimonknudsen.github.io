@@ -59,8 +59,9 @@ Sources: [M3 tokens](https://m3.material.io/foundations/design-tokens) ·
 ### Primitives — colour ramps
 - **Greyscale** `--neutral-0 #fff · 50 · 100 · 200 · 300 · 400 · 500 · 600 · 700 ·
   800 · 850 · 900 · 1000 #000`.
-- **Brand (orange)** `--brand-50 … 900` (base `--brand-500 #f26a2e`). The single
-  owned brand colour — see [DECISIONS](DECISIONS.md) for why orange.
+- **No brand ramp.** The palette is monochrome: the accent is drawn from the
+  neutral ramp (see *Accent* below). The orange `--brand-*` ramp was retired
+  2026-09.
 - **Status hue ramps** `--green/amber/red/blue-{50,100,300,400,500,600,700,900}`
   (success / warning / error / info).
 - **Transparent ramps** `--transparent-light-{2…80}` (white α) and
@@ -95,10 +96,10 @@ DESIGN_KNOWLEDGE §6.10). Higher step = more lifted. Reserve shadow/glow/glass f
 | `surface-3` | neutral-100 | neutral-850 |
 | `surface-4` | neutral-200 | neutral-800 |
 
-**Accent** — the single owned brand colour, **themed**: `--accent` = `brand-500`
-(dark) / `brand-600` (light) for contrast, with `--accent-soft` (tint, **OKLCH-derived
-from `--accent`** via `color-mix` so it tracks the themed accent) and
-`--accent-contrast` (near-black text on the orange fill, keeping labels ≥4.5:1).
+**Accent** — the highest-contrast ink for its ground, **themed**: `--accent` =
+`neutral-0` (dark) / `neutral-1000` (light), with `--accent-soft` (tint,
+**OKLCH-derived** from `--accent`) and `--accent-contrast` (the inverse, for
+labels on an accent fill).
 Use `bg-accent`, `text-accent`, `bg-accent-soft`, `border-accent`. **All colour beyond
 this comes from project imagery** — the chrome stays monochrome + accent. (Switching
 the brand to teal is a one-line change of the `--accent` stops.)
@@ -135,20 +136,25 @@ by Material 3, Apple HIG and Polaris (they name type by *role*, never by px, so 
 value can evolve without renaming). Apply colour separately (`text-color-*`);
 fine-tune with `leading-*` only when needed.
 
-| Role class | Size · Weight | Use |
+The Figma file is the source of truth for the roles it defines — those carry
+its exact px line-heights (2026-09 audit). Roles marked *code-only* have no
+Figma variable yet.
+
+| Role class | Size/Leading · Weight | Use |
 |---|---|---|
-| `.type-display` | 48 · Medium | hero / page display |
-| `.type-display-sm` | 40 · Medium | large display |
-| `.type-heading` | 32 · Medium | page headings |
-| `.type-heading-sm` | 24 · Medium | section headings |
-| `.type-title` | 20 · Medium | card / block titles |
-| `.type-subtitle` | 18 · Medium | sub-headings |
-| `.type-body-lg` | 18 · Regular | lead paragraphs |
-| `.type-body` | 16 · Regular | body |
-| `.type-body-sm` | 14 · Regular | secondary body |
-| `.type-label` | 14 · Medium | buttons, UI labels |
-| `.type-caption` | 12 · Regular | meta, captions |
-| `.type-overline` | 12 · Medium · uppercase | eyebrows / kickers |
+| `.type-display` | 48 · Medium *(code-only)* | hero / page display |
+| `.type-display-sm` | 40 · Medium *(code-only)* | large display |
+| `.type-heading` | 32/36 · Medium | page headings |
+| `.type-heading-sm` | 24/26 · Medium | section headings |
+| `.type-title` | 20 · Medium *(code-only)* | card / block titles |
+| `.type-subtitle` | 18 · Medium *(code-only)* | sub-headings |
+| `.type-body-xl` | 20/24 · Regular | largest body |
+| `.type-body-lg` | 18/24 · Regular | lead paragraphs |
+| `.type-body` | 16/20 · **Medium** | body |
+| `.type-body-sm` | 14/18 · Regular | secondary body |
+| `.type-label` | 14/1.2 · Medium | buttons, UI labels |
+| `.type-caption` | 12/16 · Regular | meta, captions |
+| `.type-overline` | 12 · Medium · uppercase *(code-only)* | eyebrows / kickers |
 
 **Vertical metrics are overridden on the `@font-face`** (the global "type looks centred" fix). BDO Grotesk ships a top-heavy box (native ascent 800 / descent 177 / cap 729 per 1000 em) so its letters sit ~5.5% high in any box — visible in every centred UI label and as uneven space above text. We rebalance at the source: **`ascent-override: 90.6%` / `descent-override: 17.7%` / `line-gap-override: 29.4%`**, chosen so `ascent − descent = cap-height` (caps centre in any line-box) while `line-height: normal` stays ~1.38 and descenders never clip. Consequence: the balanced content-box is **1.083em**, so **multi-line display type must not go below `line-height: 1.1`** (the display roles are floored there). See DESIGN_LOG → Global.
 

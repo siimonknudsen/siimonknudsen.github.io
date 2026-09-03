@@ -69,7 +69,14 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
       else if (e.key === 'ArrowRight') goNext()
     }
     document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
+    // Lock the page behind the lightbox (same as the mobile menu) — on a phone
+    // the gallery scrolls under the open image otherwise.
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prevOverflow
+    }
   }, [openIndex])
 
   const aspect = aspectClasses[aspectRatio] || aspectClasses['9/16']

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import Avatar from './Avatar'
 import Location from './Location'
-import { allProjects } from './projects/ProjectGrid'
+import { allProjects } from '../data/projects'
 import styles from './Footer.module.css'
 
 function Footer() {
@@ -63,7 +63,7 @@ function Footer() {
               <Link to="/about#skills" className={`type-body-sm text-color-secondary focus-ring ${styles.link}`}>
                 Skills
               </Link>
-              <Link to="/about#testimonials" className={`type-body-sm text-color-secondary focus-ring ${styles.link}`}>
+              <Link to="/#testimonials" className={`type-body-sm text-color-secondary focus-ring ${styles.link}`}>
                 Testimonials
               </Link>
               <Link to="/about#pictures" className={`type-body-sm text-color-secondary focus-ring ${styles.link}`}>

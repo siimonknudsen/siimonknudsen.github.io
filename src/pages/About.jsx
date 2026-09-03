@@ -1,16 +1,17 @@
-import TestimonialCard from '../components/cards/TestimonialCard'
-import { TESTIMONIALS } from '../data/testimonials'
 import ScrollAnimation from '../components/animations/ScrollAnimation'
 import { Reveal } from '../components/motion'
-import WordReveal from '../components/home/WordReveal'
 import LogoGrid from '../components/grids/LogoGrid'
 import ImageGrid from '../components/grids/ImageGrid'
 import SkillCard from '../components/cards/SkillCard'
 import Button from '../components/buttons/Button'
 import { AVATAR_SRC, onAvatarError } from '../lib/avatar'
+import skill1 from '../assets/skills/skill-1.webp'
+import skill2 from '../assets/skills/skill-2.webp'
+import skill3 from '../assets/skills/skill-3.webp'
+import skill4 from '../assets/skills/skill-4.webp'
 import styles from './About.module.css'
 
-// Inline download icon for the intro CTA — currentColor, no external deps.
+// Inline download icon for the CV button — currentColor, no external deps.
 function DownloadIcon() {
   return (
     <svg
@@ -31,15 +32,60 @@ function DownloadIcon() {
   )
 }
 
+// Simon's own roles and dates, newest first. Industry comes from the same
+// source as the companies row.
+const EXPERIENCE = [
+  {
+    time: 'Mar 2025 — Present',
+    company: 'Lenus',
+    role: 'Product Designer',
+    industry: 'Health & fitness software',
+  },
+  {
+    time: 'Aug 2024 — Jan 2025',
+    company: 'Beefit',
+    role: 'Product Designer',
+    industry: 'Health & fitness software',
+  },
+  {
+    time: 'May 2023 — Feb 2024',
+    company: 'Zliide',
+    role: 'Product Designer',
+    industry: 'Fashion technology',
+  },
+  {
+    time: 'Jan 2023 — Aug 2024',
+    company: 'Freelance',
+    role: 'Product Designer & Web Developer',
+    industry: '',
+  },
+  {
+    time: 'Jul 2021 — Apr 2023',
+    company: 'Adservice',
+    role: 'Product Designer',
+    industry: 'Affiliate marketing',
+  },
+]
+
+// The four card backgrounds, cycled across the eight skills the way the Figma
+// grid alternates them.
+const SKILL_BACKGROUNDS = [skill1, skill4, skill2, skill3, skill4, skill2, skill3, skill1]
+
+const BIO = [
+  "I'm a Product Designer who's passionate about human psychology within digital products.",
+  "I'm experienced in crafting beautiful and user friendly designs that solves real business problems.",
+  "I'm specialized within UX Design, UI Design & Design Systems.",
+]
+
 function About() {
   // Automatically load all logos from src/assets/logos/ folder
   // Just add your logo files to that folder - no need to update this code!
   // Supports: .png, .jpg, .jpeg, .svg, .webp
-  const logoModules = import.meta.glob('../assets/logos/*.{png,jpg,jpeg,svg,webp}', { 
+  const logoModules = import.meta.glob('../assets/logos/*.{png,jpg,jpeg,svg,webp}', {
     eager: true,
     import: 'default'
   })
-  
+
   // Convert imported modules to an array of logo URLs, sorted by filename
   const companies = Object.entries(logoModules)
     .map(([path, url]) => ({
@@ -53,11 +99,11 @@ function About() {
   // Automatically load all images from src/assets/about-images/ folder
   // Just add your images to that folder - no need to update this code!
   // Supports: .jpg, .jpeg, .png, .webp, .gif
-  const imageModules = import.meta.glob('../assets/about-images/*.{jpg,jpeg,png,webp,gif}', { 
+  const imageModules = import.meta.glob('../assets/about-images/*.{jpg,jpeg,png,webp,gif}', {
     eager: true,
     import: 'default'
   })
-  
+
   // Convert imported modules to an array of image URLs, sorted by filename
   const aboutImages = Object.entries(imageModules)
     .map(([path, url]) => ({
@@ -105,60 +151,35 @@ function About() {
 
   return (
     <>
-      {/* First Section — editorial headline + portrait with floating skill chips */}
-      <section id="about-me" className={styles.heroSection}>
-        <div className={styles.heroInner}>
-          {/* Cinematic first-load cascade (matches the home hero): headline →
-              portrait → chips one-by-one. `immediate` plays each on MOUNT (the
-              timed entrance these delays were authored for) instead of on scroll —
-              the portrait + lower chips sit below the scroll-observer's trigger
-              line on the first screen, so a scroll trigger left them stuck at
-              opacity 0 until the user scrolled. */}
-          <Reveal immediate delay={150}>
-            <h1 className={`text-color-primary ${styles.aboutHeadline}`}>
-              Product designer &amp; systems thinker
-            </h1>
+      {/* Intro — label, portrait and bio placed on the 10-column grid */}
+      <section id="about-me" className={styles.section}>
+        <div className={`${styles.container} ${styles.intro}`}>
+          <Reveal immediate className={styles.introLabel}>
+            <h1 className={styles.label}>About</h1>
           </Reveal>
 
-          {/* Portrait stage — avatar placeholder (swap a real photo later) with
-              skill chips floating around it on desktop, stacked on mobile. */}
-          <div className={styles.portraitStage}>
-            <div className={styles.portraitGlow} aria-hidden="true" />
-            <ScrollAnimation immediate delay={500}>
-              <div className={styles.portrait}>
-                <img
-                  src={AVATAR_SRC}
-                  onError={onAvatarError}
-                  alt="Simon Knudsen"
-                  className={styles.portraitImg}
-                />
-              </div>
-            </ScrollAnimation>
+          <Reveal immediate delay={120} className={styles.portrait}>
+            <img
+              src={AVATAR_SRC}
+              onError={onAvatarError}
+              alt="Simon Knudsen"
+              className={styles.portraitImg}
+            />
+          </Reveal>
 
-            <div className={styles.chips}>
-              <Reveal as="span" preset="fade-up" immediate delay={800} className={`glass ${styles.chip} ${styles.chipA}`}>Figma</Reveal>
-              <Reveal as="span" preset="fade-up" immediate delay={920} className={`glass ${styles.chip} ${styles.chipB}`}>UX Design</Reveal>
-              <Reveal as="span" preset="fade-up" immediate delay={1040} className={`glass ${styles.chip} ${styles.chipC}`}>UI Design</Reveal>
-              <Reveal as="span" preset="fade-up" immediate delay={1160} className={`glass ${styles.chip} ${styles.chipD}`}>Design Systems</Reveal>
-              <Reveal as="span" preset="fade-up" immediate delay={1280} className={`glass ${styles.chip} ${styles.chipE}`}>Frontend</Reveal>
-              <Reveal as="span" preset="fade-up" immediate delay={1400} className={`glass ${styles.chip} ${styles.chipF}`}>Prototyping</Reveal>
-            </div>
-          </div>
-
-          {/* Introduction Text */}
-          <ScrollAnimation>
-            <p className={`type-body-lg text-color-secondary ${styles.intro}`}>
-              I'm a Product Designer who's passionate about human psychology within digital products. I'm experienced in crafting beautiful and user friendly designs that solves real business problems. I'm specialized within UX Design, UI Design &amp; Design Systems.
-            </p>
-          </ScrollAnimation>
-
-          <Reveal>
-            <div className={styles.introCta}>
+          <Reveal immediate delay={240} className={styles.bio}>
+            {BIO.map((paragraph) => (
+              <p key={paragraph} className={styles.bioText}>
+                {paragraph}
+              </p>
+            ))}
+            <div className={styles.bioCta}>
               <Button
                 as="a"
                 href={`${import.meta.env.BASE_URL}simon-knudsen-cv.pdf`}
                 download
                 variant="secondary"
+                size="sm"
                 iconLeft={<DownloadIcon />}
               >
                 Download CV (PDF)
@@ -168,41 +189,39 @@ function About() {
         </div>
       </section>
 
-      {/* Second Section - Mission Statement */}
-      <section className={styles.fullSection}>
-        <div className={`bg-surface-color-secondary ${styles.missionPanel}`}>
-          <WordReveal
-            as="p"
-            whenInView
-            text="Making the world of digital products more user friendly, one product at a time."
-            className={`type-display text-color-primary ${styles.missionText}`}
-          />
+      {/* Experience — a quiet four-column table in the right half */}
+      <section id="experience" className={styles.section}>
+        <div className={`${styles.container} ${styles.experience}`}>
+          <ScrollAnimation className={styles.experienceLabel}>
+            <h2 className={styles.label}>Experience</h2>
+          </ScrollAnimation>
+
+          <ScrollAnimation className={styles.table}>
+            <div className={styles.tableGrid}>
+              <div className={styles.tableHead}>
+                <span>Time</span>
+                <span>Company</span>
+                <span>Role</span>
+                <span>Industry</span>
+              </div>
+              {EXPERIENCE.map((job) => (
+                <div key={job.company + job.time} className={styles.tableRow}>
+                  <span>{job.time}</span>
+                  <span>{job.company}</span>
+                  <span>{job.role}</span>
+                  <span>{job.industry}</span>
+                </div>
+              ))}
+            </div>
+          </ScrollAnimation>
         </div>
       </section>
 
-      {/* Section - How I work (Design principles) */}
-      {/* "Principles I design by" section removed for now — parked as an idea.
-          The <PrinciplesList /> component + content are kept in the codebase so
-          it can be re-added later. See DESIGN_LOG "Parked ideas". */}
-
-      {/* Third Section - Companies */}
-      <section id="companies" className={styles.anchorSection}>
-        <div className={styles.inner}>
-          {/* Companies Section */}
-          <div>
-            <ScrollAnimation>
-              <h2 className={`type-subtitle text-color-primary ${styles.heading8}`}>Companies I've designed for</h2>
-            </ScrollAnimation>
-            <LogoGrid logos={companies} columns={7} gap="2" />
-          </div>
-        </div>
-      </section>
-
-      {/* Fourth Section - Detailed Skills */}
-      <section id="skills" className={styles.anchorSection}>
-        <div className={styles.inner}>
+      {/* Skills — 4-up cards on the inverted surface */}
+      <section id="skills" className={styles.section}>
+        <div className={styles.container}>
           <ScrollAnimation>
-            <h2 className={`text-color-primary ${styles.skillsHeading}`}>Skills</h2>
+            <h2 className={styles.label}>Skills</h2>
           </ScrollAnimation>
           <div className={styles.skillsGrid}>
             {skills.map((skill, index) => (
@@ -210,43 +229,34 @@ function About() {
                 key={index}
                 title={skill.title}
                 description={skill.description}
+                image={SKILL_BACKGROUNDS[index % SKILL_BACKGROUNDS.length]}
               />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Fifth Section - Testimonials */}
-      <section id="testimonials" className={styles.anchorSection}>
-        <div className={styles.inner}>
+      {/* Companies — the same quiet wordmark row as the front page */}
+      <section id="companies" className={styles.section}>
+        <div className={styles.container}>
           <ScrollAnimation>
-            <h2 className={`type-display text-color-primary ${styles.heading12}`}>Testimonials</h2>
+            <h2 className={styles.label}>Companies I&apos;ve designed for</h2>
           </ScrollAnimation>
-          <div className={styles.testimonialsGrid}>
-            {/* Identical to the Home testimonials — same shared data + same card.
-                See src/data/testimonials.jsx (one source of truth). */}
-            {TESTIMONIALS.map((t) => (
-              <TestimonialCard
-                key={t.recommender}
-                logo={t.logo}
-                logoNode={t.logoNode}
-                recommender={t.recommender}
-                title={t.title}
-                company={t.company}
-                text={t.text}
-              />
-            ))}
+          <div className={styles.companies}>
+            <LogoGrid logos={companies} columns={5} gap="4" />
           </div>
         </div>
       </section>
 
-      {/* Seventh Section - Pictures */}
-      <section id="pictures" className={styles.anchorSection}>
-        <div className={styles.inner}>
+      {/* Pictures */}
+      <section id="pictures" className={styles.section}>
+        <div className={styles.container}>
           <ScrollAnimation>
-            <h2 className={`type-display text-color-primary ${styles.heading12}`}>A Picture Is Worth a Thousand Words</h2>
+            <h2 className={styles.label}>Pictures</h2>
           </ScrollAnimation>
-          <ImageGrid images={aboutImages} columns={4} gap="1" aspectRatio="9/16" />
+          <div className={styles.pictures}>
+            <ImageGrid images={aboutImages} columns={5} gap="2" aspectRatio="9/16" />
+          </div>
         </div>
       </section>
     </>
@@ -254,4 +264,3 @@ function About() {
 }
 
 export default About
-

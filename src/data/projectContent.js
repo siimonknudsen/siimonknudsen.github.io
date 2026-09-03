@@ -6,7 +6,7 @@
  * content used when a project has no content.json.
  *
  * To add content for a new project:
- * 1. Find your project ID in ProjectGrid.jsx (e.g. 'zliide-app', 'apple-home-app')
+ * 1. Find your project ID in src/data/projects.js (e.g. 'zliide-app', 'apple-home-app')
  * 2. Create /public/projects/{project-id}/ and a content.json with FLAT fields
  *    (the loader reads these top-level keys — there is no "metadata" wrapper):
  *    {

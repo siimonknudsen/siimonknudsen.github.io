@@ -36,7 +36,7 @@
    Reference: DESIGN_SYSTEM.md
    ============================================================ */
 :root {
-  /* — Colour palette (neutral ramp + accent) — */
+  /* — Colour palette (one neutral ramp; the accent is drawn from it) — */
   --neutral-0: #ffffff;
   --neutral-50: #fafafa;
   --neutral-100: #f5f5f5;
@@ -51,27 +51,10 @@
   --neutral-900: #1a1a1a;
   --neutral-950: #0f0f0f;
   --neutral-1000: #000000;
-  /* — Brand ramp (the one owned brand colour). Recommended default: a warm
-     orange — see DECISIONS. Distinct from the ubiquitous SaaS green, warmer/
-     more human, and it frees green to mean ONLY "success". Themed accent
-     tokens (below) point --accent at the right stop per mode. Swapping the
-     brand to teal is a one-line change of these stops. */
-  --brand-50:  #fff4ee;
-  --brand-100: #ffe6d6;
-  --brand-200: #feccae;
-  --brand-300: #fcab7c;
-  --brand-400: #f98a4d;
-  --brand-500: #f26a2e;
-  --brand-600: #db5320;
-  --brand-700: #b43f1b;
-  --brand-800: #8c331a;
-  --brand-900: #5f2614;
-  --brand-950: #3a160c;
-
   /* — Status + action hue ramps (raw) — complete 50→900 ladders, like Tailwind/
      Radix. success(green) · warning(amber) · error(red) · info(blue) ·
-     action(indigo, the interactive/secondary-action hue, distinct from the
-     orange brand). Semantics below pick the right stop per theme. */
+     action(indigo, the interactive/secondary-action hue). Semantics below pick
+     the right stop per theme. */
   --green-50:#ecfdf5; --green-100:#d1fae5; --green-200:#a7f3d0; --green-300:#6ee7b7; --green-400:#34d399; --green-500:#10b981; --green-600:#059669; --green-700:#047857; --green-800:#065f46; --green-900:#064e3b; --green-950:#022c22;
   --amber-50:#fffbeb; --amber-100:#fef3c7; --amber-200:#fde68a; --amber-300:#fcd34d; --amber-400:#fbbf24; --amber-500:#f59e0b; --amber-600:#d97706; --amber-700:#b45309; --amber-800:#92400e; --amber-900:#78350f; --amber-950:#451a03;
   --red-50:#fef2f2;   --red-100:#fee2e2;   --red-200:#fecaca;   --red-300:#fca5a5;   --red-400:#f87171;   --red-500:#ef4444;   --red-600:#dc2626;   --red-700:#b91c1c;   --red-800:#991b1b;   --red-900:#7f1d1d;   --red-950:#450a0a;
@@ -103,7 +86,7 @@
   /* On-media chrome — text/accents that always sit over dark-scrimmed photos,
      so they're fixed light (theme-independent), not the theme-aware text tokens. */
   --text-on-media: #fff;
-  --accent-on-media: #ff9a6a; /* lightened brand orange for AA legibility on photos */
+  --accent-on-media: #fff;
 
   /* — Typography — */
   --font-sans: 'BDO Grotesk', system-ui, -apple-system, sans-serif;
@@ -159,13 +142,22 @@
   --space-64: 64px;
   --space-80: 80px;
   --space-128: 128px;
+  --space-160: 160px;
   --space-164: 164px;
   --space-200: 200px;
 
   /* — Layout — */
   --container-max: 1440px; /* page content max width */
+  /* Content column every page and the nav bar align to. */
+  --content-max: 1440px;
   --page-gutter: var(--space-24); /* horizontal breathing room — responsive: 24 mobile → 40 → 64 desktop (overrides below) */
-  --header-height: 88px; /* sticky header footprint — used to slide the hero shader up behind the nav (slight overshoot guarantees full coverage) */
+  --header-inset: var(--space-20); /* gap from the viewport top to the glass bar */
+  --header-bar: 60px; /* the glass bar itself */
+  --header-height: 88px; /* the header element's full footprint (scroll-margins) */
+  /* Clearance every page starts below: the bar's bottom edge + the page
+     rhythm's 160, so the air above a page's first content matches the gaps
+     between its sections. */
+  --header-clearance: calc(var(--header-inset) + var(--header-bar) + var(--space-160));
 
   /* — Radius (4 · 8 · 12 · 16; 2xl/3xl for big frosted panels & hero/case) — */
   /* Tight 2026 aesthetic: cards/panels/images cap at 8px. The larger steps are
@@ -389,8 +381,9 @@ html.dark {
   --feedback-info-soft: rgba(96, 165, 250, 0.15);
   --feedback-error: var(--feedback-danger);
   --feedback-error-soft: var(--feedback-danger-soft);
-  /* Brand accent (themed) — brand-500 reads vivid on dark surfaces */
-  --accent: var(--brand-500);
+  /* Accent (themed) — the palette is monochrome, so the accent is simply the
+     highest-contrast ink for the ground: white on dark, black on light. */
+  --accent: var(--neutral-0);
   /* Derived in OKLCH from the themed --accent so soft tints track the accent
      automatically (and stay perceptually uniform) instead of a hardcoded rgba
      that drifts when --accent changes per theme. */
@@ -462,7 +455,7 @@ html:not(.dark) {
   /* Top-edge SHEEN (light) — a brighter white wash; on translucent light glass
      this reads as a glossy lit top edge (pairs with the strong 1px inset). */
   --glass-sheen: linear-gradient(to bottom, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.14) 45%, transparent 70%);
-  /* Cursor-spotlight glow (light = soft warm-accent tint; a white glow would be
+  /* Cursor-spotlight glow (light = soft ink tint; a white glow would be
      invisible on a light card) */
   --glass-glow: color-mix(in oklch, var(--accent) 16%, transparent);
   /* Elevation (solid surfaces, light = subtle/tight shadows) */
@@ -505,13 +498,10 @@ html:not(.dark) {
   --feedback-info-soft: rgba(37, 99, 235, 0.12);
   --feedback-error: var(--feedback-danger);
   --feedback-error-soft: var(--feedback-danger-soft);
-  /* Brand accent (themed) — brand-600 for stronger contrast on light surfaces;
-     black contrast text keeps button labels ≥ 4.5:1 on the orange fill. */
-  --accent: var(--brand-600);
-  /* OKLCH-derived from --accent (now brand-600 in light) so the soft tint
-     matches the themed accent — was previously pinned to brand-500. */
+  /* Accent (themed) — black ink on the light ground (see the dark block). */
+  --accent: var(--neutral-1000);
   --accent-soft: color-mix(in oklch, var(--accent) 12%, transparent);
-  --accent-contrast: var(--neutral-1000);
+  --accent-contrast: var(--neutral-0);
   /* Action — interactive / secondary-action colour (indigo), deeper on light */
   --action: var(--indigo-600);
   --action-soft: rgba(99, 102, 241, 0.12);
@@ -526,7 +516,6 @@ html:not(.dark) {
   *::before,
   *::after {
     box-sizing: border-box;
-    line-height: 100%;
   }
 
   * {
@@ -622,7 +611,7 @@ html:not(.dark) {
   @media (min-width: 1024px) {
     .type-display {
       font-size: var(--text-5xl); /* 48 */
-      line-height: 1.1; /* floored — see above (was 1.0; would overlap when wrapped) */
+      line-height: 52px; /* Figma type-display — 48/52 */
     }
   }
   .type-display-sm {
@@ -647,14 +636,14 @@ html:not(.dark) {
   .type-heading {
     font-size: var(--text-3xl);
     font-weight: var(--weight-medium);
-    line-height: 1.1;
+    line-height: 36px;
     letter-spacing: var(--tracking-tight);
     text-wrap: balance;
   }
   .type-heading-sm {
     font-size: var(--text-2xl);
     font-weight: var(--weight-medium);
-    line-height: 1.15;
+    line-height: 26px;
     letter-spacing: var(--tracking-tight);
     text-wrap: balance;
   }
@@ -672,24 +661,32 @@ html:not(.dark) {
     letter-spacing: var(--tracking-snug);
     text-wrap: pretty; /* lead text can run long → prevent a lone last-line word */
   }
+  /* 20/24 regular — the largest body role (Figma `type-body-xl`). */
+  .type-body-xl {
+    font-size: var(--text-xl);
+    font-weight: var(--weight-regular);
+    line-height: 24px;
+    letter-spacing: var(--tracking-snug);
+    text-wrap: pretty;
+  }
   .type-body-lg {
     font-size: var(--text-lg);
     font-weight: var(--weight-regular);
-    line-height: 1.5;
+    line-height: 24px;
     letter-spacing: var(--tracking-snug);
     text-wrap: pretty;
   }
   .type-body {
     font-size: var(--text-base);
-    font-weight: var(--weight-regular);
-    line-height: 1.5;
+    font-weight: var(--weight-medium);
+    line-height: 20px;
     letter-spacing: var(--tracking-snug);
     text-wrap: pretty;
   }
   .type-body-sm {
     font-size: var(--text-sm);
     font-weight: var(--weight-regular);
-    line-height: 1.45;
+    line-height: 18px;
     letter-spacing: var(--tracking-base);
     text-wrap: pretty;
   }
@@ -702,7 +699,7 @@ html:not(.dark) {
   .type-caption {
     font-size: var(--text-xs);
     font-weight: var(--weight-regular);
-    line-height: 1.35;
+    line-height: 16px;
     letter-spacing: var(--tracking-base);
   }
   .type-overline {
@@ -963,7 +960,7 @@ html:not(.dark) {
   background-color: var(--surface-color-primary);
 }
 
-/* Accent (status / highlight) — the one owned brand colour */
+/* Accent (status / highlight) — the themed max-contrast ink */
 .bg-accent {
   background-color: var(--accent) !important;
 }
@@ -1212,6 +1209,15 @@ html:not(.dark) .grain {
   .fx-reveal {
     opacity: 1 !important;
     transform: none !important;
+  }
+}
+
+/* Phones run the whole rhythm at 80, so the air under the bar follows it. */
+@media (max-width: 640px) {
+  :root {
+    --header-clearance: calc(
+      var(--header-inset) + var(--header-bar) + var(--space-80)
+    );
   }
 }
 

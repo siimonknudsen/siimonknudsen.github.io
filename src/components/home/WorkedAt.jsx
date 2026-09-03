@@ -72,9 +72,10 @@ function WorkedAt({ companies = COMPANIES, revealDelay = 0 }) {
           trigger left it stuck invisible at load. `revealDelay` lets Home tail it
           onto the hero cascade (after the CTAs). */}
       <Reveal preset="fade-up" immediate delay={revealDelay} className={styles.inner}>
-        <p className={`type-overline font-mono text-color-tertiary ${styles.label}`}>
-          Worked at
-        </p>
+        {/* On phones the row becomes a continuous marquee: the set is rendered
+            twice so the track can loop seamlessly (the copy is decorative).
+            On desktop the copy is display:none and the row just centres. */}
+        <div className={styles.marquee}>
         <div className={styles.logos}>
           {companies.map((company) => {
             const id = `worked-at-${company.name.toLowerCase()}`
@@ -152,6 +153,22 @@ function WorkedAt({ companies = COMPANIES, revealDelay = 0 }) {
               </div>
             )
           })}
+          <div className={styles.duplicate} aria-hidden="true">
+            {companies.map((company) => (
+              <span
+                key={company.name}
+                className={styles.logoWrap}
+                style={{ '--logo-scale': company.logoScale ?? 1 }}
+              >
+                {company.Logo ? (
+                  <company.Logo className={styles.logoSvg} />
+                ) : (
+                  <span className={styles.wordmark}>{company.name}</span>
+                )}
+              </span>
+            ))}
+          </div>
+        </div>
         </div>
       </Reveal>
     </section>

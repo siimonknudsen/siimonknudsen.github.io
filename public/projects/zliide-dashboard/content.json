@@ -29,23 +29,7 @@
       "body": "Designed clear visualizations, supported by the design system, to turn raw statistics into actionable insight."
     }
   ],
-  "outcomes": [
-    {
-      "metric": "−30%",
-      "label": "time to insight",
-      "note": "placeholder — confirm"
-    },
-    {
-      "metric": "+42%",
-      "label": "weekly active users",
-      "note": "placeholder — confirm"
-    },
-    {
-      "metric": "−25%",
-      "label": "support requests",
-      "note": "placeholder — confirm"
-    }
-  ],
+  "outcomes": [],
   "content": [
     {
       "type": "image",

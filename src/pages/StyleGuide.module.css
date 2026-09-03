@@ -333,16 +333,7 @@
   margin-right: auto;
   padding-left: var(--page-gutter);
   padding-right: var(--page-gutter);
-  padding-top: var(--space-64);
-  padding-bottom: var(--space-80);
 }
-@media (min-width: 640px) {
-  .cover {
-    padding-top: var(--space-128);
-    padding-bottom: var(--space-128);
-  }
-}
-
 .coverInner {
   position: relative;
   /* Fills the cover's padded box (the cover owns the max-width + centring now),
@@ -418,7 +409,6 @@
   margin-right: auto;
   padding-left: var(--page-gutter);
   padding-right: var(--page-gutter);
-  padding-bottom: var(--space-128);
 }
 @media (min-width: 1280px) {
   .body {

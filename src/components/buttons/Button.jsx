@@ -4,7 +4,7 @@
  * variant: primary | secondary | accent | outline | glass | ghost  (default primary)
  *   primary  → solid contrast surface (high-emphasis)
  *   secondary→ solid tertiary surface (neutral)
- *   accent   → solid warm-orange brand fill
+ *   accent   → solid accent (max-contrast ink) fill
  *   outline  → transparent fill + translucent glass hairline (theme-aware light edge)
  *   glass    → frosted .glass .glass-item surface
  *   ghost    → quiet text-only

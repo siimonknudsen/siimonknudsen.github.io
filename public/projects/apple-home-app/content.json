@@ -33,23 +33,7 @@
       "body": "Defined the next step — user testing to verify the viability of the concept and the experience of the new features before they could ship."
     }
   ],
-  "outcomes": [
-    {
-      "metric": "+19%",
-      "label": "task success rate",
-      "note": "placeholder — confirm"
-    },
-    {
-      "metric": "−27%",
-      "label": "time on task",
-      "note": "placeholder — confirm"
-    },
-    {
-      "metric": "+22%",
-      "label": "usability score (SUS)",
-      "note": "placeholder — confirm"
-    }
-  ],
+  "outcomes": [],
   "content": [
     {
       "type": "image",

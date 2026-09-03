@@ -1,208 +1,165 @@
-/* About page — migrated from Tailwind utilities */
+/* About page — the page shell owns the 128px rhythm between these sections. */
 
-/* Section: Headshot and Introduction */
-.heroSection {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  /* Header-height token (was a stale hardcoded 80px; the header is 88px). */
-  min-height: calc(100vh - var(--header-height));
-  max-height: 900px;
-  padding: var(--space-48) var(--page-gutter) var(--space-24);
-  margin-bottom: var(--space-164);
-  scroll-margin-top: 96px;
+.section {
+  width: 100%;
+  padding: 0 var(--page-gutter);
+  scroll-margin-top: calc(var(--header-clearance));
 }
 
-.heroInner {
-  max-width: var(--container-max);
+.container {
+  max-width: var(--content-max);
   margin-left: auto;
   margin-right: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-/* Editorial role headline */
-.aboutHeadline {
-  text-align: center;
+/* Every section opens with the same quiet 16/20 label. */
+.label {
+  margin: 0 0 var(--space-32);
+  color: var(--text-color-primary);
+  font-size: var(--text-base);
   font-weight: var(--weight-medium);
-  font-size: clamp(2.25rem, 5vw, 4rem);
-  line-height: 1.1; /* floored to clear the 1.083em content-box (was 1.08); multi-line headline */
-  letter-spacing: -0.05em;
-  max-width: min(16ch, 100%);
-  /* Auto side-margins so the capped-width block centres itself inside the
-     block-level reveal wrapper (align-items:center can't reach across it). */
-  margin: 0 auto var(--space-40);
+  line-height: 20px;
+  letter-spacing: var(--tracking-snug);
 }
 
-/* Portrait + floating chips */
-.portraitStage {
-  position: relative;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: var(--space-40);
+/* ── Intro ──────────────────────────────────────────────────────────────────
+   10 columns, 24px apart: the label on column 1, the portrait on 3–5, the bio
+   on 7–10. */
+.intro {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: var(--space-24);
+  align-items: start;
+}
+
+.introLabel {
+  grid-column: 1 / span 2;
+}
+
+.introLabel .label {
+  margin-bottom: 0;
 }
 
 .portrait {
-  position: relative;
-  z-index: 1;
-  width: 240px;
-  height: 240px;
-  /* Max roundness — a full circle on the square portrait, matching the circular
-     header/footer avatars (the pill radius is the documented exception to the
-     8px cap, reserved for circular elements like this). */
-  border-radius: var(--radius-pill);
+  grid-column: 3 / span 3;
   overflow: hidden;
-  flex-shrink: 0;
+  aspect-ratio: 360 / 343;
+  border-radius: var(--radius-sm);
+  background-color: var(--surface-color-secondary);
 }
 
 .portraitImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-/* Soft neutral glow behind the portrait — achromatic "light, not colour" now
-   that the palette is black & white (Simon: neutralize the orange halo). Reads
-   as a gentle white bloom in dark mode; effectively invisible on white, which
-   is fine — the field stays clean. */
-.portraitGlow {
-  position: absolute;
-  z-index: 0;
-  width: 420px;
-  height: 420px;
-  max-width: 90vw;
-  border-radius: var(--radius-pill);
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.06), transparent 68%);
-  filter: blur(8px);
-  pointer-events: none;
-}
-
-/* Skill chips */
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-8);
-  justify-content: center;
-  margin-top: var(--space-24);
-}
-
-.chip {
-  padding: var(--space-6) var(--space-16);
-  border-radius: var(--radius-pill);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
-  white-space: nowrap;
-}
-
-/* Desktop: scatter the chips around the portrait */
-@media (min-width: 768px) {
-  .portraitStage {
-    min-height: 420px;
-  }
-  .chips {
-    display: contents;
-  }
-  .chip {
-    position: absolute;
-    z-index: 2;
-  }
-  .chipA { top: 8%; left: 22%; }
-  .chipB { top: 14%; right: 20%; }
-  .chipC { top: 44%; left: 12%; }
-  .chipD { top: 40%; right: 12%; }
-  .chipE { bottom: 14%; left: 26%; }
-  .chipF { bottom: 8%; right: 26%; }
-}
-
-.intro {
-  text-align: center;
-  max-width: 768px;
-}
-
-.introCta {
-  display: flex;
-  justify-content: center;
-  margin-top: var(--space-32);
-}
-
-/* Section: Mission Statement */
-.fullSection {
-  width: 100%;
-  padding: var(--space-24) var(--page-gutter);
-  margin-bottom: var(--space-164);
-}
-
-.missionPanel {
-  max-width: var(--container-max);
-  margin-left: auto;
-  margin-right: auto;
-  height: 700px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.missionText {
-  text-align: center;
-  max-width: 23ch;
-}
-
-/* Section: Companies / Skills / Testimonials / Pictures (anchored) */
-.anchorSection {
-  width: 100%;
-  padding: var(--space-24) var(--page-gutter);
-  margin-bottom: var(--space-164);
-  scroll-margin-top: 96px;
-}
-
-.inner {
-  max-width: var(--container-max);
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Section index overline */
-.overline {
   display: block;
-  margin-bottom: var(--space-12);
 }
 
-/* Headings */
-.heading8 {
-  margin-bottom: var(--space-32);
+.bio {
+  grid-column: 7 / span 4;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
 }
 
-.skillsHeading {
-  font-size: var(--text-lg);
+.bioText {
+  margin: 0;
+  color: var(--text-color-secondary);
+  font-size: var(--text-base);
   font-weight: var(--weight-medium);
-  margin-bottom: var(--space-32);
+  line-height: 20px;
+  letter-spacing: var(--tracking-snug);
+  text-wrap: pretty;
 }
 
-.heading12 {
-  font-weight: var(--weight-regular);
-  margin-bottom: var(--space-48);
+.bioCta {
+  margin-top: var(--space-12);
 }
 
-/* Grids */
+/* ── Experience ─────────────────────────────────────────────────────────────
+   The label sits on the first two of seven columns; the table fills 4–7. */
+.experience {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  align-items: start;
+}
+
+.experienceLabel {
+  grid-column: 1 / span 2;
+}
+
+.experienceLabel .label {
+  margin-bottom: 0;
+}
+
+.table {
+  grid-column: 4 / span 4;
+}
+
+.tableGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
+}
+
+.tableHead,
+.tableRow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  color: var(--text-color-secondary);
+  font-size: var(--text-sm);
+  line-height: 18px;
+  letter-spacing: var(--tracking-base);
+}
+
+/* ── Skills ─────────────────────────────────────────────────────────────── */
 .skillsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: var(--space-8);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-12);
 }
 
-/* (Client/brand logo tiles now get their frosted-glass surface directly on
-   LogoGrid's `.cell` — see LogoGrid.module.css.) */
+/* ── Companies · Pictures ───────────────────────────────────────────────── */
+.companies,
+.pictures {
+  width: 100%;
+}
 
-/* Identical to the Home testimonials grid (auto-fit) so both pages match 1:1. */
-.testimonialsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
-  gap: var(--space-24);
-  align-items: stretch;
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 1023px) {
+  .intro,
+  .experience {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: var(--space-32);
+  }
+  .introLabel,
+  .portrait,
+  .bio,
+  .experienceLabel,
+  .table {
+    grid-column: 1 / -1;
+  }
+  .portrait {
+    max-width: 360px;
+  }
+  .skillsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .label {
+    margin-bottom: var(--space-24);
+  }
+  .skillsGrid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  .tableHead,
+  .tableRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4) var(--space-12);
+  }
+  .tableHead {
+    display: none;
+  }
 }

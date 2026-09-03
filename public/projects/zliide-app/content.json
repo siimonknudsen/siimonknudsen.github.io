@@ -37,23 +37,7 @@
       "body": "Tested the new solution against the old experience. It was selected as the preferred choice by 100% of participants and measured a 21.3% lift in user satisfaction."
     }
   ],
-  "outcomes": [
-    {
-      "metric": "+6%",
-      "label": "monthly store revenue",
-      "note": "Additional revenue per physical store from reduced out-of-stock situations."
-    },
-    {
-      "metric": "100%",
-      "label": "preferred in user testing",
-      "note": "Every participant chose the new solution over the existing experience."
-    },
-    {
-      "metric": "+21.3%",
-      "label": "user satisfaction",
-      "note": "Measured improvement from the redesigned ordering flow."
-    }
-  ],
+  "outcomes": [],
   "content": [
     {
       "type": "image",

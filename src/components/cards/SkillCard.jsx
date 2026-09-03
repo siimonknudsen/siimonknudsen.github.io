@@ -2,24 +2,23 @@ import Reveal from '../motion/Reveal'
 import styles from './SkillCard.module.css'
 
 /**
- * Reusable SkillCard component for displaying skills with descriptions.
- * The glass card IS the reveal element (animates its own opacity/transform) so
- * its backdrop-filter frost stays present through the reveal — a wrapper would
- * isolate the backdrop and make the blur "pop in" late.
+ * SkillCard — one skill over its background image, copy sitting at the bottom
+ * of the frame. A scrim under the copy keeps the on-media type legible whatever
+ * the image does behind it.
  */
-function SkillCard({ title, description }) {
+function SkillCard({ title, description, image }) {
   return (
-    // Flat solid card — tonal secondary surface, no glass/border/shadow.
     <Reveal className={styles.card}>
-      <h3 className={`type-subtitle text-color-primary ${styles.title}`}>
-        {title}
-      </h3>
-      <p className="type-body text-color-secondary">
-        {description}
-      </p>
+      {image && (
+        <img src={image} alt="" aria-hidden="true" className={styles.bg} loading="lazy" />
+      )}
+      <span className={styles.scrim} aria-hidden="true" />
+      <div className={styles.body}>
+        <h3 className={styles.title}>{title}</h3>
+        <p className={styles.description}>{description}</p>
+      </div>
     </Reveal>
   )
 }
 
 export default SkillCard
-

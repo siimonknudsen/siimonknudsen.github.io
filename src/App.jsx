@@ -111,7 +111,7 @@ function AnimatedRoutes() {
         document.body
       )}
       {/* eslint-disable-next-line react-hooks/refs */}
-      <div key={location.pathname} className={playWipe ? 'page-enter-nav' : 'page-enter'}>
+      <div key={location.pathname} className={`${styles.pageShell} ${playWipe ? 'page-enter-nav' : 'page-enter'}`}>
       <Suspense fallback={null}>
       <Routes location={location}>
         <Route path="/" element={<Home />} />

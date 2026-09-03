@@ -6,9 +6,13 @@ import { useEffect, useRef, useState } from 'react'
  * `.is-visible` class (or drive any animation) off isVisible.
  * `once` (default true) reveals a single time and disconnects.
  */
+// Trigger line: the observer's box is shrunk 10% at the bottom, so an element
+// reveals as soon as ANY of it crosses 90% of the viewport height (threshold 0).
+// It used to be a 28% inset + a 10%-of-element threshold, which on a tall card
+// meant it had to be a third of the way up the screen before it moved.
 export default function useReveal({
-  threshold = 0.1,
-  rootMargin = '0px 0px -28% 0px',
+  threshold = 0,
+  rootMargin = '0px 0px -10% 0px',
   once = true,
 } = {}) {
   const ref = useRef(null)

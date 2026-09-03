@@ -72,22 +72,28 @@
   gap: var(--space-16);
 }
 
-/* Logo cell — the standard flat content surface (tonal secondary), matching the
-   cards; no glass, no border, no shadow. */
+/* Logo tile — the flat tonal surface every content card uses; no border, no
+   shadow. The mark sits centred with room to breathe. */
 .cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  min-height: var(--space-80);
+  padding: var(--space-24);
   overflow: hidden;
-  background-color: var(--surface-card-bg);
-  box-shadow: var(--surface-card-shadow);
   border-radius: var(--radius-md);
+  background-color: var(--surface-color-secondary);
 }
 
 .logo {
+  /* The source files are square canvases with the wordmark centred inside a lot
+     of empty space, so they have to scale by WIDTH to read at a useful size —
+     capping the height just shrinks the mark inside its own padding. */
   width: 100%;
-  height: 100%;
+  max-width: 160px;
+  height: auto;
   object-fit: contain;
-  border-radius: var(--radius-sm);
   opacity: 0.72;
   transition-property: opacity;
   transition-duration: var(--dur-fast);

@@ -42,6 +42,20 @@
   transition-duration: 150ms;
 }
 
+/* Touch: the segments read at 28px but need a finger-sized hit area, so each
+   one carries an invisible 44px target. */
+@media (pointer: coarse) {
+  .btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    transform: translate(-50%, -50%);
+  }
+}
+
 .btnHover:hover {
   color: var(--text-color-primary) !important;
 }
