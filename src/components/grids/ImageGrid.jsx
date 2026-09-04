@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom'
 // eslint-disable-next-line no-unused-vars
 import { m, AnimatePresence, useReducedMotion } from 'motion/react'
 import Media from '../Media'
+import useCursorLabel from '../../hooks/useCursorLabel'
 import Reveal from '../motion/Reveal'
 import styles from './ImageGrid.module.css'
 
@@ -12,6 +13,48 @@ import styles from './ImageGrid.module.css'
  * ImageGrid — responsive image gallery using <Media> (lazy + reveal) with a
  * click-to-open lightbox (Esc / click-away to close).
  */
+/**
+ * GalleryTile — one clickable thumbnail. Split out of the map because each tile
+ * needs its OWN useCursorLabel instance, and hooks can't be called in a loop.
+ * Carries the same cursor-following label as the project cards, reading "View
+ * details" instead of "View project".
+ */
+function GalleryTile({ image, index, columns, aspect, onOpen }) {
+  const { frame, label, handlers } = useCursorLabel()
+
+  return (
+    <Reveal
+      as="button"
+      preset="fade-up"
+      delay={(index % columns) * 80}
+      type="button"
+      onClick={() => onOpen(index)}
+      aria-label={`Open image ${index + 1}`}
+      className={styles.tile}
+    >
+      {/* Each tile IS the reveal (fade-up, in-view) so the gallery visibly
+          animates in on scroll. No <Stagger> — across this many images the
+          per-child delay would compound into seconds; independent in-view
+          reveals cascade naturally as you scroll. The tile has no
+          backdrop-filter, so this adds no blur cost.
+
+          The hotspot is a separate inner element for two reasons: <Reveal>
+          spreads props LAST, so a `ref` passed to it would clobber its own
+          IntersectionObserver ref and the tile would never reveal; and the
+          label must sit outside `.zoom`, or it would scale with the image on
+          hover. */}
+      <div className={styles.hotspot} ref={frame} {...handlers}>
+        <div className={styles.zoom}>
+          <Media src={image} alt={`Image ${index + 1}`} aspect={aspect} rounded="rounded-xl" />
+        </div>
+        <span ref={label} className={styles.cursorLabel} aria-hidden="true">
+          View details
+        </span>
+      </div>
+    </Reveal>
+  )
+}
+
 function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }) {
   const [openIndex, setOpenIndex] = useState(null)
   const reduce = useReducedMotion()
@@ -97,25 +140,14 @@ function ImageGrid({ images = [], columns = 4, gap = '1', aspectRatio = '9/16' }
       <div className={`${styles.grid} ${gridCols[columns] || gridCols[4]} ${gapClasses[gap] || gapClasses[1]}`}>
         {images.map((image, index) =>
           image ? (
-            <Reveal
-              as="button"
-              preset="fade-up"
-              delay={(index % columns) * 80}
+            <GalleryTile
               key={index}
-              type="button"
-              onClick={() => setOpenIndex(index)}
-              aria-label={`Open image ${index + 1}`}
-              className={styles.tile}
-            >
-              {/* Each tile IS the reveal (fade-up, in-view) so the gallery visibly
-                  animates in on scroll. No <Stagger> — across this many images the
-                  per-child delay would compound into seconds; independent in-view
-                  reveals cascade naturally as you scroll. The tile has no
-                  backdrop-filter, so this adds no blur cost. */}
-              <div className={styles.zoom}>
-                <Media src={image} alt={`Image ${index + 1}`} aspect={aspect} rounded="rounded-xl" />
-              </div>
-            </Reveal>
+              image={image}
+              index={index}
+              columns={columns}
+              aspect={aspect}
+              onOpen={setOpenIndex}
+            />
           ) : (
             <div key={index} className={`${styles.placeholder} ${phAspect} bg-surface-color-tertiary`} />
           )

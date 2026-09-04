@@ -31,13 +31,12 @@ export async function loadProjectContent(projectId) {
       title: jsonData.title || defaultProjectContent.title,
       description: jsonData.description || defaultProjectContent.description,
       client: jsonData.client || defaultProjectContent.client,
-      when: jsonData.when || defaultProjectContent.when,
+      year: jsonData.year || defaultProjectContent.year,
       details: jsonData.details || defaultProjectContent.details,
       responsibilities: jsonData.responsibilities || defaultProjectContent.responsibilities,
       // New optional editorial / case-study fields (null when absent → render falls back)
       role: jsonData.role || null,
       team: jsonData.team || null,
-      timeline: jsonData.timeline || null,
       problem: jsonData.problem || null,
       // Process steps: resolve any per-step image relative to the project folder
       process: (jsonData.process || []).map(step => ({

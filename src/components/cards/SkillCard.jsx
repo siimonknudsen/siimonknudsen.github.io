@@ -15,7 +15,11 @@ function SkillCard({ title, description, image }) {
       <span className={styles.scrim} aria-hidden="true" />
       <div className={styles.body}>
         <h3 className={styles.title}>{title}</h3>
-        <p className={styles.description}>{description}</p>
+        {/* The inner span carries the clamp so the <p> itself can be a flex
+            box that pushes the copy to the BOTTOM of its reserved height. */}
+        <p className={styles.description}>
+          <span className={styles.descriptionText}>{description}</span>
+        </p>
       </div>
     </Reveal>
   )

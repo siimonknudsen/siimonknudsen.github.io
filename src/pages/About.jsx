@@ -55,7 +55,7 @@ const SKILL_BACKGROUNDS = [skill1, skill4, skill2, skill3, skill4, skill2, skill
 // role is on the Experience table right below, where it belongs.
 const BIO = [
   "I'm a product designer with five years of experience across health tech, fashion retail and affiliate marketing.",
-  "I work end to end — user research and journey mapping, UI, prototyping and user testing, then developer handoff and QA — on consumer apps, the internal tools teams run on, and the platforms behind both.",
+  "I work end to end with product design — user research and journey mapping, UI, prototyping and user testing, then developer handoff and QA — on consumer apps, the internal tools teams run on, and the platforms behind both.",
   "I build and maintain the design systems that work sits on, and I write production-ready front-end code — this site included. That's why I care as much about what ships as what's in the file.",
 ]
 
@@ -127,7 +127,7 @@ function About() {
     },
     {
       title: 'User Research & Testing',
-      description: 'Interviews, moderated and unmoderated sessions, and behavioural data behind each decision.'
+      description: 'Interviews, usability sessions and behavioural data behind each decision.'
     },
     {
       title: 'AI Product Design',
