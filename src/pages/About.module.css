@@ -164,18 +164,20 @@
   .tableHead {
     display: none;
   }
-  /* The DOM order (time, company, role, industry) flows into a 2-column grid as
-     time|company over role|industry — which buries the ROLE bottom-left, the
-     least-scanned corner, under a date. Placed explicitly instead so each row
-     reads date + role across the top and company + industry beneath:
+  /* Left column is the date alone; the right column is the job — company
+     first, then role, then industry:
 
-       Mar 2025 — Present     Product Designer
-       Lenus                  Health & fitness software
+       Mar 2025 — Present     Lenus
+                              Product Designer
+                              Health & fitness software
 
-     Placement only — the DOM order is untouched, so the reading order for
-     screen readers and the desktop four-column table both stay as they were. */
+     The date is the index you scan down; the company is what you're actually
+     looking for, so it leads its own column rather than being paired off with
+     the date. Placement only — the DOM order (time, company, role, industry)
+     is untouched, so screen-reader order and the desktop four-column table
+     both stay as they were. */
   .tableRow > *:nth-child(1) { grid-area: 1 / 1; } /* time */
-  .tableRow > *:nth-child(2) { grid-area: 2 / 1; } /* company */
-  .tableRow > *:nth-child(3) { grid-area: 1 / 2; } /* role */
-  .tableRow > *:nth-child(4) { grid-area: 2 / 2; } /* industry */
+  .tableRow > *:nth-child(2) { grid-area: 1 / 2; } /* company */
+  .tableRow > *:nth-child(3) { grid-area: 2 / 2; } /* role */
+  .tableRow > *:nth-child(4) { grid-area: 3 / 2; } /* industry */
 }
