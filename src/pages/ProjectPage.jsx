@@ -52,7 +52,7 @@ function ProjectPage() {
   const title = content.title || project.title
   const details = [
     { label: 'Client', value: content.client },
-    { label: 'Timeline', value: content.timeline || content.when },
+    { label: 'Year', value: content.year },
     { label: 'Industry', value: content.industry },
     { label: 'Role', value: content.role },
   ].filter((d) => d.value)

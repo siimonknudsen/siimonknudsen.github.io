@@ -64,26 +64,25 @@
      across the row. FOUR lines, not three: the column is 271px at 1440 but only
      227px at 1280, and copy that sits on three lines at the wider measure needs
      four at the narrower one — a 3-line box clipped every card on a 1280 laptop.
-     Sizing the reserve to the NARROWEST common column means nothing truncates
-     anywhere, at the cost of a little slack under the shorter copy on wide
-     screens (which falls at the bottom, where there's no baseline to break). The copy is bottom-anchored in the
-     frame, so without this a 2-line description pushes its title down while a
-     3-line one holds it up, and the title row goes ragged.
+     Sizing the reserve to the NARROWEST common column means nothing truncates.
 
-     The text sits TOP-aligned in that reserved box, not bottom: the gap between
-     a title and its description is what binds them as a unit, so it's the one
-     measurement that must never vary. Slack falls at the bottom instead, where
-     there's no shared baseline to break — the card's lower edge is image, not
-     type. Bottom-aligning would hold that edge steady at the cost of a
-     title-to-description gap that changes per card, which reads far louder. */
+     The copy is pushed to the BOTTOM of that reserve, so the last line lands on
+     the card's padding edge instead of floating one empty line above it. That
+     puts any slack between the title and the copy rather than under the copy —
+     a deliberate trade: titles aligned AND text bottom-flush is only possible if
+     the give sits in that gap. (`-webkit-box-pack: end` does not do this — it
+     was measured as a no-op — hence the flex wrapper plus an inner span.) */
   min-height: calc(4 * 24px);
-  /* min-height reserves a floor but doesn't cap: copy that runs to a 4th line
-     grows the block and drags that one card's title out of the row. Trimming
-     the copy fixes today's case, but the copy sits near the boundary and a
-     scrollbar appearing is enough to re-break it — a 15px narrower column did
-     exactly that. Clamping makes the box exactly three lines whatever happens,
-     so the row can't go ragged; the trimmed copy means the ellipsis should
-     never actually show. */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* The clamp lives on the inner span: `min-height` reserves a floor but never
+   caps, so without it one long card drags its title out of the row (a scrollbar
+   narrowing the column by 15px was enough to trigger exactly that). The copy is
+   trimmed to fit, so the ellipsis should never actually show. */
+.descriptionText {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 4;
@@ -129,6 +128,9 @@
        clamp rises to 3 here: at one-per-row the copy runs to two or three, and
        clamping at 2 would cut lines that legitimately fit. */
     min-height: calc(2 * 20px);
+  }
+
+  .descriptionText {
     -webkit-line-clamp: 3;
     line-clamp: 3;
   }

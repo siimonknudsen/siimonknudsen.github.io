@@ -11,7 +11,7 @@
  *    (the loader reads these top-level keys — there is no "metadata" wrapper):
  *    {
  *      "title": "...", "description": "...",
- *      "role": "...", "client": "...", "team": "...", "timeline": "...",
+ *      "role": "...", "client": "...", "team": "...", "year": "...",
  *      "problem": "...", "solution": "...",
  *      "heroImage": "hero.jpg",
  *      "process":  [{ "step": "...", "body": "...", "image": "step1.jpg" }],
@@ -31,7 +31,7 @@ export const defaultProjectContent = {
   title: "Project Title",
   description: "Project description",
   client: "Client",
-  when: "2024",
+  year: "2024",
   details: "Project",
   responsibilities: ["UX Design", "UI Design"],
   // New optional editorial / case-study fields. Null/empty by default so the
@@ -39,7 +39,6 @@ export const defaultProjectContent = {
   // breaks for projects that haven't filled these in yet.
   role: null,
   team: null,
-  timeline: null,
   problem: null,
   process: [],
   outcomes: [],
