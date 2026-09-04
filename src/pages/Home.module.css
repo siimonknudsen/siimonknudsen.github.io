@@ -12,6 +12,14 @@
 }
 
 .container {
+  /* `width: 100%` is load-bearing, not redundant. `.hero` is a FLEX column while
+     `.section` is a block, and as a flex item this container's `auto` side
+     margins make it shrink-to-fit its content instead of filling the line. It
+     was resolving to 1291px rather than the 1440 cap, and centring that narrower
+     box pushed the hero 74px right of every other section on the page. Filling
+     first, then capping at --content-max, makes the flex and block cases land on
+     the same left edge. */
+  width: 100%;
   max-width: var(--content-max);
   margin-left: auto;
   margin-right: auto;
