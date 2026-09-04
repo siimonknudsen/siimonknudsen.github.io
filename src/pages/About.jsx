@@ -96,22 +96,26 @@ function About() {
     .sort((a, b) => a.filename.localeCompare(b.filename))
     .map(item => item.url)
 
-  // Written to the pattern hiring managers actually scan for: NAME THE METHODS
-  // AND TOOLS, don't assert value. Two failure modes were in here before — the
-  // original benefits filler ("...ultimately leading to increased retention"),
-  // and a value-claim rewrite that was tighter but still unfalsifiable ("the
-  // difference between a product people tolerate and one they trust"). A named
-  // method is checkable in an interview and doubles as keyword coverage; a
-  // claim about outcomes is neither. Every line here is also evidenced by a
-  // case study or a role on the Experience table.
+  // Set revised against the LinkedIn record (2026-09-04). Three changes:
+  //  - UX Research and User Testing were the same competency split in two —
+  //    testing is a research method, not a peer discipline — which read as
+  //    padding five skills out to eight. Merged.
+  //  - UX Writing is gone: nothing in the role history evidences it, and the
+  //    standard is that every skill listed resurfaces in a case study.
+  //  - AI Product Design and Data-Heavy Interfaces added. The first is in
+  //    Simon's own LinkedIn headline and is the Lena AI work; the second is a
+  //    thread running through three employers (Zliide's brand dashboard and
+  //    internal dashboard, the Lenus food diary, Adservice's self-service
+  //    interface) that the old set never named.
+  // Copy still names methods and tools rather than asserting outcomes.
   const skills = [
     {
       title: 'UX Design',
-      description: 'User flows, information architecture and journey mapping — the structure a product needs before it is drawn.'
+      description: 'User flows, information architecture and journey mapping — the structure before anything is drawn.'
     },
     {
       title: 'UI Design',
-      description: 'Layout, type, colour and interaction states, built in Figma as components rather than one-off screens.'
+      description: 'Layout, type, colour and interaction states, built in Figma as components, not one-off screens.'
     },
     {
       title: 'Design Systems',
@@ -122,16 +126,16 @@ function About() {
       description: 'Clickable and coded prototypes for testing flows and interaction detail before engineering commits.'
     },
     {
-      title: 'UX Research',
-      description: 'User interviews, journey mapping and behavioural data, turned into decisions a team can act on.'
+      title: 'User Research & Testing',
+      description: 'Interviews, moderated and unmoderated sessions, and behavioural data behind each decision.'
     },
     {
-      title: 'User Testing',
-      description: 'Moderated and unmoderated sessions on real builds, measured against the task the user came to do.'
+      title: 'AI Product Design',
+      description: 'Designing assistants and AI features into an existing product, where the output is probabilistic.'
     },
     {
-      title: 'UX Writing',
-      description: 'Interface copy — labels, empty states, errors and onboarding — written to remove hesitation.'
+      title: 'Data-Heavy Interfaces',
+      description: 'Dashboards and reporting tools that make dense operational data quick to read and act on.'
     },
     {
       title: 'Frontend Development',
