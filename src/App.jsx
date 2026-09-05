@@ -16,7 +16,6 @@ import Home from './pages/Home'
 const importProjectPage = () => import('./pages/ProjectPage')
 const importArchive = () => import('./pages/Archive')
 const importAbout = () => import('./pages/About')
-const importContact = () => import('./pages/Contact')
 const importStyleGuide = () => import('./pages/StyleGuide')
 const importMotionLab = () => import('./pages/MotionLab')
 const importNotFound = () => import('./pages/NotFound')
@@ -24,7 +23,6 @@ const importNotFound = () => import('./pages/NotFound')
 const ProjectPage = lazy(importProjectPage)
 const Archive = lazy(importArchive)
 const About = lazy(importAbout)
-const Contact = lazy(importContact)
 const StyleGuide = lazy(importStyleGuide)
 const MotionLab = lazy(importMotionLab)
 const NotFound = lazy(importNotFound)
@@ -35,7 +33,6 @@ const NotFound = lazy(importNotFound)
 const PREFETCH_IMPORTS = [
   importArchive,
   importAbout,
-  importContact,
   importProjectPage,
   importStyleGuide,
 ]
@@ -56,7 +53,6 @@ const ROUTE_TITLES = {
   '/': null, // site default
   '/archive': 'Archive',
   '/about': 'About',
-  '/contact': 'Contact',
   '/style-guide': 'Design System',
   '/design-system': 'Design System',
 }
@@ -114,7 +110,6 @@ function AnimatedRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/archive" element={<Archive />} />
         <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
         <Route path="/style-guide" element={<StyleGuide />} />
         <Route path="/design-system" element={<StyleGuide />} />
         <Route path="/motion-lab" element={<MotionLab />} />

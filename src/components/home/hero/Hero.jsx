@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import Button from '../../buttons/Button'
 import WordReveal from '../WordReveal'
 import WorkedAt from '../WorkedAt'
@@ -62,7 +61,7 @@ function Hero({ backdrop }) {
             <Button variant="primary" size="sm" as="a" href="#projects">
               View projects
             </Button>
-            <Button variant="secondary" size="sm" as={Link} to="/contact">
+            <Button variant="secondary" size="sm" as="a" href="mailto:simonoverlund@hotmail.com">
               Contact
             </Button>
           </Reveal>
