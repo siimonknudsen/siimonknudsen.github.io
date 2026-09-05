@@ -111,10 +111,12 @@
 }
 
 /* ── Skills ─────────────────────────────────────────────────────────────── */
+/* 8px gap — the same one the logo grid and the picture gallery use, so all
+   three About grids sit on one rhythm. */
 .skillsGrid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-12);
+  gap: var(--space-8);
 }
 
 /* ── Companies · Pictures ───────────────────────────────────────────────── */
@@ -154,7 +156,7 @@
      buys back the measure AND lets the card be much shorter. */
   .skillsGrid {
     grid-template-columns: repeat(1, minmax(0, 1fr));
-    gap: var(--space-12);
+    gap: var(--space-8);
   }
   .tableHead,
   .tableRow {

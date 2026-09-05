@@ -225,7 +225,7 @@ function About() {
             <h2 className={styles.label}>Companies I&apos;ve designed for</h2>
           </ScrollAnimation>
           <div className={styles.companies}>
-            <LogoGrid logos={companies} columns={5} gap="4" />
+            <LogoGrid logos={companies} columns={5} gap="2" />
           </div>
         </div>
       </section>
