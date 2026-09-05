@@ -144,10 +144,13 @@
 }
 
 /* ── Skills ─────────────────────────────────────────────────────────────── */
+/* 8px gap — the same one the logo grid and the picture gallery use, so all
+   three About grids sit on one rhythm (4px below 768; see the tail of this
+   file). */
 .skillsGrid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-12);
+  gap: var(--space-8);
 }
 
 /* ── Companies · Pictures ───────────────────────────────────────────────── */
@@ -187,7 +190,7 @@
      buys back the measure AND lets the card be much shorter. */
   .skillsGrid {
     grid-template-columns: repeat(1, minmax(0, 1fr));
-    gap: var(--space-12);
+    gap: var(--space-8);
   }
   .tableHead,
   .tableRow {
@@ -213,4 +216,14 @@
   .tableRow > *:nth-child(2) { grid-area: 1 / 2; } /* company */
   .tableRow > *:nth-child(3) { grid-area: 2 / 2; } /* role */
   .tableRow > *:nth-child(4) { grid-area: 3 / 2; } /* industry */
+}
+
+/* Phones: all three About grids drop to 4px together. At 3-up the tiles are
+   ~98px wide and 8px between them reads as more air than the marks and cards
+   themselves — less air on the small screen, more once there's room. Placed
+   last so it wins over the <=640 block above regardless of specificity. */
+@media (max-width: 767px) {
+  .skillsGrid {
+    gap: var(--space-4);
+  }
 }

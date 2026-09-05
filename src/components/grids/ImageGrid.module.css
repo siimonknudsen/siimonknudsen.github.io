@@ -24,6 +24,15 @@
 .gap2 {
   gap: var(--space-8);
 }
+
+/* Phones step down to 4px, matching the logo grid and the About skills grid —
+   at 3-up the tiles are ~96px wide and 8px of air between them reads as a
+   bigger gap than the pictures. */
+@media (max-width: 767px) {
+  .gap2 {
+    gap: var(--space-4);
+  }
+}
 .gap4 {
   gap: var(--space-16);
 }
