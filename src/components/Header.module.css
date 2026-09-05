@@ -226,6 +226,15 @@
   display: flex;
   align-items: center;
   gap: var(--space-12);
+  /* Works as a <button> (copy email) as well as an <a> (LinkedIn) — reset the
+     UA button chrome so both rows look identical. No-op for the anchor. */
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
 }
 
 .contactIcon {

@@ -446,7 +446,9 @@ function Header() {
     { key: 'projects', label: 'Projects', to: '/', active: isActive('/') },
     { key: 'archive', label: 'Archive', to: '/archive', active: isActive('/archive') },
     { key: 'about', label: 'About', to: '/about', active: isActive('/about') },
-    { key: 'contact', label: 'Contact', to: '/contact', active: isActive('/contact') },
+    // Contact has no page of its own — the trigger only opens the dropdown
+    // (Email · LinkedIn). No `to` → rendered as a <button>, not a <Link>.
+    { key: 'contact', label: 'Contact', active: open && menuKey === 'contact' },
   ]
 
   // The sliding pill is the ONLY background highlight — the trigger itself has
@@ -524,10 +526,15 @@ function Header() {
                   <a key={item.key} href={item.to} onClick={item.onClick} {...shared}>
                     {rollLabel}
                   </a>
-                ) : (
+                ) : item.to ? (
                   <Link key={item.key} to={item.to} {...shared}>
                     {rollLabel}
                   </Link>
+                ) : (
+                  // Trigger-only (Contact) — opens the dropdown, never navigates.
+                  <button key={item.key} type="button" onClick={() => openMenu(item.key)} {...shared}>
+                    {rollLabel}
+                  </button>
                 )
               })}
             </div>
@@ -600,24 +607,8 @@ function Header() {
           <div className={`glass-panel ${styles.mobileMenu}`}>
             <nav className={styles.mobileNav}>
               {navItems.map((item) => {
-                // Contact has no rich card content → stays a direct link.
-                if (item.key === 'contact') {
-                  return (
-                    <Link
-                      key={item.key}
-                      to="/contact"
-                      onClick={closeMobileMenu}
-                      aria-current={item.active ? 'page' : undefined}
-                      className={`glass-item ${styles.mobileItem} ${
-                        item.active ? 'text-color-primary glass-item-active' : 'text-color-secondary'
-                      }`}
-                    >
-                      Contact
-                    </Link>
-                  )
-                }
-                // Projects / Archive / About → accordion that reveals the same
-                // cards/rows as the desktop dropdown for that page.
+                // Projects / Archive / About / Contact → accordion that reveals
+                // the same cards/rows as the desktop dropdown for that key.
                 const Body = MENU_BODIES[item.key]
                 const expanded = mobileOpen === item.key
                 return (
