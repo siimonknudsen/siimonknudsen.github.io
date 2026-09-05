@@ -169,10 +169,10 @@ the benefit of the doubt.
 - Deploy = commit + `git push origin main`; confirm with `gh run watch <id> --exit-status`.
 
 ## 5. Growing the vision / design system (Simon's self-learning taste model)
-- New design reference from Simon (URL / screenshot / "add this to things I like") → write a full
-  **dossier** in **DESIGN_KNOWLEDGE §6.6** across the **8 dimensions** (① typography ② layout ③ spacing
-  ④ visuals/imagery ⑤ color *strategy*, not the hue ⑥ motion ⑦ signature devices ⑧ the transferable
-  pattern), then **re-derive the Taste Fingerprint** so it stays the sharpest one-glance model. **Learn
+- New design reference from Simon (URL / "add this to design inspi") → **quick capture only** (his
+  explicit 2026-09 rule): one bullet in **DESIGN_KNOWLEDGE §6.1** with **link + one-line description +
+  category** (plus what he liked, if he said). **Nothing more — no dossier, no fingerprint re-derive, no
+  deep site analysis** unless he explicitly asks for a deep study. **Learn
   the *way* a design works, not its colors.** Log any rejection as an anti-pattern in §6.8. §6 is Simon's
   **portable taste model** — keep it self-contained so it can seed *future* projects, not just this one.
 - Design-system work → extend tokens/components in **DESIGN_SYSTEM.md** + the style guide page,

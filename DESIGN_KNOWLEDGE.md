@@ -328,6 +328,12 @@ Quick map from principle → our implementation (keeps the knowledge actionable)
   - **volander.studio/project/peaq** — gold standard for **case-study presentation**: a project's palette shown as a proportional, labelled colour-block bento; a whole brand captured in one angled 3D collage of guideline pages; animated type specimens; a quiet sticky section nav (Project · Challenge · Outcome · Credits). Editorial, art-directed, confident.
   - **laugon.com** (Laura Gonzalez) — **hero concept**: a full-bleed B&W portrait with the person's name set ENORMOUS over it (the photo shows through / sits behind the letters), role line bottom-right ("Senior UX Designer · Design Systems & AI"), minimal top nav. Bold, editorial, human. ⏳ Wants a real full-bleed B&W portrait photo to work (the memoji won't); attempt the layout with a placeholder.
   - **marimba.design** — referenced for its **smooth page-switch transition** (couldn't observe the exact motion — JS-driven; not visible to fetch). Treat as: a polished, relaxed cover→reveal where the incoming page settles in cleanly. Aim for that calm quality.
+  - **chrisfairchild.co/about** *(designer portfolio — About page)* — creative-director portfolio; monochrome near-black on off-white, one grotesque (Neue Montreal) with small-caps, huge tight-tracked display vs tiny uppercase micro-labels. "Really good portfolio."
+  - **morphic.com** *(AI product site)* — AI video-generation product site; liked overall.
+  - **kosbiotic.com** *(e-commerce / supplement site)* — liked: the **footer** (giant wordmark-scale text at the very bottom), the **nav dropdown**, the **FAQ section layout**, and the **scroll animations**.
+  - **bymonolog.com** *(design studio site)* — MONOLOG, a brand & web design studio; liked overall.
+  - **cronicle.me** *(app/product site)* — Cronicle ("Reconnect to what matters"); liked the **footer's large text fading out**.
+  - **dock.cool** *(Mac app site)* — Cooldock, a Mac second-dock app; liked the **footer**: large text over a **beautiful background**.
 - Mood / adjectives: confident, atmospheric, premium, editorial — big type, lots of room, gradients used as light rather than decoration
 - Anti-patterns to avoid: anything that reads as "AI-generated / templated" (e.g. numbered `01 — Section` eyebrows — removed), boxed-in hero cards when the content can stand on the background
 
@@ -375,7 +381,8 @@ Quick map from principle → our implementation (keeps the knowledge actionable)
 > principles) → the **Taste Fingerprint** (concrete, evidence-tagged mechanics, sharpened as examples
 > accrue) → **per-reference dossiers** (full detail).
 >
-> **The method — for every design Simon shares (also CLAUDE.md §5 / rule #10):** study it and write a
+> **The method — ONLY when Simon explicitly asks for a deep study** (default for a shared link is a
+> quick §6.1 bullet — link + one-liner + category; see CLAUDE.md §5): write a
 > dossier across **8 dimensions — ① Typography ② Layout & composition ③ Spacing & rhythm ④ Visual
 > treatment & imagery ⑤ Color *strategy* (how it's used, not the hue) ⑥ Motion ⑦ Signature devices
 > ⑧ the transferable pattern (the lesson)** — then **re-derive the Taste Fingerprint** so it stays the
