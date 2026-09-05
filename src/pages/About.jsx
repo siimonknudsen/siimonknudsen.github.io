@@ -11,10 +11,11 @@ import skill4 from '../assets/skills/skill-4.webp'
 import styles from './About.module.css'
 
 // Simon's own roles and dates, newest first. Industry comes from the same
-// source as the companies row.
+// source as the companies row. "Now", not "Present" — the read.cv/editorial
+// convention ("Present" is LinkedIn vocabulary).
 const EXPERIENCE = [
   {
-    time: 'Mar 2025 — Present',
+    time: 'Mar 2025 — Now',
     company: 'Lenus',
     role: 'Product Designer',
     industry: 'Health & fitness software',

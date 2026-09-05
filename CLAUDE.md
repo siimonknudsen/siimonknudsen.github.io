@@ -153,7 +153,15 @@ the benefit of the doubt.
     live in-browser verification (agents can't see the preview), or tightly-coupled back-and-forth
     — a swarm there is slower and burns far more tokens. Default = solo; reach for a swarm when the
     task genuinely splits into parallel chunks.
-12. **Keep the Design System page + docs in sync with EVERY change (Simon's standing request).**
+12. **Variant explorations: ONE round, then converge (the experience-section saga, 2026-09-05).**
+    Three rounds × 5 variants were all deleted; what shipped was the original table + micro-craft.
+    After the first round Simon had already picked the quietest option — converge on his first
+    signal instead of generating new species. "Boring"/"be explorative" does NOT mean go bigger:
+    display-type showpieces and borrowed award-site patterns (Snellenberg/Cuberto) read as
+    *templated* to him. On a rejection with unclear direction, **ask for ONE reference he loves
+    before building more** (§6.8 has the full post-mortem). Trust DESIGN_KNOWLEDGE §6.7/6.8 over
+    a single frustrated message.
+13. **Keep the Design System page + docs in sync with EVERY change (Simon's standing request).**
     Whenever you change a token, component, material, or visual treatment, in the SAME batch
     update **(a)** the live Design System page (`StyleGuide.jsx` → `/design-system`) so it *shows*
     the new look/values, and **(b)** the owning doc (`DESIGN_SYSTEM.md` / `GLASS_DESIGN_SYSTEM.md`,
