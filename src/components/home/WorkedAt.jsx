@@ -1,5 +1,5 @@
 import { Reveal } from '../motion'
-import { LenusLogo, BeefitLogo, ZliideLogo, AdtractionLogo } from './WorkedAtLogos'
+import { COMPANIES } from './companies'
 import styles from './WorkedAt.module.css'
 
 /**
@@ -19,48 +19,6 @@ import styles from './WorkedAt.module.css'
  * weight matches — don't leave it at 1. Current: Lenus 1 · Beefit 1.12 ·
  * Zliide 0.7 · Adtraction 0.9.
  */
-const COMPANIES = [
-  {
-    name: 'Lenus',
-    Logo: LenusLogo,
-    industry: 'Health & fitness software',
-    size: '300+',
-    website: 'lenus.io',
-    logoScale: 1, // per-logo optical balance (these logos differ in proportion)
-    period: '2025 — Present',
-    model: 'B2B2C',
-  },
-  {
-    name: 'Beefit',
-    Logo: BeefitLogo,
-    industry: 'Health & fitness software',
-    size: '10+',
-    website: 'beefit.io',
-    logoScale: 1.12, // optical balance — see logoScale rule in the COMPANIES note
-    period: '2024 — 2025',
-    model: 'B2B2C',
-  },
-  {
-    name: 'Zliide',
-    Logo: ZliideLogo,
-    industry: 'Fashion technology',
-    size: '10+',
-    website: '', // Zliide no longer exists
-    logoScale: 0.7,
-    period: '2023 — 2024',
-    model: 'B2B2C',
-  },
-  {
-    name: 'Adtraction',
-    Logo: AdtractionLogo,
-    industry: 'Affiliate marketing',
-    size: '30+',
-    website: 'adtraction.com',
-    logoScale: 0.9,
-    period: '2021 — 2023',
-    model: 'B2B',
-  },
-]
 
 function WorkedAt({ companies = COMPANIES, revealDelay = 0 }) {
   if (!companies.length) return null

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Avatar from './Avatar'
 import Location from './Location'
+import { Reveal } from './motion'
 import { allProjects } from '../data/projects'
 import styles from './Footer.module.css'
 
@@ -87,6 +88,14 @@ function Footer() {
             </div>
           </div>
         </div>
+
+        {/* Wordmark — the name at identity scale, the page's closing note.
+            Sized in vw so it fills the content column edge to edge; reveals
+            on scroll with the standard calm fade-up. aria-hidden: the name
+            is already in the column above and the copyright line. */}
+        <Reveal as="p" preset="fade-up" className={styles.wordmark} aria-hidden="true">
+          Simon Knudsen
+        </Reveal>
 
         {/* Bottom Section */}
         <div className={styles.bottom}>

@@ -474,6 +474,38 @@ Quick map from principle → our implementation (keeps the knowledge actionable)
 - Templated tells: numbered `01 — Section` eyebrows, centered everything, bouncy/springy hover gimmicks.
 - Motion that draws attention to itself instead of the content.
 
+**reflect.app — hero (studied live 2026-09-05, for the sky work)** · *The canonical NIGHT-sky hero.*
+- **Visuals** — deep indigo-black field, stars so sparse and tiny they're almost subliminal, and ONE dominant light event: a huge violet eclipse/corona bloom with a white-hot rim. The glow sits BELOW the headline; the text lives in the calm dark zone above it.
+- **Color strategy** — temperature opposition: deep indigo shadow ↔ electric violet core ↔ white rim. One hue family, used as light.
+- **Transferable pattern** — *a night sky earns beauty from restraint (few, tiny stars) plus one focal light event kept away from the text; never uniform texture everywhere.*
+
+**firewatchgame.com + daylightcomputer.com (canon, for the sky work)** · *The dusk & sun-light heroes.*
+- Firewatch: layered sunset parallax — depth from stacked planes, and the signature **complementary temperature opposition** (amber horizon ↔ indigo-violet upper sky). Daylight: the whole brand is warm "campfire spectrum" light — amber gradients as material.
+- **Transferable pattern** — *golden/blue hour is where sky beauty lives (not noon); build it from warm↔cool opposition, horizontal cloud bands lit from BELOW when the sun is low, and layered parallax depth.*
+
+**reflect.app — hero (studied live 2026-09-05 for the sky work)** · *One light event on a deep night field.*
+- **Visuals/Color strategy** — near-black indigo ground, a sparse field of tiny stars, and ONE enormous violet eclipse-corona bloom (white-hot rim → electric violet → indigo shadow) sitting BELOW the headline. Complementary temperature opposition (violet/white vs indigo) does the drama; nothing else competes.
+- **Layout** — centred statement type in the calm dark zone above the light; the glow is the fold's reward, not the text's competitor.
+- **Transferable pattern** — *A sky/atmosphere hero needs one dominant light event, placed away from the text, on a field so restrained (sparse tiny stars, deep ground) that the event reads as precious.* → our sun corridor / moon glow sits low or at the edge; stars stay sparse.
+
+**Firewatch (firewatchgame.com) & Daylight Computer — the dusk canon (from memory of the sites; live capture failed)** · *Warm↔cool opposition + layered depth.*
+- **Firewatch** — layered parallax silhouettes against an amber→orange→violet→indigo dusk gradient; the sun's glow sits behind the ridge line, never the disc; depth = separate layers moving at different rates. **Daylight** — a whole brand built on a single warm "campfire" amber light on cream; warmth as the identity.
+- **Transferable pattern** — *Beauty in a dusk sky = complementary temperature opposition (amber horizon vs indigo zenith), long horizontal cloud bands lit from below, and depth from layers — never a flat gradient.* → our two-layer cloud plane, low-sun band stretching + underside lighting, blue-hour afterglow.
+
+**Sky-rendering sources (technique canon)** — GPU Gems 2 ch.16 *Accurate Atmospheric Scattering* (O'Neil), wwwtyro `glsl-atmosphere` (single-scatter Rayleigh+Mie in ~60 lines), Hošek–Wilkie 2012 analytic sky model (more accurate than Preetham; used by SilverLining), Bruneton precomputed scattering (the AAA route). We use the single-scatter integration — the right cost/quality point for a hero.
+
+#### Simon's own concept — "the sky simulator" & the nature family (2026-09-05, his words, active exploration)
+A hero background as a **super-realistic, high-quality sky**: eye-level perspective (as if standing on a tall
+hill near water — water NOT visible, only sky), the **sun behind the viewer** (never in frame — you see its
+light on the sky and clouds), a few clouds, and the different blues a sky actually has through the day.
+**Theme = day/night switch**: light mode a really blue day sky with a few clouds; dark mode a night sky.
+Optional: **match the local time of day / scrub through all 24 hours** — a sky simulator. If real-time proves
+too heavy or not beautiful enough, fall back to **two AI-generated photographic images** (day + night) with a
+fade-into-page treatment. The broader family he wants explored next: **nature as the concept source** — sky,
+trees/forest light, the colours of nature itself, maybe animals (animals realistically only via photography/
+AI imagery, not procedural). Quality bar: "really, really realistic, beautiful and high quality" — judge it
+as imagery (§6.9 tier 2), never as decoration. First implementation: `SkyField.jsx` on the hero-variants branch.
+
 ### 6.7 Simon's taste — in general words
 A one-paragraph north star to sanity-check any new design against:
 
@@ -504,6 +536,13 @@ A one-paragraph north star to sanity-check any new design against:
 | **Sliding glass "magic pill" behind nav triggers** + **drop-shadows on content cards** + **cursor-spotlight glow on hover** | **Text-only nav** (colour shift on hover/active) + **flat cards** (translucent fill + hairline, no shadow) + **no hover glow** | Once the ground went flat black/white, the pill read as a button, and shadows/glow were the last skeuomorphic depth — they fought the flat editorial calm. Keep content cards flat; reserve elevation (shadow) for **floating chrome only** (nav bar, dropdown, tooltip, modal). Nav is text that changes colour — no box. |
 | **Same-colour page-transition curtain** (`--surface-color-primary`), then briefly an **accent-orange** one | **Neutral mid-grey wipe** (`var(--neutral-500)` #737373) | On the flat grounds a same-colour curtain was invisible (white-on-white / black-on-black); the accent-orange sweep that fixed the contrast was **too loud** for the calm register. A mid-grey sits between white and black — clearly visible in both themes, no colour flash. Colour stays on the accent, not on full-screen chrome. |
 | **Cursor-spotlight hover glow** (`.fx-spotlight`, accent-tinted in light mode) on every glass card | **Removed site-wide** (`display:none`) | The pointer-following glow was the last hover-glow; accent-tinted, it painted an orange bloom on cards in light mode — decorative, against the flat calm. Cards have no hover glow now (Project cards keep only a quiet image zoom). |
+| **Display-scale hero headline** (40→76px fluid cut of the same layout) | "Just becomes a bit too big" — keep the 32px statement | Scale alone isn't the lever on this site; the 7-size scale (cap 32) holds even for the hero. Beauty must come from spacing, measure, tonal hierarchy and atmosphere instead. (2026-09-05 hero exploration round 1.) |
+| **Alternate hero COMPOSITIONS** — broadsheet spread (statement + right rail), full-viewport poster (statement anchored at the fold) | "Just not it — really weird"; the current left-aligned block stays | Don't re-compose the hero; refine the composition he already chose. Exploration budget goes to atmosphere/light and micro-craft, not layout gymnastics. (Same round.) |
+| **Giant name as the HERO** ("Simon Knudsen" at ~176px as the opening) | Liked the device — but **in the footer**, not the hero | The identity-scale wordmark is a *closing* note, not an opening statement; the hero opens with what he does, the footer signs it. (Same round; shipped as the footer wordmark.) |
+| *(nuance, same session)* The 2026-08 "clean black & white field" rejection of the ember mesh | Simon explicitly asked to explore **hero atmosphere again** — shaders/sky that *fade into* the flat ground | The B&W rule bans a page-wide coloured wash, not light itself. Atmosphere is welcome as a localized, low-contrast hero light moment that melts into the achromatic canvas (aurora/dawn/halo explorations). Colour budget still lives on content, not the canvas. |
+| **40px lead→CTA gap** in the refined hero (2× the within-group 20) | "A bit smaller" → **32px** (24 on phones) | The Gestalt boundary works at 1.6×, not 2× — Simon's whitespace appetite has a ceiling *inside* a group cluster; giant gaps belong between sections, not between a lede and its buttons. |
+| **Light-mode atmosphere tuned at dark-mode alphas** (aurora 0.05 / halo 0.035 on white) | Read as "no light version at all" | On white, a light-field needs **~2-3× the alpha** of its dark twin to register (dark adds light to black — high perceptual contrast; light mode can only tint/shade white). Tune the two themes separately, and verify each *visually*, not by symmetry of the code. |
+| **First-pass atmosphere shaders** (single fbm veil / plain gradient + glow) | "Really really simple, not good enough" — wants **super-realistic, high-quality** (the sky simulator concept) | Simple ≠ premium for *imagery*: the restraint rule governs LAYOUT and palette, but a nature/sky visual must be crafted to near-photographic quality (perspective-projected cloud plane, elevation-driven palettes, directional lit rims, stars, dither) or it reads as a cheap gradient. Effort budget for atmosphere ≈ imagery tier (§6.9 #2), not decoration. |
 
 ### 6.9 Priority hierarchy — where the beauty actually comes from (Simon's weighting)
 > Simon's own ranking of what makes a design beautiful. Use it to **allocate effort and

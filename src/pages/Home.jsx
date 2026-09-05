@@ -1,14 +1,11 @@
-import { Link } from 'react-router-dom'
 import ProjectCard from '../components/projects/ProjectCard'
-import Button from '../components/buttons/Button'
 import TestimonialCard from '../components/cards/TestimonialCard'
 import TestimonialCarousel from '../components/home/TestimonialCarousel'
-import WorkedAt from '../components/home/WorkedAt'
-import WordReveal from '../components/home/WordReveal'
-import { Reveal } from '../components/motion'
 import { allProjects } from '../data/projects'
 import { TESTIMONIALS } from '../data/testimonials'
 import useMediaQuery from '../hooks/useMediaQuery'
+import Hero from '../components/home/hero/Hero'
+import HeroExplorer from '../components/home/hero/HeroExplorer'
 import styles from './Home.module.css'
 
 function Home() {
@@ -19,47 +16,11 @@ function Home() {
 
   return (
     <>
-      {/* Hero — statement type, a short lead and the two CTAs, all left-aligned
-          in the page's content column. */}
-      <section className={styles.hero}>
-        <div className={styles.container}>
-          <div className={styles.heroInner}>
-            {/* Headline — word-by-word reveal: slower per-word rise (durationMs)
-                and a wider cadence (stepMs) so each word settles calmly. */}
-            <WordReveal
-              as="h1"
-              text="Product designer with five years of experience across health tech, retail and adtech."
-              delayMs={300}
-              stepMs={90}
-              durationMs={900}
-              className={styles.headline}
-            />
-
-            <Reveal as="p" preset="fade-up" immediate delay={900} className={styles.lead}>
-              I take products from user research through UI, prototyping and testing to
-              shipped front-end code — and build the design systems that keep them
-              consistent, so ideas reach users faster and arrive intact.
-            </Reveal>
-
-            {/* `immediate` plays on MOUNT (a timed entrance) instead of on scroll —
-                the CTAs sit below the scroll-observer's trigger line, so a scroll
-                trigger would leave them stuck invisible. */}
-            <Reveal preset="fade-up" immediate delay={1200} className={styles.ctaRow}>
-              <Button variant="primary" size="sm" as="a" href="#projects">
-                View projects
-              </Button>
-              <Button variant="secondary" size="sm" as={Link} to="/contact">
-                Contact
-              </Button>
-            </Reveal>
-          </div>
-        </div>
-
-        {/* Worked at — the tail of the hero cascade, and part of the hero
-            opening so it sits the same 128px from the copy above it as the
-            projects sit from it. */}
-        <WorkedAt revealDelay={1500} />
-      </section>
+      {/* Production ships the hero as-is (halo light-field). In dev the
+          explorer wraps it so we can keep iterating on the parked backdrops —
+          the sky simulator especially. `import.meta.env.DEV` is a compile-time
+          constant, so the explorer and its shader never reach the bundle. */}
+      {import.meta.env.DEV ? <HeroExplorer /> : <Hero />}
 
       <section id="projects" className={styles.section}>
         <div className={styles.container}>

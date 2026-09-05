@@ -1,0 +1,49 @@
+/* ── Atmosphere — the hero's light-field ─────────────────────────────────────
+   Full-bleed behind the first screen: breaks out of the page gutters and
+   reaches up under the fixed glass header (which frosts over it — the first
+   time the glass has something worth refracting). z-index -1 keeps it behind
+   the hero copy; the shader itself fades to transparent toward its lower
+   third so the page ground takes over before the next section. */
+.atmosphere {
+  position: absolute;
+  top: calc(-1 * var(--header-clearance));
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100svh;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Specimen mode — fills its parent box (Design System page). */
+.contained {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* The light comes up slowly after mount — opacity only (compositor-safe),
+     and ahead of the copy cascade so the field is there to receive it. */
+  opacity: 0;
+  animation: atmosphere-in 1800ms ease-out 100ms forwards;
+}
+
+@keyframes atmosphere-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canvas {
+    opacity: 1;
+    animation: none;
+  }
+}

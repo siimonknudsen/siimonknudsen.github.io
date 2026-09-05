@@ -145,6 +145,20 @@
   }
 }
 
+/* ── Wordmark — the name at identity scale, closing the page ────────────────
+   Fluid vw sizing fills the content column edge to edge (same tuning as the
+   hero name exploration: 12.2vw ≈ 1280px of a 1440 container at −4.5%
+   tracking). Primary ink, weight 500 — scale does the work, not weight. */
+.wordmark {
+  margin: 0 0 var(--space-24);
+  color: var(--text-color-primary);
+  font-size: clamp(48px, 12.2vw, 176px);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+}
+
 .bottom {
   padding-top: var(--space-24);
 }
@@ -160,5 +174,11 @@
   }
   .columns {
     margin-bottom: var(--space-64);
+  }
+  /* Two stacked words read bigger than one shrunken line on a phone. */
+  .wordmark {
+    font-size: clamp(44px, 15.5vw, 64px);
+    white-space: normal;
+    line-height: 0.98;
   }
 }
