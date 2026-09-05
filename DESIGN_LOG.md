@@ -250,6 +250,19 @@ A categorized log of design **decisions** and **changes** — grouped by page �
 - **New dedicated `/contact` page** (replaces the old footer-scroll). Minimal/editorial per the proven pattern: one confident headline ("Let's make something worth using."), a short human line, and a **frosted-glass card with the email as the big focal action** (`mailto:`, ~40px) + Email/LinkedIn links + the live location/availability chip. Sits over the global shader. Nav "Contact" (desktop + mobile) and the hero "Contact" button now route here; the hover dropdown stays as a quick preview.
 
 ## 7. About (`src/pages/About.*`, `PrinciplesList.*`)
+- **Experience table: the ledger micro-craft (2026-09-05)** — the outcome of a 3-round,
+  15-variant exploration that was fully deleted (post-mortem in DESIGN_KNOWLEDGE §6.8 and
+  CLAUDE.md rule 12). Simon chose the original table, plus only the round-1 refinements he'd
+  called "the cleanest": **company cell in primary ink** (was all-secondary — the company is
+  what you scan for), **tabular figures on the date column** so years align, **columns
+  proportioned to content** (`1.15fr .85fr .9fr 1.1fr`, 16px gaps — was 4 equal), **head row
+  demoted to 12/16 tertiary**, a **quiet hover wash** (`--surface-color-secondary` on the row,
+  8/12 padding pulled flush with −12px margins, background-colour only — his hover rule), and
+  **"Now" instead of "Present"** (read.cv/editorial convention; "Present" is LinkedIn
+  vocabulary). Mobile grid-area layout and DOM order untouched. Everything else from the
+  exploration — year indexes, accordions, tonal cards, gradient hairlines, cursor-preview
+  index, scroll-scrubbed years, ink-fill type, filmstrips, full-bleed chapters — rejected
+  and removed.
 - **Gallery animates in on scroll (2026-06-09)** — *the entrance was never seen.* `ImageGrid` tiles are now each a `<Reveal preset="fade-up">` (in-view, **no `Stagger`** so the delays don't compound across many images). Previously `Media` revealed them ~300px early (off-screen), so by the time the gallery scrolled into view the tiles were already shown.
 - **Top section** (marckuiper-style): big headline + portrait (memoji placeholder — *awaiting a real B&W photo*) + **floating skill chips** on desktop, **stacked below on mobile**; **grey bg removed**; portrait stage stacks on mobile (*fixed horizontal overflow*).
 - **Mission line animates on scroll-into-view** (`WordReveal whenInView`) — *was firing on mount, before the user scrolled to it.*

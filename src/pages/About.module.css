@@ -94,20 +94,53 @@
   grid-column: 4 / span 4;
 }
 
+/* The ledger (experience-lab round 1, Simon's pick): the same quiet table
+   with the craft turned up — the company carries the primary ink, dates set
+   in tabular figures, columns proportioned to their content, and rows take
+   a quiet tonal wash on hover (background only, nothing moves). */
 .tableGrid {
   display: flex;
   flex-direction: column;
-  gap: var(--space-32);
+  gap: var(--space-12);
 }
 
 .tableHead,
 .tableRow {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: 1.15fr 0.85fr 0.9fr 1.1fr;
+  column-gap: var(--space-16);
+  padding: var(--space-8) var(--space-12);
+  margin: 0 calc(-1 * var(--space-12));
+  border-radius: var(--radius-sm);
   color: var(--text-color-secondary);
   font-size: var(--text-sm);
   line-height: 20px;
   letter-spacing: var(--tracking-14-base);
+}
+
+.tableHead {
+  padding-bottom: var(--space-4);
+  color: var(--text-color-tertiary);
+  font-size: var(--text-xs);
+  line-height: 16px;
+  letter-spacing: var(--tracking-12-base);
+}
+
+.tableRow {
+  transition: background-color var(--dur-quick) var(--ease-standard);
+}
+
+.tableRow:hover {
+  background-color: var(--surface-color-secondary);
+}
+
+/* Dates align as a true column; the company is what you scan for. */
+.tableRow > :nth-child(1) {
+  font-variant-numeric: tabular-nums;
+}
+
+.tableRow > :nth-child(2) {
+  color: var(--text-color-primary);
 }
 
 /* ── Skills ─────────────────────────────────────────────────────────────── */
