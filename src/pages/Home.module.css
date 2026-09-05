@@ -1,15 +1,5 @@
-/* ── Hero ────────────────────────────────────────────────────────────────────
-   Left-aligned statement type in the page's content column, on the page's
-   128px vertical rhythm — the copy and the companies row are one opening,
-   spaced on the same 128 as everything else (and as the air above and below
-   the opening itself). */
-.hero {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-160);
-  padding: 0 var(--page-gutter);
-}
+/* The hero lives in `components/home/hero/Hero.*` — it owns its own layout
+   (and the container fix below applies there too). */
 
 .container {
   /* `width: 100%` is load-bearing, not redundant. `.hero` is a FLEX column while
@@ -23,41 +13,6 @@
   max-width: var(--content-max);
   margin-left: auto;
   margin-right: auto;
-}
-
-.heroInner {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-8);
-  /* The measure the hero is drawn to (513 of the 1256 design column). */
-  max-width: calc(513 / 1256 * 100%);
-}
-
-.headline {
-  margin: 0;
-  color: var(--text-color-primary);
-  font-size: var(--text-3xl);
-  font-weight: var(--weight-medium);
-  line-height: 36px;
-  letter-spacing: var(--tracking-32-tight);
-}
-
-.lead {
-  margin: 0;
-  color: var(--text-color-secondary);
-  font-size: var(--text-sm);
-  line-height: 20px;
-  letter-spacing: var(--tracking-14-base);
-  text-wrap: pretty;
-}
-
-.ctaRow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-8);
-  margin-top: var(--space-8);
 }
 
 /* ── Sections ───────────────────────────────────────────────────────────── */
@@ -94,9 +49,6 @@
 }
 
 @media (max-width: 1023px) {
-  .heroInner {
-    max-width: calc(5 / 7 * 100%);
-  }
   .testimonials {
     grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: var(--space-48);
@@ -104,25 +56,6 @@
 }
 
 @media (max-width: 640px) {
-  .hero {
-    gap: var(--space-80);
-  }
-  /* The design's 32px `sm` buttons are a desktop size — give them a finger. */
-  .ctaRow > * {
-    min-height: 44px;
-  }
-  .heroInner {
-    max-width: 100%;
-  }
-  /* 32px ran to five lines on a 430px screen and pushed the lead and CTAs most
-     of a screen down. One rung down the scale (24, with its own leading and
-     tracking — both are calibrated per size) gets it to three or four without
-     leaving the type system. */
-  .headline {
-    font-size: var(--text-2xl);
-    line-height: 28px;
-    letter-spacing: var(--tracking-24-tight);
-  }
   .projects {
     gap: var(--space-64);
   }

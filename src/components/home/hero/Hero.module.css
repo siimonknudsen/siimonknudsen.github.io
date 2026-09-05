@@ -1,0 +1,93 @@
+/* ── Hero — the front page's opening ─────────────────────────────────────────
+   Design-system type sizes (32/36 · 14/20 · 14 buttons); the craft is in the
+   relationships: grouped spacing (20 within the message, 32 to the actions),
+   a real reading measure on the lead, and the tonal dim inside the headline.
+   `position: relative` anchors the full-bleed Atmosphere canvas. */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-160);
+  padding: 0 var(--page-gutter);
+}
+
+.container {
+  /* width:100% is load-bearing — see Home.module.css (flex shrink-to-fit). */
+  width: 100%;
+  max-width: var(--content-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.heroInner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* The statement box from the design column (513 of 1256). */
+  max-width: calc(513 / 1256 * 100%);
+}
+
+.headline {
+  margin: 0;
+  color: var(--text-color-primary);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-medium);
+  line-height: 36px;
+  letter-spacing: var(--tracking-32-tight);
+}
+
+/* The connective phrase steps back so the two key phrases read first. */
+.dim {
+  color: var(--text-color-secondary);
+}
+
+.lead {
+  /* One line of the lead's own leading between headline and lead — related,
+     but clearly the follower. */
+  margin: var(--space-20) 0 0;
+  color: var(--text-color-secondary);
+  font-size: var(--text-sm);
+  line-height: 20px;
+  letter-spacing: var(--tracking-14-base);
+  text-wrap: pretty;
+  /* A reading measure, not the statement box: ~62ch at 14px. The headline
+     runs the wide box; the lead is for reading. */
+  max-width: 62ch;
+}
+
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+  /* Larger than the 20px within-group space (message vs action — Gestalt
+     proximity), but 40 read as too much (Simon 2026-09-05): 32 keeps the
+     boundary without the drift. */
+  margin-top: var(--space-32);
+}
+
+@media (max-width: 1023px) {
+  .heroInner {
+    max-width: calc(5 / 7 * 100%);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    gap: var(--space-80);
+  }
+  .ctaRow > * {
+    min-height: 44px;
+  }
+  .heroInner {
+    max-width: 100%;
+  }
+  .headline {
+    font-size: var(--text-2xl);
+    line-height: 28px;
+    letter-spacing: var(--tracking-24-tight);
+  }
+  .ctaRow {
+    margin-top: var(--space-24);
+  }
+}

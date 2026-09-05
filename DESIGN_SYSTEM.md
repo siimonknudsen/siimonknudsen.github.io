@@ -281,6 +281,30 @@ scrim) · `.glass-item` (hover/active rows) · `.border-glass` (translucent divi
 Blur tokens `--glass-blur-sm/md/lg` (8/12/16 — md/lg lowered for perf, 2026-06-09; see
 GLASS §8). Always degrade for reduced transparency/contrast.
 
+### Atmosphere — the hero light-field (`components/home/hero/Atmosphere.jsx`)
+
+The one atmospheric effect on the site, used **once**, on the front-page hero
+(Stripe/Apple rule: a signature effect earns its keep only if it is singular). Raw
+WebGL1, no dependencies, ~1 KB gz. Shipping preset **`halo`**: a single soft bloom
+entering from the **top edge** (light enters from above — §6.8), breathing almost
+imperceptibly; **dark theme only** — on light the ground stays flat.
+
+Rules it follows, and any future preset must:
+- **Colour as light, never paint.** The canvas stays achromatic; alpha fades to 0 over
+  the lower third so it melts into the flat page ground before the next section.
+- **Low contrast behind text.** Peaks stay under the secondary-ink grey; verify the
+  headline's dimmed span still clears AA over the brightest part.
+- **In-shader dither** against gradient banding (the cheapest "cheap" tell); the
+  site-wide `.grain` overlay adds the final texture.
+- **Perf:** DPR ≤ 1.5, first frame drawn synchronously on mount, paused offscreen
+  (IntersectionObserver) and when the tab is hidden, **a single still frame under
+  `prefers-reduced-motion`**, theme observed live via MutationObserver.
+- Full-bleed `100svh` reaching under the fixed glass header — which finally has
+  something worth refracting. `contained` prop = fills its parent (specimen use).
+
+Parked, not shipped: `aurora` (domain-warped light silk) and **`SkyField.jsx`**, the
+physically-based sky simulator — see DESIGN_LOG §14.
+
 ---
 
 ## 7. Motion & interaction

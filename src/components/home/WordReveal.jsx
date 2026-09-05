@@ -13,14 +13,25 @@ import styles from './WordReveal.module.css'
  * whenInView — when true, the staggered animation waits until the element
  *   scrolls into the viewport (via IntersectionObserver) instead of playing
  *   on mount. Defaults to false, which preserves the original mount behavior.
+ * segments — alternative to `text`: [{ text, className }] runs, so parts of
+ *   one headline can carry different inks (the tonal-emphasis device) while
+ *   the whole line still reveals as a single word cascade.
  */
 // Comp is rendered as <Comp> below; ESLint can't see JSX usage without
 // react/jsx-uses-vars, so the destructured rename reads as unused.
 // eslint-disable-next-line no-unused-vars
-function WordReveal({ as: Comp = 'span', text, className = '', stepMs = 50, delayMs = 0, durationMs, whenInView = false, ...props }) {
+function WordReveal({ as: Comp = 'span', text, segments, className = '', stepMs = 50, delayMs = 0, durationMs, whenInView = false, ...props }) {
   const reduced = useReducedMotion()
   const { ref, isVisible } = useReveal()
-  const words = String(text).split(' ')
+  const runs = segments
+    ? segments.flatMap((seg) =>
+        String(seg.text)
+          .split(' ')
+          .map((word) => ({ word, className: seg.className })),
+      )
+    : String(text)
+        .split(' ')
+        .map((word) => ({ word }))
 
   // Should the rising animation run yet? Without whenInView it runs on mount
   // (original behavior); with whenInView it waits until scrolled into view.
@@ -28,8 +39,8 @@ function WordReveal({ as: Comp = 'span', text, className = '', stepMs = 50, dela
 
   return (
     <Comp className={className} ref={whenInView ? ref : undefined} {...props}>
-      {words.map((word, i) => (
-        <span key={`${word}-${i}`} className={styles.word}>
+      {runs.map(({ word, className: runClass }, i) => (
+        <span key={`${word}-${i}`} className={runClass ? `${styles.word} ${runClass}` : styles.word}>
           <span
             className={
               reduced
@@ -49,7 +60,7 @@ function WordReveal({ as: Comp = 'span', text, className = '', stepMs = 50, dela
           >
             {word}
           </span>
-          {i < words.length - 1 ? ' ' : ''}
+          {i < runs.length - 1 ? ' ' : ''}
         </span>
       ))}
     </Comp>

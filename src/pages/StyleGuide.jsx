@@ -11,6 +11,7 @@ import TestimonialCard from '../components/cards/TestimonialCard'
 import SkillCard from '../components/cards/SkillCard'
 import { StatCard, StatGrid, Sparkline, TrendChart } from '../components/charts'
 import Avatar from '../components/Avatar'
+import Atmosphere from '../components/home/hero/Atmosphere'
 import Location from '../components/Location'
 import ThemeToggle from '../components/ThemeToggle'
 import { useTheme } from '../contexts/ThemeContext'
@@ -1126,6 +1127,26 @@ function StyleGuide() {
                       </div>
                     ))}
                   </div>
+                </div>
+              </div>
+            </ScrollAnimation>
+
+            {/* Atmosphere — the hero light-field */}
+            <ScrollAnimation>
+              <div className={styles.group}>
+                <Overline>Atmosphere · hero light-field</Overline>
+                <p className={`text-color-secondary ${styles.sectionLead}`}>
+                  A WebGL light-field behind the front-page hero — colour as light, never paint.
+                  Dark theme only: one soft bloom entering from the top edge, breathing almost
+                  imperceptibly, fading to nothing over its lower third so it melts into the flat
+                  ground. On light the ground stays flat. Paused offscreen and when the tab is
+                  hidden; a single still frame under reduced motion.
+                </p>
+                <div className={styles.atmosphereStage}>
+                  <Atmosphere preset="halo" contained />
+                  <span className={`font-mono ${styles.atmosphereCaption}`}>
+                    halo · one bloom, top edge · light enters from above
+                  </span>
                 </div>
               </div>
             </ScrollAnimation>

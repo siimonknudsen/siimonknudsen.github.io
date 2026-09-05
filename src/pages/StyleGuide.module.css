@@ -1014,6 +1014,27 @@
   font-size: var(--text-xs);
 }
 
+/* Atmosphere specimen — the hero light-field on the page's own ground, so it
+   reads exactly as it does on the front page (dark theme only). */
+.atmosphereStage {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  min-height: 260px;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-24);
+  background: var(--surface-color-primary);
+}
+
+.atmosphereCaption {
+  position: relative;
+  z-index: 1;
+  font-size: var(--text-xs);
+  line-height: 18px;
+  color: var(--text-color-tertiary);
+}
+
 .glassLabCaption {
   position: relative;
   font-size: var(--text-xs);
