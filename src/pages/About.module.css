@@ -75,11 +75,10 @@
 }
 
 /* ── Experience ─────────────────────────────────────────────────────────────
-   Ten columns, matching the intro grid above it: the label takes 1–2, the
-   entries take 6–10 — the right half exactly, running out to the page edge. */
+   The label sits on the first two of seven columns; the table fills 4–7. */
 .experience {
   display: grid;
-  grid-template-columns: repeat(10, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   align-items: start;
 }
 
@@ -92,148 +91,57 @@
 }
 
 .table {
-  grid-column: 6 / -1;
+  grid-column: 4 / span 4;
 }
 
-/* ── Experience entries ─────────────────────────────────────────────────────
-   Each role is a block, not a table row (Simon's call, off guglieri.com/about):
-   mark + dates on a top line, then company · role, then the description and its
-   selected work — all of it visible, no disclosure. Entries are separated by
-   64px of air rather than a hairline: the reference rules them off, but this
-   site's DNA is depth from light and never hard lines. */
-.experienceList {
+/* The ledger (experience-lab round 1, Simon's pick): the same quiet table
+   with the craft turned up — the company carries the primary ink, dates set
+   in tabular figures, columns proportioned to their content, and rows take
+   a quiet tonal wash on hover (background only, nothing moves). */
+.tableGrid {
   display: flex;
   flex-direction: column;
-  gap: var(--space-48);
+  gap: var(--space-12);
 }
 
-.entry {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-16);
-}
-
-/* A hairline between roles (Simon's call, off the reference). It's the one
-   place on the site that rules content off — 48px of air each side of it. */
-.entry + .entry {
-  padding-top: var(--space-48);
-  border-top: 1px solid var(--border-color-primary);
-}
-
-/* ── The work that came out of the job ──────────────────────────────────────
-   The Archive page's own `ProjectCard`, on the Archive's grid: 2-up, 48px
-   apart (32 on phones). One card component for case studies everywhere —
-   cursor label, on-media discipline chips and reveal included. */
-.entryWork {
-  margin-top: var(--space-8);
+.tableHead,
+.tableRow {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-48);
-}
-
-
-.entryTop {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-16);
-}
-
-/* The mark sits on the same flat tonal tile the logo grid uses. */
-.entryMark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--space-56);
-  height: var(--space-56);
-  flex-shrink: 0;
-  padding: var(--space-12);
-  border-radius: var(--radius-md);
-  background-color: var(--surface-color-secondary);
-  overflow: hidden;
-}
-
-.entryLogo {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  opacity: 0.72;
-}
-
-/* Baked as white silhouettes, like the companies grid — flip them for light. */
-:global(html:not(.dark)) .entryLogo {
-  filter: invert(1);
-}
-
-/* Fallback until a real mark exists: the company's initial, not a fake logo. */
-.entryMonogram {
-  color: var(--text-color-primary);
-  font-size: var(--text-xl);
-  font-weight: var(--weight-medium);
-  line-height: 24px;
-  letter-spacing: var(--tracking-20-snug);
-}
-
-.entryTitles {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.entryCompany {
-  margin: 0;
-  color: var(--text-color-primary);
-  font-size: var(--text-xl);
-  font-weight: var(--weight-medium);
-  line-height: 24px;
-  letter-spacing: var(--tracking-20-snug);
-}
-
-.entryRole {
-  margin: 0;
+  grid-template-columns: 1.15fr 0.85fr 0.9fr 1.1fr;
+  column-gap: var(--space-16);
+  padding: var(--space-8) var(--space-12);
+  margin: 0 calc(-1 * var(--space-12));
+  border-radius: var(--radius-sm);
   color: var(--text-color-secondary);
   font-size: var(--text-sm);
   line-height: 20px;
   letter-spacing: var(--tracking-14-base);
 }
 
-/* Body copy matches the bio above it — same size, same ink, same measure. */
-.entryBody {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-16);
-  max-width: 65ch;
-  color: var(--text-color-secondary);
-  font-size: var(--text-base);
-  font-weight: var(--weight-medium);
-  line-height: 24px;
-  letter-spacing: var(--tracking-16-snug);
-  text-wrap: pretty;
-}
-
-.entryIntro {
-  margin: 0;
-}
-
-.entryList {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-12);
-}
-
-.entryItem {
-  position: relative;
-  padding-left: var(--space-20);
-}
-
-.entryItem::before {
-  content: '•';
-  position: absolute;
-  left: 0;
+/* The head sits at the same 14/20 as the rows it labels — only the ink
+   separates it (Simon's call, 2026-09-14). It was 12/16 with the 12px
+   tracking; the size step was doing work the colour already does, and 12px is
+   below the floor the rest of the page holds to. */
+.tableHead {
+  padding-bottom: var(--space-4);
   color: var(--text-color-tertiary);
+}
+
+.tableRow {
+  transition: background-color var(--dur-quick) var(--ease-standard);
+}
+
+.tableRow:hover {
+  background-color: var(--surface-color-secondary);
+}
+
+/* Dates align as a true column; the company is what you scan for. */
+.tableRow > :nth-child(1) {
+  font-variant-numeric: tabular-nums;
+}
+
+.tableRow > :nth-child(2) {
+  color: var(--text-color-primary);
 }
 
 /* ── Skills ─────────────────────────────────────────────────────────────── */
@@ -285,22 +193,30 @@
     grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: var(--space-8);
   }
-  /* Entries tighten up on a phone: less air between roles, and the dates chip
-     drops under the mark rather than being squeezed beside it. */
-  .experienceList {
-    gap: var(--space-32);
+  .tableHead,
+  .tableRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4) var(--space-12);
   }
-  .entry + .entry {
-    padding-top: var(--space-32);
+  .tableHead {
+    display: none;
   }
-  .entryTop {
-    align-items: flex-start;
-  }
-  /* One-up on phones, like the Archive grid. */
-  .entryWork {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    gap: var(--space-32);
-  }
+  /* Left column is the date alone; the right column is the job — company
+     first, then role, then industry:
+
+       Mar 2025 — Present     Lenus
+                              Product Designer
+                              Health & fitness software
+
+     The date is the index you scan down; the company is what you're actually
+     looking for, so it leads its own column rather than being paired off with
+     the date. Placement only — the DOM order (time, company, role, industry)
+     is untouched, so screen-reader order and the desktop four-column table
+     both stay as they were. */
+  .tableRow > *:nth-child(1) { grid-area: 1 / 1; } /* time */
+  .tableRow > *:nth-child(2) { grid-area: 1 / 2; } /* company */
+  .tableRow > *:nth-child(3) { grid-area: 2 / 2; } /* role */
+  .tableRow > *:nth-child(4) { grid-area: 3 / 2; } /* industry */
 }
 
 /* Phones: all three About grids drop to 4px together. At 3-up the tiles are

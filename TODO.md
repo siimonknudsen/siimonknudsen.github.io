@@ -32,6 +32,11 @@ never fabricate his real data). Check this at session start; prune when done.
   The dense counterpart to the guglieri.com block layout that shipped. Captured in
   `DESIGN_KNOWLEDGE §6.1`. Not to be built unless Simon asks.
 
+- [ ] **Experience as guglieri-style role blocks** — built 2026-09-14 and reverted the same
+  day (Simon kept the ledger table). Mark + dates chip, hairline dividers, his LinkedIn copy,
+  Archive `ProjectCard` previews per company. Lives in commit `5a95f8a` on
+  `claude/experience-head-14px` if it's ever wanted. Not to be rebuilt unless Simon asks.
+
 - [ ] **Employer logos** — Lenus, Beefit and Zliide have no marks in the repo, so their
   Experience entries render a monogram tile. Drop white-silhouette PNGs into
   `src/assets/logos/employers/` and import them on the entry in `src/pages/About.jsx`.

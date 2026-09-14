@@ -3,14 +3,6 @@ import { Reveal } from '../components/motion'
 import LogoGrid from '../components/grids/LogoGrid'
 import ImageGrid from '../components/grids/ImageGrid'
 import SkillCard from '../components/cards/SkillCard'
-import { allArchiveProjects } from '../data/projects'
-import ProjectCard from '../components/projects/ProjectCard'
-import Badge from '../components/Badge'
-// The only employer mark in the repo today. Lenus, Beefit and Zliide have none
-// — drop `<name>.png` (white silhouette on transparent, like the others) into
-// `src/assets/logos/employers/`, import it here and set it on the entry; until
-// then those tiles fall back to a monogram.
-import adserviceLogo from '../assets/logos/ad-service.png'
 import { AVATAR_SRC, onAvatarError } from '../lib/avatar'
 import skill1 from '../assets/skills/skill-1.webp'
 import skill2 from '../assets/skills/skill-2.webp'
@@ -27,149 +19,32 @@ const EXPERIENCE = [
     company: 'Lenus',
     role: 'Product Designer',
     industry: 'Health & fitness software',
-    intro:
-      'Designing the world’s leading online health coaching platform end to end: user research, UI, user testing, developer handoff, and QA, working closely with product and engineering to drive a cohesive design vision across coach acquisition, productivity, retention, and growth.',
-    highlights: [
-      'Coach Onboarding Portal: designed the experience end to end and led the global rollout, now the default onboarding flow for all coaches. It replaced a high-friction process for both coaches and key account managers with a single global source of truth, so onboarding is consistent across every country and coaches always know their next steps.',
-      'Lena AI: designing an AI assistant inside the platform that improves coaching efficiency and quality, helping coaches do more of their best work in less time.',
-      'Lenus Care: designing the end-to-end product, from a client signing up for a medical GLP-1 treatment to receiving it alongside their coaching, all within the app. This spans both the client experience (sign-up and onboarding, emails, in-app content) and the coach’s view of managing it, designed within legal and compliance constraints.',
-      'Design system: building and maintaining the system that keeps the whole product visually and structurally consistent, and lets the team design and ship faster.',
-      'Food Diary Overview: gave coaches a clear way to see, at a glance and in detail, what each client is logging, macros, micronutrients, calories, recipes, and ingredients.',
-      'Courses & Training Plans: turned training plans into educational content by letting coaches embed articles, visuals, and text directly into a plan.',
-    ],
   },
   {
     time: 'Aug 2024 — Jan 2025',
     company: 'Beefit',
     role: 'Product Designer',
     industry: 'Health & fitness software',
-    intro:
-      'I designed and built fully customized, branded mobile apps for coaches, owning each one end to end from user research and UX through UI design and launch. Every app was shaped around the coach’s brand, content, and the way they actually work with clients, so they had something genuinely their own rather than an off-the-shelf product.',
-    highlights: [
-      'Designed custom apps for coaches with hundreds to thousands of clients, covering everything from one-to-one coaching to community-based group coaching. The apps became a real driver of client retention and helped coaches stand out in a crowded market.',
-      'Designed and built websites for a range of coaches, handling both the design and the WordPress implementation.',
-      'Did UI and interaction design work across the wider platform in the lead-up to the acquisition by Lenus.',
-    ],
   },
   {
     time: 'May 2023 — Feb 2024',
     company: 'Zliide',
     role: 'Product Designer',
     industry: 'Fashion technology',
-    intro:
-      'I designed across Zliide’s platform to improve the physical fashion retail experience, working on everything from the customer-facing app to the internal tools that stores and brands rely on. I owned this work end to end, from user research through UI design and developer handoff.',
-    highlights: [
-      'Designed an in-store ordering app for mobile and tablet that lifted monthly store revenue by 6% and user satisfaction by 21.3%, by cutting out-of-stock situations and letting customers check out anywhere in the store.',
-      'Designed and built Zliide.com, improving SEO, engagement, and conversion.',
-      'Designed a data-heavy interface for fashion brands and store staff to track store performance, which increased product adoption and reduced churn.',
-      'Designed an internal dashboard that gave Zliide stakeholders a full view of business and product performance and cut down staff workflow time.',
-    ],
   },
   {
     time: 'Jan 2024 — Jul 2024',
     company: 'Freelance',
     role: 'Product Designer',
     industry: 'Freelance',
-    intro:
-      'Took on freelance design and development work alongside my main roles, handling each project hands-on.',
-    highlights: [
-      'Built the front-end implementation of a website for Sydhavnsbølgen, a community radio station in Aarhus where DJs and podcasters host their own shows.',
-      'Designed a retail worker-facing iPad app for Zliide on a freelance basis.',
-    ],
   },
   {
     time: 'Jul 2021 — Apr 2023',
     company: 'Adservice',
     role: 'Product Designer',
     industry: 'Affiliate marketing',
-    logo: adserviceLogo,
-    intro:
-      'I designed across Adservice’s affiliate marketing platform, working on everything from public-facing websites to self-service tools and campaign work for major European telecom brands. I covered the full process, from user research and UX through UI design and front-end implementation.',
-    highlights: [
-      'Designed and built Adservice.com and leadplatform.adservice.com, improving SEO, engagement, and conversion.',
-      'Designed a self-service interface for affiliate advertisers that opened up a new customer segment and reduced in-house campaign support.',
-      'Designed gamified contest sites for telecom campaigns with a 100% client satisfaction rate, plus comparison sites for affiliate publishers.',
-      'Produced campaign sites and marketing materials for a range of European telecom and media brands.',
-    ],
   },
 ]
-
-
-// Which case studies came out of which job. Only what actually exists in
-// `projects.js` — Lenus and Beefit have no public work in the repo, and the
-// freelance projects (Sydhavnsbølgen, the Zliide iPad app) were never written
-// up, so those three entries simply show no previews. The Adservice campaign
-// work lives on the Archive page and is deliberately left off here.
-const PROJECTS_BY_COMPANY = {
-  Zliide: ['zliide-app', 'zliide-website', 'zliide-dashboard'],
-  Adservice: ['adservice-website', 'leadplatform-website'],
-}
-
-const projectsFor = (company) =>
-  (PROJECTS_BY_COMPANY[company] || [])
-    .map((id) => allArchiveProjects.find((project) => project.id === id))
-    .filter(Boolean)
-
-// ExperienceEntry — one role as a block: the company mark and the dates on a
-// top line, then company · role, then the description and its selected work.
-// Replaces the ledger table + click-to-open accordion (Simon's call, off the
-// guglieri.com/about reference): every role reads at once, no disclosure.
-//
-// Entries are separated by space, not a rule. The reference uses hairlines;
-// this site's DNA is depth from light and never hard lines, so 64px of air does
-// the same work. Wanting the rules back is a one-line change.
-function ExperienceEntry({ job }) {
-  const projects = projectsFor(job.company)
-
-  return (
-    <article className={styles.entry}>
-      <div className={styles.entryTop}>
-        <span className={styles.entryMark} aria-hidden="true">
-          {job.logo ? (
-            <img src={job.logo} alt="" className={styles.entryLogo} loading="lazy" />
-          ) : (
-            <span className={styles.entryMonogram}>{job.company.charAt(0)}</span>
-          )}
-        </span>
-        <Badge size="md">{job.time}</Badge>
-      </div>
-
-      <div className={styles.entryTitles}>
-        <h3 className={styles.entryCompany}>{job.company}</h3>
-        <p className={styles.entryRole}>
-          {job.role} · {job.industry}
-        </p>
-      </div>
-
-      <div className={styles.entryBody}>
-        <p className={styles.entryIntro}>{job.intro}</p>
-        <ul className={styles.entryList}>
-          {job.highlights.map((item) => (
-            <li key={item} className={styles.entryItem}>
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {projects.length > 0 && (
-        <div className={styles.entryWork}>
-          {projects.map((project, index) => (
-            <ProjectCard
-              key={project.id}
-              id={project.id}
-              title={project.title}
-              description={project.description}
-              tags={project.tags}
-              delay={(index % 2) * 80}
-              noMedia={project.noMedia}
-            />
-          ))}
-        </div>
-      )}
-    </article>
-  )
-}
 
 // The four card backgrounds, cycled across the eight skills the way the Figma
 // grid alternates them.
@@ -305,9 +180,20 @@ function About() {
           </ScrollAnimation>
 
           <ScrollAnimation className={styles.table}>
-            <div className={styles.experienceList}>
+            <div className={styles.tableGrid}>
+              <div className={styles.tableHead}>
+                <span>Time</span>
+                <span>Company</span>
+                <span>Role</span>
+                <span>Industry</span>
+              </div>
               {EXPERIENCE.map((job) => (
-                <ExperienceEntry key={job.company + job.time} job={job} />
+                <div key={job.company + job.time} className={styles.tableRow}>
+                  <span>{job.time}</span>
+                  <span>{job.company}</span>
+                  <span>{job.role}</span>
+                  <span>{job.industry}</span>
+                </div>
               ))}
             </div>
           </ScrollAnimation>
