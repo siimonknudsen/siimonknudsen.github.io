@@ -60,19 +60,11 @@
   line-height: 24px;
   letter-spacing: var(--tracking-16-snug);
   text-wrap: pretty;
-  /* Reserve the longest description's height so the TITLES land on one line
-     across the row. FOUR lines, not three: the column is 271px at 1440 but only
-     227px at 1280, and copy that sits on three lines at the wider measure needs
-     four at the narrower one — a 3-line box clipped every card on a 1280 laptop.
-     Sizing the reserve to the NARROWEST common column means nothing truncates.
-
-     The copy is pushed to the BOTTOM of that reserve, so the last line lands on
-     the card's padding edge instead of floating one empty line above it. That
-     puts any slack between the title and the copy rather than under the copy —
-     a deliberate trade: titles aligned AND text bottom-flush is only possible if
-     the give sits in that gap. (`-webkit-box-pack: end` does not do this — it
-     was measured as a no-op — hence the flex wrapper plus an inner span.) */
-  min-height: calc(4 * 24px);
+  /* No reserved height. It used to hold the longest description's box on every
+     card so the TITLES landed on one line across the row; Simon's call is that
+     the empty space that buys costs more than the alignment. The copy stays
+     bottom-flush against the card's padding edge (the card is a bottom-anchored
+     flex column), so what varies now is where each title sits. */
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -124,10 +116,9 @@
     font-size: var(--text-sm);
     line-height: 20px;
     letter-spacing: var(--tracking-14-base);
-    /* Reserve the longest at this measure so the titles still line up. The
-       clamp rises to 3 here: at one-per-row the copy runs to two or three, and
-       clamping at 2 would cut lines that legitimately fit. */
-    min-height: calc(2 * 20px);
+    /* No reserve here either — at one card per row there are no neighbouring
+       titles to line up with, so it only ever added empty space. The clamp
+       stays at 3: the copy runs to two or three lines at this measure. */
   }
 
   .descriptionText {
