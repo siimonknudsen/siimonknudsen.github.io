@@ -41,17 +41,20 @@
   gap: var(--space-128);
 }
 
+/* 12px between the cards (Simon, 2026-09-14, down from 48): they're flat tonal
+   surfaces, so the gap only has to separate them, not hold them apart — the
+   card's own 24px padding already supplies the air the copy needs. */
 .testimonials {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-48);
+  gap: var(--space-12);
   align-items: start;
 }
 
 @media (max-width: 1023px) {
   .testimonials {
     grid-template-columns: repeat(1, minmax(0, 1fr));
-    gap: var(--space-48);
+    gap: var(--space-12);
   }
 }
 
