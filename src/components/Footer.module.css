@@ -147,12 +147,17 @@
 
 /* ── Wordmark — the name at identity scale, closing the page ────────────────
    Fluid vw sizing fills the content column edge to edge (same tuning as the
-   hero name exploration: 12.2vw ≈ 1280px of a 1440 container at −4.5%
-   tracking). Primary ink, weight 500 — scale does the work, not weight. */
+   hero name exploration). Set in CAPS, which measure ~5.6% wider than the
+   mixed case they replaced at the same size, so every step of the fluid scale
+   is divided by that factor (12.2 → 10.5vw, 176 → 166px, 48 → 45px). The name
+   therefore fills the column to exactly the width it did before — same bleed
+   behaviour at every viewport, just in caps. Primary ink, weight 500 — scale
+   does the work, not weight. */
 .wordmark {
   margin: 0 0 var(--space-24);
   color: var(--text-color-primary);
-  font-size: clamp(48px, 12.2vw, 176px);
+  text-transform: uppercase;
+  font-size: clamp(45px, 10.5vw, 166px);
   font-weight: var(--weight-medium);
   line-height: 1;
   letter-spacing: -0.045em;
@@ -177,7 +182,7 @@
   }
   /* Two stacked words read bigger than one shrunken line on a phone. */
   .wordmark {
-    font-size: clamp(44px, 15.5vw, 64px);
+    font-size: clamp(40px, 12.9vw, 60px);
     white-space: normal;
     line-height: 0.98;
   }

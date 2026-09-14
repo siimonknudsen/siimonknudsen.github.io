@@ -118,12 +118,13 @@
   letter-spacing: var(--tracking-14-base);
 }
 
+/* The head sits at the same 14/20 as the rows it labels — only the ink
+   separates it (Simon's call, 2026-09-14). It was 12/16 with the 12px
+   tracking; the size step was doing work the colour already does, and 12px is
+   below the floor the rest of the page holds to. */
 .tableHead {
   padding-bottom: var(--space-4);
   color: var(--text-color-tertiary);
-  font-size: var(--text-xs);
-  line-height: 16px;
-  letter-spacing: var(--tracking-12-base);
 }
 
 .tableRow {
