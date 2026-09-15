@@ -34,6 +34,26 @@
     {
       "type": "image",
       "src": "images/image1.webp"
+    },
+    {
+      "type": "image",
+      "src": "images/image2.webp"
+    },
+    {
+      "type": "image",
+      "src": "images/image3.webp"
+    },
+    {
+      "type": "image",
+      "src": "images/image4.webp"
+    },
+    {
+      "type": "image",
+      "src": "images/image5.webp"
+    },
+    {
+      "type": "image",
+      "src": "images/image6.webp"
     }
   ]
 }
