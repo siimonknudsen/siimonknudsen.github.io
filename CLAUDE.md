@@ -174,7 +174,9 @@ the benefit of the doubt.
 - Lint: `npm run lint` (ESLint). No test suite — verify visually in-browser (above).
 - Verify with the Claude_Preview MCP: resize desktop (1440×900), `await document.fonts.ready`,
   inspect computed styles. Re-check responsive at mobile when layout-relevant.
-- Deploy = commit + `git push origin main`; confirm with `gh run watch <id> --exit-status`.
+- Deploy = push a branch → PR → merge to `main`; confirm with `gh run watch <id> --exit-status`.
+  `main` is protected by a GitHub ruleset ("Protect main", 2026-09-27): direct pushes, force-pushes
+  and deletion are rejected; a PR is required (0 approvals — Simon is solo, can't self-approve).
 
 ## 5. Growing the vision / design system (Simon's self-learning taste model)
 - New design reference from Simon (URL / "add this to design inspi") → **quick capture only** (his
