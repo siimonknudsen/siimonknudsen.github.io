@@ -89,15 +89,17 @@ function ProjectPage() {
               </Reveal>
             </header>
 
-            <Reveal preset="fade-up" delay={120} className={styles.frame}>
-              <Media
-                src={content.heroImage || `/projects/${id}/images/hero`}
-                alt={title}
-                aspect="fill"
-                rounded="none"
-                priority
-              />
-            </Reveal>
+            {!project.noMedia && (
+              <Reveal preset="fade-up" delay={120} className={styles.plate}>
+                <Media
+                  src={content.heroImage || `/projects/${id}/images/hero`}
+                  alt={title}
+                  aspect="auto"
+                  rounded="none"
+                  priority
+                />
+              </Reveal>
+            )}
 
             <div className={styles.meta}>
               {details.length > 0 && (
@@ -140,7 +142,7 @@ function ProjectPage() {
                     alt={`${title} — app screen ${index + 1}`}
                     aspect="auto"
                     rounded="none"
-                    className={styles.screen}
+                    className={styles.plate}
                   />
                 </Reveal>
               ))}

@@ -1736,9 +1736,13 @@ function StyleGuide() {
               guidelines={[
                 'Give every image descriptive alt text; decorative ones take empty alt.',
                 'Corners stay at 8px — the project-wide radius cap.',
+                'Case-study imagery uses auto — full column width, its own ratio, never cropped. Fixed ratios are for uniform grids (cards, thumbs).',
               ]}
             >
               <div className={styles.mediaGrid}>
+                <Tile label="auto — natural ratio">
+                  <Media src="/projects/apple-home-app/images/hero" alt="" aspect="auto" rounded="rounded-xl" />
+                </Tile>
                 <Tile label="16:9">
                   <Media src="/projects/apple-home-app/images/hero" alt="" aspect="aspect-video" rounded="rounded-xl" />
                 </Tile>

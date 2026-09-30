@@ -1586,6 +1586,11 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+@media (min-width: 1024px) {
+  .mediaGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 /* Terse usage guidelines — a small accent tick per line, calm and editorial. */
 .guidelines {
   display: flex;
