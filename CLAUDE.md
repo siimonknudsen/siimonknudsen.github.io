@@ -177,6 +177,7 @@ the benefit of the doubt.
 - Deploy = push a branch → PR → merge to `main`; confirm with `gh run watch <id> --exit-status`.
   `main` is protected by a GitHub ruleset ("Protect main", 2026-09-27): direct pushes, force-pushes
   and deletion are rejected; a PR is required (0 approvals — Simon is solo, can't self-approve).
+  Run the merge and `gh run watch` in the background: a deploy outlasts the 2-minute command limit.
 
 ## 5. Growing the vision / design system (Simon's self-learning taste model)
 - New design reference from Simon (URL / "add this to design inspi") → **quick capture only** (his
