@@ -112,7 +112,7 @@ function About() {
   const skills = [
     {
       title: 'UX Design',
-      description: 'User flows, information architecture and journey mapping — the structure before anything is drawn.'
+      description: 'User flows, information architecture and journey mapping — structure before a pixel is drawn.'
     },
     {
       title: 'UI Design',
@@ -124,23 +124,23 @@ function About() {
     },
     {
       title: 'Prototyping',
-      description: 'Clickable and coded prototypes for testing flows and interaction detail before engineering commits.'
+      description: 'Clickable and coded prototypes for testing flows and interaction detail before engineering starts.'
     },
     {
       title: 'User Research & Testing',
-      description: 'Interviews, usability sessions and behavioural data behind each decision.'
+      description: 'Interviews, usability sessions and behavioural data — the evidence behind each design choice.'
     },
     {
       title: 'AI Product Design',
-      description: 'Designing assistants and AI features into an existing product, where the output is probabilistic.'
+      description: 'Designing assistants and AI features inside an existing product, where the output is probabilistic.'
     },
     {
       title: 'Data-Heavy Interfaces',
-      description: 'Dashboards and reporting tools that make dense operational data quick to read and act on.'
+      description: 'Dashboards and reporting tools that make dense operational data quick to read, sort and act on.'
     },
     {
       title: 'Frontend Development',
-      description: 'React, CSS and design tokens. I implement my own work, so the detail survives to production.'
+      description: 'React, CSS and design tokens. I implement my own designs, so the detail survives to production.'
     }
   ]
 

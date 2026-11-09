@@ -408,7 +408,16 @@ placeholder.
 `aspect="auto"` lets the image set its own height; any other value (`aspect-video`,
 `aspect-square`, …) gives a fixed object-cover frame. Used in `ProjectCard` and
 `ProjectPage` (hero, content blocks, app screens) — replacing the previously
-duplicated loaders. Next: a lightbox and explicit width/height to fully eliminate CLS.
+duplicated loaders.
+
+**Case-study imagery is always `auto` (2026-09).** Every image on a project page —
+hero, body plates and app screens — runs at 100% of its column in its own native
+ratio, sharing one `.plate` class (8px radius, `overflow: hidden`). Nothing is
+cropped: the hero used to sit in a fixed `1256 / 700` object-cover frame, which
+showed only a sliver of a tall full-page screenshot. Fixed ratios are reserved
+for **uniform grids** — project cards and thumbs — where equal tile heights are
+the point. Next: a lightbox and explicit width/height to fully eliminate CLS
+(natural-ratio images reserve no height until they load).
 
 ---
 

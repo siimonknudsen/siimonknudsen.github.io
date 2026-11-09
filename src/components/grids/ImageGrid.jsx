@@ -45,7 +45,7 @@ function GalleryTile({ image, index, columns, aspect, onOpen }) {
           hover. */}
       <div className={styles.hotspot} ref={frame} {...handlers}>
         <div className={styles.zoom}>
-          <Media src={image} alt={`Image ${index + 1}`} aspect={aspect} rounded="rounded-xl" />
+          <Media src={image} alt={`Image ${index + 1}`} aspect={aspect} rounded="none" />
         </div>
         <span ref={label} className={styles.cursorLabel} aria-hidden="true">
           View details

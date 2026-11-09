@@ -64,16 +64,11 @@
   text-wrap: pretty;
 }
 
-/* ── Imagery ────────────────────────────────────────────────────────────── */
-.frame {
-  overflow: hidden;
-  aspect-ratio: 1256 / 700;
-  border-radius: var(--radius-sm);
-  background-color: var(--surface-color-secondary);
-}
-
-/* Content plates keep their natural ratio — the case imagery is full-page
-   screenshots, so cropping them to the hero's ratio would show a sliver. */
+/* ── Imagery ──────────────────────────────────────────────────────────────
+   One plate for every image on the page — hero, body and app screens alike.
+   No fixed ratio: each image fills 100% of its column and keeps its own
+   aspect, so nothing is ever cropped (a full-page screenshot forced into a
+   16:7 hero frame showed only a sliver of itself). */
 .plate {
   overflow: hidden;
   border-radius: var(--radius-sm);
@@ -83,11 +78,6 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-48);
-}
-
-.screen {
-  border-radius: var(--radius-sm);
-  overflow: hidden;
 }
 
 /* ── Details row ────────────────────────────────────────────────────────── */

@@ -84,17 +84,10 @@
 }
 
 .gap4 {
-  /* Responsive by design: 4px on phones where the tiles are ~98px and 16px of
-     air between them read as a bigger gap than the marks themselves, stepping
-     up to 8px once there's room. Less air on the small screen, more on the big
-     one — the opposite of scaling a single value down. */
+  /* One gap at every width: 4px, rows and columns alike (2026-09-15). The tiles
+     are a near-continuous tonal field, so the mortar between them stays hairline
+     rather than stepping up with the viewport. */
   gap: var(--space-4);
-}
-
-@media (min-width: 768px) {
-  .gap4 {
-    gap: var(--space-8);
-  }
 }
 
 /* Logo tile — the flat tonal surface every content card uses; no border, no
@@ -107,7 +100,7 @@
   min-height: var(--space-80);
   padding: var(--space-24);
   overflow: hidden;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   background-color: var(--surface-color-secondary);
 }
 
