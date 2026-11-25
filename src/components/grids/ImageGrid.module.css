@@ -65,6 +65,7 @@
   z-index: 1;
   padding: var(--space-8) var(--space-12);
   border-radius: var(--radius-pill);
+  corner-shape: round;
   background-color: var(--transparent-dark-40);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -209,6 +210,7 @@
   width: 40px;
   height: 40px;
   border-radius: var(--radius-pill);
+  corner-shape: round;
   z-index: 3;
 }
 
@@ -230,6 +232,7 @@
   width: 44px;
   height: 44px;
   border-radius: var(--radius-pill);
+  corner-shape: round;
   z-index: 3;
 }
 

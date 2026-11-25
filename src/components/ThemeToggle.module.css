@@ -8,6 +8,7 @@
   display: inline-flex;
   align-items: center;
   border-radius: var(--radius-pill);
+  corner-shape: round;
   padding: var(--space-4);
   /* Soft glass edge instead of a hard 1px line (inset shadow reads softer and
      never clips the pill radius). */
@@ -23,6 +24,7 @@
   height: var(--space-28);
   width: var(--space-28);
   border-radius: var(--radius-pill);
+  corner-shape: round;
   box-shadow: var(--shadow-xs);
   transition-property: transform;
   transition-duration: var(--dur-base);
@@ -37,6 +39,7 @@
   height: var(--space-28);
   width: var(--space-28);
   border-radius: var(--radius-pill);
+  corner-shape: round;
   transition-property: color, background-color;
   transition-timing-function: var(--motion-ui-ease);
   transition-duration: var(--motion-ui-dur);

@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Font Lab</title>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+<style>
+  @font-face { font-family: 'BDO'; src: url('BDOGrotesk-VF-balanced.ttf') format('truetype'); font-weight: 300 900; }
+  :root {
+    --bg: #0a0a0a; --panel: #161616; --panel-2: #1f1f1f; --line: #2a2a2a;
+    --text: #f2f2f2; --text-2: #a3a3a3; --text-3: #6b6b6b;
+    --ours: #f2f2f2; --ref: #ff6a3d; --bdo: #7aa2ff;
+    --r: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; corner-shape: squircle; }
+  body { background: var(--bg); color: var(--text); font: 500 14px/1.4 'BDO', system-ui, sans-serif; }
+  button, input, select { font: inherit; color: inherit; }
+  .app { display: grid; grid-template-columns: 320px 1fr; min-height: 100vh; }
+  aside { background: var(--panel); padding: 24px 20px; display: flex; flex-direction: column; gap: 24px;
+          position: sticky; top: 0; height: 100vh; overflow: auto; }
+  main { padding: 32px 40px 120px; display: flex; flex-direction: column; gap: 72px; min-width: 0; }
+  h1 { font-size: 20px; font-weight: 600; }
+  h2 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+  .hint { color: var(--text-3); font-size: 12px; }
+  .status { font-size: 12px; color: var(--text-2); display: flex; align-items: center; gap: 8px; }
+  .status i { width: 8px; height: 8px; border-radius: 50%; corner-shape: round; background: #f5a524; }
+  .status.ready i { background: #3fbf6f; }
+  .group { display: flex; flex-direction: column; gap: 14px; }
+  .group > .label { font-size: 12px; color: var(--text-3); }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field .row { display: flex; justify-content: space-between; color: var(--text-2); font-size: 13px; }
+  .field .row b { color: var(--text); font-weight: 500; font-variant-numeric: tabular-nums; }
+  input[type=range] { width: 100%; accent-color: var(--text); }
+  input[type=text], select { background: var(--panel-2); border: 0; border-radius: var(--r); padding: 8px 10px; width: 100%; }
+  .seg { display: flex; flex-wrap: wrap; gap: 4px; }
+  .seg button, .chip { background: var(--panel-2); border: 0; border-radius: 6px; padding: 6px 9px; cursor: pointer; color: var(--text-2); }
+  .seg button.on, .chip.on { background: var(--text); color: var(--bg); }
+  .chip { display: inline-flex; gap: 8px; align-items: baseline; }
+  .chip span { font-family: var(--f-bdo); font-size: 16px; }
+  .btn { background: var(--text); color: var(--bg); border: 0; border-radius: var(--r); padding: 10px 14px; cursor: pointer; font-weight: 600; }
+  .btn.ghost { background: var(--panel-2); color: var(--text); font-weight: 500; }
+  .btn:disabled { opacity: .4; cursor: default; }
+  .btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .drop { border: 1px dashed var(--line); border-radius: var(--r); padding: 14px; text-align: center; color: var(--text-3); font-size: 12px; cursor: pointer; }
+  .drop.over { border-color: var(--ref); color: var(--text); }
+  .refs { display: flex; flex-direction: column; gap: 6px; }
+  .ref { display: flex; align-items: center; gap: 8px; background: var(--panel-2); border-radius: 6px; padding: 6px 8px; font-size: 12px; cursor: pointer; }
+  .ref.on { outline: 1px solid var(--ref); }
+  .ref span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ref button { background: none; border: 0; color: var(--text-3); cursor: pointer; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--text-2); }
+  .legend label { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+  .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .toolbar { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-bottom: 20px; }
+  .toolbar input[type=text] { max-width: 360px; }
+  .toolbar .field { min-width: 160px; }
+
+  /* overlay */
+  .stage { position: relative; background: var(--panel); border-radius: var(--r); padding: 40px 32px; overflow: hidden; }
+
+  /* side by side */
+  .cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .col { background: var(--panel); border-radius: var(--r); padding: 24px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .col .tag { font: 500 12px 'BDO'; color: var(--text-3); }
+  .col .h { font-size: 32px; line-height: 1.1; }
+  .col .h .dim { color: var(--text-2); }
+  .col .p { font-size: 16px; line-height: 1.3; color: var(--text-2); }
+  .col .s { font-size: 14px; line-height: 1.3; }
+  .col .ui { display: flex; gap: 8px; }
+  .col .ui span { font-size: 14px; background: var(--text); color: var(--bg); border-radius: 8px; padding: 9px 12px; line-height: 1; }
+  .col .ui span + span { background: var(--panel-2); color: var(--text); }
+  .empty { color: var(--text-3); font: 500 13px 'BDO'; }
+
+  /* metrics */
+  table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; background: var(--panel); border-radius: var(--r); overflow: hidden; }
+  th, td { text-align: right; padding: 10px 16px; font-size: 13px; }
+  th:first-child, td:first-child { text-align: left; color: var(--text-2); }
+  thead th { color: var(--text-3); font-weight: 500; font-size: 12px; }
+  tbody tr + tr td { border-top: 1px solid var(--line); }
+  td.d { color: var(--text-3); }
+  td.d.close { color: #3fbf6f; }
+
+  /* glyph grid */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 6px; }
+  .cell { position: relative; background: var(--panel); border-radius: 6px; height: 120px; }
+  .cell small { position: absolute; left: 8px; bottom: 6px; font-size: 11px; color: var(--text-3); }
+
+  @media (max-width: 900px) { .app { grid-template-columns: 1fr; } aside { position: static; height: auto; } .cols { grid-template-columns: 1fr; } main { padding: 24px 16px 80px; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="group">
+      <h1>Font Lab</h1>
+      <div class="status" id="status"><i></i><span>Loading font engine…</span></div>
+      <p class="hint">Tune BDO Grotesk (SIL OFL) into our own variable font. Neue Montreal is only a reference: it is shown, never copied into the output.</p>
+    </div>
+
+    <div class="group">
+      <div class="label">Our font</div>
+      <div class="field"><div class="row">Name</div><input type="text" id="family" value="Tuned Grotesk"></div>
+      <div class="field"><div class="row">Width <b id="v-width"></b></div><input type="range" id="width" min="85" max="115" step="0.5"></div>
+      <div class="field"><div class="row">Letter spacing <b id="v-tracking"></b></div><input type="range" id="tracking" min="-40" max="40" step="1"></div>
+      <div class="field"><div class="row">Lowercase height <b id="v-xheight"></b></div><input type="range" id="xheight" min="92" max="110" step="0.5"></div>
+      <div class="field"><div class="row">Alternate letters</div><div class="seg" id="alts"></div></div>
+      <div class="btns"><button class="btn ghost" id="reset">Reset</button></div>
+    </div>
+
+    <div class="group">
+      <div class="label">Preview</div>
+      <div class="field"><div class="row">Weight <b id="v-weight"></b></div><div class="seg" id="weights"></div></div>
+    </div>
+
+    <div class="group">
+      <div class="label">Reference font</div>
+      <label class="drop" id="drop">Drop Neue Montreal files here or click to choose<br>(.otf .ttf .woff .woff2, stays in this browser)<input type="file" id="file" accept=".otf,.ttf,.woff,.woff2" multiple hidden></label>
+      <div class="refs" id="refs"></div>
+    </div>
+
+    <div class="group">
+      <div class="label">Export</div>
+      <div class="btns"><button class="btn" id="export" disabled>Download variable font</button><button class="btn ghost" id="copy">Copy settings</button></div>
+      <p class="hint" id="export-note">Builds the full 300–900 variable font (about 10 seconds) and downloads it with its settings file.</p>
+    </div>
+  </aside>
+
+  <main>
+    <section>
+      <h2>Overlay</h2>
+      <div class="toolbar">
+        <input type="text" id="ov-text" value="Hamburgefonstiv">
+        <div class="field"><div class="row">Size <b id="v-ovsize"></b></div><input type="range" id="ov-size" min="48" max="320" step="4" value="160"></div>
+        <div class="field"><div class="row">Match reference by</div>
+          <select id="ov-match"><option value="cap">Cap height</option><option value="x">Lowercase height</option><option value="none">Same font size</option></select></div>
+      </div>
+      <div class="legend" style="margin-bottom:12px">
+        <label><input type="checkbox" id="show-ours" checked><span class="sw" style="background:var(--ours)"></span>Ours (filled)</label>
+        <label><input type="checkbox" id="show-ref" checked><span class="sw" style="background:var(--ref)"></span>Reference (outline)</label>
+        <label><input type="checkbox" id="show-bdo"><span class="sw" style="background:var(--bdo)"></span>BDO Grotesk original (outline)</label>
+      </div>
+      <div class="stage" id="stage"></div>
+    </section>
+
+    <section>
+      <h2>Side by side</h2>
+      <div class="cols" id="cols"></div>
+    </section>
+
+    <section>
+      <h2>Measurements</h2>
+      <p class="hint" style="margin-bottom:12px">Per 1000 units (1 em), read from the font files at the preview weight (a static reference file is measured as it is). Green = ours is within 2% of the reference.</p>
+      <div id="metrics"></div>
+    </section>
+
+    <section>
+      <h2>Glyphs</h2>
+      <p class="hint" style="margin-bottom:12px">Ours filled, reference outlined, same baseline and the size match chosen above.</p>
+      <div class="grid" id="grid"></div>
+    </section>
+  </main>
+</div>
+
+<script>
+const DEFAULTS = { family: 'Tuned Grotesk', width: 100, tracking: 0, xheight: 100, alternates: [] };
+const ALTS = [ ['ss01', 'Ra'], ['ss02', '0'], ['ss03', 'R'], ['ss04', 'gt'], ['ss05', 'o'], ['ss06', 'Oo'], ['ss07', 'o'] ];
+const WEIGHTS = [300, 400, 500, 600, 700, 800, 900];
+const HERO = ['Product designer', ' with five years of experience across ', 'health tech, retail and adtech.'];
+const BODY = 'I take products from user research through UI, prototyping and testing to shipped front-end code, and build the design systems that keep them consistent.';
+const GLYPHS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789æøåÆØÅ&?!@';
+
+const $ = (id) => document.getElementById(id);
+const store = { get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
+                set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+
+let settings = { ...DEFAULTS, ...store.get('fontlab.settings', {}) };
+let weight = store.get('fontlab.weight', 500);
+let py = null, oursBytes = null, oursFamily = null, oursSeq = 0, refs = [], activeRef = store.get('fontlab.activeRef', null);
+
+// ---------------------------------------------------------------- engine
+async function boot() {
+  try {
+    py = await loadPyodide();
+    await py.loadPackage(['fonttools']);
+    await py.loadPackage(['brotli']).catch(() => {});
+    const files = ['fontlab.py', 'base/rule.json', ...WEIGHTS.map((w) => `base/wght-${w}.ttf`)];
+    py.FS.mkdirTree('/lab/base');
+    await Promise.all(files.map(async (f) => {
+      const buf = new Uint8Array(await (await fetch(f)).arrayBuffer());
+      py.FS.writeFile(`/lab/${f}`, buf);
+    }));
+    await py.runPythonAsync(`import sys, json\nsys.path.insert(0, '/lab')\nimport fontlab\nM = fontlab.load_prepared('/lab/base')`);
+    setStatus('Ready', true);
+    $('export').disabled = false;
+    rebuild();
+  } catch (e) { setStatus('Engine failed to load: ' + e.message); console.error(e); }
+}
+function setStatus(t, ok) { $('status').querySelector('span').textContent = t; $('status').classList.toggle('ready', !!ok); }
+
+let pending = null, running = false;
+function rebuild() { pending = true; if (!running) runBuild(); }
+async function runBuild() {
+  if (!py) return;
+  running = true;
+  while (pending) {
+    pending = false;
+    setStatus('Building…');
+    const t0 = performance.now();
+    py.globals.set('S', py.toPy(settings));
+    py.globals.set('W', weight);
+    const bytes = py.runPython('fontlab.build(M, S.to_py() if hasattr(S, "to_py") else S, static_weight=W)').toJs();
+    oursBytes = bytes;
+    const fam = `ours-${++oursSeq}`;
+    const face = new FontFace(fam, bytes, { weight: '1 1000' });
+    await face.load();
+    document.fonts.add(face);
+    if (oursFamily) for (const f of document.fonts) if (f.family === oursFamily) document.fonts.delete(f);
+    oursFamily = fam;
+    document.documentElement.style.setProperty('--f-ours', `'${fam}'`);
+    setStatus(`Ready · built in ${Math.round(performance.now() - t0)} ms`, true);
+    renderAll();
+  }
+  running = false;
+}
+
+// ---------------------------------------------------------------- reference fonts (IndexedDB, this browser only)
+function db() { return new Promise((res, rej) => { const r = indexedDB.open('fontlab', 1);
+  r.onupgradeneeded = () => r.result.createObjectStore('refs', { keyPath: 'id' }); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); }
+async function dbAll() { try { const d = await db(); return await new Promise((res) => { const q = d.transaction('refs').objectStore('refs').getAll(); q.onsuccess = () => res(q.result); q.onerror = () => res([]); }); } catch { return []; } }
+async function dbPut(rec) { try { const d = await db(); d.transaction('refs', 'readwrite').objectStore('refs').put(rec); } catch {} }
+async function dbDel(id) { try { const d = await db(); d.transaction('refs', 'readwrite').objectStore('refs').delete(id); } catch {} }
+
+async function addRef(name, buf, persist = true) {
+  const id = name;
+  if (refs.some((r) => r.id === id)) return;
+  const fam = 'ref-' + refs.length + '-' + name.replace(/[^a-z0-9]/gi, '');
+  try {
+    const face = new FontFace(fam, buf, { weight: '1 1000' });
+    await face.load(); document.fonts.add(face);
+  } catch (e) { alert(`Couldn't read ${name}: ${e.message}`); return; }
+  refs.push({ id, name, fam, buf });
+  if (persist) dbPut({ id, name, buf });
+  if (!activeRef || !refs.some((r) => r.id === activeRef)) activeRef = id;
+  renderRefs(); renderAll();
+}
+async function loadRefs() {
+  for (const r of await dbAll()) await addRef(r.name, r.buf, false);
+  try { // optional: fonts placed in public/font-lab/reference/ (git-ignored)
+    const list = await (await fetch('reference/manifest.json')).json();
+    for (const f of list) await addRef(f, await (await fetch('reference/' + f)).arrayBuffer(), false);
+  } catch {}
+  renderRefs(); renderAll();
+}
+function renderRefs() {
+  $('refs').innerHTML = '';
+  for (const r of refs) {
+    const el = document.createElement('div');
+    el.className = 'ref' + (r.id === activeRef ? ' on' : '');
+    el.innerHTML = `<span style="font-family:'${r.fam}';font-size:15px">Aa</span><span></span><button title="Remove">✕</button>`;
+    el.children[1].textContent = r.name;
+    el.onclick = () => { activeRef = r.id; store.set('fontlab.activeRef', activeRef); renderRefs(); renderAll(); };
+    el.querySelector('button').onclick = (e) => { e.stopPropagation(); refs = refs.filter((x) => x !== r); dbDel(r.id); if (activeRef === r.id) activeRef = refs[0]?.id ?? null; renderRefs(); renderAll(); };
+    $('refs').appendChild(el);
+  }
+}
+const ref = () => refs.find((r) => r.id === activeRef);
+
+// ---------------------------------------------------------------- measuring
+// Proportions come from the font files themselves (exact); only "ink" is rendered.
+const cv = document.createElement('canvas'); cv.width = 600; cv.height = 600;
+const cx = cv.getContext('2d', { willReadFrequently: true });
+const metricCache = new Map();
+function fileMetrics(key, bytes) {
+  if (!py || !bytes) return null;
+  if (metricCache.has(key)) return metricCache.get(key);
+  let out = null;
+  try {
+    py.globals.set('B', bytes);
+    const r = py.runPython('fontlab.metrics(B.to_py() if hasattr(B, "to_py") else B)');
+    out = r.toJs({ dict_converter: Object.fromEntries });
+    r.destroy?.();
+  } catch (e) { console.warn('metrics failed for', key, e); }
+  metricCache.set(key, out);
+  return out;
+}
+function ink(fam, w) { // share of the "n" box that is black: a stroke-weight proxy
+  cx.clearRect(0, 0, 600, 600); cx.font = `${w} 400px ${fam}`; cx.fillText('n', 100, 500);
+  const t = cx.measureText('n');
+  const wd = Math.max(1, Math.round(t.actualBoundingBoxRight + t.actualBoundingBoxLeft)), ht = Math.max(1, Math.round(t.actualBoundingBoxAscent));
+  const d = cx.getImageData(Math.round(100 - t.actualBoundingBoxLeft), Math.round(500 - t.actualBoundingBoxAscent), wd, ht).data;
+  let s = 0; for (let i = 3; i < d.length; i += 4) s += d[i];
+  return (s / 255) / (d.length / 4) * 100;
+}
+function measure(key, bytes, fam) {
+  const m = fileMetrics(key, bytes);
+  return m ? { ...m, 'Ink in "n" (%)': ink(fam, weight) } : null;
+}
+function refScale(mode, oursM, refM) {
+  if (!refM || mode === 'none') return 1;
+  const k = mode === 'cap' ? 'Cap height (H)' : 'Lowercase height (x)';
+  return oursM[k] / refM[k];
+}
+
+// ---------------------------------------------------------------- rendering
+function renderAll() {
+  if (!oursFamily) return;
+  const r = ref();
+  const mo = measure('ours-' + oursSeq, oursBytes, `'${oursFamily}'`);
+  const mr = r ? measure('ref-' + r.id, new Uint8Array(r.buf), `'${r.fam}'`) : null;
+  const mb = measure('bdo-' + weight, py.FS.readFile(`/lab/base/wght-${weight}.ttf`), 'BDO');
+  const scale = refScale($('ov-match').value, mo, mr);
+  renderOverlay(r, scale, mo); renderCols(r); renderMetrics(mb, mo, mr); renderGrid(r, scale);
+}
+const SVGNS = 'http://www.w3.org/2000/svg';
+function svgText(fam, text, size, x, y, mode) {
+  const t = document.createElementNS(SVGNS, 'text');
+  t.textContent = text; t.setAttribute('x', x); t.setAttribute('y', y);
+  t.setAttribute('font-family', fam); t.setAttribute('font-size', size); t.setAttribute('font-weight', weight);
+  if (mode === 'ours') t.setAttribute('fill', 'var(--ours)');
+  else { t.setAttribute('fill', 'none'); t.setAttribute('stroke', mode === 'ref' ? 'var(--ref)' : 'var(--bdo)'); t.setAttribute('stroke-width', mode === 'ref' ? 1.5 : 1); }
+  return t;
+}
+function renderOverlay(r, scale, mo) {
+  const st = $('stage'), size = +$('ov-size').value, text = $('ov-text').value || 'Hamburgefonstiv';
+  $('v-ovsize').textContent = size + ' px';
+  const width = st.clientWidth - 64, h = Math.round(size * 1.25), base = Math.round(size * 0.95);
+  const svg = document.createElementNS(SVGNS, 'svg');
+  svg.setAttribute('width', width); svg.setAttribute('height', h); svg.style.display = 'block'; svg.style.overflow = 'visible';
+  const line = (y) => { const l = document.createElementNS(SVGNS, 'line'); l.setAttribute('x1', 0); l.setAttribute('x2', width); l.setAttribute('y1', y); l.setAttribute('y2', y); l.setAttribute('stroke', 'rgba(255,255,255,.1)'); svg.appendChild(l); };
+  line(base); line(base - mo['Cap height (H)'] / 1000 * size); line(base - mo['Lowercase height (x)'] / 1000 * size);
+  if ($('show-ours').checked) svg.appendChild(svgText(`'${oursFamily}'`, text, size, 0, base, 'ours'));
+  if ($('show-bdo').checked) svg.appendChild(svgText('BDO', text, size, 0, base, 'bdo'));
+  if ($('show-ref').checked && r) svg.appendChild(svgText(`'${r.fam}'`, text, size * scale, 0, base, 'ref'));
+  st.innerHTML = ''; st.appendChild(svg);
+}
+function renderCols(r) {
+  const cols = [['BDO Grotesk (original)', 'BDO'], [settings.family + ' (ours)', `'${oursFamily}'`], [r ? r.name + ' (reference)' : 'Reference', r ? `'${r.fam}'` : null]];
+  $('cols').innerHTML = '';
+  for (const [tag, fam] of cols) {
+    const c = document.createElement('div'); c.className = 'col';
+    const t = document.createElement('div'); t.className = 'tag'; t.textContent = tag; c.appendChild(t);
+    if (!fam) { const e = document.createElement('div'); e.className = 'empty'; e.textContent = 'Add a reference font on the left to compare.'; c.appendChild(e); $('cols').appendChild(c); continue; }
+    const box = document.createElement('div'); box.style.cssText = `font-family:${fam};font-weight:${weight};display:flex;flex-direction:column;gap:16px`;
+    box.innerHTML = `<div class="h"><span></span><span class="dim"></span><span></span></div><div class="p"></div><div class="s">Projects · Archive · About · Contact</div><div class="ui"><span>View projects</span><span>Contact</span></div>`;
+    box.querySelectorAll('.h span').forEach((s, i) => s.textContent = HERO[i]);
+    box.querySelector('.p').textContent = BODY;
+    c.appendChild(box); $('cols').appendChild(c);
+  }
+}
+function renderMetrics(mb, mo, mr) {
+  const fmt = (v) => v == null ? '–' : (Math.round(v * 10) / 10).toString();
+  let h = `<table><thead><tr><th></th><th>BDO original</th><th>Ours</th><th>Reference</th><th>Ours vs reference</th></tr></thead><tbody>`;
+  for (const k of Object.keys(mo)) {
+    const d = mr ? (mo[k] - mr[k]) / mr[k] * 100 : null;
+    h += `<tr><td>${k}</td><td>${fmt(mb[k])}</td><td>${fmt(mo[k])}</td><td>${fmt(mr?.[k])}</td><td class="d ${d != null && Math.abs(d) <= 2 ? 'close' : ''}">${d == null ? '–' : (d > 0 ? '+' : '') + d.toFixed(1) + '%'}</td></tr>`;
+  }
+  $('metrics').innerHTML = h + '</tbody></table>';
+}
+function renderGrid(r, scale) {
+  $('grid').innerHTML = '';
+  for (const ch of GLYPHS) {
+    const c = document.createElement('div'); c.className = 'cell';
+    const svg = document.createElementNS(SVGNS, 'svg'); svg.setAttribute('viewBox', '0 0 100 120'); svg.setAttribute('width', '100%'); svg.setAttribute('height', '100%');
+    const o = svgText(`'${oursFamily}'`, ch, 72, 50, 84, 'ours'); o.setAttribute('text-anchor', 'middle'); svg.appendChild(o);
+    if (r) { const f = svgText(`'${r.fam}'`, ch, 72 * scale, 50, 84, 'ref'); f.setAttribute('text-anchor', 'middle'); f.setAttribute('stroke-width', 0.8); svg.appendChild(f); }
+    c.appendChild(svg);
+    const s = document.createElement('small'); s.textContent = ch; c.appendChild(s);
+    $('grid').appendChild(c);
+  }
+}
+
+// ---------------------------------------------------------------- controls
+function syncControls() {
+  for (const k of ['width', 'tracking', 'xheight']) $(k).value = settings[k];
+  $('family').value = settings.family;
+  $('v-width').textContent = settings.width + '%';
+  $('v-tracking').textContent = (settings.tracking > 0 ? '+' : '') + settings.tracking;
+  $('v-xheight').textContent = settings.xheight + '%';
+  $('v-weight').textContent = weight;
+  document.querySelectorAll('#alts .chip').forEach((b) => b.classList.toggle('on', settings.alternates.includes(b.dataset.tag)));
+  document.querySelectorAll('#weights button').forEach((b) => b.classList.toggle('on', +b.dataset.w === weight));
+}
+function change(patch) { settings = { ...settings, ...patch }; store.set('fontlab.settings', settings); syncControls(); rebuild(); }
+
+for (const [tag, sample] of ALTS) {
+  const b = document.createElement('button'); b.className = 'chip'; b.dataset.tag = tag;
+  b.innerHTML = `${tag}<span style="font-family:BDO;font-feature-settings:'${tag}' 1">${sample}</span>`;
+  b.title = `Make the ${tag} alternate the default`;
+  b.onclick = () => change({ alternates: settings.alternates.includes(tag) ? settings.alternates.filter((t) => t !== tag) : [...settings.alternates, tag] });
+  $('alts').appendChild(b);
+}
+for (const w of WEIGHTS) {
+  const b = document.createElement('button'); b.textContent = w; b.dataset.w = w;
+  b.onclick = () => { weight = w; store.set('fontlab.weight', w); syncControls(); rebuild(); };
+  $('weights').appendChild(b);
+}
+let t;
+for (const k of ['width', 'tracking', 'xheight']) {
+  $(k).oninput = () => { settings[k] = +$(k).value; syncControls(); clearTimeout(t); t = setTimeout(() => change({}), 150); };
+}
+$('family').onchange = () => change({ family: $('family').value.trim() || DEFAULTS.family });
+$('reset').onclick = () => change({ ...DEFAULTS, family: settings.family });
+for (const id of ['ov-text', 'ov-size', 'ov-match', 'show-ours', 'show-ref', 'show-bdo']) $(id).oninput = renderAll;
+
+const drop = $('drop');
+drop.ondragover = (e) => { e.preventDefault(); drop.classList.add('over'); };
+drop.ondragleave = () => drop.classList.remove('over');
+drop.ondrop = async (e) => { e.preventDefault(); drop.classList.remove('over'); for (const f of e.dataTransfer.files) await addRef(f.name, await f.arrayBuffer()); };
+$('file').onchange = async (e) => { for (const f of e.target.files) await addRef(f.name, await f.arrayBuffer()); e.target.value = ''; };
+
+$('copy').onclick = async () => { try { await navigator.clipboard.writeText(JSON.stringify(settings, null, 2)); $('copy').textContent = 'Copied'; setTimeout(() => $('copy').textContent = 'Copy settings', 1200); } catch { prompt('Settings', JSON.stringify(settings)); } };
+$('export').onclick = async () => {
+  $('export').disabled = true; setStatus('Building variable font…');
+  await new Promise((r) => setTimeout(r, 30));
+  try {
+    py.globals.set('S', py.toPy(settings));
+    const ttf = py.runPython('fontlab.build(M, S.to_py() if hasattr(S, "to_py") else S)').toJs();
+    const slug = settings.family.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '') || 'font';
+    download(new Blob([ttf], { type: 'font/ttf' }), `${slug}-VF.ttf`);
+    try {
+      py.globals.set('T', ttf);
+      const w2 = py.runPython(`import io\nfrom fontTools.ttLib import TTFont\n_f = TTFont(io.BytesIO(bytes(T.to_py())))\n_f.flavor = 'woff2'\n_b = io.BytesIO()\n_f.save(_b)\n_b.getvalue()`).toJs();
+      download(new Blob([w2], { type: 'font/woff2' }), `${slug}-VF.woff2`);
+    } catch (e) { console.warn('woff2 skipped', e); }
+    download(new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' }), `${slug}-settings.json`);
+    setStatus('Ready · exported', true);
+  } catch (e) { setStatus('Export failed: ' + e.message); console.error(e); }
+  $('export').disabled = false;
+};
+function download(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }
+
+document.documentElement.style.setProperty('--f-bdo', 'BDO');
+syncControls();
+document.fonts.load(`500 16px BDO`).then(() => { renderCols(null); });
+loadRefs();
+boot();
+</script>
+</body>
+</html>

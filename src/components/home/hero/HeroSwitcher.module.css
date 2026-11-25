@@ -18,6 +18,7 @@
   gap: var(--space-4);
   padding: var(--space-8) var(--space-12);
   border-radius: var(--radius-pill);
+  corner-shape: round;
 }
 
 /* The 24h scrubber — a plain, quiet range input. */

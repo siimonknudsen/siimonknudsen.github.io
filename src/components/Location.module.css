@@ -8,6 +8,7 @@
   width: var(--space-8);
   height: var(--space-8);
   border-radius: var(--radius-pill);
+  corner-shape: round;
   /* Success-green availability dot with a soft green pulse (mirrors the hero
      availability pill, recoloured off the orange brand halo). */
   background-color: var(--feedback-success);

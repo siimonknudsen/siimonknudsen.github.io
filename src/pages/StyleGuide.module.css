@@ -123,6 +123,7 @@
   width: 18px;
   height: 18px;
   border-radius: var(--radius-pill);
+  corner-shape: round;
   background: var(--accent);
   color: var(--neutral-0);
   font-size: var(--text-xs);
@@ -156,6 +157,7 @@
   height: 18px;
   margin-top: 1px;
   border-radius: var(--radius-pill);
+  corner-shape: round;
   background: var(--accent-soft);
   color: var(--accent);
   font-size: var(--text-xs);
@@ -394,6 +396,7 @@
 
 .coverTag {
   border-radius: var(--radius-pill);
+  corner-shape: round;
   padding-left: var(--space-16);
   padding-right: var(--space-16);
   padding-top: var(--space-6);
@@ -473,6 +476,7 @@
   bottom: 0.15em;
   width: 2px;
   border-radius: var(--radius-pill);
+  corner-shape: round;
   background: var(--accent);
   transform: scaleY(0);
   transform-origin: center;
@@ -1262,6 +1266,7 @@
   padding-top: var(--space-6);
   padding-bottom: var(--space-6);
   border-radius: var(--radius-pill);
+  corner-shape: round;
   transition: transform var(--dur-fast) var(--ease-standard);
 }
 .playButton:active {
@@ -1291,6 +1296,7 @@
   flex: 1 1 0%;
   height: var(--space-20);
   border-radius: var(--radius-pill);
+  corner-shape: round;
   background: var(--glass-item-hover);
 }
 
@@ -1301,6 +1307,7 @@
   height: var(--space-16);
   width: var(--space-16);
   border-radius: var(--radius-pill);
+  corner-shape: round;
 }
 
 .trackCurve {
@@ -1621,6 +1628,7 @@
   width: 6px;
   height: 6px;
   border-radius: var(--radius-pill);
+  corner-shape: round;
   background: var(--accent);
 }
 
@@ -1797,6 +1805,7 @@
   align-items: center;
   padding: 2px var(--space-8);
   border-radius: var(--radius-pill);
+  corner-shape: round;
   font-size: var(--text-xs);
   line-height: 18px;
   white-space: nowrap;
@@ -1886,6 +1895,7 @@
 .themeCardChip {
   padding: var(--space-4) var(--space-12);
   border-radius: var(--radius-pill);
+  corner-shape: round;
   font-size: var(--text-xs);
 }
 
@@ -1978,6 +1988,7 @@
   gap: var(--space-6);
   padding: var(--space-4) var(--space-12);
   border-radius: var(--radius-pill);
+  corner-shape: round;
   font-size: var(--text-xs);
   background: var(--transparent-light-16);
   border: 1px solid var(--transparent-light-24);

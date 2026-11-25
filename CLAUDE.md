@@ -28,7 +28,7 @@ real data — flag placeholders and ask.
 **Repo map:** pages → `src/pages/` · components → `src/components/` (`home/`, `projects/`,
 `buttons/`, `cards/`, `grids/`, `motion/`) · project list → `src/data/projects.js` · per-project
 content → `public/projects/<id>/content.json` · tokens + globals → `src/index.css` · shell +
-routes → `src/App.jsx` · analytics/consent → `src/lib/consent.js`.
+routes → `src/App.jsx` · analytics/consent → `src/lib/consent.js` · own-font tuner → `public/font-lab/` (live at `/font-lab/`, local: `npm run font-lab`).
 
 ---
 
