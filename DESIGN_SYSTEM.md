@@ -227,6 +227,11 @@ Conventions: card padding 24 (`p-6`), section rhythm 80 (`mb-20`), tight stacks 
   to 8px** — cards, panels, bars, images cap at **8px** (use sm/md for new work).
   `--radius-pill` (full) is for **circular elements** (avatars, theme toggle, hamburger,
   the floating nav bar) **and chips/tags** (see below).
+- **Corner shape = squircle for cards, round for pills (2026-11):** a global `corner-shape: squircle`
+  in the `index.css` reset makes every radius a superellipse; **every `--radius-pill` use adds
+  `corner-shape: round`** so capsules and circles (nav bar, chips, avatars, dots, toggle) stay truly round.
+  New pill/circle rules must add it too.
+  Chromium 139+ only; Safari/Firefox fall back to normal round corners. Radius values are unchanged.
 - **Chips / tags** (`Badge`) are **flat solid pills**: `--radius-pill` + a solid
   **`--chip-surface`** fill — a theme-split token that sits **one tonal step OFF the
   card in each mode**: light = `secondary` (one step down from the white card); dark =

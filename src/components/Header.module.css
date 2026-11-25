@@ -114,6 +114,7 @@
 .workGridScroll::-webkit-scrollbar-thumb {
   background: var(--glass-item-hover);
   border-radius: var(--radius-pill);
+  corner-shape: round;
 }
 
 .menuFooter {
@@ -155,6 +156,7 @@
   width: 44px;
   height: 44px;
   border-radius: var(--radius-pill);
+  corner-shape: round;
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -287,6 +289,7 @@
   width: var(--space-8);
   height: var(--space-8);
   border-radius: var(--radius-pill);
+  corner-shape: round;
   /* Success-green availability dot (mirrors the header Location dot). */
   background-color: var(--feedback-success);
   box-shadow:
@@ -349,6 +352,7 @@
 .bar {
   border: none;
   border-radius: var(--radius-pill);
+  corner-shape: round;
   display: flex;
   align-items: center;
   gap: var(--space-8);
@@ -362,6 +366,7 @@
 /* Left — brand */
 .brand {
   border-radius: var(--radius-pill);
+  corner-shape: round;
   padding: var(--space-4) var(--space-12) var(--space-4) var(--space-4);
   display: flex;
   align-items: center;
@@ -381,6 +386,7 @@
   width: var(--space-36);
   height: var(--space-36);
   border-radius: var(--radius-pill);
+  corner-shape: round;
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -517,6 +523,7 @@
   width: var(--space-40);
   height: var(--space-40);
   border-radius: var(--radius-pill);
+  corner-shape: round;
   display: flex;
   align-items: center;
   justify-content: center;

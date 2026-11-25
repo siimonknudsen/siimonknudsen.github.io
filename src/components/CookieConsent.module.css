@@ -53,6 +53,7 @@
 .pill {
   flex: 1 1 0;
   border-radius: var(--radius-pill) !important;
+  corner-shape: round !important;
 }
 
 /* Decline = ghost pill (transparent fill + soft glass edge instead of a hard

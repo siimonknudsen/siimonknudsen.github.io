@@ -2,6 +2,7 @@
   display: inline-flex;
   align-items: center;
   border-radius: var(--radius-pill);
+  corner-shape: round;
   /* Control type — 100% leading (see `.type-ui-12`); the padding sets the height. */
   font-size: var(--text-xs);
   font-weight: var(--weight-medium);

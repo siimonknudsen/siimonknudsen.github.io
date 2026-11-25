@@ -38,6 +38,7 @@
      carries the height the design draws. */
   padding: var(--space-6) var(--space-8);
   border-radius: var(--radius-pill);
+  corner-shape: round;
   /* On-media chrome: tokenised dark-α + blur, theme-independent (it sits over
      the photo, not the page). */
   background-color: var(--transparent-dark-24);
@@ -60,6 +61,7 @@
   z-index: 1;
   padding: var(--space-8) var(--space-12);
   border-radius: var(--radius-pill);
+  corner-shape: round;
   background-color: var(--transparent-dark-40);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);

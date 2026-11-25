@@ -1,0 +1,4 @@
+# Reference fonts (e.g. PP Neue Montreal trial) are licensed to you only:
+# keep them out of the repo.
+reference/
+__pycache__/

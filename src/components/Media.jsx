@@ -175,6 +175,7 @@ function Media({
         aspectRatio: !isAuto && !isFill ? ASPECT[aspect] : undefined,
         height: isFill ? '100%' : undefined,
         borderRadius: RADIUS[rounded],
+        ...(rounded === 'rounded-full' && { cornerShape: 'round' }),
       }}
     >
       {isVideo ? (

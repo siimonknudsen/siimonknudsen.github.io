@@ -165,7 +165,9 @@
   /* — Radius (4 · 8 · 12 · 16; 2xl/3xl for big frosted panels & hero/case) — */
   /* Tight 2026 aesthetic: cards/panels/images cap at 8px. The larger steps are
      intentionally clamped to 8px so "most components" read tight without a
-     per-file sweep; use sm(4)/md(8) for new work. radius-pill stays for chips. */
+     per-file sweep; use sm(4)/md(8) for new work. radius-pill stays for chips.
+     Radii draw as squircles via the global `corner-shape` in the reset;
+     every --radius-pill use adds `corner-shape: round` to stay a true capsule/circle. */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 8px;
@@ -526,6 +528,13 @@ html:not(.dark) {
   *::before,
   *::after {
     box-sizing: border-box;
+    /* Squircle corners (2026-11): every border-radius draws as a superellipse
+       instead of a circular arc. Pills and circles opt back out with
+       `corner-shape: round` next to each `--radius-pill` (Apple's rule:
+       squircle cards, round capsules and circles).
+       Supported in Chromium 139+; other browsers ignore it and keep normal
+       round corners, so it is a pure progressive enhancement. */
+    corner-shape: squircle;
   }
 
   * {

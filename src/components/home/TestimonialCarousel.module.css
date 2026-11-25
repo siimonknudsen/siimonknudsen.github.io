@@ -69,6 +69,7 @@
   border: 0;
   cursor: pointer;
   border-radius: var(--radius-pill);
+  corner-shape: round;
 }
 
 /* An 8px dot with vertical-only padding measured 8x24 — under the 24x24 floor
@@ -93,6 +94,7 @@
   width: var(--space-8);
   height: var(--space-8);
   border-radius: var(--radius-pill);
+  corner-shape: round;
   background-color: var(--text-color-tertiary);
   opacity: 0.4;
   /* Width is the shape change; keep it on the same calm UI curve as the rest

@@ -1217,7 +1217,7 @@ function StyleGuide() {
                     <div key={r.name} className={styles.radiusItem}>
                       <div
                         className={`surface-3 ${styles.radiusSwatch}`}
-                        style={{ borderRadius: r.css }}
+                        style={{ borderRadius: r.css, ...(r.name === '--radius-pill' && { cornerShape: 'round' }) }}
                       />
                       <div className={styles.radiusMetaRow}>
                         <MonoMeta className="text-color-secondary">{r.name}</MonoMeta>
@@ -1228,7 +1228,8 @@ function StyleGuide() {
                 </div>
                 <p className={`font-mono text-color-tertiary ${styles.radiusNote}`}>
                   --radius-lg / xl / 2xl all clamp to 8px (the 2026 tight cap). Cards, panels,
-                  bars and images cap at 8; the pill is reserved for circular elements + chips.
+                  bars and images cap at 8; the pill is reserved for circular elements + chips. Cards, images and
+                  buttons draw squircle corners (corner-shape: squircle); pills and circles stay round.
                 </p>
               </div>
             </ScrollAnimation>
